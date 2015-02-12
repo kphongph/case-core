@@ -4,12 +4,1032 @@
       "loopback/common/models",
       "loopback/server/models",
       "../common/models",
+      "../common/grunt-models",
       "./models",
       "../node_modules/loopback-component-passport/lib/models"
     ]
   },
+  
+  "AspnetMembership": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "AspnetRoles": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Answer": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Answergroup": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "AspnetSchemaversions": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Form": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Bloodtype": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "AspnetUsers": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "AspnetUsersinroles": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Villagevshost": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Activity": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Period": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "City": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Formstd": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "SummaryFormArea": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Department": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Qresult": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Qrecord": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Race": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Disabilityevaluationcategory": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Qtimestamp": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Disabilityanswer": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Disabilityevaluationsubcategory": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Service": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Qtschool": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Reasonmovetype": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Disabilityquestion": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Questionstd": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Recordplanning": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Questionaire": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Questiontype": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Relation": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Disabilitytype": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Recordserviceprovision": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Hostrelationtype": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Religion": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "EconAllhomestatus": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Questionvsanswer": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Disabillityevaluation": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Hostrelation": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Roleforservice": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "EconFamilymain": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Result": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "FamilyrelationMain": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "EconHoldinghomestatus": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "ServiceTemp": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Systemtype": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Servicemappingicf": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "EconHomestatus2": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Fresult": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "EconHomestatus": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "EconPlacehome": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Educationclass": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Subactivity": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Serviceprovisionhealthproject": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Formvsactivity": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Svcobjective": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Employee": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Title": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Educationlevel": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "TravelMain": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "FamCidvslife": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Personflowstatus": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Weighheight": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Existingwelfare": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "FamCidvspublic": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Serviceprovisionphoto": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Tumbon": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "TravelSolution": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "FamEnvironment": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Flow": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "FamLifeactivity": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "FamCidvstraining": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Planperson": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Serviceprovision": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "FamPublicutillity": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Personflowstatusrecord": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "FamTraining": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Flowvspage": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Page": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "FamRelationstatus": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Family": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Serviceprovisiondetails": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "PersonTempLtc": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Planvsscreening": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Serviceprovisionnote": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Gender": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Rolevsflow": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Foreigner": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "HealthprojectKpt": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "SummaryformDefinition": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "HealthprojectActivitylist": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Hostvsarea": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "PersonOfTest": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "HealthprojectTargetarea": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "HealthprojectObjective": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "HealthprojectTarget": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Host": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Education": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Healthprojectestimatecost": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Hosttypeid": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Hosttype": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "PersonvshostTemp": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Tumbonlatlong": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Insurancecard": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Periodbyeduclass": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Insurancegroup": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Icfcodemappingpart": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Periodbyage": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Qnote": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Livestatus": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "LogTable": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Livehomestatus": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Persontype": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Mariagestatus": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Material": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "MaterialAct": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Ministry": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Uicontrol": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Servicevspersontype": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Nationality": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Persontyperecord": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Activitycost": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Organization": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Activityvsrole": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Occupation": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Activityvspersontype": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Partforevaluation": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Address": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Otherdatadesc": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Acvititytype": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Addresstype": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "PersonTemp": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Servicevsrole": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Personvshost": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Agevsanswer": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
   "Person": {
     "dataSource": "caseDs",
     "public": true 
+  
+  },
+  
+  
+  "Agetype": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Adressvsperson": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Planservice": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Annotation": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "QuestionstdMulticondition": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Provider": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Province": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "Village": {
+    "dataSource": "caseDs",
+    "public": true 
+  
+  },
+  
+  
+  "AspnetApplications": {
+    "dataSource": "caseDs",
+    "public": true 
+  
   }
+  
+  
 }

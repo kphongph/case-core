@@ -1,0 +1,2 @@
+module.exports = function(Title) {
+};
