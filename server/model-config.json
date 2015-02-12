@@ -1,0 +1,15 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models",
+      "../node_modules/loopback-component-passport/lib/models"
+    ]
+  },
+  "Person": {
+    "dataSource": "caseDs",
+    "public": true 
+  }
+}

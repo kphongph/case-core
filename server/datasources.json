@@ -1,0 +1,14 @@
+{
+  "db":{
+    "name":"db",
+    "connector":"memory"
+  },
+  "caseDs": {
+    "connector": "mssql",
+    "host":"AssertProjects.nu.ac.th",
+    "port":1433,
+    "database":"2014_gen2_case",
+    "username":"sa",
+    "password":"Theerawutt53"
+  }
+}
