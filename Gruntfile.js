@@ -10,7 +10,7 @@ module.exports = function(grunt) {
   
   grunt.config('discover-ds', {
     options:{
-      input:'./server/server.js',
+      dsFile:'server/datasources.json',
       dsName:'caseDs',
       dest:'common/grunt-models',
     }

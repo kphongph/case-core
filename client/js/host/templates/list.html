@@ -1,0 +1,20 @@
+<select ng-model="province" 
+  ng-options="x as x.ProvinceDescription for x in provinces"
+  ng-change="getCity(province)">
+</select>
+
+<select ng-model="city" 
+  ng-options="x as x.CityDescription for x in cities"
+  ng-change="getTumbon(city)">
+</select>
+
+<select ng-model="tumbon" 
+  ng-options="x as x.TumbonDescription for x in tumbons"
+  ng-change="getHost(tumbon)">
+</select>
+
+<p ng-repeat="host in hosts">
+ <a ui-sref="host.info({id:host.HostID})">{{host.HostName}}</a>
+<p>
+
+<div ui-view></div>
