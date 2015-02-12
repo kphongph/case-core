@@ -7,21 +7,20 @@ module.exports = function(grunt) {
   grunt.registerTask('discover-ds', function(which) {
     var done = this.async();
     var options = this.options({});
-    var appFile = options.input;
+    var dsFile = options.dsConfig;
     var dsName = options.dsName;
 
-    if(!appFile) 
-      grunt.fail.warn('Missing mandatory option "input".');
+    if(!dsFile) 
+      grunt.fail.warn('Missing mandatory option "dsFile".');
     
-    if(!grunt.file.exists(appFile)) 
-      grunt.fail.warn('Input file '+appFile + ' not found.');
+    if(!grunt.file.exists(dsFile)) 
+      grunt.fail.warn('Input file '+dsFile + ' not found.');
     
-    var app;   
     var datasource;
     try {
-      app = require(path.resolve(appFile));
-      datasource = app.dataSources[options.dsName];
-      grunt.log.ok('Loaded LoopBack app %j', appFile);
+      var DataSource = require('loopback-datasource-juggler').DataSource;
+      datasource = new DataSources(require(options.dsFile)[options.dsName]);
+      grunt.log.ok('Loaded datasoucre %j', dsName);
     } catch (e) {
       var err = new Error('Cannot load LoopBack app ' + appFile);
       err.origError = e;
