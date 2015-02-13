@@ -15,12 +15,21 @@ module.exports = function(grunt) {
       dest:'common/grunt-models',
     }
   });
+  
+  grunt.config('jsbeautifier',{
+    files : ['client/**/*.html'],
+    options:{
+      html:{indentSize:1}
+    }
+  });
 
+  grunt.loadNpmTasks('grunt-jsbeautifier');
   grunt.loadNpmTasks('grunt-loopback-sdk-angular');
   grunt.loadTasks('grunt-tasks');
 
   // Default task(s).
   grunt.registerTask('default', ['discover-ds']);
   grunt.registerTask('lbservice', ['loopback_sdk_angular']);
+  grunt.registerTask('beautify', ['jsbeautifier']);
 
 };

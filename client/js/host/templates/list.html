@@ -1,20 +1,53 @@
-<select ng-model="province" 
-  ng-options="x as x.ProvinceDescription for x in provinces"
-  ng-change="getCity(province)">
-</select>
+<div class="row">
+ <div class="col-md-3">
+  <div class='container-fluid'>
+   <h4>หน่วยงานให้บริการ</h4>
+   <div class="form-group">
+    <h5>จังหวัด</h5>
+    <input type="text" ng-model="province" placeholder="จังหวัด" class="form-control" typeahead="province as province.ProvinceDescription for province in listProvince($viewValue)" typeahead-loading="loadingLocations" typeahead-on-select="getCity()">
+    </input>
 
-<select ng-model="city" 
-  ng-options="x as x.CityDescription for x in cities"
-  ng-change="getTumbon(city)">
-</select>
+    <h5>อำเภอ</h5>
+    <select ng-model="city" class="form-control" ng-options="x as x.CityDescription for x in cities" ng-change="getTumbon()">
+    </select>
 
-<select ng-model="tumbon" 
-  ng-options="x as x.TumbonDescription for x in tumbons"
-  ng-change="getHost(tumbon)">
-</select>
+    <h5>ตำบล</h5>
+    <select ng-model="tumbon" class="form-control" ng-options="x as x.TumbonDescription for x in tumbons" ng-change="pageChanged(1)">
+    </select>
+    
+    <label>
+     <input type="checkbox" ng-model="filterActive" 
+       ng-change="pageChanged(1)"> เฉพาะหน่วยที่มีคน
+    </label>
+   </div>
+  </div>  
+ </div>  
 
-<p ng-repeat="host in hosts">
- <a ui-sref="host.info({id:host.HostID})">{{host.HostName}}</a>
-<p>
+ <div class="col-md-9">
+   <h4>
+    ข้อมูลหน่วยงาน จำนวน  
+    {{host_count}}
+   </h4>
+   <h5>{{tumbon.TumbonDescription}} {{city.CityDescription}} {{province.ProvinceDescription}} </h5>
+   
+   <pagination total-items="host_count" ng-model="currentPage" max-size="5" 
+      items-per-page="20"
+      class="pagination-sm" 
+      ng-change="pageChanged(currentPage)"
+      boundary-links="true">
+   </pagination>
 
-<div ui-view></div>
+   <table class="table table-bordered table-hover table-condensed">
+    <thead>
+     <th>หน่วยงาน</th>
+     <th>จำนวนคน</th>
+    </thead>
+    <tbody>
+     <tr ng-repeat="host in hosts">
+      <td><a ui-sref="host.info({id:host.HostID})">{{host.HostName}}</a></td>
+      <td>{{host.activePerson}}</td>
+     </tr>
+    </tbody>
+  </table>
+ </div>
+</div>
