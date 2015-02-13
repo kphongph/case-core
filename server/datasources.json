@@ -5,6 +5,7 @@
   },
   "caseDs": {
     "connector": "mssql",
+    "debug":false,
     "host":"AssertProjects.nu.ac.th",
     "port":1433,
     "database":"2014_gen2_case",

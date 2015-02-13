@@ -4,18 +4,18 @@
    <h4>หน่วยงานให้บริการ</h4>
    <div class="form-group">
     <h5>จังหวัด</h5>
-    <input type="text" ng-model="province" placeholder="จังหวัด" class="form-control" typeahead="province as province.ProvinceDescription for province in listProvince($viewValue)" typeahead-loading="loadingLocations" typeahead-on-select="getCity()">
+    <input type="text" ng-disabled="filterActive" ng-model="province" placeholder="จังหวัด" class="form-control" typeahead="province as province.ProvinceDescription for province in listProvince($viewValue)" typeahead-loading="loadingLocations" typeahead-on-select="getCity()">
     </input>
 
     <h5>อำเภอ</h5>
-    <select ng-model="city" class="form-control" ng-options="x as x.CityDescription for x in cities" ng-change="getTumbon()">
+    <select ng-model="city" ng-disabled="filterActive" class="form-control" ng-options="x as x.CityDescription for x in cities" ng-change="getTumbon()">
     </select>
 
     <h5>ตำบล</h5>
-    <select ng-model="tumbon" class="form-control" ng-options="x as x.TumbonDescription for x in tumbons" ng-change="pageChanged(1)">
+    <select ng-model="tumbon" ng-disabled="filterActive" class="form-control" ng-options="x as x.TumbonDescription for x in tumbons" ng-change="pageChanged(1)">
     </select>
     
-    <label>
+    <label ng-show="active_hosts.length > 0">
      <input type="checkbox" ng-model="filterActive" 
        ng-change="pageChanged(1)"> เฉพาะหน่วยที่มีคน
     </label>
@@ -28,7 +28,14 @@
     ข้อมูลหน่วยงาน จำนวน  
     {{host_count}}
    </h4>
-   <h5>{{tumbon.TumbonDescription}} {{city.CityDescription}} {{province.ProvinceDescription}} </h5>
+   <h5>
+     <span ng-hide="filterActive">
+     {{tumbon.TumbonDescription}} {{city.CityDescription}} {{province.ProvinceDescription}} 
+     </span>
+     <span ng-show="filterActive">
+     ทั่วประเทศ
+     </span>
+   </h5>
    
    <pagination total-items="host_count" ng-model="currentPage" max-size="5" 
       items-per-page="20"
