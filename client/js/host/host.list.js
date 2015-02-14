@@ -1,7 +1,14 @@
 define([
-  './module'
+  './module',
+  './test_con'
 ], function(module) {
   return module.config(function($stateProvider, $urlRouterProvider) {
+    $stateProvider.state('host.info', {
+      url:'/info',
+      templateUrl: 'js/host/templates/host.detail.html',
+      controller: 'simple'
+    });
+
     $stateProvider.state('host', {
       url: '/host',
       templateUrl: 'js/host/templates/list.html',
