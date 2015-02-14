@@ -1,23 +1,16 @@
-'use strict';
-
-var app = angular.module('app', [
+define([
+  'angular',
   'ui.router',
-  'ui.bootstrap',
-  'lbServices'
-]);
+  './host/routes'
+], function(angular) {
 
-app.config(function($stateProvider,$urlRouterProvider) {
-  $urlRouterProvider.otherwise('/host');
-  
-  $stateProvider.state('host',{
-    url:'/host',
-    templateUrl:'js/host/templates/list.html',
-    controller:'HostListCtrl'
+  'use strict';
+
+  return angular.module('app', [
+    'app.host',
+    'ui.router',
+  ]).config(function($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/host/info');
   });
 
-  $stateProvider.state('host.info',{
-    url:'/:id',
-    templateUrl:'js/host/templates/host.detail.html',
-    controller:'HostCtrl'
-  });
 });

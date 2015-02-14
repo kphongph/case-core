@@ -15,6 +15,7 @@
     "angular-resource": "~1.3.8",
     "angular-ui-router": "~0.2.13",
     "angular-bootstrap": "*",
+    "requirejs":"^2.1.16",
     "bootstrap": "~3.3.1"
   }
 }

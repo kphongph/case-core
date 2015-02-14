@@ -9,7 +9,7 @@
  <link href="vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<body ng-app="app">
+<body>
  <nav class="navbar navbar-default navbar-static-top">
   <div class="container">
    <div class="navbar-header">
@@ -22,6 +22,15 @@
   <div ui-view></div>
  </div>
 
+ <script src="vendor/requirejs/require.js"></script>
+ <script>
+  require(['require', './js/config.js'], function(require, config) {
+   window.require.config(config);
+   require(['./js/main.js']);
+  });
+ </script>
+
+ <!--
  <script src="vendor/jquery/dist/jquery.js"></script>
  <script src="vendor/bootstrap/dist/js/bootstrap.js"></script>
  <script src="vendor/angular/angular.js"></script>
@@ -31,10 +40,9 @@
  <script src="vendor/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 
  <script src="js/app.js"></script>
- <!-- Controllers -->
  <script src="js/host/controllers.js"></script>
-
  <script src="js/lb-services.js"></script>
+ -->
 </body>
 
 </html>

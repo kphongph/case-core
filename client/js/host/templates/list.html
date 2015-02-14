@@ -14,21 +14,20 @@
     <h5>ตำบล</h5>
     <select ng-model="tumbon" ng-disabled="filterActive" class="form-control" ng-options="x as x.TumbonDescription for x in tumbons" ng-change="pageChanged(1)">
     </select>
-    
+
     <label ng-show="active_hosts.length > 0">
-     <input type="checkbox" ng-model="filterActive" 
-       ng-change="pageChanged(1)"> เฉพาะหน่วยที่มีคน
+     <input type="checkbox" ng-model="filterActive" ng-change="pageChanged(1)"> เฉพาะหน่วยที่มีคน
     </label>
    </div>
-  </div>  
- </div>  
+  </div>
+ </div>
 
  <div class="col-md-9">
-   <h4>
+  <h4>
     ข้อมูลหน่วยงาน จำนวน  
     {{host_count}}
    </h4>
-   <h5>
+  <h5>
      <span ng-hide="filterActive">
      {{tumbon.TumbonDescription}} {{city.CityDescription}} {{province.ProvinceDescription}} 
      </span>
@@ -36,25 +35,24 @@
      ทั่วประเทศ
      </span>
    </h5>
-   
-   <pagination total-items="host_count" ng-model="currentPage" max-size="5" 
-      items-per-page="20"
-      class="pagination-sm" 
-      ng-change="pageChanged(currentPage)"
-      boundary-links="true">
-   </pagination>
 
-   <table class="table table-bordered table-hover table-condensed">
-    <thead>
-     <th>หน่วยงาน</th>
-     <th>จำนวนคน</th>
-    </thead>
-    <tbody>
-     <tr ng-repeat="host in hosts">
-      <td><a ui-sref="host.info({id:host.HostID})">{{host.HostName}}</a></td>
-      <td>{{host.activePerson}}</td>
-     </tr>
-    </tbody>
+  <pagination total-items="host_count" ng-model="currentPage" max-size="5" items-per-page="20" class="pagination-sm" ng-change="pageChanged(currentPage)" boundary-links="true">
+  </pagination>
+
+  <table class="table table-bordered table-hover table-condensed">
+   <thead>
+    <th>หน่วยงาน</th>
+    <th>จำนวนคน</th>
+   </thead>
+   <tbody>
+    <tr ng-repeat="host in hosts">
+     <td><a ui-sref="host.info({id:host.HostID})">{{host.HostName}}</a>
+     </td>
+     <td>{{host.activePerson}}</td>
+    </tr>
+   </tbody>
   </table>
  </div>
 </div>
+
+<div ng-view></div>

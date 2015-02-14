@@ -17,9 +17,10 @@ module.exports = function(grunt) {
   });
   
   grunt.config('jsbeautifier',{
-    files : ['client/**/*.html'],
+    files : ['client/**/*.html','client/js/**/*.js'],
     options:{
-      html:{indentSize:1}
+      html:{indentSize:1},
+      js:{indentSize:2}
     }
   });
 
