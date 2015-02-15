@@ -10,7 +10,7 @@ define([
     'app.host',
     'ui.router',
   ]).config(function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/host/info');
+    $urlRouterProvider.otherwise('/host');
   });
 
 });

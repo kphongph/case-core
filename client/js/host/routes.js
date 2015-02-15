@@ -1,4 +1,4 @@
 define([
   './module',
   './host.list',
-],function() {}); 
+], function() {});
