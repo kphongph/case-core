@@ -1,12 +1,12 @@
 define([
   'angular',
-  'ui.router',
+  'ngRoute',
   'ngBootstrap',
   'ngBootstrap-tpls',
   'lb.services',
 ], function(angular) {
   return angular.module('app.host', [
-    'ui.router',
+    'ngRoute',
     'ui.bootstrap',
     'lbServices'
   ]);

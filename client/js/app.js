@@ -1,16 +1,14 @@
 define([
   'angular',
-  'ui.router',
+  'ngRoute',
   './host/routes'
 ], function(angular) {
 
-  'use strict';
-
   return angular.module('app', [
+    'ngRoute',
     'app.host',
-    'ui.router',
-  ]).config(function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/host');
+  ]).config(function($routeProvider) {
+    $routeProvider.otherwise({redirectTo:'/host'});
   });
 
 });

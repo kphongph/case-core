@@ -46,7 +46,7 @@
    </thead>
    <tbody>
     <tr ng-repeat="host in hosts">
-     <td><a ui-sref="host.info({id:host.HostID})">{{host.HostName}}</a>
+     <td><a>{{host.HostName}}</a>
      </td>
      <td>{{host.activePerson}}</td>
     </tr>
@@ -54,5 +54,3 @@
   </table>
  </div>
 </div>
-
-<div ng-view></div>

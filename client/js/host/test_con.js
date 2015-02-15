@@ -1,7 +1,7 @@
 define([
       './module'
     ], function(module) {
-      return module.controller('simple', function($scope, $state,
+      return module.controller('simple', function($scope,
           Province, Host, City, Tumbon, Personvshost) {
           $scope.province = null;
           $scope.city = null;
@@ -105,6 +105,7 @@ define([
                 }
 
                 $scope.active_hosts = [];
+                console.log('Active Host = '+tmp_list.length);
 
                 tmp_list.forEach(function(host_info) {
                   Host.findById({
