@@ -1,12 +1,15 @@
 define([
   'angular',
   'ngRoute',
-  './host/routes'
+  'ngBootstrap',
+  'ngBootstrap-tpls',
+  './host/host'
 ], function(angular) {
 
   return angular.module('app', [
     'ngRoute',
-    'app.host',
+    'ui.bootstrap',
+    'app.host'
   ]).config(function($routeProvider) {
     $routeProvider.otherwise({redirectTo:'/host'});
   });
