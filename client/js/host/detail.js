@@ -5,22 +5,31 @@ define([], function() {
     $scope.host = null;
     $scope.currentPage = 0;
     $scope.itemPerPage = 5;
-    $scope.persons = [];
+    $scope.people_cid = [];
+    $scope.people = [];
 
+    // initial loader
     Host.findById({id:$routeParams.id}).$promise.then(function(result) {
       $scope.host = result;
-      UtilServices.getPersonByHost($routeParams.id,function(data) {
-        $scope.host.persons = [];
-        data.forEach(function(person) {
-          Person.find({filter:{
-            where:{cid:{like:person.CID+'%'}}}}).$promise
-          .then(function(result) {
-            $scope.host.persons.push(result[0]);
-          });
-        });
+      UtilServices.getPeopleByHost($routeParams.id,function(data) {
+        $scope.people_cid=data;
+        $scope.currentPage = 1;
       });
     });
-         
+
+    $scope.$watch('currentPage', function() {
+      var begin = (($scope.currentPage - 1) * $scope.itemPerPage);
+      var end = begin + $scope.itemPerPage;
+      $scope.people = $scope.people_cid.slice(begin,end);
+      $scope.people.forEach(function(person) {
+        Person.findById({id:person.CID}).$promise
+        .then(function(result) {
+          angular.extend(person,result);
+        });
+      });
+
+    });
+    
     /*
     $scope.$watch('active_hosts + currentPage', function() {
       var begin = (($scope.currentPage - 1) * $scope.itemPerPage);

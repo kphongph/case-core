@@ -12,6 +12,7 @@ module.exports = function(grunt) {
     options:{
       dsFile:'server/datasources.json',
       dsName:'caseDs',
+      existModel:'common/models',
       dest:'common/grunt-models',
     }
   });

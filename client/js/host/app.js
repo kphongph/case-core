@@ -8,11 +8,11 @@ define([
   .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/host', {
        templateUrl: 'js/host/templates/list.html',
-       controller: 'ListCtrl'
+       controller: 'HostListCtrl'
     })
     .when('/host/:id', {
        templateUrl: 'js/host/templates/detail.html',
-       controller: 'DetailCtrl'
+       controller: 'HostDetailCtrl'
     })
     .otherwise({
       redirectTo:'/host'
@@ -20,7 +20,7 @@ define([
 
 
   }])
-  .controller('ListCtrl',[
+  .controller('HostListCtrl',[
     '$scope', '$injector', 'Employee', 
     'Host', 'Personvshost','UtilServices',
     function($scope,$injector,Employee,
@@ -35,7 +35,7 @@ define([
       });
     });
   }])
-  .controller('DetailCtrl',[
+  .controller('HostDetailCtrl',[
     '$scope','$routeParams','$injector', 
     'Host','Person','UtilServices',
     function($scope,$routeParams,$injector,

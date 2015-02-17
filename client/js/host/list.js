@@ -19,7 +19,7 @@ define([], function() {
       $scope.total_host = hostid_list.length;
       hostid_list.forEach(function(hostid) {
         Host.findById({id:hostid}).$promise.then(function(host) {
-          UtilServices.getPersonByHost(hostid,function(data) {
+          UtilServices.getPeopleByHost(hostid,function(data) {
             host.activePerson = data.length;
             $scope.active_hosts.push(host);
           });

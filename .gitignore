@@ -1,3 +1,4 @@
 node_modules
 common/grunt-models
 *.DS_Store
+*.swp

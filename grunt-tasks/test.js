@@ -8,6 +8,7 @@ module.exports = function(grunt) {
     var done = this.async();
     var options = this.options({});
     var dsFile = options.dsFile;
+    var existModel = options.existModel;
     var dsName = options.dsName;
 
     if(!dsFile) 
@@ -42,20 +43,26 @@ module.exports = function(grunt) {
           count--;
          // grunt.log.ok(schema.name+' Generated ('+count+' more to generate)');
           var content = JSON.stringify(schema,null,'  ');
-          var json_file = path.resolve(options.dest,schema.name+'.json');
-          grunt.file.write(json_file,content);
+          if(!grunt.file.exists(options.existModel,schema.name+'.json')) {
+            var json_file = path.resolve(options.dest,schema.name+'.json');
+            grunt.file.write(json_file,content);
+          } else {
+            grunt.log.ok('Skip %s', schema.name);
+          }
 
-          var jsTemplate = fs.readFileSync(
-            require.resolve('./js.template.ejs'),
-            { encoding: 'utf-8' }
-          );    
           schema_list.push(schema);
 
-          content = ejs.render(jsTemplate, {
-            schema:schema
-          });
-          var js_file = path.resolve(options.dest,schema.name+'.js');
-          grunt.file.write(js_file,content);
+          if(!grunt.file.exists(options.existModel,schema.name+'.js')) {
+            var jsTemplate = fs.readFileSync(
+              require.resolve('./js.template.ejs'),
+              { encoding: 'utf-8' }
+            );    
+            content = ejs.render(jsTemplate, {
+              schema:schema
+            });
+            var js_file = path.resolve(options.dest,schema.name+'.js');
+            grunt.file.write(js_file,content);
+          }
 
           if(count == 0) {
             var modelConfigTemplate = fs.readFileSync(

@@ -26,7 +26,7 @@ module.exports = function(app) {
     accepts:[{arg:'id', type:'string', required:true}],
     returns:[{type:'array',root:true}],
     http:{
-      path:'/:id/persons',verb:'get'
+      path:'/:id/people',verb:'get'
     }
   });
 };

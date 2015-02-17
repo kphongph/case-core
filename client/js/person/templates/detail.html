@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>Person in Host</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-3"> 
+    <div class="panel panel-info">
+    <div class="panel-heading">Personal Information</div>
+    <div class="panel-body">
+    
+    <div class="form-group">
+     <label class="control-label">CID</label>
+     <input type="text" class="form-control" ng-disabled=true ng-model="person.CID">
+    </div> 
+    <div class="form-group">
+     <label class="control-label">Title</label>
+     <select ng-model="person.Title"  class="form-control"
+       ng-options="x.TitleID as x.TitleDescription for x in titles">
+     </select>
+    </div>
+    <div class="form-group">
+     <label class="control-label">First Name</label>
+     <input type="text" class="form-control" ng-model="person.FirstName">
+    </div> 
+    <div class="form-group">
+     <label class="control-label">Last Name</label>
+     <input type="text" class="form-control" ng-model="person.LastName">
+    </div> 
+    <div class="form-group">
+      <label class="control-label">DOB <br/>
+        BE {{person.thaiDOB}} (AGE: {{person.age}})
+     </label>
+     <p class="input-group">
+        <input type="text" class="form-control" 
+            datepicker-popup="yyyy-MM-dd" 
+            ng-model="person.DOB" 
+            is-open="opened" 
+            min-date="minDate" 
+            max-date="'2015-06-22'" 
+            datepicker-options="dateOptions" 
+            date-disabled="disabled(date, mode)" 
+            ng-required="true" close-text="Close" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" 
+                ng-click="open($event)">
+                <i class="glyphicon glyphicon-calendar"></i>
+              </button>
+            </span>
+    </p>
+    </div> 
+    </div>
+  </div>
+  </div>
+</div>
+
+
