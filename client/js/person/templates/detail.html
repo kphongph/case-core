@@ -5,99 +5,145 @@
 </div>
 
 <div class="row">
- <div class="col-md-3">
-
+ <div class="col-md-9">
   <div class="panel panel-info">
    <div class="panel-heading">ข้อมูลส่วนตัว</div>
    <div class="panel-body">
-    <form>
-     <div class="form-group">
-      <label class="control-label">
-       เลขประจำตัวประชาชน
-      </label>
-      <input type="text" class="form-control input-sm" ng-disabled="true" ng-model="person.CID">
+
+    <div class="row">
+     <div class="col-md-3">
+      <div class="form-group">
+       <label class="control-label">
+        เลขประจำตัวประชาชน
+       </label>
+       <input type="text" class="form-control" ng-disabled="true" ng-model="person.CID">
+      </div>
+     </div>
+     
+     <div class="col-md-3">
+      <div class="form-group">
+       <label class="control-label">
+        เบอร์โทรศัพท์ติดต่อ
+       </label>
+       <input type="text" class="form-control" ng-model="person.Mobile">
+      </div>
+     </div>
+     
+     
+    </div>
+
+    <div class="row">
+     <div class="col-md-2">
+      <div class="form-group">
+       <label class="control-label text-nowrap"> คำนำหน้า </label>
+       <select ng-model="person.Title" class="form-control" ng-options="x.TitleID as x.TitleDescription for x in titles">
+       </select>
+      </div>
+     </div>
+     <div class="col-md-3">
+      <div class="form-group">
+       <label class="control-label text-nowrap">ชื่อ</label>
+       <input type="text" class="form-control" ng-model="person.FirstName">
+      </div>
+     </div>
+     <div class="col-md-3">
+      <div class="form-group">
+       <label class="control-label">นามสกุล</label>
+       <input type="text" class="form-control" ng-model="person.LastName">
+      </div>
      </div>
 
-     <div class="form-group">
-      <label class="control-label text-nowrap"> คำนำหน้า </label>
-      <select ng-model="person.Title" class="form-control input-sm" ng-options="x.TitleID as x.TitleDescription for x in titles">
-      </select>
+     <div class="col-md-2">
+      <div class="form-group">
+       <label class="control-label">เพศ</label>
+       <select ng-model="person.Gender" class="form-control" ng-options="x.GenderCode as x.GenderThaiDescription for x in genders">
+       </select>
+      </div>
      </div>
 
-     <div class="form-group">
-      <label class="control-label text-nowrap">ชื่อ</label>
-      <input type="text" class="form-control input-sm" ng-model="person.FirstName">
+     <div class="col-md-2">
+      <div class="form-group">
+       <label class="control-label">อายุ</label>
+       <input type="text" ng-disabled="true" class="form-control" ng-model="person.age">
+      </div>
      </div>
 
-     <div class="form-group">
-      <label class="control-label">นามสกุล</label>
-      <input type="text" class="form-control input-sm" ng-model="person.LastName">
-     </div>
+    </div>
 
-     <div class="form-group">
-      <label class="control-label">เพศ</label>
-      <select ng-model="person.Gender" class="form-control input-sm" ng-options="x.GenderCode as x.GenderThaiDescription for x in genders">
-      </select>
-     </div>
-
-     <div class="form-group">
-      <label class="control-label">อายุ</label>
-      <input type="text" ng-disabled="true" class="form-control input-sm" ng-model="person.age">
-     </div>
-
-    </form>
-   </div>
-
-  </div>
- </div>
- 
- <div class="col-md-3">
-  <div class="panel panel-info">
-   <div class="panel-heading">วัน/เดือน/ปี เกิด</div>
-   <div class="panel-body">
-     <div class="form-group">
-      <label class="control-label">คริสต์ศักราช</label>
-      <p class="input-group">
-       <input type="text" class="form-control input-sm" datepicker-popup="yyyy-MM-dd" ng-model="person.DOB" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"/>
-       <span class="input-group-btn">
-              <button type="button" class="btn btn-default input-sm" 
+    <div class="row">
+     <div class="col-md-3">
+      <div class="form-group">
+       <label class="control-label">วัน-เดือน-ปี เกิด (ค.ศ)</label>
+       <p class="input-group">
+        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="person.DOB"
+        is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions"
+        date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"
+        />
+        <span class="input-group-btn">
+              <button type="button" class="btn btn-default" 
                 ng-click="open($event)">
                 <i class="glyphicon glyphicon-calendar"></i>
               </button>
             </span>
-      </p>
+       </p>
+      </div>
      </div>
 
-     <div class="form-group">
-      <label class="control-label">พุทธศักราช</label>
-      <input type="text" ng-disabled="true" class="form-control input-sm" ng-model="person.thaiDOB">
-     </div>
-   </div>
-   </div>
-   
-  <div class="panel panel-info">
-   <div class="panel-heading">สัญชาติ เชื้อชาติ ศาสนา</div>
-   <div class="panel-body">
-
-     <div class="form-group">
-      <label class="control-label">สัญชาติ</label>
-      <select ng-model="person.Nation" class="form-control input-sm" ng-options="x.NationalityID as x.NationalityDescription for x in nationalities">
-      </select>
+     <div class="col-md-3">
+      <div class="form-group">
+       <label class="control-label">วัน-เดือน-ปี เกิด (พ.ศ) </label>
+       <input type="text" ng-disabled="true" class="form-control" ng-model="person.thaiDOB">
+      </div>
      </div>
 
-     <div class="form-group">
-      <label class="control-label">เชื้อชาติ</label>
-      <select ng-model="person.Race" class="form-control input-sm" ng-options="x.RaceID as x.NationalityDescription for x in races">
-      </select>
+
+
+
+
+
+     <div class="col-md-2">
+      <div class="form-group">
+       <label class="control-label">สัญชาติ</label>
+       <select ng-model="person.Nation" class="form-control" ng-options="x.NationalityID as x.NationalityDescription for x in nationalities">
+       </select>
+      </div>
      </div>
 
-     <div class="form-group">
-      <label class="control-label">ศาสนา</label>
-      <select ng-model="person.Riligion" class="form-control input-sm" ng-options="x.Id as x.Religion for x in religions">
-      </select>
+
+     <div class="col-md-2">
+      <div class="form-group">
+       <label class="control-label">เชื้อชาติ</label>
+       <select ng-model="person.Race" class="form-control" ng-options="x.RaceID as x.NationalityDescription for x in races">
+       </select>
+      </div>
      </div>
+
+
+     <div class="col-md-2">
+      <div class="form-group">
+       <label class="control-label">ศาสนา</label>
+       <select ng-model="person.Religion" class="form-control" ng-options="x.Id as x.Religion for x in religions">
+       </select>
+      </div>
+     </div>
+
+    </div>
+
 
    </div>
   </div>
+  
+  
+  <div class="panel panel-info">
+   <div class="panel-heading">ที่อยู่ตามทะเบียนบ้าน</div>
+   <div class="panel-body">
+	</div>
+  </div>
+  
+  
  </div>
+</div>
+
+<div class="row">
+
 </div>

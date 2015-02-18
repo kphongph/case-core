@@ -4,10 +4,10 @@ define([
 ], function(angular) {
   angular.module('utilServices', ['lbServices'])
     .factory('UtilServices', [
-      'Personvshost', 'Title', 'Gender', 'Nationality','Race',
+      'Personvshost', 'Title', 'Gender', 'Nationality', 'Race',
       'Religion',
-      function(Personvshost, Title, Gender, 
-        Nationality,Race,Religion
+      function(Personvshost, Title, Gender,
+        Nationality, Race, Religion
       ) {
 
         function getPeopleByHost(hostId, cb) {

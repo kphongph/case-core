@@ -23,6 +23,7 @@
     "karma-chrome-launcher": "latest",
     "karma-jasmine": "latest",
     "karma-requirejs": "^0.2.2",
+    "js-beautify": "^0.2.2",
     "requirejs": "^2.1.16"
   },
   "dependencies": {

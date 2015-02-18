@@ -1,5 +1,6 @@
 define([
   'angular',
+  'angular-th',
   'ngRoute',
   'ngBootstrap',
   'ngBootstrap-tpls',

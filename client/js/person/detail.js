@@ -40,9 +40,9 @@ define([], function() {
       $scope.$watch('person.DOB', function() {
         var current = new Date();
         if ($scope.person && $scope.person.DOB) {
-          var tmp = new Date($scope.person.DOB);
-          $scope.person.thaiDOB = tmp.getDate();
-          $scope.person.thaiDOB += '-' + (tmp.getMonth() + 1);
+          var tmp = new Date($scope.person.DOB);         
+          $scope.person.thaiDOB = ('0'+tmp.getDate()).slice(-2);          
+          $scope.person.thaiDOB += '-' + ('0'+(tmp.getMonth() + 1)).slice(-2);
           $scope.person.thaiDOB += '-' + (tmp.getFullYear() + 543);
           $scope.person.age = current.getFullYear() - tmp.getFullYear();
           if (current.getMonth() < tmp.getMonth()) {
