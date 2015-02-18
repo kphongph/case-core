@@ -13,7 +13,9 @@ define([
     'app.host',
     'app.person'
   ]).config(function($routeProvider) {
-    $routeProvider.otherwise({redirectTo:'/host'});
+    $routeProvider.otherwise({
+      redirectTo: '/host'
+    });
   });
 
 });

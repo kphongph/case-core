@@ -1,32 +1,25 @@
 <div class="row">
-  <div class="col-md-12">
-    <h4>{{host.HostName}}</h4>
-  </div>
+ <div class="col-md-12">
+  <h4>{{host.HostName}}</h4>
+ </div>
 </div>
 <div class="row">
-  <div class="col-md-6">
-   <pagination 
-     total-items="people_cid.length" 
-     ng-model="currentPage" 
-     max-size="5" items-per-page="itemPerPage" 
-     class="pagination-sm" 
-     boundary-links="true">
-   </pagination>
+ <div class="col-md-6">
+  <pagination total-items="people_cid.length" ng-model="currentPage" max-size="5" items-per-page="itemPerPage" class="pagination-sm" boundary-links="true">
+  </pagination>
   <table class="table table-bordered table-hover table-condensed">
-    <thead>
-      <th>CID</th>
-      <th>Name</th>
-    </thead>
-    <tbody>
-      <tr ng-repeat="person in people">
-        <td>
-          <a ng-href="#/person/{{person.CID}}">{{person.CID}}</a>
-        </td>
-        <td>{{person.FirstName}} {{person.LastName}}</td>
-      </tr>
-    </tbody>
+   <thead>
+    <th>CID</th>
+    <th>Name</th>
+   </thead>
+   <tbody>
+    <tr ng-repeat="person in people">
+     <td>
+      <a ng-href="#/person/{{person.CID}}">{{person.CID}}</a>
+     </td>
+     <td>{{person.FirstName}} {{person.LastName}}</td>
+    </tr>
+   </tbody>
   </table>
+ </div>
 </div>
-</div>
-
-
