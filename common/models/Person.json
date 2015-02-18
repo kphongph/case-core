@@ -446,10 +446,10 @@
     }
   },
   "relations":{
-    "addresses": {
+    "addresses":{
       "type":"hasMany",
       "model":"Adressvsperson",
-      "foreignKey":"cid"
+      "foreignKey":"CID"
     }
   }
 }

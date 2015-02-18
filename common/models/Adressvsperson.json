@@ -106,7 +106,7 @@
     "person": {
       "type":"belongsTo",
       "model":"Person",
-      "foreignKey":"cid"
+      "foreignKey":"CID"
     }
   }
 }
