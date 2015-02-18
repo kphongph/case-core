@@ -14,7 +14,7 @@
       "length": 13,
       "precision": null,
       "scale": null,
-      "id": 1,
+      "id": true,
       "mssql": {
         "columnName": "CID",
         "dataType": "varchar",
@@ -443,6 +443,13 @@
         "dataScale": null,
         "nullable": "YES"
       }
+    }
+  },
+  "relations":{
+    "addresses": {
+      "type":"hasMany",
+      "model":"Adressvsperson",
+      "foreignKey":"cid"
     }
   }
 }
