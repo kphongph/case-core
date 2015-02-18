@@ -8,7 +8,7 @@
     }
   },
   "properties": {
-    "cid": {
+    "CID": {
       "type": "String",
       "required": true,
       "length": 13,
