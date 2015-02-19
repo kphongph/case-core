@@ -1,0 +1,32 @@
+<span ng-show="address.HouseNumber">
+		  <strong>เลขที่</strong> {{address.HouseNumber}}
+	    </span>
+		<span ng-show="address.MooNumber">
+		 <strong>หมู่ที่</strong> {{address.MooNumber}}
+		</span>
+		<span ng-show="address.StreetName">
+		  <strong>ถนน</strong> {{address.StreetName}}
+	    </span>
+		<span ng-show="address.Alley">
+		  <strong>ซอย</strong> {{address.Alley}}
+	    </span>
+	    <br>
+       <span ng-show="address.village">
+		  <strong>หมู่บ้าน</strong> {{address.village.VillageName}}
+		  <br>
+	    </span>
+	    
+	    <span ng-show="address.tumbon">
+		  <strong>ตำบล</strong> {{address.tumbon.TumbonDescription}}
+	    </span>
+	    <span ng-show="address.city">
+		  <strong>อำเภอ</strong> {{address.city.CityDescription}}
+	    </span>
+	    <br>
+	    <span ng-show="address.province">
+		  <strong>จังหวัด</strong> {{address.province.ProvinceDescription}}
+	    </span>	    
+	    <span ng-show="address.PostCode">
+		  <strong>รหัสไปรษณีย์</strong> {{address.PostCode}}
+	    </span>
+	    

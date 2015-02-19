@@ -84,7 +84,7 @@
         "nullable": "YES"
       }
     },
-    "tumbon": {
+    "Tumbon": {
       "type": "String",
       "required": false,
       "length": 6,
@@ -99,7 +99,7 @@
         "nullable": "YES"
       }
     },
-    "city": {
+    "City": {
       "type": "String",
       "required": false,
       "length": 4,
@@ -114,7 +114,7 @@
         "nullable": "YES"
       }
     },
-    "province": {
+    "Province": {
       "type": "String",
       "required": false,
       "length": 2,
@@ -171,6 +171,21 @@
       "type":"belongsTo",
       "model":"Village",
       "foreignKey":"VillageID"
+    },
+    "tumbon":{ 
+      "type":"belongsTo",
+      "model":"Tumbon",
+      "foreignKey":"Tumbon"
+    },
+    "city":{ 
+      "type":"belongsTo",
+      "model":"City",
+      "foreignKey":"City"
+    },
+    "province":{ 
+      "type":"belongsTo",
+      "model":"Province",
+      "foreignKey":"Province"
     }
   }
 }

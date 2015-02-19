@@ -16,15 +16,17 @@ define([
     }])
     .controller('PersonDetailCtrl', [
       '$scope', '$routeParams', '$injector',
-      'Host', 'Person', 'UtilServices',
+      'Host', 'Person',  'Adressvsperson', 'Address', 'UtilServices',
       function($scope, $routeParams, $injector,
-        Host, Person, UtilServices) {
+        Host, Person, Adressvsperson, Address, UtilServices) {
         require(['js/person/detail'], function(detail) {
           $injector.invoke(detail, this, {
             '$routeParams': $routeParams,
             '$scope': $scope,
             'Host': Host,
             'Person': Person,
+            'Adressvsperson':Adressvsperson,
+            'Address': Address,
             'UtilServices': UtilServices,
           });
         });

@@ -1,6 +1,8 @@
 define([], function() {
-  return ['$routeParams', '$scope', 'Host', 'Person', 'Adressvsperson', 'UtilServices',
-    function($routeParams, $scope, Host, Person, Adressvsperson, UtilServices) {
+  return ['$routeParams', '$scope', 'Host', 'Person',
+    'Adressvsperson', 'Address', 'UtilServices',
+    function($routeParams, $scope, Host, Person,
+    Adressvsperson, Address, UtilServices) {
 
       $scope.person = null;
 
@@ -38,30 +40,27 @@ define([], function() {
       Person.findById({
         id: $routeParams.id,
       }).$promise.then(function(result) {
-        Adressvsperson.find({
-          filter: {
-            include: ['address'],
-            where: {
-              and: [{
-                CID: $routeParams.id
-              }, {
-                exitdate: null
-              }, {
-                addresstypeid: '001'
-              }, ]
-            }
-          }
-        }).$promise.then(function(addresses) {
-          UtilServices.getProvinces(function(provinces) {
-            addresses.forEach(function(address) {
-              address.address.all_provinces = provinces;
-            });
-            $scope.current_addresses = addresses;
-          });
-        });
-
-        $scope.person = result;
+		  $scope.person = result;
+		  Adressvsperson.find({filter:{where:{
+			  CID:$routeParams.id}}}).$promise
+		  .then(function(ad_history) {
+		   Person.addresses({id:$routeParams.id,
+			    filter:{include:['village','tumbon','city','province']}})
+		    .$promise.then(function(results) {
+				results.forEach(function(address) {
+					for(var i=0;i<ad_history.length;i++) {
+						if(ad_history[i].AddressID == address.AddressID) {
+							ad_history[i].address = address;							
+						}
+					}
+				});
+				console.log(ad_history);
+		       $scope.addresses = ad_history;
+		    });
+	      });
+        
       });
+      
       $scope.$watch('person.DOB', function() {
         var current = new Date();
         if ($scope.person && $scope.person.DOB) {
