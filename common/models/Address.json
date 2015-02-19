@@ -54,21 +54,6 @@
         "nullable": "YES"
       }
     },
-    "villageid": {
-      "type": "String",
-      "required": false,
-      "length": 10,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "VillageID",
-        "dataType": "varchar",
-        "dataLength": 10,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
-    },
     "alley": {
       "type": "String",
       "required": false,
@@ -181,6 +166,11 @@
       "model":"Person",
       "through":"Adressvsperson",
       "foreignKey":"AddressID"
+    },
+    "village":{ 
+      "type":"belongsTo",
+      "model":"Village",
+      "foreignKey":"VillageID"
     }
   }
 }
