@@ -448,7 +448,8 @@
   "relations":{
     "addresses":{
       "type":"hasMany",
-      "model":"Adressvsperson",
+      "model":"Address",
+      "through":"Adressvsperson",
       "foreignKey":"CID"
     }
   }

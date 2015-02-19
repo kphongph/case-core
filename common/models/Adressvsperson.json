@@ -8,22 +8,6 @@
     }
   },
   "properties": {
-    "addressid": {
-      "type": "String",
-      "required": true,
-      "length": null,
-      "precision": null,
-      "scale": null,
-      "id":1,
-      "mssql": {
-        "columnName": "AddressID",
-        "dataType": "uniqueidentifier",
-        "dataLength": null,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
-    },
     "startdate": {
       "type": "Date",
       "required": true,
@@ -108,6 +92,11 @@
       "type":"belongsTo",
       "model":"Person",
       "foreignKey":"CID"
+    },
+    "address": {
+      "type":"belongsTo",
+      "model":"Address",
+      "foreignKey":"AddressID"
     }
   }
 }

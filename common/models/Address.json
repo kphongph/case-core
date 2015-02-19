@@ -8,7 +8,7 @@
     }
   },
   "properties": {
-    "addressid": {
+    "AddressID": {
       "type": "String",
       "required": true,
       "length": null,
@@ -176,5 +176,11 @@
     }
   },
   "relations":{
+    "people": {
+      "type":"hasMany",
+      "model":"Person",
+      "through":"Adressvsperson",
+      "foreignKey":"AddressID"
+    }
   }
 }

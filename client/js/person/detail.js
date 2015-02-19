@@ -1,6 +1,6 @@
 define([], function() {
-  return ['$routeParams', '$scope', 'Host', 'Person', 'UtilServices',
-    function($routeParams, $scope, Host, Person, UtilServices) {
+  return ['$routeParams', '$scope', 'Host', 'Person', 'Adressvsperson', 'UtilServices',
+    function($routeParams, $scope, Host, Person, Adressvsperson, UtilServices) {
 
       $scope.person = null;
 
@@ -32,13 +32,24 @@ define([], function() {
 
       // initial loader
       Person.findById({
-        id: $routeParams.id
+        id: $routeParams.id,
       }).$promise.then(function(result) {
+        Adressvsperson.find({
+          filter:{
+            where:{and:[
+              {CID:$routeParams.id},
+              {exitdate:null},
+              {addresstypeid:'001'},
+            ]}
+          }
+        }).$promise.then(function(addresses) {
+           
+          console.log(ad_p);
+        });
+
         $scope.person = result;
       });
-
-      $scope.$watch('person.DOB', function() {
-        var current = new Date();
+$scope.$watch('person.DOB', function() { var current = new Date();
         if ($scope.person && $scope.person.DOB) {
           var tmp = new Date($scope.person.DOB);         
           $scope.person.thaiDOB = ('0'+tmp.getDate()).slice(-2);          
