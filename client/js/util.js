@@ -5,9 +5,9 @@ define([
   angular.module('utilServices', ['lbServices'])
     .factory('UtilServices', [
       'Personvshost', 'Title', 'Gender', 'Nationality', 'Race',
-      'Religion',
+      'Religion','Province',
       function(Personvshost, Title, Gender,
-        Nationality, Race, Religion
+        Nationality, Race, Religion, Province
       ) {
 
         function getPeopleByHost(hostId, cb) {
@@ -69,7 +69,13 @@ define([
             Nationality.find().$promise.then(function(results) {
               cb(results);
             });
-          }
+          },
+          //
+          getProvinces: function(cb) {
+            Province.find().$promise.then(function(results) {
+              cb(results);
+            });
+          },
 
         };
       }

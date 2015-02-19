@@ -47,7 +47,11 @@ module.exports = function(grunt) {
             var json_file = path.resolve(options.dest,schema.name+'.json');
             grunt.file.write(json_file,content);
           } else {
-            grunt.log.ok('Skip %s', schema.name);
+            grunt.log.ok('Skip %s.json', schema.name);
+            if(grunt.file.exists(options.dest,schema.name+'.json')) { 
+              grunt.log.ok('Delete %s.json from destination', schema.name);
+              grunt.file.delete(options.dest,schema.name+'.json');
+            }
           }
 
           schema_list.push(schema);
@@ -62,6 +66,12 @@ module.exports = function(grunt) {
             });
             var js_file = path.resolve(options.dest,schema.name+'.js');
             grunt.file.write(js_file,content);
+          } else { 
+            grunt.log.ok('Skip %s.js', schema.name);
+            if(grunt.file.exists(options.dest,schema.name+'.js')) { 
+              grunt.log.ok('Delete %s.js from exists models', schema.name);
+              grunt.file.delete(options.dest,schema.name+'.js');
+            }
           }
 
           if(count == 0) {

@@ -1,0 +1,41 @@
+<div class="row">
+
+ <div class="col-md-2">
+  <div class="form-group">
+   <label class="control-label">
+    เลขที่บ้าน
+   </label>
+   <input type="text" class="form-control" ng-model="address.HouseNumber">
+  </div>
+ </div>
+
+ <div class="col-md-2">
+  <div class="form-group">
+   <label class="control-label">
+    หมู่ที่
+   </label>
+   <input type="text" class="form-control" ng-model="address.MooNumber">
+  </div>
+ </div>
+
+ <div class="col-md-2">
+  <div class="form-group">
+   <label class="control-label">
+    หมู่บ้าน
+   </label>
+   <select ng-model="address.VillageID" class="form-control" ng-options="x.ProvinceID as x.ProvinceDescription for x in address.all_provinces">
+   </select>
+  </div>
+ </div>
+
+ <div class="col-md-3">
+  <div class="form-group">
+   <label class="control-label">
+    จังหวัด 
+   </label>
+   <select ng-model="address.Province" class="form-control" ng-options="x.ProvinceID as x.ProvinceDescription for x in address.all_provinces">
+   </select>
+  </div>
+ </div>
+
+</div>

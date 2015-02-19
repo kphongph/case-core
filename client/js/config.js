@@ -3,7 +3,7 @@ define({
     'jquery': '../vendor/jquery/dist/jquery',
     'bootstrap': '../vendor/bootstrap/dist/js/bootstrap',
     'angular': '../vendor/angular/angular.min',
-    'angular-th':'https://code.angularjs.org/1.2.5/i18n/angular-locale_th-th',
+    'angular-th': 'https://code.angularjs.org/1.2.5/i18n/angular-locale_th-th',
     'ngRoute': '../vendor/angular-route/angular-route.min',
     'ngResource': '../vendor/angular-resource/angular-resource',
     'ngBootstrap': '../vendor/angular-bootstrap/ui-bootstrap',

@@ -30,30 +30,44 @@ define([], function() {
         $scope.religions = results;
       });
 
+      UtilServices.getProvinces(function(results) {
+        $scope.provinces = results;
+      });
+
       // initial loader
       Person.findById({
         id: $routeParams.id,
       }).$promise.then(function(result) {
         Adressvsperson.find({
-          filter:{
-            where:{and:[
-              {CID:$routeParams.id},
-              {exitdate:null},
-              {addresstypeid:'001'},
-            ]}
+          filter: {
+            include: ['address'],
+            where: {
+              and: [{
+                CID: $routeParams.id
+              }, {
+                exitdate: null
+              }, {
+                addresstypeid: '001'
+              }, ]
+            }
           }
         }).$promise.then(function(addresses) {
-           
-          console.log(ad_p);
+          UtilServices.getProvinces(function(provinces) {
+            addresses.forEach(function(address) {
+              address.address.all_provinces = provinces;
+            });
+            $scope.current_addresses = addresses;
+          });
         });
 
         $scope.person = result;
       });
-$scope.$watch('person.DOB', function() { var current = new Date();
+      $scope.$watch('person.DOB', function() {
+        var current = new Date();
         if ($scope.person && $scope.person.DOB) {
-          var tmp = new Date($scope.person.DOB);         
-          $scope.person.thaiDOB = ('0'+tmp.getDate()).slice(-2);          
-          $scope.person.thaiDOB += '-' + ('0'+(tmp.getMonth() + 1)).slice(-2);
+          var tmp = new Date($scope.person.DOB);
+          $scope.person.thaiDOB = ('0' + tmp.getDate()).slice(-2);
+          $scope.person.thaiDOB += '-' + ('0' + (tmp.getMonth() + 1)).slice(-2);
           $scope.person.thaiDOB += '-' + (tmp.getFullYear() + 543);
           $scope.person.age = current.getFullYear() - tmp.getFullYear();
           if (current.getMonth() < tmp.getMonth()) {
