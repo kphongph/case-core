@@ -55,21 +55,6 @@
         "nullable": "YES"
       }
     },
-    "addresstypeid": {
-      "type": "String",
-      "required": true,
-      "length": 50,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "AddressTypeID",
-        "dataType": "varchar",
-        "dataLength": 50,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
-    },
     "datetimeupdate": {
       "type": "Date",
       "required": false,
@@ -97,6 +82,11 @@
       "type":"belongsTo",
       "model":"Address",
       "foreignKey":"AddressID"
+    },
+    "addresstype": {
+      "type":"belongsTo",
+      "model":"Addresstype",
+      "foreignKey":"AddressTypeID"
     }
   }
 }

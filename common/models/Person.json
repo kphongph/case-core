@@ -11,6 +11,7 @@
     "CID": {
       "type": "String",
       "required": true,
+      "generated": false,
       "length": 13,
       "precision": null,
       "scale": null,
@@ -24,7 +25,7 @@
         "nullable": "NO"
       }
     },
-    "title": {
+    "Title": {
       "type": "String",
       "required": false,
       "length": 4,
@@ -39,7 +40,7 @@
         "nullable": "YES"
       }
     },
-    "firstname": {
+    "FirstName": {
       "type": "String",
       "required": false,
       "length": -1,
@@ -54,7 +55,7 @@
         "nullable": "YES"
       }
     },
-    "lastname": {
+    "LastName": {
       "type": "String",
       "required": false,
       "length": -1,
@@ -69,7 +70,7 @@
         "nullable": "YES"
       }
     },
-    "dob": {
+    "DOB": {
       "type": "Date",
       "required": false,
       "length": null,
@@ -84,7 +85,7 @@
         "nullable": "YES"
       }
     },
-    "gender": {
+    "Gender": {
       "type": "String",
       "required": false,
       "length": 3,
@@ -114,7 +115,7 @@
         "nullable": "YES"
       }
     },
-    "nation": {
+    "Nation": {
       "type": "String",
       "required": false,
       "length": -1,
@@ -204,7 +205,7 @@
         "nullable": "YES"
       }
     },
-    "livehomestatus": {
+    "liveHomeStatus": {
       "type": "String",
       "required": false,
       "length": 4,
@@ -234,7 +235,7 @@
         "nullable": "YES"
       }
     },
-    "recordstaffid": {
+    "recordStaffID": {
       "type": "String",
       "required": false,
       "length": 10,
@@ -249,7 +250,7 @@
         "nullable": "YES"
       }
     },
-    "datetimeupdate": {
+    "dateTimeUpdate": {
       "type": "Date",
       "required": false,
       "length": null,
@@ -294,7 +295,7 @@
         "nullable": "YES"
       }
     },
-    "childPic": {
+    "child_Pic": {
       "type": "String",
       "required": false,
       "length": -1,

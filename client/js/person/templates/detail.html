@@ -1,78 +1,45 @@
 <div class="row">
- <div class="col-md-12">
-  <h4>Person in Host</h4>
+ <div class="page-header">
+  <h2>ข้อมูลผู้รับบริการ</h2>
  </div>
+</div>
+
+<div class="row" ng-include="'js/person/templates/breadcrumbs.html'">
 </div>
 
 <div class="row">
  <div class="col-md-9">
-  <div class="panel panel-info">
+  <div class="row">
+  <div class="panel panel-default">
    <div class="panel-heading">ข้อมูลส่วนตัว</div>
-   <div class="panel-body" ng-include="'/js/person/templates/includes/person_info.html'">
+   <div class="panel-body"
+      ng-include="'/js/person/templates/includes/person_info.html'">
+   </div>
+  </div>
+  </div>
+  <div class="row">
+   <button type="button" ng-click="save()" class="btn btn-primary">บันทึกข้อมูลส่วนตัว</button>
+   <button type="button" ng-click="reset()" class="btn btn-primary">reset</button>
+   <span ng-if="message">
+    <span class="glyphicon glyphicon-{{message.type}}"></span>
+    {{message.msg}}
+   </span>
+  </div>
+ </div>
+
+ <div class="col-md-3"> 
+  <div class="panel panel-default"> 
+   <div class="panel-heading">ข้อมูลที่อยู่</div>
+   <div class="panel-body">
+    <p ng-repeat="caddress in current_addresses">
+     <strong>{{caddress.addresstype.AddressTypedec}}</strong>
+     <br>
+     <span ng-init="address = caddress.address"
+         ng-include="'js/person/templates/includes/address.html'"> 
+     </span>
+    </p>
    </div>
   </div>
  </div>
-</div>
-
-<div class="row">
-	<div class="col-md-9">
-      <div class="panel panel-info">
-   <div class="panel-heading">ประวัติที่อยู่ของผู้รับบริการ</div>
-    <div class="panel-body">
-
-       <div class="list-group col-md-5">
-		   <a href="#" class="list-group-item" ng-repeat="hist_add in addresses">
-			   <h4 class="list-group-item-heading">
-				   {{hist_add.StartDate | date:"mediumDate"}} -
-		   <span ng-show="hist_add.ExitDate">{{hist_add.ExitDate | date:"mediumDate"}}</span>
-		   
-		    <span ng-show="hist_add.AddressTypeID=='001' && !hist_add.ExitDate">
-				   <span class="label label-success">ทะเบียนบ้าน</span>
-			   </span>		  
-		       <span ng-show="hist_add.AddressTypeID=='002' && !hist_add.ExitDate">
-				   <span class="label label-primary">ติดต่อ</span>
-		       </span>
-			   </h4>
-			   <p class="list-group-item-text" ng-init="address=hist_add.address">
-				   
-				   <span ng-show="address.HouseNumber">
-		  <strong>เลขที่</strong> {{address.HouseNumber}}
-	    </span>
-		<span ng-show="address.MooNumber">
-		 <strong>หมู่ที่</strong> {{address.MooNumber}}
-		</span>
-		<span ng-show="address.StreetName">
-		  <strong>ถนน</strong> {{address.StreetName}}
-	    </span>
-		<span ng-show="address.Alley">
-		  <strong>ซอย</strong> {{address.Alley}}
-	    </span>	    
-       <span ng-show="address.village">
-		  <strong>หมู่บ้าน</strong> {{address.village.VillageName}}    
-	    </span>
-	    
-	    <span ng-show="address.tumbon">
-		  <strong>ตำบล</strong> {{address.tumbon.TumbonDescription}}
-	    </span>
-	    <span ng-show="address.city">
-		  <strong>อำเภอ</strong> {{address.city.CityDescription}}
-	    </span>	    
-	    <span ng-show="address.province">
-		  <strong>จังหวัด</strong> {{address.province.ProvinceDescription}}
-	    </span>	    
-	    <span ng-show="address.PostCode">
-		  <strong>รหัสไปรษณีย์</strong> {{address.PostCode}}
-	    </span>
-	    
-
-			   </p>
-		   </a>
-       </div>
-			   
-    <div>
-
-	
-</div>
-</div>
 </div>
 

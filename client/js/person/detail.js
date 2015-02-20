@@ -1,11 +1,15 @@
 define([], function() {
-  return ['$routeParams', '$scope', 'Host', 'Person',
+  return ['$routeParams', '$scope', '$timeout','Host', 'Person',
     'Adressvsperson', 'Address', 'UtilServices',
-    function($routeParams, $scope, Host, Person,
-    Adressvsperson, Address, UtilServices) {
+    function($routeParams, $scope, $timeout, Host, Person,
+      Adressvsperson, Address, UtilServices) {
 
+      $scope.message = null;
       $scope.person = null;
-
+      $scope.alerts = [];
+      
+      $scope.person_org = null;
+      
       $scope.open = function($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -32,35 +36,58 @@ define([], function() {
         $scope.religions = results;
       });
 
-      UtilServices.getProvinces(function(results) {
-        $scope.provinces = results;
-      });
+      $scope.save = function() {
+        $scope.message = {type:'transfer', msg:'Saving'};
+        $scope.person.$save().then(function() {
+          $scope.message = {type:'saved', msg:'Saved'};
+          $timeout(function() {
+            $scope.message = null;
+          }, 5000);
+        }, function(err) {
+          $scope.message = {type:'alert', msg:err};
+        });
+      };
+
+      $scope.reset = function() {
+        console.log($scope.person_org);
+        angular.copy($scope.person_org, $scope.person);
+      }
+  
 
       // initial loader
       Person.findById({
         id: $routeParams.id,
       }).$promise.then(function(result) {
-		  $scope.person = result;
-		  Adressvsperson.find({filter:{where:{
-			  CID:$routeParams.id}}}).$promise
-		  .then(function(ad_history) {
-		   Person.addresses({id:$routeParams.id,
-			    filter:{include:['village','tumbon','city','province']}})
-		    .$promise.then(function(results) {
-				results.forEach(function(address) {
-					for(var i=0;i<ad_history.length;i++) {
-						if(ad_history[i].AddressID == address.AddressID) {
-							ad_history[i].address = address;							
-						}
-					}
-				});
-				console.log(ad_history);
-		       $scope.addresses = ad_history;
-		    });
-	      });
-        
+        $scope.person = result;
+        angular.copy($scope.person, $scope.person_org);
+        Adressvsperson.find({
+            filter: {
+              include:['addresstype'],
+              where: {
+                and:[
+                  {CID: $routeParams.id},
+                  {ExitDate: null}
+                ]
+              }
+            }
+          }).$promise
+          .then(function(ad_history) {
+            $scope.current_addresses = [];
+            ad_history.forEach(function(ad_hist) {
+              Address.findOne({
+                filter: {
+                  where:{AddressID:ad_hist.AddressID},
+                  include: ['village', 'tumbon', 'city', 'province']
+                }
+              }).$promise.then(function(result) {
+                ad_hist.address = result;
+                $scope.current_addresses.push(ad_hist);
+              });
+            });
+          });
+
       });
-      
+
       $scope.$watch('person.DOB', function() {
         var current = new Date();
         if ($scope.person && $scope.person.DOB) {
@@ -79,13 +106,6 @@ define([], function() {
           }
         }
       });
-      /*
-      $scope.$watch('active_hosts + currentPage', function() {
-        var begin = (($scope.currentPage - 1) * $scope.itemPerPage);
-        var end = begin + $scope.itemPerPage;
-        $scope.hosts = $scope.active_hosts.slice(begin, end);
-      });
-      */
 
       $scope.$apply();
     }

@@ -5,7 +5,7 @@ define([
   angular.module('utilServices', ['lbServices'])
     .factory('UtilServices', [
       'Personvshost', 'Title', 'Gender', 'Nationality', 'Race',
-      'Religion','Province',
+      'Religion', 'Province',
       function(Personvshost, Title, Gender,
         Nationality, Race, Religion, Province
       ) {
