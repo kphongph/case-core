@@ -76,6 +76,26 @@ define([
               cb(results);
             });
           },
+          addressToString: function(address) {
+            var st = address.HouseNumber;
+            if(address.MooNumber) 
+              st += ' หมู่ที่ '+address.MooNumber; 
+            if(address.StreetName) 
+              st += ' ถ.'+address.StreetName; 
+            if(address.Alley) 
+              st += ' ซ.'+address.Alley; 
+            if(address.village && address.village.VillageName) 
+              st += ' หมู่บ้าน '+address.village.VillageName; 
+            if(address.tumbon && address.tumbon.TumbonDescription) 
+              st += ' ต.'+address.tumbon.TumbonDescription; 
+            if(address.city && address.city.CityDescription) 
+              st += ' อ.'+address.city.CityDescription; 
+            if(address.province && address.province.ProvinceDescription) 
+              st += ' จ.'+address.province.ProvinceDescription; 
+            if(address.PostCode) 
+              st += ' '+address.PostCode; 
+            return st;
+          }
 
         };
       }

@@ -8,17 +8,6 @@
   </div>
  </div>
 
- <div class="col-md-3">
-  <div class="form-group">
-   <label class="control-label">
-    เบอร์โทรศัพท์ติดต่อ
-   </label>
-   <input type="text" class="form-control" ng-model="person.Mobile">
-  </div>
- </div>
-</div>
-
-<div class="row">
  <div class="col-md-2">
   <div class="form-group">
    <label class="control-label text-nowrap"> คำนำหน้า </label>
@@ -26,16 +15,38 @@
    </select>
   </div>
  </div>
+
  <div class="col-md-3">
   <div class="form-group">
    <label class="control-label text-nowrap">ชื่อ</label>
    <input type="text" class="form-control" ng-model="person.FirstName">
   </div>
  </div>
- <div class="col-md-3">
+
+ <div class="col-md-4">
   <div class="form-group">
    <label class="control-label">นามสกุล</label>
    <input type="text" class="form-control" ng-model="person.LastName">
+  </div>
+ </div>
+
+</div>
+
+<div class="row">
+
+ <div class="col-md-3">
+  <div class="form-group">
+   <label class="control-label">วัน-เดือน-ปี เกิด </label>
+   <input type="text" class="form-control" ng-model="person.DOB" 
+      aria-describedby="dobBlock" buddhist-era>
+   <span id="dobBlock" class="help-block">dd-MM-yyyy (พ.ศ.)</span>
+  </div>
+ </div>
+
+ <div class="col-md-1">
+  <div class="form-group">
+   <label class="control-label">อายุ</label>
+   <input type="text" ng-disabled="true" class="form-control" ng-model="person.age">
   </div>
  </div>
 
@@ -46,45 +57,6 @@
    </select>
   </div>
  </div>
-
- <div class="col-md-2">
-  <div class="form-group">
-   <label class="control-label">อายุ</label>
-   <input type="text" ng-disabled="true" class="form-control" ng-model="person.age">
-  </div>
- </div>
-
-</div>
-
-<div class="row">
- <div class="col-md-3">
-  <div class="form-group">
-   <label class="control-label">วัน-เดือน-ปี เกิด (ค.ศ)</label>
-   <p class="input-group">
-    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="person.DOB"
-    is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions"
-    date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-    <span class="input-group-btn">
-              <button type="button" class="btn btn-default"
-                ng-click="open($event)">
-                <i class="glyphicon glyphicon-calendar"></i>
-              </button>
-            </span>
-   </p>
-  </div>
- </div>
-
- <div class="col-md-3">
-  <div class="form-group">
-   <label class="control-label">วัน-เดือน-ปี เกิด (พ.ศ) </label>
-   <input type="text" ng-disabled="true" class="form-control" ng-model="person.thaiDOB">
-  </div>
- </div>
-
-
-
-
-
 
  <div class="col-md-2">
   <div class="form-group">
@@ -102,7 +74,6 @@
   </div>
  </div>
 
-
  <div class="col-md-2">
   <div class="form-group">
    <label class="control-label">ศาสนา</label>
@@ -112,3 +83,39 @@
  </div>
 
 </div>
+
+<div class="row">
+
+ <div class="col-md-5">
+  <div class="form-group">
+   <label class="control-label">
+     ที่อยู่ตามทะเบียนบ้าน
+   </label>
+   <span class="help-block" ng-bind="person.homeAddress"></span>
+  </div>
+ </div>
+
+ <div class="col-md-5">
+  <div class="form-group">
+   <label class="control-label">
+     ที่อยู่สำหรับการติดต่อ
+   </label>
+   <span class="help-block" ng-bind="person.contactAddress"></span>
+   <!--
+   <input type="text" ng-disabled="true" 
+     class="form-control" ng-model="person.contactAddress">
+   -->
+  </div>
+ </div>
+
+ <div class="col-md-2">
+  <div class="form-group">
+   <label class="control-label">
+    โทรศัพท์
+   </label>
+   <input type="text" class="form-control" ng-model="person.Mobile">
+  </div>
+ </div>
+
+</div>
+

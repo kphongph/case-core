@@ -40,6 +40,7 @@ define([], function() {
         $scope.message = {type:'transfer', msg:'Saving'};
         $scope.person.$save().then(function() {
           $scope.message = {type:'saved', msg:'Saved'};
+          $scope.person_org = angular.copy($scope.person);
           $timeout(function() {
             $scope.message = null;
           }, 5000);
@@ -49,7 +50,6 @@ define([], function() {
       };
 
       $scope.reset = function() {
-        console.log($scope.person_org);
         angular.copy($scope.person_org, $scope.person);
       }
   
@@ -59,7 +59,7 @@ define([], function() {
         id: $routeParams.id,
       }).$promise.then(function(result) {
         $scope.person = result;
-        angular.copy($scope.person, $scope.person_org);
+        $scope.person_org = angular.copy($scope.person);
         Adressvsperson.find({
             filter: {
               include:['addresstype'],
@@ -72,7 +72,6 @@ define([], function() {
             }
           }).$promise
           .then(function(ad_history) {
-            $scope.current_addresses = [];
             ad_history.forEach(function(ad_hist) {
               Address.findOne({
                 filter: {
@@ -81,7 +80,12 @@ define([], function() {
                 }
               }).$promise.then(function(result) {
                 ad_hist.address = result;
-                $scope.current_addresses.push(ad_hist);
+                if(ad_hist.AddressTypeID == '001') {
+                  $scope.person.homeAddress = UtilServices.addressToString(result);
+                } 
+                if(ad_hist.AddressTypeID == '002') {
+                  $scope.person.contactAddress = UtilServices.addressToString(result);
+                } 
               });
             });
           });
@@ -92,9 +96,6 @@ define([], function() {
         var current = new Date();
         if ($scope.person && $scope.person.DOB) {
           var tmp = new Date($scope.person.DOB);
-          $scope.person.thaiDOB = ('0' + tmp.getDate()).slice(-2);
-          $scope.person.thaiDOB += '-' + ('0' + (tmp.getMonth() + 1)).slice(-2);
-          $scope.person.thaiDOB += '-' + (tmp.getFullYear() + 543);
           $scope.person.age = current.getFullYear() - tmp.getFullYear();
           if (current.getMonth() < tmp.getMonth()) {
             $scope.person.age--;

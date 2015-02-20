@@ -100,7 +100,7 @@
         "nullable": "YES"
       }
     },
-    "bloodtype": {
+    "Bloodtype": {
       "type": "String",
       "required": false,
       "length": 10,
@@ -130,7 +130,7 @@
         "nullable": "YES"
       }
     },
-    "race": {
+    "Race": {
       "type": "String",
       "required": false,
       "length": 50,
@@ -145,7 +145,7 @@
         "nullable": "YES"
       }
     },
-    "religion": {
+    "Religion": {
       "type": "String",
       "required": false,
       "length": 10,
@@ -160,7 +160,7 @@
         "nullable": "YES"
       }
     },
-    "weightperson": {
+    "WeightPerson": {
       "type": "Number",
       "required": false,
       "length": null,
@@ -175,7 +175,7 @@
         "nullable": "YES"
       }
     },
-    "heightperson": {
+    "HeightPerson": {
       "type": "Number",
       "required": false,
       "length": null,
@@ -190,7 +190,7 @@
         "nullable": "YES"
       }
     },
-    "foreigner": {
+    "Foreigner": {
       "type": "String",
       "required": false,
       "length": 10,
@@ -205,7 +205,7 @@
         "nullable": "YES"
       }
     },
-    "liveHomeStatus": {
+    "LiveHomeStatus": {
       "type": "String",
       "required": false,
       "length": 4,
@@ -220,7 +220,7 @@
         "nullable": "YES"
       }
     },
-    "mobile": {
+    "Mobile": {
       "type": "String",
       "required": false,
       "length": 15,
@@ -235,7 +235,7 @@
         "nullable": "YES"
       }
     },
-    "recordStaffID": {
+    "RecordStaffID": {
       "type": "String",
       "required": false,
       "length": 10,
@@ -250,7 +250,7 @@
         "nullable": "YES"
       }
     },
-    "dateTimeUpdate": {
+    "DateTimeUpdate": {
       "type": "Date",
       "required": false,
       "length": null,
@@ -265,7 +265,7 @@
         "nullable": "YES"
       }
     },
-    "lat": {
+    "Lat": {
       "type": "Number",
       "required": false,
       "length": null,
@@ -280,7 +280,7 @@
         "nullable": "YES"
       }
     },
-    "long": {
+    "Long": {
       "type": "Number",
       "required": false,
       "length": null,
@@ -295,7 +295,7 @@
         "nullable": "YES"
       }
     },
-    "child_Pic": {
+    "Child_Pic": {
       "type": "String",
       "required": false,
       "length": -1,
@@ -310,7 +310,7 @@
         "nullable": "YES"
       }
     },
-    "childPiccid": {
+    "ChildPicCID": {
       "type": "String",
       "required": false,
       "length": -1,
@@ -325,7 +325,7 @@
         "nullable": "YES"
       }
     },
-    "mariagestatus": {
+    "MariageStatus": {
       "type": "String",
       "required": false,
       "length": 10,
@@ -340,7 +340,7 @@
         "nullable": "YES"
       }
     },
-    "occupation": {
+    "Occupation": {
       "type": "String",
       "required": false,
       "length": 4,
@@ -355,7 +355,7 @@
         "nullable": "YES"
       }
     },
-    "addressoccupation": {
+    "AddressOccupation": {
       "type": "String",
       "required": false,
       "length": -1,
@@ -370,7 +370,7 @@
         "nullable": "YES"
       }
     },
-    "incomepermonth": {
+    "IncomePerMonth": {
       "type": "Number",
       "required": false,
       "length": null,
@@ -385,7 +385,7 @@
         "nullable": "YES"
       }
     },
-    "otherincome": {
+    "OtherIncome": {
       "type": "Number",
       "required": false,
       "length": null,
@@ -400,7 +400,7 @@
         "nullable": "YES"
       }
     },
-    "otherincomefrom": {
+    "OtherIncomeFrom": {
       "type": "String",
       "required": false,
       "length": -1,
@@ -415,7 +415,7 @@
         "nullable": "YES"
       }
     },
-    "livestatus": {
+    "LiveStatus": {
       "type": "String",
       "required": false,
       "length": 10,
@@ -430,7 +430,7 @@
         "nullable": "YES"
       }
     },
-    "educationlevel": {
+    "EducationLevel": {
       "type": "String",
       "required": false,
       "length": 10,
