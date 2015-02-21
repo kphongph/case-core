@@ -37,8 +37,8 @@
  <div class="col-md-3">
   <div class="form-group">
    <label class="control-label">วัน-เดือน-ปี เกิด </label>
-   <input type="text" class="form-control" ng-model="person.DOB" 
-      aria-describedby="dobBlock" buddhist-era>
+   <input type="text" class="form-control" ng-model="person.DOB" aria-describedby="dobBlock"
+   buddhist-era>
    <span id="dobBlock" class="help-block">dd-MM-yyyy (พ.ศ.)</span>
   </div>
  </div>
@@ -46,7 +46,7 @@
  <div class="col-md-1">
   <div class="form-group">
    <label class="control-label">อายุ</label>
-   <input type="text" ng-disabled="true" class="form-control" ng-model="person.age">
+   <span class="help-block" ng-bind="person.age"></span>
   </div>
  </div>
 
@@ -89,7 +89,7 @@
  <div class="col-md-5">
   <div class="form-group">
    <label class="control-label">
-     ที่อยู่ตามทะเบียนบ้าน
+    ที่อยู่ตามทะเบียนบ้าน
    </label>
    <span class="help-block" ng-bind="person.homeAddress"></span>
   </div>
@@ -98,7 +98,7 @@
  <div class="col-md-5">
   <div class="form-group">
    <label class="control-label">
-     ที่อยู่สำหรับการติดต่อ
+    ที่อยู่สำหรับการติดต่อ
    </label>
    <span class="help-block" ng-bind="person.contactAddress"></span>
    <!--
@@ -119,3 +119,12 @@
 
 </div>
 
+<div class="row">
+ <div class="col-md-12 text-right">
+  <h5>
+   ข้อมูล ณ : 
+   <span class="label label-default" 
+     ng-bind="person.DateTimeUpdate|date:'dd-MM-yyyy HH:mm:ss'"></span>
+ </h5>
+ </div>
+</div>

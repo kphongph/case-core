@@ -1,0 +1,42 @@
+<div class="row">
+ <div class="col-md-11" ng-controller="PersonSearchCtrl">
+ <div class="row">
+ <form class="form-inline">
+   <div class="form-group">
+    <label class="sr-only" for="">Email address</label>
+    <input type="text" ng-model="query_text" class="form-control" 
+      placeholder="เลขบัตรประชาชน หรือ ชื่อ นามสกุล">
+   </div>
+   <button type="submit" class="btn btn-default" 
+     ng-click="search()">ค้นหา</button>
+   <span ng-if="count"> Found {{count}}</span>
+ </form>
+</div>
+
+<div class="row">
+ <pagination
+     total-items="count"
+     ng-model="currentPage"
+     max-size="3" items-per-page="itemPerPage"
+     class="pagination-sm"
+     boundary-links="true">
+ </pagination>
+</div>
+
+<div class="row">
+ <table class="table table-bordered table-condensed">
+  <thead>
+   <th>บัตรประชาชน</th>
+   <th>ชื่อ-นามสกุล</th>
+  </thead>
+  <tbody>
+   <tr ng-repeat="person in people">
+    <td><a ng-click="select(person.CID)">{{person.CID}}</a></td>
+    <td>{{person.FirstName}} {{person.LastName}}</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+
+</div>
+</div>

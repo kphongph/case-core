@@ -4,7 +4,7 @@ define([
   'lb.services',
   'ngBootstrap',
   'ngBootstrap-tpls',
-  '../util'
+  'util.services'
 ], function(angular) {
   angular.module('app.host', [
       'ngRoute', 'ui.bootstrap', 'lbServices', 'utilServices'

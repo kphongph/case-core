@@ -61,7 +61,8 @@ define([
         $scope.host_count = $scope.active_hosts.length;
         var start = (page - 1) * $scope.host_per_page;
 
-        for (var i = start; i < start + $scope.host_per_page && i < $scope.active_hosts.length; i++) {
+        for (var i = start; i < start + $scope.host_per_page && i <
+          $scope.active_hosts.length; i++) {
           $scope.hosts.push($scope.active_hosts[i]);
         }
       }

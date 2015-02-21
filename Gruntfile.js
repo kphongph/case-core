@@ -24,7 +24,15 @@ module.exports = function(grunt) {
         indentSize:1,
         wrapLineLength: 80
       },
-      js:{indentSize:2}
+      js:{
+        indentSize:2,
+        indentLevel:0,
+        spaceBeforeConditional:true,
+        keepArrayIndentation:true,
+        keepFunctionIndentation:true,
+        preserveNewlines:true,
+        wrapLineLength:80
+      }
     }
   });
 

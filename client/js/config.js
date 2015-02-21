@@ -8,7 +8,8 @@ define({
     'ngResource': '../vendor/angular-resource/angular-resource',
     'ngBootstrap': '../vendor/angular-bootstrap/ui-bootstrap',
     'ngBootstrap-tpls': '../vendor/angular-bootstrap/ui-bootstrap-tpls',
-    'lb.services': 'js/lb-services'
+    'lb.services': 'js/lb-services',
+    'util.services': 'js/util'
   },
   shim: {
     'bootstrap': {
@@ -23,6 +24,7 @@ define({
     'ngBootstrap': ['angular'],
     'angular-th': ['angular'],
     'ngBootstrap-tpls': ['angular'],
-    'lb.services': ['ngResource']
+    'lb.services': ['ngResource'],
+    'util.services': ['angular', 'lb.services'],
   }
 });

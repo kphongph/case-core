@@ -21,7 +21,8 @@ define([], function() {
           Host.findById({
             id: hostid
           }).$promise.then(function(host) {
-            UtilServices.getPeopleByHost(hostid, function(data) {
+            UtilServices.getPeopleByHost(hostid, function(
+              data) {
               host.activePerson = data.length;
               $scope.active_hosts.push(host);
             });
