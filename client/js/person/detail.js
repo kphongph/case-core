@@ -108,7 +108,9 @@ define([], function() {
       });
       }
 
+      if($routeParams.id) {
       findById($routeParams.id);
+      }
 
       $scope.$watch('person.DOB', function() {
         var current = new Date();
