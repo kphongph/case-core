@@ -20,11 +20,18 @@
    </div>
   </div>
   <div class="row" ng-if="person">
+   <div class="col-md-8">
    <button type="button" ng-click="save()" class="btn btn-primary">บันทึกข้อมูลส่วนตัว</button>
    <button type="button" ng-click="reset()" class="btn btn-success">ย้อนกลับ</button>
    <span ng-if="message">
     <span class="glyphicon glyphicon-{{message.type}}"></span> {{message.msg}}
    </span>
+   </div>
+   <div class="col-md-4 text-right">
+     Last Update:
+   <span class="label label-default " 
+     ng-bind="person.DateTimeUpdate|date:'dd-MM-yyyy HH:mm:ss'"></span>
+   </div>
   </div>
  </div>
 

@@ -1,0 +1,39 @@
+<div class="row">
+ <div class="col-md-11" ng-controller="AddressSearchCtrl">
+ <div class="row">
+ <form class="form-inline">
+   <div class="form-group">
+     <select ng-model="province" class="form-control"
+       ng-options="x.ProvinceID as x.ProvinceDescription for x in provinces">
+     </select>
+     <span ng-if="count >= 0"> Found {{count}}</span>
+ </form>
+</div>
+
+<div class="row">
+ <pagination
+     total-items="count"
+     ng-model="currentPage"
+     max-size="3" items-per-page="itemPerPage"
+     class="pagination-sm"
+     boundary-links="true">
+ </pagination>
+</div>
+
+<div class="row">
+ <table class="table table-bordered table-condensed">
+  <thead>
+   <th>บัตรประชาชน</th>
+   <th>ชื่อ-นามสกุล</th>
+  </thead>
+  <tbody>
+   <tr ng-repeat="address in addresses">
+     <td>{{address.text}}</td>
+    <td></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+
+</div>
+</div>
