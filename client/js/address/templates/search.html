@@ -1,39 +1,92 @@
 <div class="row">
- <div class="col-md-11" ng-controller="AddressSearchCtrl">
- <div class="row">
- <form class="form-inline">
-   <div class="form-group">
-     <select ng-model="province" class="form-control"
-       ng-options="x.ProvinceID as x.ProvinceDescription for x in provinces">
+ <div class="col-md-3">
+  <div class="panel panel-default">
+   <div class="panel-heading">ค้นหา</div>
+   <div class="panel-body">
+
+    <div class="form-group">
+     <label>จังหวัด</label>
+     <select ng-model="address.Province" class="form-control" ng-options="x.ProvinceID as x.ProvinceDescription for x in provinces">
      </select>
-     <span ng-if="count >= 0"> Found {{count}}</span>
- </form>
-</div>
+    </div>
 
-<div class="row">
- <pagination
-     total-items="count"
-     ng-model="currentPage"
-     max-size="3" items-per-page="itemPerPage"
-     class="pagination-sm"
-     boundary-links="true">
- </pagination>
-</div>
+    <div class="form-group" ng-show="cities">
+     <label>อำเภอ</label>
+     <select ng-model="address.City" class="form-control" ng-options="x.CityID as x.CityDescription for x in cities">
+     </select>
+    </div>
 
-<div class="row">
- <table class="table table-bordered table-condensed">
-  <thead>
-   <th>บัตรประชาชน</th>
-   <th>ชื่อ-นามสกุล</th>
-  </thead>
-  <tbody>
-   <tr ng-repeat="address in addresses">
-     <td>{{address.text}}</td>
-    <td></td>
-   </tr>
-  </tbody>
- </table>
-</div>
+    <div class="form-group" ng-show="tumbons">
+     <label>ตำบล</label>
+     <select ng-model="address.Tumbon" class="form-control" ng-options="x.TumbonID as x.TumbonDescription for x in tumbons">
+     </select>
+    </div>
 
-</div>
+    <div class="form-group" ng-show="villages">
+     <label>หมู่บ้าน</label>
+     <select ng-model="address.VillageID" class="form-control" ng-options="x.VillageID as x.VillageName for x in villages">
+     </select>
+    </div>
+
+    <div class="form-group" ng-show="villages">
+     <label>บ้านเลขที่</label>
+     <input type="text" ng-model="address.HouseNumber" class="form-control">
+     </input>
+    </div>
+
+    <div class="form-group" ng-show="villages">
+     <label>หมู่ที่</label>
+     <input type="text" ng-model="address.MooNumber" class="form-control">
+     </input>
+    </div>
+
+    <div class="form-group" ng-show="villages">
+     <label>ซอย</label>
+     <input type="text" ng-model="address.Alley" class="form-control">
+     </input>
+    </div>
+
+    <div class="form-group" ng-show="villages">
+     <label>ถนน</label>
+     <input type="text" ng-model="address.StreetName" class="form-control">
+     </input>
+    </div>
+
+    <div class="form-group" ng-show="villages">
+     <label>PostCode</label>
+     <input type="text" ng-model="address.PostCode" class="form-control">
+     </input>
+    </div>
+
+    <span ng-if="count > 0"> Found {{count}}</span>
+    <span ng-if="count==0">
+     <button ng-click="create()" class="btn btn-primary">สร้างที่อยู่ใหม่</button>
+    </span>
+   </div>
+  </div>
+ </div>
+
+ <div class="col-md-9">
+  <div class="panel panel-default">
+   <div class="panel-heading">ผลการค้นหา</div>
+   <div class="panel-body">
+
+    <pagination total-items="count" ng-model="currentPage" max-size="3" items-per-page="itemPerPage"
+    class="pagination-sm" boundary-links="true">
+    </pagination>
+
+    <table class="table table-bordered table-condensed">
+     <thead>
+      <th>Address</th>
+     </thead>
+     <tbody>
+      <tr ng-repeat="address in addresses">
+       <td>{{address.text}}</td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+  </div>
+ </div>
+
 </div>

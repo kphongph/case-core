@@ -16,15 +16,15 @@ define([
     })
   }]);
 
-/*
-  module.config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/person', {
-      templateUrl: 'js/person/templates/detail.html',
-      controller: 'PersonDetailCtrl'
-      controller: 'PersonSearchCtrl'
-    })
-  }]);
-*/
+  /*
+    module.config(['$routeProvider', function($routeProvider) {
+      $routeProvider.when('/person', {
+        templateUrl: 'js/person/templates/detail.html',
+        controller: 'PersonDetailCtrl'
+        controller: 'PersonSearchCtrl'
+      })
+    }]);
+  */
 
   module.controller('PersonSearchCtrl', [
     '$scope', 'Person', 'UtilServices', '$injector',

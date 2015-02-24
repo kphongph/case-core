@@ -54,7 +54,7 @@
         "nullable": "YES"
       }
     },
-    "tumbonid": {
+    "TumbonID": {
       "type": "String",
       "required": false,
       "length": 6,

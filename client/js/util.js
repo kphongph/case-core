@@ -3,17 +3,18 @@
   var module = angular.module("utilServices", ['lbServices']);
 
   module.factory('UtilServices', [
-    '$rootScope','Personvshost', 'Title', 'Gender', 'Nationality', 'Race', 'Religion',
+    '$rootScope', 'Personvshost', 'Title', 'Gender', 'Nationality', 'Race',
+    'Religion',
     'Province', '$injector',
-    function($rootScope,Personvshost, Title, Gender,
+    function($rootScope, Personvshost, Title, Gender,
       Nationality, Race, Religion, Province, $injector
     ) {
       var _state = {};
-      
+
       var broadcast = function(state) {
         $rootScope.$broadcast('state.update', state);
       };
-      
+
       var update = function(newState) {
         _state = newState;
         broadcast(_state);
@@ -91,6 +92,7 @@
             cb(results);
           });
         },
+        //
         addressToString: function(address) {
           var st = address.HouseNumber;
           if (address.MooNumber)
@@ -115,10 +117,11 @@
         update: update,
         listen: onUpdate,
         state: _state,
+        //
       };
     }
   ]);
-  
+
   module.directive('buddhistEra', function() {
     return {
       restrict: 'A',

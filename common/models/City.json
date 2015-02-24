@@ -39,7 +39,7 @@
         "nullable": "NO"
       }
     },
-    "provinceid": {
+    "ProvinceID": {
       "type": "String",
       "required": true,
       "length": 2,
@@ -84,6 +84,13 @@
         "dataScale": null,
         "nullable": "YES"
       }
+    }
+  },
+  "relations":{
+    "province": {
+      "type": "belongsTo",
+      "model": "Province",
+      "foreignKey": "ProvinceID"
     }
   }
 }

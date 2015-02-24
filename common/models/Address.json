@@ -10,7 +10,7 @@
   "properties": {
     "AddressID": {
       "type": "String",
-      "required": true,
+      "required": false,
       "length": null,
       "precision": null,
       "scale": null,
@@ -24,7 +24,7 @@
         "nullable": "NO"
       }
     },
-    "housenumber": {
+    "HouseNumber": {
       "type": "String",
       "required": false,
       "length": -1,
@@ -39,7 +39,7 @@
         "nullable": "YES"
       }
     },
-    "moonumber": {
+    "MooNumber": {
       "type": "String",
       "required": false,
       "length": -1,
@@ -54,7 +54,7 @@
         "nullable": "YES"
       }
     },
-    "alley": {
+    "Alley": {
       "type": "String",
       "required": false,
       "length": -1,
@@ -69,7 +69,7 @@
         "nullable": "YES"
       }
     },
-    "streetname": {
+    "StreetName": {
       "type": "String",
       "required": false,
       "length": -1,
@@ -129,7 +129,7 @@
         "nullable": "YES"
       }
     },
-    "postcode": {
+    "PostCode": {
       "type": "String",
       "required": false,
       "length": 5,
@@ -144,7 +144,7 @@
         "nullable": "YES"
       }
     },
-    "homecode": {
+    "HomeCode": {
       "type": "String",
       "required": false,
       "length": 11,

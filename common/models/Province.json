@@ -69,5 +69,12 @@
         "nullable": "YES"
       }
     }
+  },
+  "relations" :{
+    "cities" : {
+      "type":"hasMany",
+      "model":"City",
+      "foreignKey":"ProvinceID"
+    }
   }
 }

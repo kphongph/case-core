@@ -18,37 +18,22 @@ define([
 
 
   module.controller('AddressSearchCtrl', [
-    '$scope', 'Address', 'UtilServices', '$injector',
-    function($scope, Address, UtilServices, $injector) {
+    '$scope', 'Address', 'Province', 'City', 'Tumbon', 'Village',
+    'UtilServices', '$injector',
+    function($scope, Address, Province, City, Tumbon, Village, UtilServices,
+      $injector) {
       require(['js/address/search'], function(search) {
         $injector.invoke(search, this, {
           '$scope': $scope,
-          'Person': Address,
+          'Address': Address,
+          'Province': Province,
+          'City': City,
+          'Tumbon': Tumbon,
+          'Village': Village,
           'UtilServices': UtilServices,
         });
       });
     }
   ]);
 
-  /*
-  module.controller('PersonDetailCtrl', [
-    '$scope', '$routeParams', '$timeout', 'Host', 'Person',
-    'Adressvsperson', 'Address', 'UtilServices', '$injector',
-    function($scope, $routeParams, $timeout, Host, Person,
-      Adressvsperson, Address, UtilServices, $injector) {
-      require(['js/person/detail'], function(detail) {
-        $injector.invoke(detail, this, {
-          '$routeParams': $routeParams,
-          '$scope': $scope,
-          '$timeout': $timeout,
-          'Host': Host,
-          'Person': Person,
-          'Adressvsperson': Adressvsperson,
-          'Address': Address,
-          'UtilServices': UtilServices,
-        });
-      });
-    }
-  ]);
-  */
 });
