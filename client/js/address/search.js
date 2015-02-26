@@ -8,7 +8,7 @@ define([], function() {
       $scope.query_text_count = {};
       $scope.query_text = {};
       $scope.count = null;
-      
+
       $scope.address = {};
 
       $scope.provinces = null;
@@ -24,7 +24,7 @@ define([], function() {
 
       $scope.create = function() {
         console.log($scope.address);
-        Address.create($scope.address,function(err, result) {
+        Address.create($scope.address, function(err, result) {
           console.log(err);
           console.log(result);
         });
@@ -192,20 +192,30 @@ define([], function() {
         '+ address.StreetName' +
         '+ address.PostCode',
         function() {
-            if($scope.province) {
+          if ($scope.province) {
             build_query({
               where: {
                 and: [
-                  { 'Province': $scope.address.Province },
-                  { 'City': $scope.address.City },
-                  { 'Tumbon': $scope.address.Tumbon }, 
-                  { 'VillageID': $scope.address.VillageID }, 
-                  { 'HouseNumber': $scope.address.HouseNumber }, 
+                  {
+                    'Province': $scope.address.Province
+                  },
+                  {
+                    'City': $scope.address.City
+                  },
+                  {
+                    'Tumbon': $scope.address.Tumbon
+                  },
+                  {
+                    'VillageID': $scope.address.VillageID
+                  },
+                  {
+                    'HouseNumber': $scope.address.HouseNumber
+                  },
                 ]
               }
             });
             queryCount();
-            }
+          }
         });
 
       $scope.$apply();

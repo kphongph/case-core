@@ -4,7 +4,8 @@ define([
   'ngRoute',
   'ngBootstrap',
   'ngBootstrap-tpls',
-//  './host/app',
+  '../modules/users/app',
+  '../modules/forms/app',
   './person/app',
   './address/app',
 ], function(angular) {
@@ -12,7 +13,8 @@ define([
   return angular.module('app', [
     'ngRoute',
     'ui.bootstrap',
-//    'app.host',
+    'app.modules.users',
+    'app.modules.forms',
     'app.address',
     'app.person'
   ]).config(function($routeProvider) {

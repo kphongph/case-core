@@ -8,6 +8,14 @@
       "../node_modules/loopback-component-passport/lib/models"
     ]
   },
+  "AccessToken" : {
+    "dataSource": "aclDs",
+    "public": true
+  },
+  "ACL" : {
+    "dataSource": "aclDs",
+    "public": true
+  },
   "Address": {
     "dataSource": "caseDs",
     "public": true 
@@ -28,7 +36,15 @@
     "dataSource": "caseDs",
     "public": true 
   },
+  "Form": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
   "Host": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Gender": {
     "dataSource": "caseDs",
     "public": true 
   },
@@ -37,10 +53,6 @@
     "public": true 
   },
   "Tumbon": {
-    "dataSource": "caseDs",
-    "public": true 
-  },
-  "Gender": {
     "dataSource": "caseDs",
     "public": true 
   },
@@ -60,6 +72,14 @@
     "dataSource": "caseDs",
     "public": true 
   },
+  "Role" : {
+    "dataSource": "aclDs",
+    "public": true
+  },
+  "RoleMapping" : {
+    "dataSource": "aclDs",
+    "public": true
+  },
   "Personvshost": {
     "dataSource": "caseDs",
     "public": true 
@@ -67,6 +87,14 @@
   "Province": {
     "dataSource": "caseDs",
     "public": true 
+  },
+  "Systemtype": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "User" : {
+    "dataSource" : "aclDs",
+    "public": true
   },
   "Village": {
     "dataSource": "caseDs",
