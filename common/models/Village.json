@@ -39,7 +39,7 @@
         "nullable": "NO"
       }
     },
-    "villagename": {
+    "VillageName": {
       "type": "String",
       "required": false,
       "length": -1,

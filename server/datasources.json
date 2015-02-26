@@ -11,5 +11,14 @@
     "database":"2014_gen2_case",
     "username":"sa",
     "password":"Theerawutt53"
+  },
+  "aclDs": {
+    "connector": "mssql",
+    "debug":false,
+    "host":"j2o691xyq4.database.windows.net",
+    "port":1433,
+    "database":"case_ACL",
+    "username":"sjsniperdb",
+    "password":"Theerawutt53"
   }
 }

@@ -24,7 +24,7 @@
         "nullable": "NO"
       }
     },
-    "tumbondescription": {
+    "TumbonDescription": {
       "type": "String",
       "required": true,
       "length": 150,

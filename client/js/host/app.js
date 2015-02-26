@@ -17,9 +17,6 @@ define([
           templateUrl: 'js/host/templates/detail.html',
           controller: 'HostDetailCtrl'
         })
-        .otherwise({
-          redirectTo: '/host'
-        });
     }])
     .controller('HostListCtrl', [
       '$scope', '$injector', 'Employee',

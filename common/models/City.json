@@ -24,7 +24,7 @@
         "nullable": "NO"
       }
     },
-    "citydescription": {
+    "CityDescription": {
       "type": "String",
       "required": true,
       "length": 150,

@@ -8,10 +8,21 @@ module.exports = function(grunt) {
     }
   });
   
+  /*
   grunt.config('discover-ds', {
     options:{
       dsFile:'server/datasources.json',
       dsName:'caseDs',
+      existModel:'common/models',
+      dest:'common/grunt-models',
+    }
+  });
+  */
+
+  grunt.config('discover-ds', {
+    options:{
+      dsFile:'server/datasources.json',
+      dsName:'aclDs',
       existModel:'common/models',
       dest:'common/grunt-models',
     }
@@ -41,7 +52,7 @@ module.exports = function(grunt) {
   grunt.loadTasks('grunt-tasks');
 
   // Default task(s).
-  grunt.registerTask('default', ['discover-ds']);
+  grunt.registerTask('default', []);
   grunt.registerTask('lbservice', ['loopback_sdk_angular']);
   grunt.registerTask('beautify', ['jsbeautifier']);
 
