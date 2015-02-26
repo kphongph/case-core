@@ -135,7 +135,7 @@ define([], function() {
       });
 
       $scope.$watch('address.Tumbon', function() {
-        if ($scope.tumbon) {
+        if ($scope.address.Tumbon) {
           Village.find({
               filter: {
                 where: {

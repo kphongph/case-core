@@ -94,7 +94,9 @@
         },
         //
         addressToString: function(address) {
-          var st = address.HouseNumber;
+          var st = '';
+          if (address.HouseNumber)
+            st += address.MooNumber;
           if (address.MooNumber)
             st += ' หมู่ที่ ' + address.MooNumber;
           if (address.StreetName)
