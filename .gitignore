@@ -1,4 +1,5 @@
 node_modules
 common/grunt-models
+bower_components
 *.DS_Store
 *.swp
