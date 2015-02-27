@@ -462,10 +462,17 @@
       "permission": "DENY"
     },
     {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId" : "staff",
+      "permission": "ALLOW"
+    },
+    {
       "accessType": "READ",
       "principalType": "ROLE",
-      "principalId" : "$authenticated",
-      "permission": "ALLOW"
+      "principalId" : "$everyone",
+      "permission": "ALLOW",
+      "property":"listByHost"
     }
   ]
 }

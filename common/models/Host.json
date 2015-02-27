@@ -8,7 +8,7 @@
     }
   },
   "properties": {
-    "hostid": {
+    "HostID": {
       "type": "String",
       "required": true,
       "length": 50,
@@ -24,7 +24,7 @@
         "nullable": "NO"
       }
     },
-    "hostname": {
+    "HostName": {
       "type": "String",
       "required": false,
       "length": -1,
@@ -204,6 +204,14 @@
         "dataScale": null,
         "nullable": "YES"
       }
+    }
+  },
+  "relations": {
+    "persons" : {
+      "type": "hasMany",
+      "model": "Person",
+      "through": "Personvshost",
+      "foreignKey": "HostDestination"
     }
   }
 }

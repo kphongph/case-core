@@ -1,8 +1,10 @@
 define([], function() {
   return ['$scope', '$rootScope', 'AUTH_EVENTS', 'User',
     function($scope, $rootScope, AUTH_EVENTS,  User) {
-      $scope.email = "john@doe.com";
+
+      $scope.email = "jane@doe.com";
       $scope.password = "opensesame";
+
       $scope.login = function() {
         User.login({
           email:$scope.email,

@@ -5099,6 +5099,67 @@ module.factory(
       { 'id': '@id' },
       {
 
+        // INTERNAL. Use Host.persons.findById() instead.
+        "prototype$__findById__persons": {
+          url: urlBase + "/Hosts/:id/persons/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Host.persons.destroyById() instead.
+        "prototype$__destroyById__persons": {
+          url: urlBase + "/Hosts/:id/persons/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Host.persons.updateById() instead.
+        "prototype$__updateById__persons": {
+          url: urlBase + "/Hosts/:id/persons/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Host.persons.link() instead.
+        "prototype$__link__persons": {
+          url: urlBase + "/Hosts/:id/persons/rel/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Host.persons.unlink() instead.
+        "prototype$__unlink__persons": {
+          url: urlBase + "/Hosts/:id/persons/rel/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Host.persons.exists() instead.
+        "prototype$__exists__persons": {
+          url: urlBase + "/Hosts/:id/persons/rel/:fk",
+          method: "HEAD"
+        },
+
+        // INTERNAL. Use Host.persons() instead.
+        "prototype$__get__persons": {
+          isArray: true,
+          url: urlBase + "/Hosts/:id/persons",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Host.persons.create() instead.
+        "prototype$__create__persons": {
+          url: urlBase + "/Hosts/:id/persons",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Host.persons.destroyAll() instead.
+        "prototype$__delete__persons": {
+          url: urlBase + "/Hosts/:id/persons",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Host.persons.count() instead.
+        "prototype$__count__persons": {
+          url: urlBase + "/Hosts/:id/persons/count",
+          method: "GET"
+        },
+
         /**
          * @ngdoc method
          * @name lbServices.Host#create
@@ -5439,6 +5500,41 @@ module.factory(
           url: urlBase + "/Hosts/:id",
           method: "PUT"
         },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Host#search
+         * @methodOf lbServices.Host
+         *
+         * @description
+         *
+         * <em>
+         * (The remote method definition does not provide any description.)
+         * </em>
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{string=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Host` object.)
+         * </em>
+         */
+        "search": {
+          url: urlBase + "/Hosts/search",
+          method: "GET"
+        },
       }
     );
 
@@ -5575,6 +5671,378 @@ module.factory(
     */
     R.modelName = "Host";
 
+    /**
+     * @ngdoc object
+     * @name lbServices.Host.persons
+     * @header lbServices.Host.persons
+     * @object
+     * @description
+     *
+     * The object `Host.persons` groups methods
+     * manipulating `Person` instances related to `Host`.
+     *
+     * Call {@link lbServices.Host#persons Host.persons()}
+     * to query all related instances.
+     */
+
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Host#persons
+         * @methodOf lbServices.Host
+         *
+         * @description
+         *
+         * Queries persons of Host.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `filter` – `{object=}` - 
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Person` object.)
+         * </em>
+         */
+        R.persons = function() {
+          var TargetResource = $injector.get("Person");
+          var action = TargetResource["::get::Host::persons"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Host.persons#count
+         * @methodOf lbServices.Host.persons
+         *
+         * @description
+         *
+         * Counts persons of Host.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `count` – `{number=}` - 
+         */
+        R.persons.count = function() {
+          var TargetResource = $injector.get("Person");
+          var action = TargetResource["::count::Host::persons"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Host.persons#create
+         * @methodOf lbServices.Host.persons
+         *
+         * @description
+         *
+         * Creates a new instance in persons of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Person` object.)
+         * </em>
+         */
+        R.persons.create = function() {
+          var TargetResource = $injector.get("Person");
+          var action = TargetResource["::create::Host::persons"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Host.persons#destroyAll
+         * @methodOf lbServices.Host.persons
+         *
+         * @description
+         *
+         * Deletes all persons of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.persons.destroyAll = function() {
+          var TargetResource = $injector.get("Person");
+          var action = TargetResource["::delete::Host::persons"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Host.persons#destroyById
+         * @methodOf lbServices.Host.persons
+         *
+         * @description
+         *
+         * Delete a related item by id for persons
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for persons
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.persons.destroyById = function() {
+          var TargetResource = $injector.get("Person");
+          var action = TargetResource["::destroyById::Host::persons"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Host.persons#exists
+         * @methodOf lbServices.Host.persons
+         *
+         * @description
+         *
+         * Check the existence of persons relation to an item by id
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for persons
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Person` object.)
+         * </em>
+         */
+        R.persons.exists = function() {
+          var TargetResource = $injector.get("Person");
+          var action = TargetResource["::exists::Host::persons"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Host.persons#findById
+         * @methodOf lbServices.Host.persons
+         *
+         * @description
+         *
+         * Find a related item by id for persons
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for persons
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Person` object.)
+         * </em>
+         */
+        R.persons.findById = function() {
+          var TargetResource = $injector.get("Person");
+          var action = TargetResource["::findById::Host::persons"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Host.persons#link
+         * @methodOf lbServices.Host.persons
+         *
+         * @description
+         *
+         * Add a related item by id for persons
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for persons
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Person` object.)
+         * </em>
+         */
+        R.persons.link = function() {
+          var TargetResource = $injector.get("Person");
+          var action = TargetResource["::link::Host::persons"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Host.persons#unlink
+         * @methodOf lbServices.Host.persons
+         *
+         * @description
+         *
+         * Remove the persons relation to an item by id
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for persons
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.persons.unlink = function() {
+          var TargetResource = $injector.get("Person");
+          var action = TargetResource["::unlink::Host::persons"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Host.persons#updateById
+         * @methodOf lbServices.Host.persons
+         *
+         * @description
+         *
+         * Update a related item by id for persons
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for persons
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Person` object.)
+         * </em>
+         */
+        R.persons.updateById = function() {
+          var TargetResource = $injector.get("Person");
+          var action = TargetResource["::updateById::Host::persons"];
+          return action.apply(R, arguments);
+        };
 
     return R;
   }]);
@@ -8032,6 +8500,47 @@ module.factory(
           method: "PUT"
         },
 
+        /**
+         * @ngdoc method
+         * @name lbServices.Person#listByHost
+         * @methodOf lbServices.Person
+         *
+         * @description
+         *
+         * <em>
+         * (The remote method definition does not provide any description.)
+         * </em>
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `hostid` – `{string=}` - 
+         *
+         *  - `query` – `{string=}` - 
+         *
+         *  - `limit` – `{number=}` - 
+         *
+         *  - `skip` – `{number=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Person` object.)
+         * </em>
+         */
+        "listByHost": {
+          url: urlBase + "/People/listByHost",
+          method: "GET"
+        },
+
         // INTERNAL. Use Address.people.findById() instead.
         "::findById::Address::people": {
           url: urlBase + "/Addresses/:id/people/:fk",
@@ -8096,6 +8605,73 @@ module.factory(
         // INTERNAL. Use Adressvsperson.person() instead.
         "::get::Adressvsperson::person": {
           url: urlBase + "/Adressvspeople/:id/person",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Host.persons.findById() instead.
+        "::findById::Host::persons": {
+          url: urlBase + "/Hosts/:id/persons/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Host.persons.destroyById() instead.
+        "::destroyById::Host::persons": {
+          url: urlBase + "/Hosts/:id/persons/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Host.persons.updateById() instead.
+        "::updateById::Host::persons": {
+          url: urlBase + "/Hosts/:id/persons/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Host.persons.link() instead.
+        "::link::Host::persons": {
+          url: urlBase + "/Hosts/:id/persons/rel/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Host.persons.unlink() instead.
+        "::unlink::Host::persons": {
+          url: urlBase + "/Hosts/:id/persons/rel/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Host.persons.exists() instead.
+        "::exists::Host::persons": {
+          url: urlBase + "/Hosts/:id/persons/rel/:fk",
+          method: "HEAD"
+        },
+
+        // INTERNAL. Use Host.persons() instead.
+        "::get::Host::persons": {
+          isArray: true,
+          url: urlBase + "/Hosts/:id/persons",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Host.persons.create() instead.
+        "::create::Host::persons": {
+          url: urlBase + "/Hosts/:id/persons",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Host.persons.destroyAll() instead.
+        "::delete::Host::persons": {
+          url: urlBase + "/Hosts/:id/persons",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Host.persons.count() instead.
+        "::count::Host::persons": {
+          url: urlBase + "/Hosts/:id/persons/count",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Personvshost.person() instead.
+        "::get::Personvshost::person": {
+          url: urlBase + "/Personvshosts/:id/person",
           method: "GET"
         },
       }
@@ -11052,6 +11628,12 @@ module.factory(
       { 'id': '@id' },
       {
 
+        // INTERNAL. Use Personvshost.person() instead.
+        "prototype$__get__person": {
+          url: urlBase + "/Personvshosts/:id/person",
+          method: "GET"
+        },
+
         /**
          * @ngdoc method
          * @name lbServices.Personvshost#create
@@ -11528,6 +12110,42 @@ module.factory(
     */
     R.modelName = "Personvshost";
 
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Personvshost#person
+         * @methodOf lbServices.Personvshost
+         *
+         * @description
+         *
+         * Fetches belongsTo relation person
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `refresh` – `{boolean=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Person` object.)
+         * </em>
+         */
+        R.person = function() {
+          var TargetResource = $injector.get("Person");
+          var action = TargetResource["::get::Personvshost::person"];
+          return action.apply(R, arguments);
+        };
 
     return R;
   }]);

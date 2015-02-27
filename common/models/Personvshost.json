@@ -8,7 +8,7 @@
     }
   },
   "properties": {
-    "cid": {
+    "CID": {
       "type": "String",
       "required": true,
       "length": 13,
@@ -24,7 +24,7 @@
         "nullable": "NO"
       }
     },
-    "hostsource": {
+    "HostSource": {
       "type": "String",
       "required": true,
       "length": 50,
@@ -40,7 +40,7 @@
         "nullable": "NO"
       }
     },
-    "hostdestination": {
+    "HostDestination": {
       "type": "String",
       "required": true,
       "length": 50,
@@ -56,7 +56,7 @@
         "nullable": "NO"
       }
     },
-    "startdatetime": {
+    "StartDatetime": {
       "type": "Date",
       "required": true,
       "length": null,
@@ -72,7 +72,7 @@
         "nullable": "NO"
       }
     },
-    "enddatetime": {
+    "EndDatetime": {
       "type": "Date",
       "required": false,
       "length": null,
@@ -87,7 +87,7 @@
         "nullable": "YES"
       }
     },
-    "hosttype": {
+    "Hosttype": {
       "type": "String",
       "required": true,
       "length": 8,
@@ -103,7 +103,7 @@
         "nullable": "NO"
       }
     },
-    "datetimeupdate": {
+    "Datetimeupdate": {
       "type": "Date",
       "required": false,
       "length": null,
@@ -117,6 +117,13 @@
         "dataScale": null,
         "nullable": "YES"
       }
+    }
+  },
+  "relations" : {
+    "person": {
+      "type":"belongsTo",
+      "model":"Person",
+      "foreignKey":"CID"
     }
   }
 }
