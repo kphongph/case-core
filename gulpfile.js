@@ -46,4 +46,4 @@ gulp.task('haml', function() {
   .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('default', ['views','bower','css','browserify']);
+gulp.task('default', ['views','browserify','haml']);

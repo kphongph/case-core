@@ -3,7 +3,7 @@
 module.exports = function($scope, Person) {
   $scope.currentPage = 0;
   $scope.itemPerPage = 10;
-  $scope.query_text = '000001';
+  $scope.query_text = '';
   $scope.count = null;
 
   var build_query = function(query_text, page, itemPerPage) {
@@ -21,7 +21,6 @@ module.exports = function($scope, Person) {
       query['filter'] = filter;
       filter['limit'] = itemPerPage;
       filter['skip'] = (page - 1) * itemPerPage;
-      console.log(query);
       return query;
     } else {
       return filter;
@@ -39,11 +38,7 @@ module.exports = function($scope, Person) {
    });
   }
 
-
-  Person.count().$promise.then(function(result) {
-    $scope.count = result.count;
-    $scope.currentPage = 1;
-  });
+  $scope.search();
 
   $scope.$watch('currentPage', function() {
     if($scope.currentPage > 0) {

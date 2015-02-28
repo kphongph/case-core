@@ -7,6 +7,9 @@ module.exports = angular.module('app.modules.person',[
   $routeProvider.when('/person/:id?', {
     templateUrl: 'modules/person/views/detail.html',
   })
-}]).controller(
+}])
+.controller(
     'app.modules.person.controllers.Search',
     require('./controllers/search'))
+.directive('personSearch',
+    require('./directives/search'))
