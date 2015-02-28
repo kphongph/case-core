@@ -1,0 +1,27 @@
+.row
+  .page-header
+    %h2 ข้อมูลผู้รับบริการ
+
+.row
+  .col-md-4{ng-controller:"app.modules.person.controllers.Search"}
+    .row
+      %form.form-inline
+        .form-group
+          %label.sr-only Email address
+          %input.form-control{type:"text",ng-model:"query_text",placeholder:"เลขบัตรประชาชน หรือ ชื่อ นามสกุล"}
+        %button.btn.btn-default{type:"submit",ng-click:"search()"} ค้นหา
+        %span{ng-if:"count"} Found {{count}}
+
+    .row
+      %pagination.pagination-sm{total-items:"count", ng-model:"currentPage", max-size:"3", items-per-page:"itemPerPage", boundary-links:"true"}
+
+    .row
+      %table.table.table-bordered.table-condensed
+        %thead
+          %th บัตรประชาชน
+          %th ชื่อ-นามสกุล
+        %tbody
+          %tr{ng-repeat:"person in people"}
+            %td
+              %a{ng-click:"select(person.CID)"} {{person.CID}}
+            %td {{person.FirstName}} {{person.LastName}}

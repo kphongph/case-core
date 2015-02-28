@@ -459,12 +459,12 @@
       "accessType": "*",
       "principalType": "ROLE",
       "principalId" : "$everyone",
-      "permission": "DENY"
+      "permission": "ALLOW"
     },
     {
       "accessType": "*",
       "principalType": "ROLE",
-      "principalId" : "staff",
+      "principalId" : "$everyone",
       "permission": "ALLOW"
     },
     {

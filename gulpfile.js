@@ -1,7 +1,9 @@
 var gulp = require('gulp');
 var bower = require('gulp-bower');
 var concat = require('gulp-concat');
+var rename = require('gulp-rename');
 var haml = require('gulp-haml');
+var loopbackAngular = require('gulp-loopback-sdk-angular');
 var browserify = require('gulp-browserify');
 
 gulp.task('lint', function() {
@@ -11,13 +13,20 @@ gulp.task('lint', function() {
 });
 
 gulp.task('views', function() {
-  gulp.src('app/index.html')
+  gulp.src('app/**/*.html')
   .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('css', function() {
   gulp.src('./bower_components/bootstrap/dist/css/bootstrap.min.css')
   .pipe(gulp.dest('dist/css'));
+});
+
+gulp.task('lbservice', function() {
+  return gulp.src('./server/server.js')
+  .pipe(loopbackAngular())
+  .pipe(rename('lb-services.js'))
+  .pipe(gulp.dest('./app/js'));
 });
 
 gulp.task('browserify', function() {

@@ -20,6 +20,9 @@
     "angular": "./bower_components/angular/angular.min.js",
     "jquery": "./bower_components/jquery/dist/jquery.min.js",
     "angular-route": "./bower_components/angular-route/angular-route.min.js",
+    "angular-resource": "./bower_components/angular-resource/angular-resource.min.js",
+    "angular-bootstrap": "./bower_components/angular-bootstrap/ui-bootstrap.min.js",
+    "angular-bootstrap-tpls": "./bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js",
     "bootstrap": "./bower_components/bootstrap/dist/js/bootstrap.min.js"
   },
   "browserify-shim": {
@@ -31,7 +34,9 @@
     "gulp-browserify":"latest",
     "gulp-bower":"latest",
     "gulp-concat":"latest",
+    "gulp-rename":"latest",
     "gulp-haml":"latest",
+    "gulp-loopback-sdk-angular":"latest",
     "angular":"latest",
     "browserify-shim":"latest"
   },

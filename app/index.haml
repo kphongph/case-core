@@ -5,12 +5,12 @@
     %meta{name:"viewport",content:"width=device-width, initial-scale=1"}
     %title My Awesome App
     %link{href:"css/bootstrap.min.css",rel:"stylesheet"}
-  %body{ng-controller:"HelloCtrl"}
+  %body
     %nav{class:"navbar navbar-default"}
       .container-fluid
         .navbar-header
           %a{class:"navbar-brand",href:"#"} Case Manager
       .collapse.navbar-collapse
-    %h1 My Awesome App
-    %p {{test}}
+    .container
+      != "<div ng-view></div>"
     %script{src:"/js/bundle.js"}

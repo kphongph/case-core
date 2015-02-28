@@ -3,12 +3,20 @@
 var angular = require('angular');
 require('jquery');
 require('bootstrap');
+require('angular-route');
+require('angular-resource');
+require('angular-bootstrap');
+require('angular-bootstrap-tpls');
+require('./js/lb-services');
 
+var app = angular.module('app', [
+  require('./modules/person').name,
+  'ui.bootstrap',
+  'lbServices'
+]);
 
-var app = angular.module('app', []);
-
-
-app.controller('HelloCtrl', function($scope) {
-  $scope.test = 'Test V';
+app.config(function($routeProvider) {
+  $routeProvider.otherwise({
+    redirectTo: '/person'
+  });
 });
-
