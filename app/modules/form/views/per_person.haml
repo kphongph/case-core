@@ -27,9 +27,9 @@
   .col-md-4
     {{questiontype.QTDesc}}
     %ol
-      %li{ng-repeat:"question in questiontype.questionvsanswers"}
-        {{question.question.QDesc}}
+      %li{ng-repeat:"question in questiontype.questionaires"}
+        {{question.QDesc}}
         %ol
           %li{ng-repeat:"answer in question.answers"}
-            {{answer.ADesc}}
+            {{answer.answer.ADesc}}
     %pre {{questiontype}}

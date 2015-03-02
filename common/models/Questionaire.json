@@ -87,5 +87,12 @@
         "nullable": "YES"
       }
     }
+  },
+  "relations":{
+    "questiontype":{
+      "type":"belongsTo",
+      "model":"Questiontype",
+      "foreignKey":"QTID"
+    }
   }
 }

@@ -7400,6 +7400,12 @@ module.factory(
       { 'id': '@id' },
       {
 
+        // INTERNAL. Use Questionaire.questiontype() instead.
+        "prototype$__get__questiontype": {
+          url: urlBase + "/Questionaires/:id/questiontype",
+          method: "GET"
+        },
+
         /**
          * @ngdoc method
          * @name lbServices.Questionaire#create
@@ -7741,6 +7747,49 @@ module.factory(
           method: "PUT"
         },
 
+        // INTERNAL. Use Questiontype.questionaires.findById() instead.
+        "::findById::Questiontype::questionaires": {
+          url: urlBase + "/Questiontypes/:id/questionaires/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Questiontype.questionaires.destroyById() instead.
+        "::destroyById::Questiontype::questionaires": {
+          url: urlBase + "/Questiontypes/:id/questionaires/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Questiontype.questionaires.updateById() instead.
+        "::updateById::Questiontype::questionaires": {
+          url: urlBase + "/Questiontypes/:id/questionaires/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Questiontype.questionaires() instead.
+        "::get::Questiontype::questionaires": {
+          isArray: true,
+          url: urlBase + "/Questiontypes/:id/questionaires",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Questiontype.questionaires.create() instead.
+        "::create::Questiontype::questionaires": {
+          url: urlBase + "/Questiontypes/:id/questionaires",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Questiontype.questionaires.destroyAll() instead.
+        "::delete::Questiontype::questionaires": {
+          url: urlBase + "/Questiontypes/:id/questionaires",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Questiontype.questionaires.count() instead.
+        "::count::Questiontype::questionaires": {
+          url: urlBase + "/Questiontypes/:id/questionaires/count",
+          method: "GET"
+        },
+
         // INTERNAL. Use Questionvsanswer.questionaire() instead.
         "::get::Questionvsanswer::questionaire": {
           url: urlBase + "/Questionvsanswers/:id/questionaire",
@@ -7883,6 +7932,42 @@ module.factory(
     R.modelName = "Questionaire";
 
 
+        /**
+         * @ngdoc method
+         * @name lbServices.Questionaire#questiontype
+         * @methodOf lbServices.Questionaire
+         *
+         * @description
+         *
+         * Fetches belongsTo relation questiontype
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `refresh` – `{boolean=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Questiontype` object.)
+         * </em>
+         */
+        R.questiontype = function() {
+          var TargetResource = $injector.get("Questiontype");
+          var action = TargetResource["::get::Questionaire::questiontype"];
+          return action.apply(R, arguments);
+        };
+
     return R;
   }]);
 
@@ -7917,6 +8002,24 @@ module.factory(
           method: "GET"
         },
 
+        // INTERNAL. Use Questiontype.questionaires.findById() instead.
+        "prototype$__findById__questionaires": {
+          url: urlBase + "/Questiontypes/:id/questionaires/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Questiontype.questionaires.destroyById() instead.
+        "prototype$__destroyById__questionaires": {
+          url: urlBase + "/Questiontypes/:id/questionaires/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Questiontype.questionaires.updateById() instead.
+        "prototype$__updateById__questionaires": {
+          url: urlBase + "/Questiontypes/:id/questionaires/:fk",
+          method: "PUT"
+        },
+
         // INTERNAL. Use Questiontype.questionvsanswers.findById() instead.
         "prototype$__findById__questionvsanswers": {
           url: urlBase + "/Questiontypes/:id/questionvsanswers/:fk",
@@ -7933,6 +8036,31 @@ module.factory(
         "prototype$__updateById__questionvsanswers": {
           url: urlBase + "/Questiontypes/:id/questionvsanswers/:fk",
           method: "PUT"
+        },
+
+        // INTERNAL. Use Questiontype.questionaires() instead.
+        "prototype$__get__questionaires": {
+          isArray: true,
+          url: urlBase + "/Questiontypes/:id/questionaires",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Questiontype.questionaires.create() instead.
+        "prototype$__create__questionaires": {
+          url: urlBase + "/Questiontypes/:id/questionaires",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Questiontype.questionaires.destroyAll() instead.
+        "prototype$__delete__questionaires": {
+          url: urlBase + "/Questiontypes/:id/questionaires",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Questiontype.questionaires.count() instead.
+        "prototype$__count__questionaires": {
+          url: urlBase + "/Questiontypes/:id/questionaires/count",
+          method: "GET"
         },
 
         // INTERNAL. Use Questiontype.questionvsanswers() instead.
@@ -8344,6 +8472,12 @@ module.factory(
           method: "GET"
         },
 
+        // INTERNAL. Use Questionaire.questiontype() instead.
+        "::get::Questionaire::questiontype": {
+          url: urlBase + "/Questionaires/:id/questiontype",
+          method: "GET"
+        },
+
         // INTERNAL. Use Questionvsanswer.questiontype() instead.
         "::get::Questionvsanswer::questiontype": {
           url: urlBase + "/Questionvsanswers/:id/questiontype",
@@ -8519,6 +8653,269 @@ module.factory(
         R.form = function() {
           var TargetResource = $injector.get("Form");
           var action = TargetResource["::get::Questiontype::form"];
+          return action.apply(R, arguments);
+        };
+    /**
+     * @ngdoc object
+     * @name lbServices.Questiontype.questionaires
+     * @header lbServices.Questiontype.questionaires
+     * @object
+     * @description
+     *
+     * The object `Questiontype.questionaires` groups methods
+     * manipulating `Questionaire` instances related to `Questiontype`.
+     *
+     * Call {@link lbServices.Questiontype#questionaires Questiontype.questionaires()}
+     * to query all related instances.
+     */
+
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questiontype#questionaires
+         * @methodOf lbServices.Questiontype
+         *
+         * @description
+         *
+         * Queries questionaires of Questiontype.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `filter` – `{object=}` - 
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Questionaire` object.)
+         * </em>
+         */
+        R.questionaires = function() {
+          var TargetResource = $injector.get("Questionaire");
+          var action = TargetResource["::get::Questiontype::questionaires"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questiontype.questionaires#count
+         * @methodOf lbServices.Questiontype.questionaires
+         *
+         * @description
+         *
+         * Counts questionaires of Questiontype.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `count` – `{number=}` - 
+         */
+        R.questionaires.count = function() {
+          var TargetResource = $injector.get("Questionaire");
+          var action = TargetResource["::count::Questiontype::questionaires"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questiontype.questionaires#create
+         * @methodOf lbServices.Questiontype.questionaires
+         *
+         * @description
+         *
+         * Creates a new instance in questionaires of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Questionaire` object.)
+         * </em>
+         */
+        R.questionaires.create = function() {
+          var TargetResource = $injector.get("Questionaire");
+          var action = TargetResource["::create::Questiontype::questionaires"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questiontype.questionaires#destroyAll
+         * @methodOf lbServices.Questiontype.questionaires
+         *
+         * @description
+         *
+         * Deletes all questionaires of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.questionaires.destroyAll = function() {
+          var TargetResource = $injector.get("Questionaire");
+          var action = TargetResource["::delete::Questiontype::questionaires"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questiontype.questionaires#destroyById
+         * @methodOf lbServices.Questiontype.questionaires
+         *
+         * @description
+         *
+         * Delete a related item by id for questionaires
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for questionaires
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.questionaires.destroyById = function() {
+          var TargetResource = $injector.get("Questionaire");
+          var action = TargetResource["::destroyById::Questiontype::questionaires"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questiontype.questionaires#findById
+         * @methodOf lbServices.Questiontype.questionaires
+         *
+         * @description
+         *
+         * Find a related item by id for questionaires
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for questionaires
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Questionaire` object.)
+         * </em>
+         */
+        R.questionaires.findById = function() {
+          var TargetResource = $injector.get("Questionaire");
+          var action = TargetResource["::findById::Questiontype::questionaires"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questiontype.questionaires#updateById
+         * @methodOf lbServices.Questiontype.questionaires
+         *
+         * @description
+         *
+         * Update a related item by id for questionaires
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for questionaires
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Questionaire` object.)
+         * </em>
+         */
+        R.questionaires.updateById = function() {
+          var TargetResource = $injector.get("Questionaire");
+          var action = TargetResource["::updateById::Questiontype::questionaires"];
           return action.apply(R, arguments);
         };
     /**

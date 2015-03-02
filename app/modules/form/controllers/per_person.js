@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function($scope, $routeParams, Host, Person, 
-  Questiontype, Form, Systemtype) {
+  Questiontype, Questionvsanswer, Form, Systemtype) {
   $scope.person = null;
   $scope.alerts = [];
 
@@ -61,10 +61,24 @@ module.exports = function($scope, $routeParams, Host, Person,
 
   $scope.selectQuestiontype = function(questiontype) {
     $scope.questiontype = questiontype;
-    Questiontype.questionvsanswers({id:questiontype.QTID,
-      filter:{include:['answer','questionaire']}
-    })
+    Questiontype.questionaires({id:questiontype.QTID})
     .$promise.then(function(results) {
+      $scope.questiontype.questionaires = results;
+      results.forEach(function(qe) {
+        Questionvsanswer.find({filter:{
+          where:{
+            and:[
+              {QID:qe.QID},
+              {QTID:qe.QTID}
+            ]
+          },
+          include:['answer']
+        }}).$promise.then(function(answers) {
+          qe.answers = answers;
+        });
+      });
+
+      /*
       $scope.questiontype.questionvsanswers = [];
       var qid_list = {};
       results.forEach(function(qa) {
@@ -76,6 +90,7 @@ module.exports = function($scope, $routeParams, Host, Person,
       for(var key in qid_list) {
         $scope.questiontype.questionvsanswers.push(qid_list[key]);
       }
+      */
     });
   }
 

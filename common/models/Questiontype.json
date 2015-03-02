@@ -98,6 +98,11 @@
       "type":"hasMany",
       "model":"Questionvsanswer",
       "foreignKey":"QTID"
+    },
+    "questionaires":{
+      "type":"hasMany",
+      "model":"Questionaire",
+      "foreignKey":"QTID"
     }
   }
 }
