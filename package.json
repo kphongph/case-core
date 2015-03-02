@@ -35,6 +35,7 @@
     "gulp-bower":"latest",
     "gulp-concat":"latest",
     "gulp-rename":"latest",
+    "gulp-jsbeautify":"latest",
     "gulp-haml":"latest",
     "gulp-loopback-sdk-angular":"latest",
     "angular":"latest",

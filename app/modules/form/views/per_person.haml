@@ -1,0 +1,35 @@
+.row
+  .page-header
+    %h2 Service
+
+.row
+  .col-md-4
+    .row
+      .panel.panel-default{ng-show:"person"}
+        .panel-heading Person
+        .panel-body
+          {{person.CID}} {{person.FirstName}} {{person.LastName}}
+    .row
+      .panel.panel-default{ng-show:"person"}
+        .panel-heading Form
+        .panel-body
+          %ol
+            %li{ng-repeat:"form in system.forms"}
+              %a{ng-click:"selectForm(form)"}
+                {{form.FDesc}}
+  .col-md-4
+    {{form.FDesc}}
+    %ol
+      %li{ng-repeat:"questiontype in form.questiontypes"}
+        %a{ng-click:"selectQuestiontype(questiontype)"}
+          {{questiontype.QTDesc}}
+    %pre {{form}}
+  .col-md-4
+    {{questiontype.QTDesc}}
+    %ol
+      %li{ng-repeat:"question in questiontype.questionvsanswers"}
+        {{question.question.QDesc}}
+        %ol
+          %li{ng-repeat:"answer in question.answers"}
+            {{answer.ADesc}}
+    %pre {{questiontype}}

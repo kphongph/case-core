@@ -1,14 +1,14 @@
 {
-  "name": "Form",
+  "name": "Answer",
   "options": {
     "idInjection": false,
     "mssql": {
       "schema": "dbo",
-      "table": "Form"
+      "table": "Answer"
     }
   },
   "properties": {
-    "FID": {
+    "AID": {
       "type": "String",
       "required": true,
       "length": 5,
@@ -16,7 +16,7 @@
       "scale": null,
       "id": 1,
       "mssql": {
-        "columnName": "FID",
+        "columnName": "AID",
         "dataType": "varchar",
         "dataLength": 5,
         "dataPrecision": null,
@@ -24,43 +24,52 @@
         "nullable": "NO"
       }
     },
-    "FDesc": {
+    "ADesc": {
       "type": "String",
-      "required": false,
-      "length": 250,
+      "required": true,
+      "length": -1,
       "precision": null,
       "scale": null,
       "mssql": {
-        "columnName": "FDesc",
+        "columnName": "ADesc",
         "dataType": "varchar",
-        "dataLength": 250,
+        "dataLength": -1,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      }
+    },
+    "AnswerGroupID": {
+      "type": "String",
+      "required": false,
+      "length": 5,
+      "precision": null,
+      "scale": null,
+      "id": 1,
+      "mssql": {
+        "columnName": "AnswerGroupID",
+        "dataType": "varchar",
+        "dataLength": 5,
         "dataPrecision": null,
         "dataScale": null,
         "nullable": "YES"
       }
     },
-    "SType_ID": {
+    "SubAnswer": {
       "type": "String",
-      "required": true,
+      "required": false,
       "length": 5,
       "precision": null,
       "scale": null,
-      "id": 2,
+      "id": 1,
       "mssql": {
-        "columnName": "SType_ID",
+        "columnName": "SubAnswer",
         "dataType": "varchar",
         "dataLength": 5,
         "dataPrecision": null,
         "dataScale": null,
-        "nullable": "NO"
+        "nullable": "YES"
       }
-    }
-  },
-  "relations": {
-    "questiontypes": {
-      "type":"hasMany",
-      "model":"Questiontype",
-      "foreignKey":"FID"
     }
   }
 }

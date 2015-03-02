@@ -28,6 +28,10 @@
     "dataSource": "caseDs",
     "public": true 
   },
+  "Answer": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
   "City": {
     "dataSource": "caseDs",
     "public": true 
@@ -45,6 +49,18 @@
     "public": true 
   },
   "Gender": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Questionaire": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Questiontype": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Questionvsanswer": {
     "dataSource": "caseDs",
     "public": true 
   },

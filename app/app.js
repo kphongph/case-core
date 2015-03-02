@@ -11,6 +11,7 @@ require('./js/lb-services');
 
 var app = angular.module('app', [
   require('./modules/person').name,
+  require('./modules/form').name,
   'ui.bootstrap',
   'lbServices'
 ]);

@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var bower = require('gulp-bower');
 var concat = require('gulp-concat');
+var beautify = require('gulp-jsbeautify');
 var rename = require('gulp-rename');
 var haml = require('gulp-haml');
 var loopbackAngular = require('gulp-loopback-sdk-angular');
@@ -15,6 +16,14 @@ gulp.task('lint', function() {
 gulp.task('views', function() {
   gulp.src('app/**/*.html')
   .pipe(gulp.dest('dist/'));
+});
+
+gulp.task('beautify', function() {
+  gulp.src('app/modules/**/*.js')
+  .pipe(beautify({
+    indent_size:2
+  }))
+  .pipe(gulp.dest('app/modules/'));
 });
 
 gulp.task('css', function() {
