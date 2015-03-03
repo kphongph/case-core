@@ -71,7 +71,7 @@
         "nullable": "YES"
       }
     },
-    "iucontrol": {
+    "IUControl": {
       "type": "String",
       "required": false,
       "length": 5,

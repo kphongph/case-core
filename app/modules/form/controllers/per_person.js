@@ -102,6 +102,7 @@ module.exports = function($scope, $routeParams, Host, Person,
               qe.answers.forEach(function(answer) {
                 if (answer.AID == record_dict[qe.QTID + '-' + qe.QID]) {
                   answer.selected = true;
+                  qe.selected_answer = answer.AID;
                 }
               });
 

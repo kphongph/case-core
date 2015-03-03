@@ -32,13 +32,20 @@
     {{questiontype.QTDesc}}
     %ol
       %li{ng-repeat:"question in questiontype.questionaires"}
-        {{question.QDesc}}
-        %ol
-          %li{ng-repeat:"answer in question.answers"}
-            %span{ng-if:"answer.selected"} 
-              %p.bg-success {{answer.answer.ADesc}}
-            %span{ng-if:"!answer.selected"} 
-              {{answer.answer.ADesc}}
+        .form-group
+          %label {{question.QDesc}}
+          %span{ng-if:"question.IUControl == '20030'"} 
+            %div.radio{ng-repeat:"answer in question.answers"} 
+              %label
+                != '<input type="radio" ng-model="question.selected_answer" ng-value="answer.answer.AID"> {{answer.answer.ADesc}}'
+            
+        %span{ng-if:"question.IUControl != '20030'"} 
+          %ol
+            %li{ng-repeat:"answer in question.answers"}
+              %span{ng-if:"answer.selected"} 
+                %p.bg-success {{answer.answer.ADesc}}
+              %span{ng-if:"!answer.selected"} 
+                {{answer.answer.ADesc}}
     Qtimestamps
     %pre {{questiontype.qtimestamps}}
     %pre {{questiontype}}
