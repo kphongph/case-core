@@ -52,6 +52,14 @@
     "dataSource": "caseDs",
     "public": true 
   },
+  "Qrecord": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Qtimestamp": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
   "Questionaire": {
     "dataSource": "caseDs",
     "public": true 

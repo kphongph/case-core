@@ -23,6 +23,10 @@
       %li{ng-repeat:"questiontype in form.questiontypes"}
         %a{ng-click:"selectQuestiontype(questiontype)"}
           {{questiontype.QTDesc}}
+        %ol
+          %li{ng-repeat:"qtimestamp in questiontype.qtimestamps"}
+            %a{ng-click:"selectQtimestamp(qtimestamp)"}
+              {{qtimestamp.RecordDate|date:"dd-MM-yyyy"}}
     %pre {{form}}
   .col-md-4
     {{questiontype.QTDesc}}
@@ -31,5 +35,11 @@
         {{question.QDesc}}
         %ol
           %li{ng-repeat:"answer in question.answers"}
-            {{answer.answer.ADesc}}
+            %span{ng-if:"answer.selected"} 
+              %p.bg-success {{answer.answer.ADesc}}
+            %span{ng-if:"!answer.selected"} 
+              {{answer.answer.ADesc}}
+    Qtimestamps
+    %pre {{questiontype.qtimestamps}}
     %pre {{questiontype}}
+
