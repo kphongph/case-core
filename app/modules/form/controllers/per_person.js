@@ -77,14 +77,14 @@ module.exports = function($scope, $routeParams, Host, Person,
       // make dict for record
       var record_dict = {};
       records.forEach(function(record) {
-        record_dict[record.QTID + '-' + record.QID] = record.AID;
+        record_dict[record.QTID + '-' + record.QID] = record;
       });
       Questiontype.questionaires({
           id: qtimestamp.QTID
         })
         .$promise.then(function(results) {
           $scope.questiontype.questionaires = results;
-          results.forEach(function(qe) {
+          results.forEach(function(qe,index) {
             Questionvsanswer.find({
               filter: {
                 where: {
@@ -97,12 +97,13 @@ module.exports = function($scope, $routeParams, Host, Person,
                 include: ['answer']
               }
             }).$promise.then(function(answers) {
-              // mark bold for selected
               qe.answers = answers;
               qe.answers.forEach(function(answer) {
-                if (answer.AID == record_dict[qe.QTID + '-' + qe.QID]) {
+                var c_record = record_dict[qe.QTID+'-'+qe.QID];
+                if (answer.AID == c_record.AID) {
                   answer.selected = true;
-                  qe.selected_answer = answer.AID;
+                  qe.qrecord_org = angular.copy(c_record);
+                  qe.qrecord = c_record;
                 }
               });
 
@@ -111,6 +112,23 @@ module.exports = function($scope, $routeParams, Host, Person,
         });
     });
   };
+
+  $scope.$watch("questiontype.questionaires", function(val) {
+    if($scope.questiontype && $scope.questiontype.questionaires) {
+      $scope.questiontype.questionaires.forEach(function(qe) {   
+        if(qe.qrecord) {
+          // update
+          if(qe.qrecord_org.AID != qe.qrecord.AID) {
+          qe.qrecord.message = "saving...";
+          qe.qrecord.$save(function(result) {
+            qe.qrecord.message = "saved";
+            qe.qrecord_org = angular.copy(result);
+          });
+          }
+        }
+      });
+    }
+  },true);
 
   $scope.selectQuestiontype = function(questiontype) {
     $scope.questiontype = questiontype;

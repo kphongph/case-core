@@ -33,17 +33,21 @@
               {{qtimestamp.RecordDate|date:"dd-MM-yyyy"}}
 
         .form-group{ng-repeat:"question in questiontype.questionaires"}
-          %label {{question.QDesc}}
-            %span{ng-if:"question.IUControl == '20030'"} 
-              %div.radio{ng-repeat:"answer in question.answers"} 
-                %label
-                  != '<input type="radio" ng-model="question.selected_answer" ng-value="answer.answer.AID"> {{answer.answer.ADesc}}'
+          %label 
+            {{question.QDesc}}
+            %span{ng-if:"question.qrecord.message"}
+              &nbsp; {{question.qrecord.message}}
             
-            %span{ng-if:"question.IUControl != '20030'"} 
-              %ol
-                %li{ng-repeat:"answer in question.answers"}
-                  %span{ng-if:"answer.selected"} 
-                    %p.bg-success {{answer.answer.ADesc}}
-                  %span{ng-if:"!answer.selected"} 
-                    {{answer.answer.ADesc}}
+          %span{ng-if:"question.IUControl == '20030'"} 
+            %div.radio{ng-repeat:"answer in question.answers"} 
+              %label
+                != '<input type="radio" ng-model="question.qrecord.AID" ng-value="answer.answer.AID"> {{answer.answer.ADesc}}'
+ 
+          %span{ng-if:"question.IUControl != '20030'"} 
+            %ol
+              %li{ng-repeat:"answer in question.answers"}
+                %span{ng-if:"answer.selected"} 
+                  %p.bg-success {{answer.answer.ADesc}}
+                %span{ng-if:"!answer.selected"} 
+                  {{answer.answer.ADesc}}
 

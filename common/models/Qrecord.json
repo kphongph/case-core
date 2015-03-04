@@ -8,13 +8,26 @@
     }
   },
   "properties": {
+    "id": {
+      "type": "Number",
+      "required": true,
+      "precision": null,
+      "scale": null,
+      "id": 1,
+      "mssql": {
+        "columnName": "id",
+        "dataType": "int",
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      }
+    },
     "CID": {
       "type": "String",
       "required": true,
       "length": 13,
       "precision": null,
       "scale": null,
-      "id": 1,
       "mssql": {
         "columnName": "CID",
         "dataType": "varchar",
@@ -30,7 +43,6 @@
       "length": 5,
       "precision": null,
       "scale": null,
-      "id": 2,
       "mssql": {
         "columnName": "QTID",
         "dataType": "varchar",
@@ -46,7 +58,6 @@
       "length": null,
       "precision": 10,
       "scale": 0,
-      "id": 3,
       "mssql": {
         "columnName": "QTSID",
         "dataType": "int",
@@ -62,7 +73,6 @@
       "length": 5,
       "precision": null,
       "scale": null,
-      "id": 4,
       "mssql": {
         "columnName": "QID",
         "dataType": "varchar",
@@ -78,7 +88,6 @@
       "length": 5,
       "precision": null,
       "scale": null,
-      "id": 5,
       "mssql": {
         "columnName": "AID",
         "dataType": "varchar",
