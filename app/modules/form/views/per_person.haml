@@ -3,7 +3,7 @@
     %h2 Service
 
 .row
-  .col-md-4
+  .col-md-5
     .row
       .panel.panel-default{ng-show:"person"}
         .panel-heading Person
@@ -17,36 +17,33 @@
             %li{ng-repeat:"form in system.forms"}
               %a{ng-click:"selectForm(form)"}
                 {{form.FDesc}}
-  .col-md-4
-    {{form.FDesc}}
-    %ol
-      %li{ng-repeat:"questiontype in form.questiontypes"}
-        %a{ng-click:"selectQuestiontype(questiontype)"}
-          {{questiontype.QTDesc}}
+              %ul
+                %li{ng-repeat:"questiontype in form.questiontypes"}
+                  %a{ng-click:"selectQuestiontype(questiontype)"}
+                    {{questiontype.QTDesc}}
+  .col-md-7
+    .panel.panel-default{ng-show:"person"}
+      .panel-heading {{form.FDesc}}
+      .panel-body
+        %p {{questiontype.QTDesc}}
+  
         %ol
           %li{ng-repeat:"qtimestamp in questiontype.qtimestamps"}
             %a{ng-click:"selectQtimestamp(qtimestamp)"}
               {{qtimestamp.RecordDate|date:"dd-MM-yyyy"}}
-    %pre {{form}}
-  .col-md-4
-    {{questiontype.QTDesc}}
-    %ol
-      %li{ng-repeat:"question in questiontype.questionaires"}
-        .form-group
+
+        .form-group{ng-repeat:"question in questiontype.questionaires"}
           %label {{question.QDesc}}
-          %span{ng-if:"question.IUControl == '20030'"} 
-            %div.radio{ng-repeat:"answer in question.answers"} 
-              %label
-                != '<input type="radio" ng-model="question.selected_answer" ng-value="answer.answer.AID"> {{answer.answer.ADesc}}'
+            %span{ng-if:"question.IUControl == '20030'"} 
+              %div.radio{ng-repeat:"answer in question.answers"} 
+                %label
+                  != '<input type="radio" ng-model="question.selected_answer" ng-value="answer.answer.AID"> {{answer.answer.ADesc}}'
             
-        %span{ng-if:"question.IUControl != '20030'"} 
-          %ol
-            %li{ng-repeat:"answer in question.answers"}
-              %span{ng-if:"answer.selected"} 
-                %p.bg-success {{answer.answer.ADesc}}
-              %span{ng-if:"!answer.selected"} 
-                {{answer.answer.ADesc}}
-    Qtimestamps
-    %pre {{questiontype.qtimestamps}}
-    %pre {{questiontype}}
+            %span{ng-if:"question.IUControl != '20030'"} 
+              %ol
+                %li{ng-repeat:"answer in question.answers"}
+                  %span{ng-if:"answer.selected"} 
+                    %p.bg-success {{answer.answer.ADesc}}
+                  %span{ng-if:"!answer.selected"} 
+                    {{answer.answer.ADesc}}
 
