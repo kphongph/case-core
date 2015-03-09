@@ -6,13 +6,9 @@
   .col-md-5
     .row
       .panel.panel-default{ng-show:"person"}
-        .panel-heading Person
-        .panel-body
-          {{person.CID}} {{person.FirstName}} {{person.LastName}}
-    .row
-      .panel.panel-default{ng-show:"person"}
         .panel-heading Form
         .panel-body
+          {{person.CID}} {{person.FirstName}} {{person.LastName}}
           %ol
             %li{ng-repeat:"form in system.forms"}
               %a{ng-click:"selectForm(form)"}
