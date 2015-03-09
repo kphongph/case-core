@@ -39,6 +39,7 @@
     "gulp-haml":"latest",
     "gulp-loopback-sdk-angular":"latest",
     "angular":"latest",
+    "mongodb":"latest",
     "browserify-shim":"latest"
   },
   "dependencies": {

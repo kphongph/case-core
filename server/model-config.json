@@ -85,7 +85,7 @@
     "public": true 
   },
   "Person": {
-    "dataSource": "caseDs",
+    "dataSource": "caseMongoDs",
     "public": true 
   },
   "Race": {

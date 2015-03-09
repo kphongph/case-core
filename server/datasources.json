@@ -12,6 +12,10 @@
     "username":"sa",
     "password":"Theerawutt53"
   },
+  "caseMongoDs" : {
+    "connector": "mongodb",
+    "url":"mongodb://128.199.108.210:27017/casedb"
+  },
   "aclDs": {
     "connector": "mongodb",
     "url":"mongodb://test:test123@ds047911.mongolab.com:47911/case_acl"

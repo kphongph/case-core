@@ -17,25 +17,28 @@ module.exports = function() {
         var filter = {
           'where': {}
         };
+        var pattern = '.*'+query_text+'.*';
+        /*
         filter['fields'] = {
           'CID': true,
           'FirstName': true,
           'LastName': true
         };
+        */
         var or_c = [];
         or_c.push({
           CID: {
-            like: '%' + query_text + '%'
+            like:pattern
           }
         });
         or_c.push({
           FirstName: {
-            like: '%' + query_text + '%'
+            like:pattern
           }
         });
         or_c.push({
           LastName: {
-            like: '%' + query_text + '%'
+            like:pattern
           }
         });
         filter['where']['or'] = or_c;
@@ -48,6 +51,7 @@ module.exports = function() {
           filter['skip'] = (page - 1) * itemPerPage;
           return query;
         } else {
+          console.log(JSON.stringify(filter));
           return filter;
         }
       };
@@ -62,6 +66,7 @@ module.exports = function() {
         $scope.currentPage = 0;
         Person.count(build_query($scope.query_text))
           .$promise.then(function(result) {
+            console.log("search "+result.count);
             $scope.count = result.count;
             $scope.currentPage = 1;
           });

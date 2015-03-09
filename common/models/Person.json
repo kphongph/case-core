@@ -1,11 +1,10 @@
 {
   "name": "Person",
+  "mongodb": {
+    "collection":"person"
+  },
   "options": {
-    "idInjection": false,
-    "mssql": {
-      "schema": "dbo",
-      "table": "Person"
-    }
+    "idInjection": true
   },
   "properties": {
     "CID": {
@@ -14,31 +13,14 @@
       "generated": false,
       "length": 13,
       "precision": null,
-      "scale": null,
-      "id": true,
-      "mssql": {
-        "columnName": "CID",
-        "dataType": "varchar",
-        "dataLength": 13,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "scale": null
     },
     "Title": {
       "type": "String",
       "required": false,
       "length": 4,
       "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "Title",
-        "dataType": "varchar",
-        "dataLength": 4,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+      "scale": null
     },
     "FirstName": {
       "type": "String",
