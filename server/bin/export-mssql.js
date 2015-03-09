@@ -2,7 +2,8 @@ var path = require('path');
 var app = require(path.resolve(__dirname, '../server'));
 var datasource = app.dataSources['caseDs'];
 
-var Person = app.models.Person;
+// var Model = app.models.Person;
+var Model = app.models.Systemtype;
 
 var MongoClient = require('mongodb').MongoClient;
 var url = 'mongodb://128.199.108.210:27017/casedb';
@@ -10,15 +11,16 @@ var url = 'mongodb://128.199.108.210:27017/casedb';
 
 MongoClient.connect(url, function(err, db) {
   if(err) throw err;
-  var collection = db.collection('person');
+  // var collection = db.collection('person');
+  var collection = db.collection('systemtype');
 
   collection.drop(function(err, reply) {
-    Person.find(function(err, results) {
+    Model.find(function(err, results) {
       var total = results.length;
       var count = 0;
       console.log("inserting "+total+" records");
-      results.forEach(function(person) {
-        collection.insert(person.__data, function(err, result) {
+      results.forEach(function(record) {
+        collection.insert(record.__data, function(err, result) {
           if(err) {
             console.log(err);
           } else {

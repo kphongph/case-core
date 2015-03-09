@@ -1,43 +1,21 @@
 {
   "name": "Systemtype",
+  "mongodb" : {
+    "collection":"systemtype"
+  },
   "options": {
-    "idInjection": false,
-    "mssql": {
-      "schema": "dbo",
-      "table": "SystemType"
-    }
+    "idInjection": true
   },
   "properties": {
     "SType_ID": {
       "type": "String",
       "required": true,
-      "length": 5,
-      "precision": null,
-      "scale": null,
-      "id": 1,
-      "mssql": {
-        "columnName": "SType_ID",
-        "dataType": "varchar",
-        "dataLength": 5,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "length": 5
     },
     "SType_Desc": {
       "type": "String",
       "required": false,
-      "length": -1,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "SType_Desc",
-        "dataType": "varchar",
-        "dataLength": -1,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+      "length": -1
     }
   },
   "relations": {
