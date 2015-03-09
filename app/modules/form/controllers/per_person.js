@@ -30,10 +30,10 @@ module.exports = function($scope, $routeParams, Host, Person,
     $scope.person.age = checkAge($scope.person);
     var system_types = "";
 
-    // test with cid 0000000000013
+    // test with person id 54fda8c07b080506038e040f
 
     if ($scope.person.age >= 60) {
-      system_types = "00001";
+      system_types = "54fdc3e2aad7a5dc035e58eb";
     }
 
     Systemtype.findById({
@@ -53,7 +53,7 @@ module.exports = function($scope, $routeParams, Host, Person,
   $scope.selectForm = function(form) {
     $scope.form = form;
     Form.questiontypes({
-        id: form.FID
+        id: form.id
       })
       .$promise.then(function(results) {
         $scope.form.questiontypes = results;

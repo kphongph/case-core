@@ -41,7 +41,7 @@
     "public": true 
   },
   "Form": {
-    "dataSource": "caseDs",
+    "dataSource": "caseMongoDs",
     "public": true 
   },
   "Host": {
@@ -65,7 +65,7 @@
     "public": true 
   },
   "Questiontype": {
-    "dataSource": "caseDs",
+    "dataSource": "caseMongoDs",
     "public": true 
   },
   "Questionvsanswer": {

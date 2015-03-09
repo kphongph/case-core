@@ -1,10 +1,9 @@
 {
   "name": "Form",
   "options": {
-    "idInjection": false,
-    "mssql": {
-      "schema": "dbo",
-      "table": "Form"
+    "idInjection": true,
+    "mongodb": {
+      "collection":"form"
     }
   },
   "properties": {
@@ -14,7 +13,6 @@
       "length": 5,
       "precision": null,
       "scale": null,
-      "id": 1,
       "mssql": {
         "columnName": "FID",
         "dataType": "varchar",
@@ -45,7 +43,6 @@
       "length": 5,
       "precision": null,
       "scale": null,
-      "id": 2,
       "mssql": {
         "columnName": "SType_ID",
         "dataType": "varchar",
@@ -60,7 +57,12 @@
     "questiontypes": {
       "type":"hasMany",
       "model":"Questiontype",
-      "foreignKey":"FID"
+      "foreignKey":"formId"
+    },
+    "systemtype": {
+      "type":"belongsTo",
+      "model":"Systemtype",
+      "foreignKey":"systemtypeId"
     }
   }
 }

@@ -22,7 +22,7 @@
     "forms" : {
       "type" : "hasMany",
       "model" : "Form",
-      "foreignKey": "SType_ID"
+      "foreignKey": "systemtypeId"
     }
   }
 }
