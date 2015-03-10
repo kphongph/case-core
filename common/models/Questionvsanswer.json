@@ -1,10 +1,9 @@
 {
   "name": "Questionvsanswer",
   "options": {
-    "idInjection": false,
-    "mssql": {
-      "schema": "dbo",
-      "table": "QuestionVSAnswer"
+    "idInjection": true,
+    "mongodb": {
+      "collection": "questionvsanswers"
     }
   },
   "properties": {
@@ -14,7 +13,6 @@
       "length": 5,
       "precision": null,
       "scale": null,
-      "id": 1,
       "mssql": {
         "columnName": "QID",
         "dataType": "varchar",
@@ -30,7 +28,6 @@
       "length": 5,
       "precision": null,
       "scale": null,
-      "id": 2,
       "mssql": {
         "columnName": "AID",
         "dataType": "varchar",
@@ -61,7 +58,6 @@
       "length": 5,
       "precision": null,
       "scale": null,
-      "id": 3,
       "mssql": {
         "columnName": "QTID",
         "dataType": "varchar",
@@ -103,20 +99,15 @@
     }
   },
   "relations":{
-    "questiontype":{
-      "type":"belongsTo",
-      "model":"Questiontype",
-      "foreignKey":"QTID"
-    },
     "questionaire" : {
       "type":"belongsTo",
       "model":"Questionaire",
-      "foreignKey":"QID"
+      "foreignKey":"questionaireId"
     },
     "answer" : {
       "type":"belongsTo",
       "model":"Answer",
-      "foreignKey":"AID"
+      "foreignKey":"answerId"
     }
   }
 }

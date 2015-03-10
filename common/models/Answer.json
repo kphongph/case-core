@@ -1,10 +1,9 @@
 {
   "name": "Answer",
   "options": {
-    "idInjection": false,
-    "mssql": {
-      "schema": "dbo",
-      "table": "Answer"
+    "idInjection": true,
+    "mongodb": {
+      "collection": "answers"
     }
   },
   "properties": {
@@ -14,7 +13,6 @@
       "length": 5,
       "precision": null,
       "scale": null,
-      "id": 1,
       "mssql": {
         "columnName": "AID",
         "dataType": "varchar",
@@ -45,7 +43,6 @@
       "length": 5,
       "precision": null,
       "scale": null,
-      "id": 1,
       "mssql": {
         "columnName": "AnswerGroupID",
         "dataType": "varchar",
@@ -61,7 +58,6 @@
       "length": 5,
       "precision": null,
       "scale": null,
-      "id": 1,
       "mssql": {
         "columnName": "SubAnswer",
         "dataType": "varchar",

@@ -57,7 +57,12 @@
     "questionaires":{
       "type":"hasMany",
       "model":"Questionaire",
-      "foreignKey":"QTID"
+      "foreignKey":"questiontypeId"
+    },
+    "qtimestamps":{
+      "type":"hasMany",
+      "model":"Qtimestamp",
+      "foreignKey":"questiontypeId"
     }
   }
 }

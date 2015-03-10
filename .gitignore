@@ -4,3 +4,5 @@ bower_components
 dist
 *.DS_Store
 *.swp
+.c9
+client/vendor

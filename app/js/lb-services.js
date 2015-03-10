@@ -3791,6 +3791,12 @@ module.factory(
           method: "PUT"
         },
 
+        // INTERNAL. Use Qrecord.answer() instead.
+        "::get::Qrecord::answer": {
+          url: urlBase + "/Qrecords/:id/answer",
+          method: "GET"
+        },
+
         // INTERNAL. Use Questionvsanswer.answer() instead.
         "::get::Questionvsanswer::answer": {
           url: urlBase + "/Questionvsanswers/:id/answer",
@@ -5080,6 +5086,12 @@ module.factory(
           method: "PUT"
         },
 
+        // INTERNAL. Use Form.systemtype() instead.
+        "prototype$__get__systemtype": {
+          url: urlBase + "/Forms/:id/systemtype",
+          method: "GET"
+        },
+
         // INTERNAL. Use Form.questiontypes() instead.
         "prototype$__get__questiontypes": {
           isArray: true,
@@ -5891,6 +5903,42 @@ module.factory(
         R.questiontypes.updateById = function() {
           var TargetResource = $injector.get("Questiontype");
           var action = TargetResource["::updateById::Form::questiontypes"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Form#systemtype
+         * @methodOf lbServices.Form
+         *
+         * @description
+         *
+         * Fetches belongsTo relation systemtype
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `refresh` – `{boolean=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Systemtype` object.)
+         * </em>
+         */
+        R.systemtype = function() {
+          var TargetResource = $injector.get("Systemtype");
+          var action = TargetResource["::get::Form::systemtype"];
           return action.apply(R, arguments);
         };
 
@@ -7400,6 +7448,24 @@ module.factory(
       { 'id': '@id' },
       {
 
+        // INTERNAL. Use Qrecord.answer() instead.
+        "prototype$__get__answer": {
+          url: urlBase + "/Qrecords/:id/answer",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Qrecord.qtimestamp() instead.
+        "prototype$__get__qtimestamp": {
+          url: urlBase + "/Qrecords/:id/qtimestamp",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Qrecord.questionaire() instead.
+        "prototype$__get__questionaire": {
+          url: urlBase + "/Qrecords/:id/questionaire",
+          method: "GET"
+        },
+
         /**
          * @ngdoc method
          * @name lbServices.Qrecord#create
@@ -7740,6 +7806,49 @@ module.factory(
           url: urlBase + "/Qrecords/:id",
           method: "PUT"
         },
+
+        // INTERNAL. Use Qtimestamp.qrecords.findById() instead.
+        "::findById::Qtimestamp::qrecords": {
+          url: urlBase + "/Qtimestamps/:id/qrecords/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Qtimestamp.qrecords.destroyById() instead.
+        "::destroyById::Qtimestamp::qrecords": {
+          url: urlBase + "/Qtimestamps/:id/qrecords/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Qtimestamp.qrecords.updateById() instead.
+        "::updateById::Qtimestamp::qrecords": {
+          url: urlBase + "/Qtimestamps/:id/qrecords/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Qtimestamp.qrecords() instead.
+        "::get::Qtimestamp::qrecords": {
+          isArray: true,
+          url: urlBase + "/Qtimestamps/:id/qrecords",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Qtimestamp.qrecords.create() instead.
+        "::create::Qtimestamp::qrecords": {
+          url: urlBase + "/Qtimestamps/:id/qrecords",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Qtimestamp.qrecords.destroyAll() instead.
+        "::delete::Qtimestamp::qrecords": {
+          url: urlBase + "/Qtimestamps/:id/qrecords",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Qtimestamp.qrecords.count() instead.
+        "::count::Qtimestamp::qrecords": {
+          url: urlBase + "/Qtimestamps/:id/qrecords/count",
+          method: "GET"
+        },
       }
     );
 
@@ -7877,6 +7986,114 @@ module.factory(
     R.modelName = "Qrecord";
 
 
+        /**
+         * @ngdoc method
+         * @name lbServices.Qrecord#answer
+         * @methodOf lbServices.Qrecord
+         *
+         * @description
+         *
+         * Fetches belongsTo relation answer
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `refresh` – `{boolean=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Answer` object.)
+         * </em>
+         */
+        R.answer = function() {
+          var TargetResource = $injector.get("Answer");
+          var action = TargetResource["::get::Qrecord::answer"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Qrecord#qtimestamp
+         * @methodOf lbServices.Qrecord
+         *
+         * @description
+         *
+         * Fetches belongsTo relation qtimestamp
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `refresh` – `{boolean=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Qtimestamp` object.)
+         * </em>
+         */
+        R.qtimestamp = function() {
+          var TargetResource = $injector.get("Qtimestamp");
+          var action = TargetResource["::get::Qrecord::qtimestamp"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Qrecord#questionaire
+         * @methodOf lbServices.Qrecord
+         *
+         * @description
+         *
+         * Fetches belongsTo relation questionaire
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `refresh` – `{boolean=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Questionaire` object.)
+         * </em>
+         */
+        R.questionaire = function() {
+          var TargetResource = $injector.get("Questionaire");
+          var action = TargetResource["::get::Qrecord::questionaire"];
+          return action.apply(R, arguments);
+        };
+
     return R;
   }]);
 
@@ -7904,6 +8121,61 @@ module.factory(
       urlBase + "/Qtimestamps/:id",
       { 'id': '@id' },
       {
+
+        // INTERNAL. Use Qtimestamp.qrecords.findById() instead.
+        "prototype$__findById__qrecords": {
+          url: urlBase + "/Qtimestamps/:id/qrecords/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Qtimestamp.qrecords.destroyById() instead.
+        "prototype$__destroyById__qrecords": {
+          url: urlBase + "/Qtimestamps/:id/qrecords/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Qtimestamp.qrecords.updateById() instead.
+        "prototype$__updateById__qrecords": {
+          url: urlBase + "/Qtimestamps/:id/qrecords/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Qtimestamp.questiontype() instead.
+        "prototype$__get__questiontype": {
+          url: urlBase + "/Qtimestamps/:id/questiontype",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Qtimestamp.person() instead.
+        "prototype$__get__person": {
+          url: urlBase + "/Qtimestamps/:id/person",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Qtimestamp.qrecords() instead.
+        "prototype$__get__qrecords": {
+          isArray: true,
+          url: urlBase + "/Qtimestamps/:id/qrecords",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Qtimestamp.qrecords.create() instead.
+        "prototype$__create__qrecords": {
+          url: urlBase + "/Qtimestamps/:id/qrecords",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Qtimestamp.qrecords.destroyAll() instead.
+        "prototype$__delete__qrecords": {
+          url: urlBase + "/Qtimestamps/:id/qrecords",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Qtimestamp.qrecords.count() instead.
+        "prototype$__count__qrecords": {
+          url: urlBase + "/Qtimestamps/:id/qrecords/count",
+          method: "GET"
+        },
 
         /**
          * @ngdoc method
@@ -8245,6 +8517,55 @@ module.factory(
           url: urlBase + "/Qtimestamps/:id",
           method: "PUT"
         },
+
+        // INTERNAL. Use Qrecord.qtimestamp() instead.
+        "::get::Qrecord::qtimestamp": {
+          url: urlBase + "/Qrecords/:id/qtimestamp",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Questiontype.qtimestamps.findById() instead.
+        "::findById::Questiontype::qtimestamps": {
+          url: urlBase + "/Questiontypes/:id/qtimestamps/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Questiontype.qtimestamps.destroyById() instead.
+        "::destroyById::Questiontype::qtimestamps": {
+          url: urlBase + "/Questiontypes/:id/qtimestamps/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Questiontype.qtimestamps.updateById() instead.
+        "::updateById::Questiontype::qtimestamps": {
+          url: urlBase + "/Questiontypes/:id/qtimestamps/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Questiontype.qtimestamps() instead.
+        "::get::Questiontype::qtimestamps": {
+          isArray: true,
+          url: urlBase + "/Questiontypes/:id/qtimestamps",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Questiontype.qtimestamps.create() instead.
+        "::create::Questiontype::qtimestamps": {
+          url: urlBase + "/Questiontypes/:id/qtimestamps",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Questiontype.qtimestamps.destroyAll() instead.
+        "::delete::Questiontype::qtimestamps": {
+          url: urlBase + "/Questiontypes/:id/qtimestamps",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Questiontype.qtimestamps.count() instead.
+        "::count::Questiontype::qtimestamps": {
+          url: urlBase + "/Questiontypes/:id/qtimestamps/count",
+          method: "GET"
+        },
       }
     );
 
@@ -8381,6 +8702,341 @@ module.factory(
     */
     R.modelName = "Qtimestamp";
 
+    /**
+     * @ngdoc object
+     * @name lbServices.Qtimestamp.qrecords
+     * @header lbServices.Qtimestamp.qrecords
+     * @object
+     * @description
+     *
+     * The object `Qtimestamp.qrecords` groups methods
+     * manipulating `Qrecord` instances related to `Qtimestamp`.
+     *
+     * Call {@link lbServices.Qtimestamp#qrecords Qtimestamp.qrecords()}
+     * to query all related instances.
+     */
+
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Qtimestamp#qrecords
+         * @methodOf lbServices.Qtimestamp
+         *
+         * @description
+         *
+         * Queries qrecords of Qtimestamp.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `filter` – `{object=}` - 
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Qrecord` object.)
+         * </em>
+         */
+        R.qrecords = function() {
+          var TargetResource = $injector.get("Qrecord");
+          var action = TargetResource["::get::Qtimestamp::qrecords"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Qtimestamp.qrecords#count
+         * @methodOf lbServices.Qtimestamp.qrecords
+         *
+         * @description
+         *
+         * Counts qrecords of Qtimestamp.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `count` – `{number=}` - 
+         */
+        R.qrecords.count = function() {
+          var TargetResource = $injector.get("Qrecord");
+          var action = TargetResource["::count::Qtimestamp::qrecords"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Qtimestamp.qrecords#create
+         * @methodOf lbServices.Qtimestamp.qrecords
+         *
+         * @description
+         *
+         * Creates a new instance in qrecords of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Qrecord` object.)
+         * </em>
+         */
+        R.qrecords.create = function() {
+          var TargetResource = $injector.get("Qrecord");
+          var action = TargetResource["::create::Qtimestamp::qrecords"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Qtimestamp.qrecords#destroyAll
+         * @methodOf lbServices.Qtimestamp.qrecords
+         *
+         * @description
+         *
+         * Deletes all qrecords of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.qrecords.destroyAll = function() {
+          var TargetResource = $injector.get("Qrecord");
+          var action = TargetResource["::delete::Qtimestamp::qrecords"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Qtimestamp.qrecords#destroyById
+         * @methodOf lbServices.Qtimestamp.qrecords
+         *
+         * @description
+         *
+         * Delete a related item by id for qrecords
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for qrecords
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.qrecords.destroyById = function() {
+          var TargetResource = $injector.get("Qrecord");
+          var action = TargetResource["::destroyById::Qtimestamp::qrecords"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Qtimestamp.qrecords#findById
+         * @methodOf lbServices.Qtimestamp.qrecords
+         *
+         * @description
+         *
+         * Find a related item by id for qrecords
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for qrecords
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Qrecord` object.)
+         * </em>
+         */
+        R.qrecords.findById = function() {
+          var TargetResource = $injector.get("Qrecord");
+          var action = TargetResource["::findById::Qtimestamp::qrecords"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Qtimestamp.qrecords#updateById
+         * @methodOf lbServices.Qtimestamp.qrecords
+         *
+         * @description
+         *
+         * Update a related item by id for qrecords
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for qrecords
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Qrecord` object.)
+         * </em>
+         */
+        R.qrecords.updateById = function() {
+          var TargetResource = $injector.get("Qrecord");
+          var action = TargetResource["::updateById::Qtimestamp::qrecords"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Qtimestamp#questiontype
+         * @methodOf lbServices.Qtimestamp
+         *
+         * @description
+         *
+         * Fetches belongsTo relation questiontype
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `refresh` – `{boolean=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Questiontype` object.)
+         * </em>
+         */
+        R.questiontype = function() {
+          var TargetResource = $injector.get("Questiontype");
+          var action = TargetResource["::get::Qtimestamp::questiontype"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Qtimestamp#person
+         * @methodOf lbServices.Qtimestamp
+         *
+         * @description
+         *
+         * Fetches belongsTo relation person
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `refresh` – `{boolean=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Person` object.)
+         * </em>
+         */
+        R.person = function() {
+          var TargetResource = $injector.get("Person");
+          var action = TargetResource["::get::Qtimestamp::person"];
+          return action.apply(R, arguments);
+        };
 
     return R;
   }]);
@@ -8413,6 +9069,49 @@ module.factory(
         // INTERNAL. Use Questionaire.questiontype() instead.
         "prototype$__get__questiontype": {
           url: urlBase + "/Questionaires/:id/questiontype",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Questionaire.questionvsanswers.findById() instead.
+        "prototype$__findById__questionvsanswers": {
+          url: urlBase + "/Questionaires/:id/questionvsanswers/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Questionaire.questionvsanswers.destroyById() instead.
+        "prototype$__destroyById__questionvsanswers": {
+          url: urlBase + "/Questionaires/:id/questionvsanswers/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Questionaire.questionvsanswers.updateById() instead.
+        "prototype$__updateById__questionvsanswers": {
+          url: urlBase + "/Questionaires/:id/questionvsanswers/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Questionaire.questionvsanswers() instead.
+        "prototype$__get__questionvsanswers": {
+          isArray: true,
+          url: urlBase + "/Questionaires/:id/questionvsanswers",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Questionaire.questionvsanswers.create() instead.
+        "prototype$__create__questionvsanswers": {
+          url: urlBase + "/Questionaires/:id/questionvsanswers",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Questionaire.questionvsanswers.destroyAll() instead.
+        "prototype$__delete__questionvsanswers": {
+          url: urlBase + "/Questionaires/:id/questionvsanswers",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Questionaire.questionvsanswers.count() instead.
+        "prototype$__count__questionvsanswers": {
+          url: urlBase + "/Questionaires/:id/questionvsanswers/count",
           method: "GET"
         },
 
@@ -8757,6 +9456,12 @@ module.factory(
           method: "PUT"
         },
 
+        // INTERNAL. Use Qrecord.questionaire() instead.
+        "::get::Qrecord::questionaire": {
+          url: urlBase + "/Qrecords/:id/questionaire",
+          method: "GET"
+        },
+
         // INTERNAL. Use Questiontype.questionaires.findById() instead.
         "::findById::Questiontype::questionaires": {
           url: urlBase + "/Questiontypes/:id/questionaires/:fk",
@@ -8977,6 +9682,269 @@ module.factory(
           var action = TargetResource["::get::Questionaire::questiontype"];
           return action.apply(R, arguments);
         };
+    /**
+     * @ngdoc object
+     * @name lbServices.Questionaire.questionvsanswers
+     * @header lbServices.Questionaire.questionvsanswers
+     * @object
+     * @description
+     *
+     * The object `Questionaire.questionvsanswers` groups methods
+     * manipulating `Questionvsanswer` instances related to `Questionaire`.
+     *
+     * Call {@link lbServices.Questionaire#questionvsanswers Questionaire.questionvsanswers()}
+     * to query all related instances.
+     */
+
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questionaire#questionvsanswers
+         * @methodOf lbServices.Questionaire
+         *
+         * @description
+         *
+         * Queries questionvsanswers of Questionaire.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `filter` – `{object=}` - 
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Questionvsanswer` object.)
+         * </em>
+         */
+        R.questionvsanswers = function() {
+          var TargetResource = $injector.get("Questionvsanswer");
+          var action = TargetResource["::get::Questionaire::questionvsanswers"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questionaire.questionvsanswers#count
+         * @methodOf lbServices.Questionaire.questionvsanswers
+         *
+         * @description
+         *
+         * Counts questionvsanswers of Questionaire.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `count` – `{number=}` - 
+         */
+        R.questionvsanswers.count = function() {
+          var TargetResource = $injector.get("Questionvsanswer");
+          var action = TargetResource["::count::Questionaire::questionvsanswers"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questionaire.questionvsanswers#create
+         * @methodOf lbServices.Questionaire.questionvsanswers
+         *
+         * @description
+         *
+         * Creates a new instance in questionvsanswers of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Questionvsanswer` object.)
+         * </em>
+         */
+        R.questionvsanswers.create = function() {
+          var TargetResource = $injector.get("Questionvsanswer");
+          var action = TargetResource["::create::Questionaire::questionvsanswers"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questionaire.questionvsanswers#destroyAll
+         * @methodOf lbServices.Questionaire.questionvsanswers
+         *
+         * @description
+         *
+         * Deletes all questionvsanswers of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.questionvsanswers.destroyAll = function() {
+          var TargetResource = $injector.get("Questionvsanswer");
+          var action = TargetResource["::delete::Questionaire::questionvsanswers"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questionaire.questionvsanswers#destroyById
+         * @methodOf lbServices.Questionaire.questionvsanswers
+         *
+         * @description
+         *
+         * Delete a related item by id for questionvsanswers
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for questionvsanswers
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.questionvsanswers.destroyById = function() {
+          var TargetResource = $injector.get("Questionvsanswer");
+          var action = TargetResource["::destroyById::Questionaire::questionvsanswers"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questionaire.questionvsanswers#findById
+         * @methodOf lbServices.Questionaire.questionvsanswers
+         *
+         * @description
+         *
+         * Find a related item by id for questionvsanswers
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for questionvsanswers
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Questionvsanswer` object.)
+         * </em>
+         */
+        R.questionvsanswers.findById = function() {
+          var TargetResource = $injector.get("Questionvsanswer");
+          var action = TargetResource["::findById::Questionaire::questionvsanswers"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questionaire.questionvsanswers#updateById
+         * @methodOf lbServices.Questionaire.questionvsanswers
+         *
+         * @description
+         *
+         * Update a related item by id for questionvsanswers
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for questionvsanswers
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Questionvsanswer` object.)
+         * </em>
+         */
+        R.questionvsanswers.updateById = function() {
+          var TargetResource = $injector.get("Questionvsanswer");
+          var action = TargetResource["::updateById::Questionaire::questionvsanswers"];
+          return action.apply(R, arguments);
+        };
 
     return R;
   }]);
@@ -9030,6 +9998,24 @@ module.factory(
           method: "PUT"
         },
 
+        // INTERNAL. Use Questiontype.qtimestamps.findById() instead.
+        "prototype$__findById__qtimestamps": {
+          url: urlBase + "/Questiontypes/:id/qtimestamps/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Questiontype.qtimestamps.destroyById() instead.
+        "prototype$__destroyById__qtimestamps": {
+          url: urlBase + "/Questiontypes/:id/qtimestamps/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Questiontype.qtimestamps.updateById() instead.
+        "prototype$__updateById__qtimestamps": {
+          url: urlBase + "/Questiontypes/:id/qtimestamps/:fk",
+          method: "PUT"
+        },
+
         // INTERNAL. Use Questiontype.questionvsanswers.findById() instead.
         "prototype$__findById__questionvsanswers": {
           url: urlBase + "/Questiontypes/:id/questionvsanswers/:fk",
@@ -9070,6 +10056,31 @@ module.factory(
         // INTERNAL. Use Questiontype.questionaires.count() instead.
         "prototype$__count__questionaires": {
           url: urlBase + "/Questiontypes/:id/questionaires/count",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Questiontype.qtimestamps() instead.
+        "prototype$__get__qtimestamps": {
+          isArray: true,
+          url: urlBase + "/Questiontypes/:id/qtimestamps",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Questiontype.qtimestamps.create() instead.
+        "prototype$__create__qtimestamps": {
+          url: urlBase + "/Questiontypes/:id/qtimestamps",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Questiontype.qtimestamps.destroyAll() instead.
+        "prototype$__delete__qtimestamps": {
+          url: urlBase + "/Questiontypes/:id/qtimestamps",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Questiontype.qtimestamps.count() instead.
+        "prototype$__count__qtimestamps": {
+          url: urlBase + "/Questiontypes/:id/qtimestamps/count",
           method: "GET"
         },
 
@@ -9482,15 +10493,15 @@ module.factory(
           method: "GET"
         },
 
-        // INTERNAL. Use Questionaire.questiontype() instead.
-        "::get::Questionaire::questiontype": {
-          url: urlBase + "/Questionaires/:id/questiontype",
+        // INTERNAL. Use Qtimestamp.questiontype() instead.
+        "::get::Qtimestamp::questiontype": {
+          url: urlBase + "/Qtimestamps/:id/questiontype",
           method: "GET"
         },
 
-        // INTERNAL. Use Questionvsanswer.questiontype() instead.
-        "::get::Questionvsanswer::questiontype": {
-          url: urlBase + "/Questionvsanswers/:id/questiontype",
+        // INTERNAL. Use Questionaire.questiontype() instead.
+        "::get::Questionaire::questiontype": {
+          url: urlBase + "/Questionaires/:id/questiontype",
           method: "GET"
         },
       }
@@ -9930,6 +10941,269 @@ module.factory(
         };
     /**
      * @ngdoc object
+     * @name lbServices.Questiontype.qtimestamps
+     * @header lbServices.Questiontype.qtimestamps
+     * @object
+     * @description
+     *
+     * The object `Questiontype.qtimestamps` groups methods
+     * manipulating `Qtimestamp` instances related to `Questiontype`.
+     *
+     * Call {@link lbServices.Questiontype#qtimestamps Questiontype.qtimestamps()}
+     * to query all related instances.
+     */
+
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questiontype#qtimestamps
+         * @methodOf lbServices.Questiontype
+         *
+         * @description
+         *
+         * Queries qtimestamps of Questiontype.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `filter` – `{object=}` - 
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Qtimestamp` object.)
+         * </em>
+         */
+        R.qtimestamps = function() {
+          var TargetResource = $injector.get("Qtimestamp");
+          var action = TargetResource["::get::Questiontype::qtimestamps"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questiontype.qtimestamps#count
+         * @methodOf lbServices.Questiontype.qtimestamps
+         *
+         * @description
+         *
+         * Counts qtimestamps of Questiontype.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `count` – `{number=}` - 
+         */
+        R.qtimestamps.count = function() {
+          var TargetResource = $injector.get("Qtimestamp");
+          var action = TargetResource["::count::Questiontype::qtimestamps"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questiontype.qtimestamps#create
+         * @methodOf lbServices.Questiontype.qtimestamps
+         *
+         * @description
+         *
+         * Creates a new instance in qtimestamps of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Qtimestamp` object.)
+         * </em>
+         */
+        R.qtimestamps.create = function() {
+          var TargetResource = $injector.get("Qtimestamp");
+          var action = TargetResource["::create::Questiontype::qtimestamps"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questiontype.qtimestamps#destroyAll
+         * @methodOf lbServices.Questiontype.qtimestamps
+         *
+         * @description
+         *
+         * Deletes all qtimestamps of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.qtimestamps.destroyAll = function() {
+          var TargetResource = $injector.get("Qtimestamp");
+          var action = TargetResource["::delete::Questiontype::qtimestamps"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questiontype.qtimestamps#destroyById
+         * @methodOf lbServices.Questiontype.qtimestamps
+         *
+         * @description
+         *
+         * Delete a related item by id for qtimestamps
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for qtimestamps
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.qtimestamps.destroyById = function() {
+          var TargetResource = $injector.get("Qtimestamp");
+          var action = TargetResource["::destroyById::Questiontype::qtimestamps"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questiontype.qtimestamps#findById
+         * @methodOf lbServices.Questiontype.qtimestamps
+         *
+         * @description
+         *
+         * Find a related item by id for qtimestamps
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for qtimestamps
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Qtimestamp` object.)
+         * </em>
+         */
+        R.qtimestamps.findById = function() {
+          var TargetResource = $injector.get("Qtimestamp");
+          var action = TargetResource["::findById::Questiontype::qtimestamps"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Questiontype.qtimestamps#updateById
+         * @methodOf lbServices.Questiontype.qtimestamps
+         *
+         * @description
+         *
+         * Update a related item by id for qtimestamps
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for qtimestamps
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Qtimestamp` object.)
+         * </em>
+         */
+        R.qtimestamps.updateById = function() {
+          var TargetResource = $injector.get("Qtimestamp");
+          var action = TargetResource["::updateById::Questiontype::qtimestamps"];
+          return action.apply(R, arguments);
+        };
+    /**
+     * @ngdoc object
      * @name lbServices.Questiontype.questionvsanswers
      * @header lbServices.Questiontype.questionvsanswers
      * @object
@@ -10219,12 +11493,6 @@ module.factory(
       urlBase + "/Questionvsanswers/:id",
       { 'id': '@id' },
       {
-
-        // INTERNAL. Use Questionvsanswer.questiontype() instead.
-        "prototype$__get__questiontype": {
-          url: urlBase + "/Questionvsanswers/:id/questiontype",
-          method: "GET"
-        },
 
         // INTERNAL. Use Questionvsanswer.questionaire() instead.
         "prototype$__get__questionaire": {
@@ -10579,6 +11847,49 @@ module.factory(
           method: "PUT"
         },
 
+        // INTERNAL. Use Questionaire.questionvsanswers.findById() instead.
+        "::findById::Questionaire::questionvsanswers": {
+          url: urlBase + "/Questionaires/:id/questionvsanswers/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Questionaire.questionvsanswers.destroyById() instead.
+        "::destroyById::Questionaire::questionvsanswers": {
+          url: urlBase + "/Questionaires/:id/questionvsanswers/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Questionaire.questionvsanswers.updateById() instead.
+        "::updateById::Questionaire::questionvsanswers": {
+          url: urlBase + "/Questionaires/:id/questionvsanswers/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Questionaire.questionvsanswers() instead.
+        "::get::Questionaire::questionvsanswers": {
+          isArray: true,
+          url: urlBase + "/Questionaires/:id/questionvsanswers",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Questionaire.questionvsanswers.create() instead.
+        "::create::Questionaire::questionvsanswers": {
+          url: urlBase + "/Questionaires/:id/questionvsanswers",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Questionaire.questionvsanswers.destroyAll() instead.
+        "::delete::Questionaire::questionvsanswers": {
+          url: urlBase + "/Questionaires/:id/questionvsanswers",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Questionaire.questionvsanswers.count() instead.
+        "::count::Questionaire::questionvsanswers": {
+          url: urlBase + "/Questionaires/:id/questionvsanswers/count",
+          method: "GET"
+        },
+
         // INTERNAL. Use Questiontype.questionvsanswers.findById() instead.
         "::findById::Questiontype::questionvsanswers": {
           url: urlBase + "/Questiontypes/:id/questionvsanswers/:fk",
@@ -10757,42 +12068,6 @@ module.factory(
     */
     R.modelName = "Questionvsanswer";
 
-
-        /**
-         * @ngdoc method
-         * @name lbServices.Questionvsanswer#questiontype
-         * @methodOf lbServices.Questionvsanswer
-         *
-         * @description
-         *
-         * Fetches belongsTo relation questiontype
-         *
-         * @param {Object=} parameters Request parameters.
-         *
-         *  - `id` – `{*}` - PersistedModel id
-         *
-         *  - `refresh` – `{boolean=}` - 
-         *
-         * @param {function(Object,Object)=} successCb
-         *   Success callback with two arguments: `value`, `responseHeaders`.
-         *
-         * @param {function(Object)=} errorCb Error callback with one argument:
-         *   `httpResponse`.
-         *
-         * @returns {Object} An empty reference that will be
-         *   populated with the actual data once the response is returned
-         *   from the server.
-         *
-         * <em>
-         * (The remote method definition does not provide any description.
-         * This usually means the response is a `Questiontype` object.)
-         * </em>
-         */
-        R.questiontype = function() {
-          var TargetResource = $injector.get("Questiontype");
-          var action = TargetResource["::get::Questionvsanswer::questiontype"];
-          return action.apply(R, arguments);
-        };
 
         /**
          * @ngdoc method
@@ -12983,6 +14258,12 @@ module.factory(
         // INTERNAL. Use Host.persons.count() instead.
         "::count::Host::persons": {
           url: urlBase + "/Hosts/:id/persons/count",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Qtimestamp.person() instead.
+        "::get::Qtimestamp::person": {
+          url: urlBase + "/Qtimestamps/:id/person",
           method: "GET"
         },
 
@@ -17698,6 +18979,12 @@ module.factory(
           url: urlBase + "/Systemtypes/:id",
           method: "PUT"
         },
+
+        // INTERNAL. Use Form.systemtype() instead.
+        "::get::Form::systemtype": {
+          url: urlBase + "/Forms/:id/systemtype",
+          method: "GET"
+        },
       }
     );
 
@@ -18623,7 +19910,7 @@ module.factory(
          *
          *  - `token` – `{string}` - 
          *
-         *  - `redirect` – `{string}` - 
+         *  - `redirect` – `{string=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.

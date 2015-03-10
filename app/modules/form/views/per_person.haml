@@ -27,21 +27,20 @@
           %li{ng-repeat:"qtimestamp in questiontype.qtimestamps"}
             %a{ng-click:"selectQtimestamp(qtimestamp)"}
               {{qtimestamp.RecordDate|date:"dd-MM-yyyy"}}
-
-        .form-group{ng-repeat:"question in questiontype.questionaires"}
-          %label 
-            {{question.QDesc}}
-            %span{ng-if:"question.qrecord.message"}
-              &nbsp; {{question.qrecord.message}}
+        
+        %pagination{total-items:"questiontype.questionaires.length",class:"pagination-sm",ng-model:"currentQuestion",items-per-page:"1"}
+        .form-group
+          %label
+            {{c_question.QDesc}}
             
-          %span{ng-if:"question.IUControl == '20030'"} 
-            %div.radio{ng-repeat:"answer in question.answers"} 
+          %span{ng-if:"c_question.IUControl == '20030'"} 
+            %div.radio{ng-repeat:"answer in c_question.answers"} 
               %label
-                != '<input type="radio" ng-model="question.qrecord.AID" ng-value="answer.answer.AID"> {{answer.answer.ADesc}}'
- 
-          %span{ng-if:"question.IUControl != '20030'"} 
+                != '<input type="radio" ng-model="c_question.qrecord.answerId" ng-value="answer.answer.id"> {{answer.answer.ADesc}}'
+
+          %span{ng-if:"c_question.IUControl != '20030'"} 
             %ol
-              %li{ng-repeat:"answer in question.answers"}
+              %li{ng-repeat:"answer in c_question.answers"}
                 %span{ng-if:"answer.selected"} 
                   %p.bg-success {{answer.answer.ADesc}}
                 %span{ng-if:"!answer.selected"} 

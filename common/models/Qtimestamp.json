@@ -1,27 +1,12 @@
 {
   "name": "Qtimestamp",
   "options": {
-    "idInjection": false,
-    "mssql": {
-      "schema": "dbo",
-      "table": "QTimeStamp"
+    "idInjection": true,
+    "mongodb": {
+      "collection": "qtimestamp"
     }
   },
   "properties": {
-    "id": {
-      "type": "Number",
-      "required": true,
-      "precision": null,
-      "scale": null,
-      "id": 1,
-      "mssql": {
-        "columnName": "id",
-        "dataType": "int",
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
-    },
     "CID": {
       "type": "String",
       "required": true,
@@ -163,7 +148,6 @@
       "length": 50,
       "precision": null,
       "scale": null,
-      "id": 1,
       "mssql": {
         "columnName": "HostID",
         "dataType": "varchar",
@@ -202,6 +186,23 @@
         "dataScale": 0,
         "nullable": "YES"
       }
+    }
+  },
+  "relations" :{
+    "questiontype" : {
+      "type":"belongsTo",
+      "model":"Questiontype",
+      "foreignKey":"questiontypeId"
+    },
+    "person" : {
+      "type":"belongsTo",
+      "model":"Person",
+      "foreignKey":"personId"
+    },
+    "qrecords" :{
+      "type":"hasMany",
+      "model":"Qrecord",
+      "foreignKey":"qtimestampId"
     }
   }
 }

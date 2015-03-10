@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function($scope, $routeParams, Host, Person,
-  Questiontype, Questionvsanswer, Qrecord, Qtimestamp, Form, Systemtype) {
+  Questiontype, Questionaire, Questionvsanswer, Qrecord, Qtimestamp, Form, Systemtype) {
   $scope.person = null;
   $scope.alerts = [];
 
@@ -61,46 +61,26 @@ module.exports = function($scope, $routeParams, Host, Person,
   }
 
   $scope.selectQtimestamp = function(qtimestamp) {
-    Qrecord.find({
-      filter: {
-        where: {
-          and: [{
-            CID: $scope.person.CID
-          }, {
-            QTID: qtimestamp.QTID
-          }, {
-            QTSID: qtimestamp.QTSID
-          }]
-        }
-      }
-    }).$promise.then(function(records) {
+    $scope.questiontype.questionaires = [];
+    Qtimestamp.qrecords({id:qtimestamp.id})
+    .$promise.then(function(records) {
       // make dict for record
       var record_dict = {};
       records.forEach(function(record) {
-        record_dict[record.QTID + '-' + record.QID] = record;
+        record_dict[record.questionaireId] = record;
       });
       Questiontype.questionaires({
-          id: qtimestamp.QTID
+          id: qtimestamp.questiontypeId
         })
         .$promise.then(function(results) {
           $scope.questiontype.questionaires = results;
           results.forEach(function(qe,index) {
-            Questionvsanswer.find({
-              filter: {
-                where: {
-                  and: [{
-                    QID: qe.QID
-                  }, {
-                    QTID: qe.QTID
-                  }]
-                },
-                include: ['answer']
-              }
-            }).$promise.then(function(answers) {
+            Questionaire.questionvsanswers({id:qe.id, filter:{include:["answer"]}})
+            .$promise.then(function(answers) {
               qe.answers = answers;
               qe.answers.forEach(function(answer) {
-                var c_record = record_dict[qe.QTID+'-'+qe.QID];
-                if (answer.AID == c_record.AID) {
+                var c_record = record_dict[qe.id];
+                if (answer.answerId == c_record.answerId) {
                   answer.selected = true;
                   qe.qrecord_org = angular.copy(c_record);
                   qe.qrecord = c_record;
@@ -112,21 +92,28 @@ module.exports = function($scope, $routeParams, Host, Person,
         });
     });
   };
+  
+  $scope.$watch("currentQuestion", function(val) {
+    if($scope.questiontype && $scope.questiontype.questionaires) {
+      $scope.c_question = $scope.questiontype.questionaires[val-1];
+    }
+  });
 
   $scope.$watch("questiontype.questionaires", function(val) {
     if($scope.questiontype && $scope.questiontype.questionaires) {
+      $scope.currentQuestion = 0;
       $scope.questiontype.questionaires.forEach(function(qe) {   
         if(qe.qrecord) {
           // update
-          if(qe.qrecord_org.AID != qe.qrecord.AID) {
-          qe.qrecord.message = "saving...";
+          if(qe.qrecord_org.answerId != qe.qrecord.answerId) {
           qe.qrecord.$save(function(result) {
-            qe.qrecord.message = "saved";
             qe.qrecord_org = angular.copy(result);
           });
           }
         }
       });
+      $scope.currentQuestion = 1;
+      $scope.c_question = $scope.questiontype.questionaires[0];
     }
   },true);
 
@@ -137,9 +124,9 @@ module.exports = function($scope, $routeParams, Host, Person,
       filter: {
         where: {
           and: [{
-            CID: $scope.person.CID
+            personId: $scope.person.id
           }, {
-            QTID: questiontype.QTID
+            questiontypeId: questiontype.id
           }]
         }
       }
@@ -148,23 +135,13 @@ module.exports = function($scope, $routeParams, Host, Person,
     });
 
     Questiontype.questionaires({
-        id: questiontype.QTID
+        id: questiontype.id
       })
       .$promise.then(function(results) {
         $scope.questiontype.questionaires = results;
         results.forEach(function(qe) {
-          Questionvsanswer.find({
-            filter: {
-              where: {
-                and: [{
-                  QID: qe.QID
-                }, {
-                  QTID: qe.QTID
-                }]
-              },
-              include: ['answer']
-            }
-          }).$promise.then(function(answers) {
+          Questionaire.questionvsanswers({id:qe.id,filter:{include:["answer"]}})
+          .$promise.then(function(answers) {
             qe.answers = answers;
           });
         });
