@@ -22,13 +22,18 @@
       .panel-heading {{form.FDesc}}
       .panel-body
         %p {{questiontype.QTDesc}}
-  
         %ol
           %li{ng-repeat:"qtimestamp in questiontype.qtimestamps"}
             %a{ng-click:"selectQtimestamp(qtimestamp)"}
               {{qtimestamp.RecordDate|date:"dd-MM-yyyy"}}
+            %pre {{qtimestamp.id}}
+
+          %li{ng-show:"questiontype && person"}
+            %a{ng-click:"createQtimestamp()"} 
+              Create QTimestamp
         
-        %pagination{total-items:"questiontype.questionaires.length",class:"pagination-sm",ng-model:"currentQuestion",items-per-page:"1"}
+        %pagination{total-items:"questiontype.questionaires.length",class:"pagination-sm",ng-model:"currentQuestion",max-size:"10",items-per-page:"1"}
+        %pre Question no: {{currentQuestion}}/{{questiontype.questionaires.length}}
         .form-group
           %label
             {{c_question.QDesc}}

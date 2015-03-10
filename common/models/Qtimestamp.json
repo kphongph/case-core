@@ -9,7 +9,6 @@
   "properties": {
     "CID": {
       "type": "String",
-      "required": true,
       "length": 13,
       "precision": null,
       "scale": null,
@@ -24,7 +23,6 @@
     },
     "QTID": {
       "type": "String",
-      "required": true,
       "length": 5,
       "precision": null,
       "scale": null,
@@ -39,7 +37,6 @@
     },
     "QTSID": {
       "type": "Number",
-      "required": true,
       "length": null,
       "precision": 10,
       "scale": 0,
