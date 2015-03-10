@@ -50,29 +50,47 @@ module.exports = function($scope, $routeParams, Host, Person,
       });
   });
   
+  $scope.deleteQtimestamp = function(qtimestamp) {
+    Qtimestamp.deleteById({id:qtimestamp.id})
+    .$promise.then(function() {
+      $scope.questiontype.qtimestamps = $scope.questiontype.qtimestamps.filter(function(elem) {
+        return elem.id !== qtimestamp.id;
+      });
+      $scope.qtimestamp = null;
+    });
+  }
+  
+  $scope.clearQrecords = function(qtimestamp) {
+    Qtimestamp.qrecords({id:qtimestamp.id})
+    .$promise.then(function(records) {
+        records.forEach(function(qrecord) {
+          Qrecord.deleteById({id:qrecord.id})
+          .$promise.then(function(){
+            qtimestamp.qrecords = qtimestamp.qrecords.filter(function(elem) {
+              return elem.id !==  qrecord.id;
+            });
+            $scope.questiontype.questionaires.forEach(function(questionaire) {
+              if(questionaire.id == qrecord.questionaireId) {
+                questionaire.qrecord_org = null;
+                questionaire.qrecord = null;
+              }
+            });
+          });
+        });
+    })
+  }
+  
   $scope.createQtimestamp = function() {
     var n_qt = {personId:$scope.person.id,questiontypeId:$scope.questiontype.id};
     Qtimestamp.create(n_qt).$promise.then(function(result) {
       $scope.selectQuestiontype($scope.questiontype);
-      $scope.qtimestamp = result; 
-      Questiontype.questionaires({
-        id: $scope.questiontype.id
-      })
-      .$promise.then(function(results) {
-        $scope.questiontype.questionaires = results;
-        $scope.c_question = results[0];
-        results.forEach(function(qe) {
-          Questionaire.questionvsanswers({id:qe.id,filter:{include:["answer"]}})
-          .$promise.then(function(answers) {
-            qe.answers = answers;
-          });
-        });
-      });
     });
   }
 
   $scope.selectForm = function(form) {
     $scope.form = form;
+    $scope.questiontype = null;
+    $scope.qtimestamp = null;
     Form.questiontypes({
         id: form.id
       })
@@ -88,6 +106,7 @@ module.exports = function($scope, $routeParams, Host, Person,
       // make dict for record
       var record_dict = {};
       $scope.qtimestamp = qtimestamp;
+      $scope.qtimestamp.qrecords = records;
       records.forEach(function(record) {
         record_dict[record.questionaireId] = record;
       });
@@ -96,6 +115,7 @@ module.exports = function($scope, $routeParams, Host, Person,
         })
         .$promise.then(function(results) {
           $scope.questiontype.questionaires = results;
+          $scope.currentQuestion = 1;
           $scope.c_question = results[0];
           results.forEach(function(qe,index) {
             Questionaire.questionvsanswers({id:qe.id, filter:{include:["answer"]}})
@@ -136,17 +156,17 @@ module.exports = function($scope, $routeParams, Host, Person,
           });
         }
       } else {
-        console.log($scope.qtimestamp);
-        console.log($scope.c_question);
-        console.log(qe.qrecord);
         var n_qrecord = {
           qtimestampId:$scope.qtimestamp.id,
           questionaireId:$scope.c_question.id,
           answerId:qe.qrecord.answerId
         };
         Qrecord.create(n_qrecord).$promise.then(function(result) {
-          console.log(result);
           qe.qrecord = result;
+          if(!$scope.qtimestamp.qrecords) {
+            $scope.qtimestamp.qrecords = [];
+          }
+          $scope.qtimestamp.qrecords.push(result);
           qe.qrecord_org = angular.copy(result);
         });
       }
@@ -155,7 +175,11 @@ module.exports = function($scope, $routeParams, Host, Person,
 
   $scope.selectQuestiontype = function(questiontype) {
     $scope.questiontype = questiontype;
-
+    Form.findById({id:questiontype.formId}).$promise.then(function(form) {
+      $scope.form = form;  
+    });
+    
+    $scope.qtimestamp = null;
     Qtimestamp.find({
       filter: {
         where: {
@@ -164,27 +188,12 @@ module.exports = function($scope, $routeParams, Host, Person,
           }, {
             questiontypeId: questiontype.id
           }]
-        }
+        },
+        include:["qrecords"]
       }
     }).$promise.then(function(results) {
       $scope.questiontype.qtimestamps = results;
     });
-    /*
-    Questiontype.questionaires({
-        id: questiontype.id
-      })
-      .$promise.then(function(results) {
-        $scope.questiontype.questionaires = results;
-        $scope.c_question = results[0];
-        results.forEach(function(qe) {
-          Questionaire.questionvsanswers({id:qe.id,filter:{include:["answer"]}})
-          .$promise.then(function(answers) {
-            qe.answers = answers;
-          });
-        });
-
-      });
-    */
   }
 
 };

@@ -18,36 +18,49 @@
                   %a{ng-click:"selectQuestiontype(questiontype)"}
                     {{questiontype.QTDesc}}
   .col-md-7
-    .panel.panel-default{ng-show:"person"}
-      .panel-heading {{form.FDesc}}
-      .panel-body
-        %p {{questiontype.QTDesc}}
-        %ol
-          %li{ng-repeat:"qtimestamp in questiontype.qtimestamps"}
-            %a{ng-click:"selectQtimestamp(qtimestamp)"}
-              {{qtimestamp.RecordDate|date:"dd-MM-yyyy"}}
-            %pre {{qtimestamp.id}}
-
-          %li{ng-show:"questiontype && person"}
-            %a{ng-click:"createQtimestamp()"} 
-              Create QTimestamp
-        
-        %pagination{total-items:"questiontype.questionaires.length",class:"pagination-sm",ng-model:"currentQuestion",max-size:"10",items-per-page:"1"}
-        %pre Question no: {{currentQuestion}}/{{questiontype.questionaires.length}}
-        .form-group
-          %label
-            {{c_question.QDesc}}
-            
-          %span{ng-if:"c_question.IUControl == '20030'"} 
-            %div.radio{ng-repeat:"answer in c_question.answers"} 
-              %label
-                != '<input type="radio" ng-model="c_question.qrecord.answerId" ng-value="answer.answer.id"> {{answer.answer.ADesc}}'
-
-          %span{ng-if:"c_question.IUControl != '20030'"} 
+    .row
+      .col-md-12
+        .panel.panel-default{ng-show:"person"}
+          .panel-heading {{form.FDesc}}
+          .panel-body
+            %p {{questiontype.QTDesc}}
             %ol
-              %li{ng-repeat:"answer in c_question.answers"}
-                %span{ng-if:"answer.selected"} 
-                  %p.bg-success {{answer.answer.ADesc}}
-                %span{ng-if:"!answer.selected"} 
-                  {{answer.answer.ADesc}}
+              %li{ng-repeat:"qtimestamp in questiontype.qtimestamps"}
+                %a{ng-click:"selectQtimestamp(qtimestamp)"}
+                  {{qtimestamp.RecordDate|date:"dd-MM-yyyy"}}
+                %span
+                  &nbsp; ({{qtimestamp.qrecords.length}})
+
+              %li{ng-show:"questiontype && person"}
+                %a{ng-click:"createQtimestamp()"} 
+                  Create QTimestamp
+    .row
+      .col-md-12
+        .panel.panel-default{ng-show:"qtimestamp"}
+          .panel-heading {{qtimestamp.RecordDate|date:"dd-MM-yyyy"}}
+          .panel-body
+            %button.btn.btn-default{ng-show:"qtimestamp.qrecords.length > 0",type:"button",ng-click:"clearQrecords(qtimestamp)"}
+              %span.glyphicon.glyphicon-erase
+            %button.btn.btn-default{ng-show:"qtimestamp.qrecords.length == 0",type:"button",ng-click:"deleteQtimestamp(qtimestamp)"}
+              %span.glyphicon.glyphicon-remove
+            %hr
+            %pagination{total-items:"questiontype.questionaires.length",class:"pagination-sm",ng-model:"currentQuestion",max-size:"10",items-per-page:"1",ng-show:"questiontype.questionaires"}
+            %pre{ng-show:"questiontype.questionaires"} 
+              Question no: {{currentQuestion}}/{{questiontype.questionaires.length}} Answered: {{qtimestamp.qrecords.length}}/{{questiontype.questionaires.length}}
+            .form-group{ng-show:"questiontype.questionaires"}
+              %label
+                {{c_question.QDesc}}
+            
+              %span{ng-if:"c_question.IUControl == '20030'"} 
+                %div.radio{ng-repeat:"answer in c_question.answers"} 
+                  %label
+                    != '<input type="radio" ng-model="c_question.qrecord.answerId" ng-value="answer.answer.id"> {{answer.answer.ADesc}}'
+
+              %span{ng-if:"c_question.IUControl != '20030'"} 
+                %ol
+                  %li{ng-repeat:"answer in c_question.answers"}
+                    %span{ng-if:"answer.selected"} 
+                      %p.bg-success {{answer.answer.ADesc}}
+                    %span{ng-if:"!answer.selected"} 
+                      {{answer.answer.ADesc}}
 
