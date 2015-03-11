@@ -29,7 +29,7 @@
                 %a{ng-click:"selectQtimestamp(qtimestamp)"}
                   {{qtimestamp.RecordDate|date:"dd-MM-yyyy"}}
                 %span
-                  &nbsp; ({{qtimestamp.qrecords.length}})
+                  &nbsp; (#Record {{qtimestamp.qrecords.length}})
 
               %li{ng-show:"questiontype && person"}
                 %a{ng-click:"createQtimestamp()"} 
@@ -44,23 +44,30 @@
             %button.btn.btn-default{ng-show:"qtimestamp.qrecords.length == 0",type:"button",ng-click:"deleteQtimestamp(qtimestamp)"}
               %span.glyphicon.glyphicon-remove
             %hr
-            %pagination{total-items:"questiontype.questionaires.length",class:"pagination-sm",ng-model:"currentQuestion",max-size:"10",items-per-page:"1",ng-show:"questiontype.questionaires"}
-            %pre{ng-show:"questiontype.questionaires"} 
-              Question no: {{currentQuestion}}/{{questiontype.questionaires.length}} Answered: {{qtimestamp.qrecords.length}}/{{questiontype.questionaires.length}}
-            .form-group{ng-show:"questiontype.questionaires"}
+            %pagination{total-items:"qtimestamp.questionaires.length",class:"pagination-sm",ng-model:"currentQuestion",max-size:"10",items-per-page:"1"}
+            %pre{ng-show:"qtimestamp.questionaires"} 
+              Question no: {{currentQuestion}}/{{qtimestamp.questionaires.length}} 
+            .form-group{ng-show:"qtimestamp.questionaires"}
               %label
-                {{c_question.QDesc}}
+                {{qtimestamp.questionaires[currentQuestion-1].QDesc}}
             
-              %span{ng-if:"c_question.IUControl == '20030'"} 
-                %div.radio{ng-repeat:"answer in c_question.answers"} 
+              %span{ng-if:"qtimestamp.questionaires[currentQuestion-1].radio"} 
+                %div.radio{ng-repeat:"answer in qtimestamp.questionaires[currentQuestion-1].answers"} 
                   %label
-                    != '<input type="radio" ng-model="c_question.qrecord.answerId" ng-value="answer.answer.id"> {{answer.answer.ADesc}}'
-
-              %span{ng-if:"c_question.IUControl != '20030'"} 
+                    != '<input type="radio" ng-model="qtimestamp.questionaires[currentQuestion-1].qrecord.answerId" ng-value="answer.answer.id" ng-change="updateRadio(qtimestamp.questionaires[currentQuestion-1].qrecord)"> {{answer.answer.ADesc}}'
+            
+            %span{ng-if:"qtimestamp.questionaires[currentQuestion-1].checkbox"}
+              .checkbox{ng-repeat:"answer in qtimestamp.questionaires[currentQuestion-1].answers"}
+                %label
+                  != '<input type="checkbox" ng-model="answer.qrecord"> {{answer.answer.ADesc}}'
+              
+              %span{ng-if:"qtimestamp.questionaires[currentQuestion-1].unknown"} 
+                %pre {{c_question}}
                 %ol
-                  %li{ng-repeat:"answer in c_question.answers"}
+                  %li{ng-repeat:"answer in qtimestamp.questionaires[currentQuestion-1].answers"}
                     %span{ng-if:"answer.selected"} 
                       %p.bg-success {{answer.answer.ADesc}}
                     %span{ng-if:"!answer.selected"} 
                       {{answer.answer.ADesc}}
+                    %pre {{answer}}
 

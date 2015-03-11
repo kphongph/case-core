@@ -4,7 +4,7 @@ module.exports = function($scope, $routeParams, Host, Person,
   Questiontype, Questionaire, Questionvsanswer, Qrecord, Qtimestamp, Form, Systemtype) {
   $scope.person = null;
   $scope.qtimestamp = null;
-
+  
   var checkAge = function(person) {
     var current = new Date();
     var age = 0;
@@ -69,10 +69,9 @@ module.exports = function($scope, $routeParams, Host, Person,
             qtimestamp.qrecords = qtimestamp.qrecords.filter(function(elem) {
               return elem.id !==  qrecord.id;
             });
-            $scope.questiontype.questionaires.forEach(function(questionaire) {
-              if(questionaire.id == qrecord.questionaireId) {
-                questionaire.qrecord_org = null;
-                questionaire.qrecord = null;
+            $scope.qtimestamp.questionaires.forEach(function(qe) {
+              if(qe.radio) {
+                qe.qrecord = null;
               }
             });
           });
@@ -100,7 +99,42 @@ module.exports = function($scope, $routeParams, Host, Person,
   }
 
   $scope.selectQtimestamp = function(qtimestamp) {
-    $scope.questiontype.questionaires = [];
+    $scope.qtimestamp = qtimestamp;
+    $scope.currentQuestion = 1;
+    $scope.qtimestamp.questionaires = [];
+    
+    Questiontype.questionaires({
+      id: qtimestamp.questiontypeId
+    }).$promise.then(function(results) {
+      // console.log(results.length);
+      $scope.qtimestamp.questionaires = results;
+      results.forEach(function(qe) {
+        if(qe.IUControl == "20030") {
+          qe.radio = true;
+        }
+        if(qe.IUControl == "20020") {
+          qe.checkbox = true;
+        }
+        Questionaire.questionvsanswers({id:qe.id, filter:{include:["answer"]}})
+        .$promise.then(function(answers) {
+          qe.answers = answers;
+          Qrecord.find({filter:{
+            where:{and:[{questionaireId:qe.id},{qtimestampId:qtimestamp.id}]}
+          }}).$promise.then(function(qrecords) {
+            // radio
+            if(qe.radio) {
+              if(qrecords.length > 0) {
+                qe.qrecord = qrecords[0];
+              } else {
+                qe.qrecord = {questionaireId:qe.id,qtimestampId:qtimestamp.id};
+              }
+            }
+          });
+        });
+      });
+    });
+    
+    /*
     Qtimestamp.qrecords({id:qtimestamp.id})
     .$promise.then(function(records) {
       // make dict for record
@@ -108,7 +142,10 @@ module.exports = function($scope, $routeParams, Host, Person,
       $scope.qtimestamp = qtimestamp;
       $scope.qtimestamp.qrecords = records;
       records.forEach(function(record) {
-        record_dict[record.questionaireId] = record;
+        if(!record_dict[record.questionaireId]) {
+          record_dict[record.questionaireId] = [];
+        }
+        record_dict[record.questionaireId].push(record);
       });
       Questiontype.questionaires({
           id: qtimestamp.questiontypeId
@@ -117,18 +154,20 @@ module.exports = function($scope, $routeParams, Host, Person,
           $scope.questiontype.questionaires = results;
           $scope.currentQuestion = 1;
           $scope.c_question = results[0];
-          results.forEach(function(qe,index) {
+          results.forEach(function(qe) {
             Questionaire.questionvsanswers({id:qe.id, filter:{include:["answer"]}})
             .$promise.then(function(answers) {
               qe.answers = answers;
               qe.answers.forEach(function(answer) {
-                var c_record = record_dict[qe.id];
-                if(c_record) {
-                  if (answer.answerId == c_record.answerId) {
-                    answer.selected = true;
-                    qe.qrecord_org = angular.copy(c_record);
-                    qe.qrecord = c_record;
-                  }
+                var c_record_list = record_dict[qe.id];
+                if(c_record_list && c_record_list.length>0) {
+                  c_record_list.forEach(function(record) {
+                    if (answer.answerId == record.answerId) {
+                      answer.selected = true;
+                      qe.qrecords_org = angular.copy(c_record_list);
+                      qe.qrecords = c_record_list;
+                    }  
+                  });
                 }
               });
 
@@ -136,42 +175,21 @@ module.exports = function($scope, $routeParams, Host, Person,
           });
         });
     });
+    */
   };
   
-  $scope.$watch("currentQuestion", function(val) {
-    if($scope.questiontype && $scope.questiontype.questionaires) {
-      $scope.c_question = $scope.questiontype.questionaires[val-1];
+  $scope.updateRadio = function(qrecord) {
+    if(qrecord.id) {
+      qrecord.$save(function(result) {
+        qrecord=result;
+      });
+    } else {
+      Qrecord.create(qrecord).$promise.then(function(result) {
+        qrecord = result;
+        $scope.qtimestamp.qrecords.push(result);
+      });
     }
-  });
-
-  $scope.$watch("c_question.qrecord.answerId", function(val) {
-    var qe = $scope.c_question;
-    
-    if(qe && qe.qrecord) {
-      if(qe.qrecord_org) {
-        // update
-        if(qe.qrecord_org.answerId != qe.qrecord.answerId) {
-          qe.qrecord.$save(function(result) {
-            qe.qrecord_org = angular.copy(result);
-          });
-        }
-      } else {
-        var n_qrecord = {
-          qtimestampId:$scope.qtimestamp.id,
-          questionaireId:$scope.c_question.id,
-          answerId:qe.qrecord.answerId
-        };
-        Qrecord.create(n_qrecord).$promise.then(function(result) {
-          qe.qrecord = result;
-          if(!$scope.qtimestamp.qrecords) {
-            $scope.qtimestamp.qrecords = [];
-          }
-          $scope.qtimestamp.qrecords.push(result);
-          qe.qrecord_org = angular.copy(result);
-        });
-      }
-    } 
-  });
+  }
 
   $scope.selectQuestiontype = function(questiontype) {
     $scope.questiontype = questiontype;
