@@ -150,49 +150,6 @@ module.exports = function($scope, $routeParams, Host, Person,
         });
       });
     });
-    
-    /*
-    Qtimestamp.qrecords({id:qtimestamp.id})
-    .$promise.then(function(records) {
-      // make dict for record
-      var record_dict = {};
-      $scope.qtimestamp = qtimestamp;
-      $scope.qtimestamp.qrecords = records;
-      records.forEach(function(record) {
-        if(!record_dict[record.questionaireId]) {
-          record_dict[record.questionaireId] = [];
-        }
-        record_dict[record.questionaireId].push(record);
-      });
-      Questiontype.questionaires({
-          id: qtimestamp.questiontypeId
-        })
-        .$promise.then(function(results) {
-          $scope.questiontype.questionaires = results;
-          $scope.currentQuestion = 1;
-          $scope.c_question = results[0];
-          results.forEach(function(qe) {
-            Questionaire.questionvsanswers({id:qe.id, filter:{include:["answer"]}})
-            .$promise.then(function(answers) {
-              qe.answers = answers;
-              qe.answers.forEach(function(answer) {
-                var c_record_list = record_dict[qe.id];
-                if(c_record_list && c_record_list.length>0) {
-                  c_record_list.forEach(function(record) {
-                    if (answer.answerId == record.answerId) {
-                      answer.selected = true;
-                      qe.qrecords_org = angular.copy(c_record_list);
-                      qe.qrecords = c_record_list;
-                    }  
-                  });
-                }
-              });
-
-            });
-          });
-        });
-    });
-    */
   };
   
   $scope.updateCheckbox = function(qtimestamp, answer) {

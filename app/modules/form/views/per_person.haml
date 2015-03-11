@@ -49,7 +49,7 @@
               Question no: {{currentQuestion}}/{{qtimestamp.questionaires.length}} 
             .form-group{ng-show:"qtimestamp.questionaires"}
               %label
-                {{qtimestamp.questionaires[currentQuestion-1].QDesc}}
+                {{qtimestamp.questionaires[currentQuestion-1].QDesc}} {{qtimestamp.questionaires[currentQuestion-1].IUControl}}
             
               %span{ng-if:"qtimestamp.questionaires[currentQuestion-1].radio"} 
                 %div.radio{ng-repeat:"answer in qtimestamp.questionaires[currentQuestion-1].answers"} 
