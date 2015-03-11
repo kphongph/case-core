@@ -218,14 +218,18 @@ module.exports = function($scope, $routeParams, Host, Person,
   }
   
   $scope.updateRadio = function(qrecord) {
+    console.log(qrecord);
     if(qrecord.id) {
-      qrecord.$save(function(result) {
-        qrecord=result;
+      Qrecord.findById({id:qrecord.id}, function(result) {
+        result.answerId = qrecord.answerId;
+        result.$save(function(result) {
+          //
+        });
       });
     } else {
       Qrecord.create(qrecord).$promise.then(function(result) {
-        qrecord = result;
-        $scope.qtimestamp.qrecords.push(result);
+        qrecord.id = result.id;
+        $scope.qtimestamp.qrecords.push(qrecord);
       });
     }
   }
