@@ -59,7 +59,7 @@
             %span{ng-if:"qtimestamp.questionaires[currentQuestion-1].checkbox"}
               .checkbox{ng-repeat:"answer in qtimestamp.questionaires[currentQuestion-1].answers"}
                 %label
-                  != '<input type="checkbox" ng-model="answer.qrecord"> {{answer.answer.ADesc}}'
+                  != '<input type="checkbox" ng-model="answer.selected" ng-change="updateCheckbox(qtimestamp,answer)"> {{answer.answer.ADesc}}'
               
               %span{ng-if:"qtimestamp.questionaires[currentQuestion-1].unknown"} 
                 %pre {{c_question}}

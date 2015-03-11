@@ -73,6 +73,11 @@ module.exports = function($scope, $routeParams, Host, Person,
               if(qe.radio) {
                 qe.qrecord = null;
               }
+              if(qe.checkbox) {
+                qe.answers.forEach(function(answer) {
+                  answer.selected = false;
+                });
+              }
             });
           });
         });
@@ -129,6 +134,18 @@ module.exports = function($scope, $routeParams, Host, Person,
                 qe.qrecord = {questionaireId:qe.id,qtimestampId:qtimestamp.id};
               }
             }
+            // checkbox
+            if(qe.checkbox) {
+              qrecords.forEach(function(qrecord) {
+                for(var i=0;i<qe.answers.length;i++) {
+                  if(qe.answers[i].answerId == qrecord.answerId) {
+                    qe.answers[i].selected = true;
+                    qe.answers[i].qrecord = qrecord;
+                    break;
+                  }
+                }
+              });
+            }
           });
         });
       });
@@ -177,6 +194,28 @@ module.exports = function($scope, $routeParams, Host, Person,
     });
     */
   };
+  
+  $scope.updateCheckbox = function(qtimestamp, answer) {
+    if(answer.selected) {
+      var qrecord = {qtimestampId:qtimestamp.id,questionaireId:answer.questionaireId,answerId:answer.answerId};
+      if(!answer.qrecord) {
+        Qrecord.create(qrecord).$promise.then(function(result) {
+          answer.qrecord = result;
+          qtimestamp.qrecords.push(result);    
+        });
+      }
+    } else {
+      if(answer.qrecord) {
+        // delete
+        Qrecord.deleteById({id:answer.qrecord.id}).$promise.then(function(result) {
+          qtimestamp.qrecords = qtimestamp.qrecords.filter(function(elem) {
+            return elem.id !==  answer.qrecord.id;
+          });
+          answer.qrecord = null;
+        });
+      }
+    }
+  }
   
   $scope.updateRadio = function(qrecord) {
     if(qrecord.id) {
