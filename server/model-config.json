@@ -44,6 +44,10 @@
     "dataSource": "caseMongoDs",
     "public": true 
   },
+  "FormTemplate": {
+    "dataSource": "caseMongoDs",
+    "public": true 
+  },
   "Host": {
     "dataSource": "caseDs",
     "public": true 

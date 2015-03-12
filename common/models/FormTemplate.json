@@ -1,0 +1,17 @@
+{
+  "name": "FormTemplate",
+  "options": {
+    "idInjection": true,
+    "mongodb": {
+      "collection":"formTemplates"
+    }
+  },
+  "properties": {
+    "name": {
+      "type": "String",
+      "required": true
+    }
+  },
+  "relations": {
+  }
+}

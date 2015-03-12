@@ -1,0 +1,45 @@
+.row
+  .page-header
+    %h2 Service
+
+.row
+  .col-md-5
+    .row
+      .panel.panel-default{ng-show:"person"}
+        .panel-heading Form
+        .panel-body
+          {{person.CID}} {{person.FirstName}} {{person.LastName}}
+          %ol
+            %li{ng-repeat:"form in forms"}
+              %a{ng-click:"selectForm(form)"} {{form.name}}
+            
+  .col-md-7
+    .row{ng-show:"form"}
+      .col-md-12
+        .panel.panel-default
+          .panel-heading {{form.name}}
+          .panel-body
+            Log & Create New
+    .row{ng-show:"form"}
+      .col-md-12
+        .panel.panel-default
+          .panel-heading Parts
+          .panel-body
+            %ol
+              %li{ng-repeat:"part in form.parts"}
+                {{part.name}}
+                %ul
+                  %li{ng-repeat:"questionnaire in part.questionnaires"}
+                    %a{ng-click:"selectQuestionnaire(questionnaire)"} {{questionnaire.name}}
+    .row  
+      .col-md-12
+        {{questionnaire.name}}
+        %span{ng-repeat:"question in questionnaire.questions"}
+          %span{ng-if:"question.type=='checkbox'"}
+            .checkbox
+              %label
+                != '<input type="checkbox" ng-model="question.value"> {{question.label}}'
+                  
+        
+        
+    
