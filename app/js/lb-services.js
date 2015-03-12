@@ -5970,6 +5970,12 @@ module.factory(
       { 'id': '@id' },
       {
 
+        // INTERNAL. Use FormTemplate.person() instead.
+        "prototype$__get__person": {
+          url: urlBase + "/FormTemplates/:id/person",
+          method: "GET"
+        },
+
         /**
          * @ngdoc method
          * @name lbServices.FormTemplate#create
@@ -6310,6 +6316,49 @@ module.factory(
           url: urlBase + "/FormTemplates/:id",
           method: "PUT"
         },
+
+        // INTERNAL. Use Person.forms.findById() instead.
+        "::findById::Person::forms": {
+          url: urlBase + "/People/:id/forms/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Person.forms.destroyById() instead.
+        "::destroyById::Person::forms": {
+          url: urlBase + "/People/:id/forms/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Person.forms.updateById() instead.
+        "::updateById::Person::forms": {
+          url: urlBase + "/People/:id/forms/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Person.forms() instead.
+        "::get::Person::forms": {
+          isArray: true,
+          url: urlBase + "/People/:id/forms",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Person.forms.create() instead.
+        "::create::Person::forms": {
+          url: urlBase + "/People/:id/forms",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Person.forms.destroyAll() instead.
+        "::delete::Person::forms": {
+          url: urlBase + "/People/:id/forms",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Person.forms.count() instead.
+        "::count::Person::forms": {
+          url: urlBase + "/People/:id/forms/count",
+          method: "GET"
+        },
       }
     );
 
@@ -6446,6 +6495,42 @@ module.factory(
     */
     R.modelName = "FormTemplate";
 
+
+        /**
+         * @ngdoc method
+         * @name lbServices.FormTemplate#person
+         * @methodOf lbServices.FormTemplate
+         *
+         * @description
+         *
+         * Fetches belongsTo relation person
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `refresh` – `{boolean=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Person` object.)
+         * </em>
+         */
+        R.person = function() {
+          var TargetResource = $injector.get("Person");
+          var action = TargetResource["::get::FormTemplate::person"];
+          return action.apply(R, arguments);
+        };
 
     return R;
   }]);
@@ -14231,6 +14316,24 @@ module.factory(
           method: "HEAD"
         },
 
+        // INTERNAL. Use Person.forms.findById() instead.
+        "prototype$__findById__forms": {
+          url: urlBase + "/People/:id/forms/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Person.forms.destroyById() instead.
+        "prototype$__destroyById__forms": {
+          url: urlBase + "/People/:id/forms/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Person.forms.updateById() instead.
+        "prototype$__updateById__forms": {
+          url: urlBase + "/People/:id/forms/:fk",
+          method: "PUT"
+        },
+
         // INTERNAL. Use Person.addresses() instead.
         "prototype$__get__addresses": {
           isArray: true,
@@ -14253,6 +14356,31 @@ module.factory(
         // INTERNAL. Use Person.addresses.count() instead.
         "prototype$__count__addresses": {
           url: urlBase + "/People/:id/addresses/count",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Person.forms() instead.
+        "prototype$__get__forms": {
+          isArray: true,
+          url: urlBase + "/People/:id/forms",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Person.forms.create() instead.
+        "prototype$__create__forms": {
+          url: urlBase + "/People/:id/forms",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Person.forms.destroyAll() instead.
+        "prototype$__delete__forms": {
+          url: urlBase + "/People/:id/forms",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Person.forms.count() instead.
+        "prototype$__count__forms": {
+          url: urlBase + "/People/:id/forms/count",
           method: "GET"
         },
 
@@ -14702,6 +14830,12 @@ module.factory(
         // INTERNAL. Use Adressvsperson.person() instead.
         "::get::Adressvsperson::person": {
           url: urlBase + "/Adressvspeople/:id/person",
+          method: "GET"
+        },
+
+        // INTERNAL. Use FormTemplate.person() instead.
+        "::get::FormTemplate::person": {
+          url: urlBase + "/FormTemplates/:id/person",
           method: "GET"
         },
 
@@ -15283,6 +15417,269 @@ module.factory(
         R.addresses.updateById = function() {
           var TargetResource = $injector.get("Address");
           var action = TargetResource["::updateById::Person::addresses"];
+          return action.apply(R, arguments);
+        };
+    /**
+     * @ngdoc object
+     * @name lbServices.Person.forms
+     * @header lbServices.Person.forms
+     * @object
+     * @description
+     *
+     * The object `Person.forms` groups methods
+     * manipulating `FormTemplate` instances related to `Person`.
+     *
+     * Call {@link lbServices.Person#forms Person.forms()}
+     * to query all related instances.
+     */
+
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Person#forms
+         * @methodOf lbServices.Person
+         *
+         * @description
+         *
+         * Queries forms of Person.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `filter` – `{object=}` - 
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `FormTemplate` object.)
+         * </em>
+         */
+        R.forms = function() {
+          var TargetResource = $injector.get("FormTemplate");
+          var action = TargetResource["::get::Person::forms"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Person.forms#count
+         * @methodOf lbServices.Person.forms
+         *
+         * @description
+         *
+         * Counts forms of Person.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `count` – `{number=}` - 
+         */
+        R.forms.count = function() {
+          var TargetResource = $injector.get("FormTemplate");
+          var action = TargetResource["::count::Person::forms"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Person.forms#create
+         * @methodOf lbServices.Person.forms
+         *
+         * @description
+         *
+         * Creates a new instance in forms of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `FormTemplate` object.)
+         * </em>
+         */
+        R.forms.create = function() {
+          var TargetResource = $injector.get("FormTemplate");
+          var action = TargetResource["::create::Person::forms"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Person.forms#destroyAll
+         * @methodOf lbServices.Person.forms
+         *
+         * @description
+         *
+         * Deletes all forms of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.forms.destroyAll = function() {
+          var TargetResource = $injector.get("FormTemplate");
+          var action = TargetResource["::delete::Person::forms"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Person.forms#destroyById
+         * @methodOf lbServices.Person.forms
+         *
+         * @description
+         *
+         * Delete a related item by id for forms
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for forms
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.forms.destroyById = function() {
+          var TargetResource = $injector.get("FormTemplate");
+          var action = TargetResource["::destroyById::Person::forms"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Person.forms#findById
+         * @methodOf lbServices.Person.forms
+         *
+         * @description
+         *
+         * Find a related item by id for forms
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for forms
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `FormTemplate` object.)
+         * </em>
+         */
+        R.forms.findById = function() {
+          var TargetResource = $injector.get("FormTemplate");
+          var action = TargetResource["::findById::Person::forms"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Person.forms#updateById
+         * @methodOf lbServices.Person.forms
+         *
+         * @description
+         *
+         * Update a related item by id for forms
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for forms
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `FormTemplate` object.)
+         * </em>
+         */
+        R.forms.updateById = function() {
+          var TargetResource = $injector.get("FormTemplate");
+          var action = TargetResource["::updateById::Person::forms"];
           return action.apply(R, arguments);
         };
 
@@ -20415,7 +20812,7 @@ module.factory(
          *
          *  - `token` – `{string}` - 
          *
-         *  - `redirect` – `{string=}` - 
+         *  - `redirect` – `{string}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.

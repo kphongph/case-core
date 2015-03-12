@@ -10,8 +10,23 @@
     "name": {
       "type": "String",
       "required": true
+    },
+    "template": {
+      "type": "Boolean",
+      "required": true
+    },
+    "createdDate": {
+      "type": "Date"
+    },
+    "updatedDate": {
+      "type": "Date"
     }
   },
   "relations": {
+    "person": {
+      "type":"belongsTo",
+      "model":"Person",
+      "foreignKey":"ownerId"
+    }
   }
 }

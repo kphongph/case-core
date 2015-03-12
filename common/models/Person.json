@@ -434,6 +434,11 @@
       "model":"Address",
       "through":"Adressvsperson",
       "foreignKey":"CID"
+    },
+    "forms" : {
+      "type":"hasMany",
+      "model":"FormTemplate",
+      "foreignKey":"ownerId"
     }
   },
   "acls":[

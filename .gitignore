@@ -6,3 +6,4 @@ dist
 *.swp
 .c9
 client/vendor
+app/js/lb-services.js
