@@ -41,7 +41,7 @@ module.exports = function($scope, $routeParams, FormTemplate, Person) {
     $scope.part = null;
     $scope.questionnaire = null;
   };
-  
+
   $scope.selectPart = function(part) {
     $scope.part = part;
     $scope.questionnaire = null;
@@ -50,6 +50,14 @@ module.exports = function($scope, $routeParams, FormTemplate, Person) {
   $scope.selectQuestionnaire = function(questionnaire) {
     $scope.questionnaire = questionnaire;
   }
+
+  $scope.deleteForm = function(form) {
+    FormTemplate.deleteById({id:form.id})
+    .$promise.then(function(result) {
+      $scope.form = null;
+      $scope.selectFormTemplate($scope.formTemplate);
+    });
+  };
 
   $scope.save = function(cb) {
     if($scope.form) {

@@ -17,7 +17,7 @@
                 %li{ng-repeat:"filledForm in form.filledForms"}
                   %a{ng-click:"selectForm(filledForm)"} 
                     {{filledForm.createdDate | date:"dd-MM-yyyy"}}
-                %li{ng-show:"form.filledForms"}
+                %li{ng-show:"form.filledForms.length >= 0"}
                   %a{ng-click:"createForm(form)"} 
                     Create New
     .row{ng-show:"form"}
@@ -31,6 +31,7 @@
                 %li{ng-repeat:"questionnaire in part.questionnaires"}
                   %a{ng-click:"selectQuestionnaire(questionnaire)"} {{questionnaire.name}}
           %button.btn.btn-default{ng-click:"save()"} บันทึก
+          %button.btn.btn-default{ng-click:"deleteForm(form)"} ลบทิ้ง
           %p.text-right Last updated : {{form.updatedDate}}
 
   .col-md-7
@@ -42,6 +43,16 @@
             .checkbox
               %label
                 != '<input type="checkbox" ng-model="question.value"> {{question.label}}'
+          %span{ng-if:"question.type=='radio'"}
+            .radio{ng-repeat:"choice in question.choices"}
+              %label
+                != '<input type="radio" ng-model="question.value" ng-value="choice.value"> {{choice.label}}'
+          %span{ng-if:"question.type=='textarea'"}
+            %textarea.form-control{ng-model:"question.value",placeholder:"{{question.label}}"}
+          %span{ng-if:"question.type=='text'"}
+            .form-group
+              %label {{question.label}}
+              %input.form-control{ng-model:"question.value"}
                   
         
         
