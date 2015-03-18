@@ -7,3 +7,4 @@ dist
 .c9
 client/vendor
 app/js/lb-services.js
+npm-debug.log
