@@ -37,6 +37,7 @@ var query = function(st, cb) {
 var buildQuestionnaires = function(questionaire,cb) {
   var questionnaire = {};
   questionnaire['name'] = questionaire.QDesc;
+  questionnaire['qid'] = questionaire.QID;
   query("select * from QuestionVSAnswer where QTID='"+ 
     questionaire.QTID+"' and QID='"+questionaire.QID+"'",
     function(results) {
@@ -62,7 +63,7 @@ var buildQuestionnaires = function(questionaire,cb) {
 
 
 var buildPart = function(qtype,cb) {
-  var part = {'name':qtype.QTDesc};
+  var part = {'name':qtype.QTDesc,'qtid':qtype.QTID};
   part['questionnaires'] = [];
   query("select * from Questionaire where QTID='"+qtype.QTID+"'", 
     function(results) {
@@ -79,6 +80,39 @@ var buildPart = function(qtype,cb) {
   });
 };
 
+var loadFromTemplate = function(template) {
+  var document_dict = {}; 
+  var document_count = 0;
+  var part_count = template.parts.length;
+  template.parts.forEach(function(part) {
+    var q_st = "select * from QTimeStamp where QTID='"+part.qtid+"'";
+    query(q_st, function(qts_list) {
+      qts_list.forEach(function(qts) {
+        var key=qts.CID+'-'+qts.QTSID;
+        if(!document_dict[key]) {
+          document_count++;
+          var n_doc=JSON.parse(JSON.stringify(template));
+          n_doc['cid']=qts.CID;
+          n_doc['qtsid']=qts.QTSID;
+          document_dict[key]=n_doc;
+        }
+      });
+      part_count--;
+      if(part_count==0) {
+        console.log(document_count);
+        for(var key in document_dict) {
+          setValueForTemplate(document_dict[key]);
+        }
+      }
+    });
+  });
+  // build template
+};
+
+var setValueForTemplate = function(document) {
+  console.log(document.cid,document.qtsid);
+}
+
 
 var formId = '00001';
 var formTemplate = {};
@@ -86,6 +120,7 @@ var answerDict = {};
 
 // executed by formId
 query("select * from Form where FID ='"+formId+"'", function(forms) {
+  formTemplate['fid'] = forms[0].FID;
   formTemplate['name'] = forms[0].FDesc;
   formTemplate['parts'] = [];
   // create AnswerDict 
@@ -95,12 +130,14 @@ query("select * from Form where FID ='"+formId+"'", function(forms) {
     });
     query("select * from QuestionType where FID ='"+formId+"'", 
       function(qtypes) {
-        var qtid_list = [];
+        var parts = qtypes.length;
         qtypes.forEach(function(qtype) {
-          // for each part
           buildPart(qtype,function(part) {
+            parts--; 
             formTemplate['parts'].push(part);
-            console.log(JSON.stringify(formTemplate));
+            if(parts == 0) {
+              loadFromTemplate(formTemplate);
+            }
           });
         });
     });
