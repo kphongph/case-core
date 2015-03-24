@@ -4,7 +4,7 @@ var MongoClient = require('mongodb').MongoClient;
 
 var mongourl = 'mongodb://128.199.108.210:27017/casedb';
 
-var config = {
+var s1_config = {
   "server":"AssertProjects.nu.ac.th",
   "port":1433,
   "userName":"sa",
@@ -15,7 +15,18 @@ var config = {
   }
 };
 
-var query = function(st, cb) {
+var s2_config = {
+  "server":"j2o691xyq4.database.windows.net",
+  "port":1433,
+  "userName":"sjsniperdb",
+  "password":"Theerawutt53",
+  options :{ 
+    "database":"case2014",
+    "encrypt": true
+  }
+};
+
+var query = function(config, st, cb) {
   var connection = new Connection(config);
   var results = [];
   connection.on('connect', function(err) {
@@ -40,7 +51,7 @@ var query = function(st, cb) {
 var buildQuestionnaires = function(questionaire,cb) {
   var questionnaire = {};
   questionnaire['name'] = questionaire.QDesc;
-  query("select * from QuestionVSAnswer where QTID='"+ 
+  query(s1_config,"select * from QuestionVSAnswer where QTID='"+ 
     questionaire.QTID+"' and QID='"+questionaire.QID+"'",
     function(results) {
       // create radio
@@ -59,7 +70,10 @@ var buildQuestionnaires = function(questionaire,cb) {
           question['choices'].push(obj);
         });
         questionnaire['questions'].push(question);
+      } else { 
+        console.log("unsupport type",questionaire.IUControl);
       }
+      
       cb(questionnaire);
   });
 };
@@ -68,7 +82,7 @@ var buildQuestionnaires = function(questionaire,cb) {
 var buildPart = function(qtype,cb) {
   var part = {'name':qtype.QTDesc,'qtid':qtype.QTID};
   part['questionnaires'] = [];
-  query("select * from Questionaire where QTID='"+qtype.QTID+"'", 
+  query(s1_config,"select * from Questionaire where QTID='"+qtype.QTID+"'", 
     function(results) {
       var count = results.length;
       results.forEach(function(result) {
@@ -89,7 +103,7 @@ var loadFromTemplate = function(template) {
   var part_count = template.parts.length;
   template.parts.forEach(function(part) {
     var q_st = "select * from QTimeStamp where QTID='"+part.qtid+"'";
-    query(q_st, function(qts_list) {
+    query(s1_config,q_st, function(qts_list) {
       qts_list.forEach(function(qts) {
         var key=qts.CID+'-'+qts.QTSID;
         if(!document_dict[key]) {
@@ -97,6 +111,7 @@ var loadFromTemplate = function(template) {
           var n_doc=JSON.parse(JSON.stringify(template));
           n_doc['cid']=qts.CID;
           n_doc['qtsid']=qts.QTSID;
+          n_doc['createdDate']=new Date(qts.RecordDate);
           document_dict[key]=n_doc;
         }
       });
@@ -111,6 +126,7 @@ var loadFromTemplate = function(template) {
 
         var collection = mongodb.collection("formTemplates");
         collection.remove({loadFromDB:true,fid:formId},{w:1},function(err,n) {
+          if(err) throw err;
           console.log("removed",n.result.n,"documents");
           syncDocument(document_list,0);
         });
@@ -135,13 +151,19 @@ var syncDocument = function(document_list,index) {
 };
 
 var setValueForTemplate = function(document,cb) {
-  query("select * from QRecord where "+
+  query(s1_config,"select * from QRecord where "+
      "QTSID='"+document.qtsid+"' and "+
      "CID='"+document.cid+"'", function(qrecords) {
     document['template']=false;
     document['loadFromDB']=true;
     document['loadDate']=new Date();
     qrecords.forEach(function(qrecord) {
+      var answer_log = '-> answer( qtid:';
+      answer_log += qrecord.QTID;
+      answer_log += ' qid:'+qrecord.QID;
+      answer_log += ' aid:'+qrecord.AID;
+      answer_log += ' )';
+      console.log(answer_log);
       var part = null;
       for(var i=0;i<document.parts.length;i++) {
         if(document.parts[i].qtid == qrecord.QTID) {
@@ -160,32 +182,40 @@ var setValueForTemplate = function(document,cb) {
       }
       // store to mongodb
     });
+
+    var insertDoc = function(doc,cb) {
+      document.ownerId = doc._id;
+      var formDB = mongodb.collection("formTemplates");
+      formDB.insert(document,{w:1},function(err,result) {
+        console.log("-> inserted",result.result.n,"documents");
+        cb(document);
+      });
+    };
     
     var collection = mongodb.collection("person");
     collection.findOne({"CID":document.cid},function(err,doc) {
       if(err) throw err;
       if(doc) {
-        document.ownerId = doc._id;
-        var formDB = mongodb.collection("formTemplates");
-        formDB.insert(document,{w:1},function(err,result) {
-          console.log("-> inserted",result.result.n,"documents");
-          cb(document);
-        });
-      
+        insertDoc(doc,cb);
       } else {
         console.log("-> Not Found CID "+document.cid);
-        cb(document);
+        query(s2_config,"select * from Person where CID='"+document.cid+"'",
+          function(person_list) {
+          person_list.forEach(function(person) {
+            collection.insert(person,{w:1},function(err,result) {
+              if(err) throw err;
+              collection.findOne({"CID":document.cid},function(err,doc) {
+                insertDoc(doc,cb);
+              });
+            });
+          });
+        });
       }
     });
   });
 }
 
-var insertDocument = function(document_list) {
-  console.log("inserting",document_list.length,"documents");
-};
-
-
-var formId = '00001';
+var formId = process.argv[2];
 var formTemplate = {};
 var answerDict = {};
 var mongodb = null;
@@ -193,18 +223,26 @@ var mongodb = null;
 // executed by formId
 MongoClient.connect(mongourl, function(err, db) {
   if(err) throw err;
+  if(!formId) formId='1';
+  formId = '0000'+formId;
+  console.log('Loading form id',formId);
   mongodb = db;
-  query("select * from Form where FID ='"+formId+"'", function(forms) {
+  query(s1_config,
+    "select * from Form where FID ='"+formId+"'", function(forms) {
     formTemplate['fid'] = forms[0].FID;
     formTemplate['name'] = forms[0].FDesc;
     formTemplate['parts'] = [];
 
     // create AnswerDict 
-    query("select * from Answer", function(answers) {
+    query(s1_config,"select * from Answer", function(answers) {
       answers.forEach(function(answer) {
+        // fix error
+        answer.ADesc = answer.ADesc.replace('เคลื่อนท่','เคลื่อนที่');
+        answer.ADesc = answer.ADesc.replace('ช่่วย','ช่วย');
+        answer.ADesc = answer.ADesc.replace('กลั้ั้น','กลั้น');
         answerDict[answer.AID] = answer.ADesc;
       });
-      query("select * from QuestionType where FID ='"+formId+"'", 
+      query(s1_config,"select * from QuestionType where FID ='"+formId+"'", 
         function(qtypes) {
           var parts = qtypes.length;
           qtypes.forEach(function(qtype) {
@@ -212,6 +250,7 @@ MongoClient.connect(mongourl, function(err, db) {
               parts--; 
               formTemplate['parts'].push(part);
               if(parts == 0) {
+              //  console.log(JSON.stringify(formTemplate,null,2));
                 loadFromTemplate(formTemplate);
               }
             });
