@@ -1,5 +1,8 @@
 var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;
+var MongoClient = require('mongodb').MongoClient;
+
+var mongourl = 'mongodb://128.199.108.210:27017/casedb';
 
 var config = {
   "server":"AssertProjects.nu.ac.th",
@@ -19,8 +22,8 @@ var query = function(st, cb) {
     if(err) throw err; 
     request = new Request(st, function(err, count, rows) {
       if(err) throw err;
-      cb(results);
       connection.close();
+      cb(results);
     });
   
     request.on('row', function(columns) {
@@ -37,7 +40,6 @@ var query = function(st, cb) {
 var buildQuestionnaires = function(questionaire,cb) {
   var questionnaire = {};
   questionnaire['name'] = questionaire.QDesc;
-  questionnaire['qid'] = questionaire.QID;
   query("select * from QuestionVSAnswer where QTID='"+ 
     questionaire.QTID+"' and QID='"+questionaire.QID+"'",
     function(results) {
@@ -46,6 +48,7 @@ var buildQuestionnaires = function(questionaire,cb) {
       if(questionaire.IUControl == '20030') {
         var question = {};
         question['type']="radio";
+        question['qid']=questionaire.QID;
         question['label']=questionaire.QDesc;
         question['choices'] = [];
         results.forEach(function(result) {
@@ -97,49 +100,123 @@ var loadFromTemplate = function(template) {
           document_dict[key]=n_doc;
         }
       });
+
       part_count--;
       if(part_count==0) {
         console.log(document_count);
+        var document_list = [];
         for(var key in document_dict) {
-          setValueForTemplate(document_dict[key]);
+          document_list.push(document_dict[key]);
         }
+
+        var collection = mongodb.collection("formTemplates");
+        collection.remove({loadFromDB:true,fid:formId},{w:1},function(err,n) {
+          console.log("removed",n.result.n,"documents");
+          syncDocument(document_list,0);
+        });
       }
     });
   });
   // build template
 };
 
-var setValueForTemplate = function(document) {
-  console.log(document.cid,document.qtsid);
+var syncDocument = function(document_list,index) {
+  console.log("Performing",index,
+    "CID",document_list[index].cid,
+    "QTSID",document_list[index].qtsid);
+
+  setValueForTemplate(document_list[index],function(document) {
+    if(index+1<document_list.length) {
+      syncDocument(document_list,index+1);
+    } else {
+      mongodb.close();
+    }
+  });
+};
+
+var setValueForTemplate = function(document,cb) {
+  query("select * from QRecord where "+
+     "QTSID='"+document.qtsid+"' and "+
+     "CID='"+document.cid+"'", function(qrecords) {
+    document['template']=false;
+    document['loadFromDB']=true;
+    document['loadDate']=new Date();
+    qrecords.forEach(function(qrecord) {
+      var part = null;
+      for(var i=0;i<document.parts.length;i++) {
+        if(document.parts[i].qtid == qrecord.QTID) {
+          part = document.parts[i];
+          break;
+        }
+      }
+      if(part) {
+        part.questionnaires.forEach(function(questionnaire) {
+          questionnaire.questions.forEach(function(question) {
+            if(qrecord.QID == question.qid) {
+              question.value = answerDict[qrecord.AID];
+            }
+          });
+        });
+      }
+      // store to mongodb
+    });
+    
+    var collection = mongodb.collection("person");
+    collection.findOne({"CID":document.cid},function(err,doc) {
+      if(err) throw err;
+      if(doc) {
+        document.ownerId = doc._id;
+        var formDB = mongodb.collection("formTemplates");
+        formDB.insert(document,{w:1},function(err,result) {
+          console.log("-> inserted",result.result.n,"documents");
+          cb(document);
+        });
+      
+      } else {
+        console.log("-> Not Found CID "+document.cid);
+        cb(document);
+      }
+    });
+  });
 }
+
+var insertDocument = function(document_list) {
+  console.log("inserting",document_list.length,"documents");
+};
 
 
 var formId = '00001';
 var formTemplate = {};
 var answerDict = {};
+var mongodb = null;
 
 // executed by formId
-query("select * from Form where FID ='"+formId+"'", function(forms) {
-  formTemplate['fid'] = forms[0].FID;
-  formTemplate['name'] = forms[0].FDesc;
-  formTemplate['parts'] = [];
-  // create AnswerDict 
-  query("select * from Answer", function(answers) {
-    answers.forEach(function(answer) {
-      answerDict[answer.AID] = answer.ADesc;
-    });
-    query("select * from QuestionType where FID ='"+formId+"'", 
-      function(qtypes) {
-        var parts = qtypes.length;
-        qtypes.forEach(function(qtype) {
-          buildPart(qtype,function(part) {
-            parts--; 
-            formTemplate['parts'].push(part);
-            if(parts == 0) {
-              loadFromTemplate(formTemplate);
-            }
+MongoClient.connect(mongourl, function(err, db) {
+  if(err) throw err;
+  mongodb = db;
+  query("select * from Form where FID ='"+formId+"'", function(forms) {
+    formTemplate['fid'] = forms[0].FID;
+    formTemplate['name'] = forms[0].FDesc;
+    formTemplate['parts'] = [];
+
+    // create AnswerDict 
+    query("select * from Answer", function(answers) {
+      answers.forEach(function(answer) {
+        answerDict[answer.AID] = answer.ADesc;
+      });
+      query("select * from QuestionType where FID ='"+formId+"'", 
+        function(qtypes) {
+          var parts = qtypes.length;
+          qtypes.forEach(function(qtype) {
+            buildPart(qtype,function(part) {
+              parts--; 
+              formTemplate['parts'].push(part);
+              if(parts == 0) {
+                loadFromTemplate(formTemplate);
+              }
+            });
           });
-        });
+      });
     });
   });
 });
