@@ -54,13 +54,13 @@ var buildQuestionnaires = function(questionaire,cb) {
   query(s1_config,"select * from QuestionVSAnswer where QTID='"+ 
     questionaire.QTID+"' and QID='"+questionaire.QID+"'",
     function(results) {
-      // create radio
       questionnaire['questions'] = [];
+      var question = {};
+      question['qid']=questionaire.QID;
+      question['label']=questionaire.QDesc;
       if(questionaire.IUControl == '20030') {
-        var question = {};
+        // create radio
         question['type']="radio";
-        question['qid']=questionaire.QID;
-        question['label']=questionaire.QDesc;
         question['choices'] = [];
         results.forEach(function(result) {
           var obj = {
@@ -71,9 +71,31 @@ var buildQuestionnaires = function(questionaire,cb) {
         });
         questionnaire['questions'].push(question);
       } else { 
-        console.log("unsupport type",questionaire.IUControl);
+        switch(questionaire.IUControl) { 
+          case '10050':
+            question['type']="textbox";
+            questionnaire['questions'].push(question);
+            break;
+          case '10041':
+            question['type']="datetime";
+            questionnaire['questions'].push(question);
+            break;
+          case '20020':
+            question['type']="checkbox";
+            results.forEach(function(result) {
+              var question = {};
+              question['type']="checkbox";
+              question['qid']=questionaire.QID;
+              question['aid']=result.AID;
+              question['label'] = answerDict[result.AID];
+              questionnaire['questions'].push(question);
+            })
+            break;
+          default:
+            console.log("unsupport type",questionaire.IUControl);
+            process.exit(1);
+        }
       }
-      
       cb(questionnaire);
   });
 };
@@ -174,8 +196,19 @@ var setValueForTemplate = function(document,cb) {
       if(part) {
         part.questionnaires.forEach(function(questionnaire) {
           questionnaire.questions.forEach(function(question) {
-            if(qrecord.QID == question.qid) {
-              question.value = answerDict[qrecord.AID];
+            if(question.type == "radio") {
+              if(qrecord.QID == question.qid) {
+                console.log('--> set value for [radio]');
+                question.value = answerDict[qrecord.AID];
+              }
+            } else {
+              if(question.type == "checkbox") {
+                if(qrecord.QID == question.qid && 
+                   qrecord.AID == question.aid) {
+                  console.log('--> set value for [checkbox]');
+                  question.value = true;
+                }
+              }
             }
           });
         });
@@ -225,8 +258,21 @@ MongoClient.connect(mongourl, function(err, db) {
   if(err) throw err;
   if(!formId) formId='1';
   formId = '0000'+formId;
+  formId = formId.slice(-5);
   console.log('Loading form id',formId);
   mongodb = db;
+
+  var insert_template = function(template,cb) {
+    var tmp = JSON.parse(JSON.stringify(template));
+    tmp['template']=true;
+    var formDb = mongodb.collection("formTemplates");
+    formDb.insert(tmp,{w:1},function(err,result) {
+      if(err) throw err;
+      console.log('template inserted');
+      cb();  
+    });
+  };
+
   query(s1_config,
     "select * from Form where FID ='"+formId+"'", function(forms) {
     formTemplate['fid'] = forms[0].FID;
@@ -250,8 +296,27 @@ MongoClient.connect(mongourl, function(err, db) {
               parts--; 
               formTemplate['parts'].push(part);
               if(parts == 0) {
-              //  console.log(JSON.stringify(formTemplate,null,2));
-                loadFromTemplate(formTemplate);
+                // save form to db
+                var formDb = mongodb.collection("formTemplates");
+                formDb.findOne({'fid':formId,'template':true},
+                  function(err, doc) { 
+                  if(err) throw err;
+                  if(doc) {
+                    formDb.remove({'fid':formId,'template':true},
+                      {w:1},function(err,n) {
+                      if(err) throw err;
+                      insert_template(formTemplate,function() {
+                        loadFromTemplate(formTemplate);
+                      });
+                    });
+                  } else {
+                    insert_template(formTemplate,function() {
+                      loadFromTemplate(formTemplate);
+                    });
+                  }
+                });
+              // console.log(JSON.stringify(formTemplate,null,2));
+              // loadFromTemplate(formTemplate);
               }
             });
           });
