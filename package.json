@@ -23,7 +23,8 @@
     "angular-resource": "./bower_components/angular-resource/angular-resource.min.js",
     "angular-bootstrap": "./bower_components/angular-bootstrap/ui-bootstrap.min.js",
     "angular-bootstrap-tpls": "./bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js",
-    "bootstrap": "./bower_components/bootstrap/dist/js/bootstrap.min.js"
+    "bootstrap": "./bower_components/bootstrap/dist/js/bootstrap.min.js",
+    "onsenui": "./bower_components/onsenui/build/js/onsenui.min.js"
   },
   "browserify-shim": {
     "jquery": { "exports":"$" },

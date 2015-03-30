@@ -31,6 +31,21 @@ gulp.task('bootstrap_css', function() {
   .pipe(gulp.dest('dist/css'));
 });
 
+gulp.task('font-awesome_css', function() {
+  gulp.src('./bower_components/components-font-awesome/css/*') 
+  .pipe(gulp.dest('dist/css/font_awesome/css'));
+});
+
+gulp.task('ionicons_css', function() {
+  gulp.src('./bower_components/ionicons/css/*') 
+  .pipe(gulp.dest('dist/css/ionicons/css'));
+});
+
+gulp.task('onsen_bower', function() {
+  gulp.src('./bower_components/onsenui/build/**')
+  .pipe(gulp.dest('dist/lib/onsen'));
+});
+
 gulp.task('bootstrap_font', function() {
   gulp.src('./bower_components/bootstrap/dist/fonts/*')
   .pipe(gulp.dest('dist/fonts'));
@@ -63,4 +78,5 @@ gulp.task('haml', function() {
 
 gulp.task('default', ['views','browserify','haml']);
 gulp.task('bootstrap', ['bootstrap_css','bootstrap_font']);
+gulp.task('onsenui', ['onsen_bower','font-awesome_css','ionicons_css']);
 
