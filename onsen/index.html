@@ -1,0 +1,27 @@
+<!doctype html>
+<html ng-app="app">
+<meta charset="utf-8">
+<link rel="stylesheet" href="lib/onsen/css/onsenui.css">
+<link rel="stylesheet" href="lib/onsen/css/onsen-css-components.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script src="https://code.angularjs.org/1.3.14/angular-resource.min.js"></script>
+
+<script src="lib/lb-services.js"></script>
+<script src="lib/onsen/js/onsenui.js"></script>
+<script src="modules/person/js/app.js"></script>
+<script src="modules/core/app.js"></script>
+<body ng-controller="core.controller.main">
+  <ons-navigator var="app.navigator">
+  <ons-page>
+    <ons-toolbar>
+      <div class="center">Case Manager</div>
+    </ons-toolbar>
+
+    <ons-button ng-click="push()" modifier="large" style="margin:0 auto;">
+      ค้นหา
+    </ons-button>
+    
+  </ons-page>
+  </ons-navigator>
+</body>
+</html>

@@ -26,7 +26,7 @@ app.use(loopback.favicon());
 // request pre-processing middleware
 
 var path = require('path');
-app.use(loopback.static(path.resolve(__dirname, '../dist')));
+app.use(loopback.static(path.resolve(__dirname, '../md')));
 
 app.use(loopback.urlNotFound());
 app.use(loopback.errorHandler());

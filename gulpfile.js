@@ -33,17 +33,17 @@ gulp.task('bootstrap_css', function() {
 
 gulp.task('font-awesome_css', function() {
   gulp.src('./bower_components/components-font-awesome/css/*') 
-  .pipe(gulp.dest('dist/css/font_awesome/css'));
+  .pipe(gulp.dest('onsen/css/font_awesome/css'));
 });
 
 gulp.task('ionicons_css', function() {
   gulp.src('./bower_components/ionicons/css/*') 
-  .pipe(gulp.dest('dist/css/ionicons/css'));
+  .pipe(gulp.dest('onsen/css/ionicons/css'));
 });
 
 gulp.task('onsen_bower', function() {
   gulp.src('./bower_components/onsenui/build/**')
-  .pipe(gulp.dest('dist/lib/onsen'));
+  .pipe(gulp.dest('onsen/lib/onsen'));
 });
 
 gulp.task('bootstrap_font', function() {
@@ -56,7 +56,9 @@ gulp.task('lbservice', function() {
   return gulp.src('./server/server.js')
   .pipe(loopbackAngular())
   .pipe(rename('lb-services.js'))
-  .pipe(gulp.dest('./app/js'));
+//  .pipe(gulp.dest('./app/js'));
+//  .pipe(gulp.dest('./onsen/lib'));
+  .pipe(gulp.dest('./md/lib'));
 });
 
 gulp.task('browserify', function() {
@@ -76,7 +78,7 @@ gulp.task('haml', function() {
   .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('default', ['views','browserify','haml']);
+gulp.task('default', []);
 gulp.task('bootstrap', ['bootstrap_css','bootstrap_font']);
 gulp.task('onsenui', ['onsen_bower','font-awesome_css','ionicons_css']);
 
