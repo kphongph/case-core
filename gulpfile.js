@@ -58,7 +58,7 @@ gulp.task('lbservice', function() {
   .pipe(rename('lb-services.js'))
 //  .pipe(gulp.dest('./app/js'));
 //  .pipe(gulp.dest('./onsen/lib'));
-  .pipe(gulp.dest('./md/lib'));
+  .pipe(gulp.dest('./client/js'));
 });
 
 gulp.task('browserify', function() {

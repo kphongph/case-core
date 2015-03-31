@@ -1,0 +1,53 @@
+<div class="container-fluid" ng-controller="app.person.controller.search">
+
+<div class="row">
+ <div class="col-md-12">
+  <div class="input-group">
+   <input type="text" ng-model="query" class="form-control" 
+      placeholder="เลขประจำตัวประชาชน หรือ  ชื่อ">
+   <span class="input-group-btn">
+    <button class="btn btn-primary" type="button" ng-click="search(query)">
+      ค้นหา
+    </button>
+   </span>
+  </div>
+ </div>
+</div>
+
+<br>
+<!-- Controller -->
+<div class="row">
+ <div class="col-xs-4">
+  <button class="btn btn-default pull-left" type="button"
+    ng-disabled="pre_disabled"
+    ng-click="page=page-1">
+   <span class="glyphicon glyphicon-chevron-left"></span>
+  </button>
+ </div>
+ <div class="col-xs-4 text-center">
+  {{page}}/{{total_page}}
+ </div>
+ <div class="col-xs-4">
+  <button class="btn btn-default pull-right" type="button"
+    ng-disabled="nex_disabled"
+    ng-click="page=page+1">
+   <span class="glyphicon glyphicon-chevron-right"></span>
+  </button>
+ </div>
+</div>
+
+<br>
+
+<div class="row">
+ <div class="col-md-12">
+ <div class="list-group">
+  <a href="#/person/{{person.id}}" class="list-group-item" ng-repeat="person in people">
+    {{person.CID}} {{person.FirstName}} {{person.LastName}}
+    
+    <span class="glyphicon glyphicon-menu-right pull-right"></span>
+  </a>
+ </div>
+ </div>
+</div>
+
+</div>
