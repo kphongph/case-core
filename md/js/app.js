@@ -1,11 +1,14 @@
-var app = angular.module('StarterApp', ['ngMaterial']);
+var app = angular.module('app', [
+  'ngMaterial',
+  'lbServices'
+]);
 
-app.controller('AppCtrl', function($scope, $mdSidenav){
-  $scope.toggleSidenav = function(menuId) {
-    $mdSidenav(menuId).toggle();
-  };
-  
+app.controller('AppCtrl', function($scope,Person) {
   $scope.search = function() {
-    console.log("search");
+    Person.find({filter:{limit:10}})
+    .$promise.then(function(result) {
+      console.log(result);
+      $scope.people=result;
+    });
   }
 });

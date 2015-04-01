@@ -1,4 +1,5 @@
 var module = angular.module('app', [
+  'ui.bootstrap',
   'ngRoute',
   'app.person'
 ]); 
