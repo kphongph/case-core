@@ -1,0 +1,52 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
+<polymer-element name="person-search" attributes="text placeholder">
+ <template>
+  <style>
+  :host {
+    display: none;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.9);
+    color: #757575;
+    z-index: 20;
+  }
+
+  :host([active]) {
+    display: block;
+  }
+  core-toolbar {
+    background-color: white;
+  }
+  core-menu {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  input {
+    border: none;
+    background: transparent;
+    font: inherit;
+    font-size: 16px;
+    outline: none;
+  }
+  </style>
+    <core-toolbar class="core-narrow" flex>
+     <paper-icon-button icon="search" on-tap="{{toggle}}"></paper-icon-button>
+     <input id="searchbox" placeholder="{{placeholder}}" flex>
+    </core-toolbar>
+ </template>
+
+ <script>
+  Polymer('person-search',{
+   toggle: function() {
+    // this.$.searchbox.focus();
+     this.text = this.$.searchbox.value;
+   }
+  });
+ </script>
+ 
+</polymer-element>

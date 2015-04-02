@@ -1,7 +1,9 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../bower_components/core-scroll-threshold/core-scroll-threshold.html">
 <link rel="import" href="person-service.html">
-<link rel="import" href="card-person.html">
+<link rel="import" href="person-card.html">
+<link rel="import" href="person-search.html">
 
 <polymer-element name="person-list">
   <template>
@@ -10,24 +12,57 @@
       display: block;
       width: 100%;
     }
-    card-person {
+    person-card {
+      margin-bottom: 10px;
+    }
+    person-search {
       margin-bottom: 30px;
+    }
+    #scroller {
+      border:1px solid red;
     }
     </style>
 
-    <person-service id="service" people="{{people}}"></person-service>
   
-    <div layout vertical center>
-      <template repeat="{{person in people}}">
-        <card-person>
-          <h2>{{person.CID}}</h2>
-          <p>{{person.FirstName}} {{person.LastName}}</p>
-        </card-person>
+    <person-search text="{{query}}" placeholder="บัตรประชาชนหรือชื่อ" active>
+    </person-search>
+
+    <person-service id="service" people="{{people}}" query="{{query}}"></person-service>
+
+    <template is="auto-binding">
+      <core-scroll-threshold id="threshold" scrollTarget="{{$.scroller}}"
+        lowerThreshold="100" on-lower-trigger="{{loadMore}}" fit>
+      </core-scroll-threshold>
+     
+      <div layout vertical center id="scroller">
+        <template repeat="{{person in people}}">
+          <person-card>
+            <h2>{{person.CID}}<h2> 
+            <h3>{{person.FirstName}} {{person.LastName}}</h3>
+          </person-card>
+        </template>
+        <div hidden?="{{$.threshold.lowerTriggered}}">Please wait...</div>
+      </div>
       </template>
-    </div>
-  </template>
+    </template>
   
   <script>
-  Polymer({});
+
+  addEventListener('template-bound', function(e) {
+    console.log("template");
+    var scope = e.target;
+    console.log(scope);
+    scope.people = [];
+    
+    scope.loadMore = function() {
+      scope.people.push(1);
+    };
+  });
+
+  Polymer('person-list',{
+    created: function() {
+      console.log("loading");
+    }
+  });
   </script>
 </polymer-element>

@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 
-<polymer-element name="person-service" attributes="people">
+<polymer-element name="person-service" attributes="people query">
   <template>
   <style>
   :host {
@@ -10,10 +10,11 @@
   </style>
   <core-ajax id="ajax"
     auto
-    url="../api/people?filter[limit]=10"
+    url='../api/people?filter={"limit":10,"where":{"CID":{"like":"{{query}}"}}}'
     on-core-response="{{peopleLoaded}}"
     handleAs="json">
   </core-ajax>
+
   </template>
   <script>
   Polymer('person-service', {
