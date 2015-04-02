@@ -1,0 +1,33 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="person-service.html">
+<link rel="import" href="card-person.html">
+
+<polymer-element name="person-list">
+  <template>
+    <style>
+    :host {
+      display: block;
+      width: 100%;
+    }
+    card-person {
+      margin-bottom: 30px;
+    }
+    </style>
+
+    <person-service id="service" people="{{people}}"></person-service>
+  
+    <div layout vertical center>
+      <template repeat="{{person in people}}">
+        <card-person>
+          <h2>{{person.CID}}</h2>
+          <p>{{person.FirstName}} {{person.LastName}}</p>
+        </card-person>
+      </template>
+    </div>
+  </template>
+  
+  <script>
+  Polymer({});
+  </script>
+</polymer-element>

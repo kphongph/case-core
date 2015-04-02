@@ -1,0 +1,28 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+
+<polymer-element name="person-service" attributes="people">
+  <template>
+  <style>
+  :host {
+    display: none;
+  }
+  </style>
+  <core-ajax id="ajax"
+    auto
+    url="../api/people?filter[limit]=10"
+    on-core-response="{{peopleLoaded}}"
+    handleAs="json">
+  </core-ajax>
+  </template>
+  <script>
+  Polymer('person-service', {
+    created: function() {
+      this.people = [];
+    },
+    peopleLoaded: function() {
+      this.people = this.$.ajax.response.slice(0);
+    }
+  });
+  </script>
+</polymer-element>
