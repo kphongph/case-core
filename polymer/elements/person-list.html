@@ -1,6 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
-<link rel="import" href="../bower_components/core-scroll-threshold/core-scroll-threshold.html">
+<link rel="import" href="../bower_components/core-icons/core-icons.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="person-service.html">
 <link rel="import" href="person-card.html">
 <link rel="import" href="person-search.html">
@@ -13,27 +15,36 @@
       width: 100%;
     }
     person-card {
-      margin-bottom: 10px;
+      padding:10px;
+      margin: 10px;
     }
     person-search {
       margin-bottom: 30px;
     }
-    #scroller {
-      border:1px solid red;
-    }
+
     </style>
 
   
-    <person-search text="{{query}}" placeholder="บัตรประชาชนหรือชื่อ" active>
+    <person-search text="{{query}}" placeholder="บัตรประชาชนไทย" active>
     </person-search>
+    
+    <paper-toast id="count_toast" text="Found {{people_count}} documents"></paper-toast>
 
-    <person-service id="service" people="{{people}}" query="{{query}}"></person-service>
+    <core-ajax id="people_count"
+      auto
+      url='../api/people/count?where={"CID":{"like":"{{query}}"}}'
+      on-core-response="{{countReturn}}"
+      handleAs="json">
+    </core-ajax>
 
-    <template is="auto-binding">
-      <core-scroll-threshold id="threshold" scrollTarget="{{$.scroller}}"
-        lowerThreshold="100" on-lower-trigger="{{loadMore}}" fit>
-      </core-scroll-threshold>
-     
+    <core-ajax id="ajax"
+      auto
+      url='../api/people?filter={"limit":10,"skip":{{page}},"where":{"CID":{"like":"{{query}}"}}}'
+      on-core-response="{{peopleLoaded}}"
+      handleAs="json">
+    </core-ajax>
+
+
       <div layout vertical center id="scroller">
         <template repeat="{{person in people}}">
           <person-card>
@@ -41,27 +52,44 @@
             <h3>{{person.FirstName}} {{person.LastName}}</h3>
           </person-card>
         </template>
-        <div hidden?="{{$.threshold.lowerTriggered}}">Please wait...</div>
+        <paper-fab id="add_button" icon="add" on-click="{{loadMore}}"></paper-fab>
       </div>
       </template>
-    </template>
   
   <script>
 
-  addEventListener('template-bound', function(e) {
-    console.log("template");
-    var scope = e.target;
-    console.log(scope);
-    scope.people = [];
-    
-    scope.loadMore = function() {
-      scope.people.push(1);
-    };
-  });
-
   Polymer('person-list',{
     created: function() {
-      console.log("loading");
+      this.p_query = this.query;
+      this.people=[];
+      this.page = 0;
+    },
+    loadMore: function() {
+      this.page+=10;
+    },
+    peopleLoaded: function() {
+      var response = this.$.ajax.response;
+      if(this.p_query!=this.query) {
+        this.p_query = this.query;
+        this.people=[];
+      }
+      if(response) {
+        var list = response;
+        for(var i=0;i<list.length;i++) {
+          this.people.push(list[i]);
+        }
+        if(this.people_count == this.people.length) {
+          this.$.add_button.style.display="none";
+        } else {
+          this.$.add_button.style.display="block";
+        }
+      }
+    },
+    countReturn: function() {
+      if(this.$.people_count.response) {
+        this.people_count = this.$.people_count.response.count;
+        this.$.count_toast.show();
+      }
     }
   });
   </script>

@@ -5,7 +5,8 @@
 <link rel="import" href="../bower_components/core-header-panel/core-header-panel.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
-<polymer-element name="person-search" attributes="text placeholder">
+<polymer-element name="person-search" attributes="text placeholder" 
+  on-keyup="{{update}}">
  <template>
   <style>
   :host {
@@ -45,7 +46,11 @@
    toggle: function() {
     // this.$.searchbox.focus();
      this.text = this.$.searchbox.value;
-   }
+   },
+   update: function() {
+    this.text = this.$.searchbox.value;
+    console.log(this.text);
+   } 
   });
  </script>
  

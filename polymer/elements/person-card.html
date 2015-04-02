@@ -1,25 +1,45 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-menu-button/core-menu-button.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/core-dropdown/core-dropdown.html">
+<link rel="import" href="../bower_components/core-item/core-item.html">
 <link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
 
-<polymer-element name="person-card" on-tap="{{onMouseOver}}">
+<polymer-element name="person-card" 
+  on-mouseover="{{onMouseOver}}"
+  on-mouseout="{{onMouseOut}}">
   <template>
 <style>
+
 :host {
   display: block;
-  position: relative;
   background-color: white;
   padding: 10px;
+  margin: 10px;
   width: 100%;
   font-size: 1rem;
   font-weight: 200;
 }
 
-:host(:hover) {
-  font-weight: 300;
-}
-
 .card-header {
   margin-bottom: 0px;
+}
+
+core-dropdown {
+  background-color: #eee;
+  color: #000;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+core-item {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#cardmenu {
+  display:none;
 }
     
 polyfill-next-selector { content: '.card-header h2'; }
@@ -31,26 +51,44 @@ polyfill-next-selector { content: '.card-header h2'; }
 
 polyfill-next-selector { content: '.card-header h3'; }
 .card-header ::content h3 {
-  margin: 10px;
+  margin: 0;
   font-size: 1.1rem;
   font-weight: 200;
 }
 
-</style>
-    <div class="card-header" layout horizontal center>
-      <content select="h2"></content>
-      <content select="h3"></content>
-      {{test}}
-    </div>
-    <content></content>
+   </style>
+
+   <div layout horizontal>
+     <div class="card-header" layout vertical left>
+       <content select="h2"></content>
+       <content select="h3"></content>
+     </div>
+     <div flex>
+       <content></content>
+     </div>
+     <div id="cardmenu">
+       <core-menu-button>
+         <core-icon-button icon="menu"></core-icon-button>
+         <core-dropdown class="dropdown" layered>
+           <core-menu>
+             <core-item>Share</core-item>
+             <core-item>Settings</core-item>
+             <core-item>Help</core-item>
+           </core-menu>
+        </core-dropdown>
+       </core-menu-button>
+     </div>
+   </div>
   </template>
   <script>
    Polymer('person-card', {
      created: function() { 
-       this.test = "Created";
      }, 
      onMouseOver: function() {
-       this.test = "hello";
+       this.$.cardmenu.style.display = "block";
+     },
+     onMouseOut: function() {
+       this.$.cardmenu.style.display = "none";
      }
    });
   </script>
