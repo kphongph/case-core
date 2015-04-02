@@ -21,7 +21,6 @@
     person-search {
       margin-bottom: 30px;
     }
-
     </style>
 
   
@@ -68,16 +67,17 @@
       this.page+=10;
     },
     peopleLoaded: function() {
-      var response = this.$.ajax.response;
+      var list = this.$.ajax.response;
       if(this.p_query!=this.query) {
         this.p_query = this.query;
+        this.page = 0;
         this.people=[];
       }
-      if(response) {
-        var list = response;
+      if(list) {
         for(var i=0;i<list.length;i++) {
           this.people.push(list[i]);
         }
+        console.log(this.people.length);
         if(this.people_count == this.people.length) {
           this.$.add_button.style.display="none";
         } else {
