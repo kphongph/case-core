@@ -1,0 +1,25 @@
+html,body {
+  height: 100%;
+  margin: 0;
+  background-color: #E5E5E5;
+  font-family: 'RobotoDraft', sans-serif;
+}
+
+body /deep/ core-toolbar {
+  background: #03a9f4;
+  color: white;
+}
+
+core-animated-pages {
+  width: 85%;
+  height: 85%;
+  -webkit-user-select: none;
+  overflow: hide;
+}
+
+@media all and (max-width: 480px) {
+  core-animated-pages {
+    width: 90%;
+    height: 90%;
+  }
+}
