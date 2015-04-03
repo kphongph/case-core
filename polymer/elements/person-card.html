@@ -2,93 +2,94 @@
 <link rel="import" href="../bower_components/core-menu-button/core-menu-button.html">
 <link rel="import" href="../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../bower_components/core-dropdown/core-dropdown.html">
+<link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
 <link rel="import" href="../bower_components/core-item/core-item.html">
+<link rel="import" href="../bower_components/core-icon/core-icon.html">
 <link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../bower_components/core-pages/core-pages.html">
 
-<polymer-element name="person-card" 
+<polymer-element name="person-card" attributes="docid" 
+  on-tap="{{onTap}}"
   on-mouseover="{{onMouseOver}}"
   on-mouseout="{{onMouseOut}}">
+
   <template>
-<style>
+    <style>
 
-:host {
-  display: block;
-  background-color: white;
-  padding: 10px;
-  margin: 10px;
-  width: 100%;
-  font-size: 1rem;
-  font-weight: 200;
-}
+    :host {
+      display: block;
+      background-color: white;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+      width: 100%;
+      font-size: 1rem;
+      font-weight: 200;
+    }
+    .card-header {
+      margin-left: 10px;
+    }
 
-.card-header {
-  margin-bottom: 0px;
-}
+    core-dropdown {
+      background-color: #eee;
+      color: #000;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
 
-core-dropdown {
-  background-color: #eee;
-  color: #000;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
+    core-item {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
 
-core-item {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-#cardmenu {
-  display:none;
-}
-    
-polyfill-next-selector { content: '.card-header h2'; }
-.card-header ::content h2 {
-  margin: 0;
-  font-size: 1.2rem;
-  font-weight: 300;
-}
-
-polyfill-next-selector { content: '.card-header h3'; }
-.card-header ::content h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 200;
-}
-
+    polyfill-next-selector { content: '.card-header h2'; }
+    .card-header ::content h2 {
+      margin: 0px;
+      padding: 5px;
+      font-size: 1.1rem;
+      font-weight: 200;
+    }
    </style>
 
-   <div layout horizontal>
-     <div class="card-header" layout vertical left>
+   <div layout vertical>
+     <div class="card-header" layout horizontal start-justified>
        <content select="h2"></content>
-       <content select="h3"></content>
      </div>
      <div flex>
        <content></content>
      </div>
-     <div id="cardmenu">
-       <core-menu-button>
-         <core-icon-button icon="menu"></core-icon-button>
-         <core-dropdown class="dropdown" layered>
-           <core-menu>
-             <core-item>Share</core-item>
-             <core-item>Settings</core-item>
-             <core-item>Help</core-item>
-           </core-menu>
-        </core-dropdown>
-       </core-menu-button>
-     </div>
+   <div>
+   <!--
+   <div id="cardmenu">
+     <core-menu-button>
+       <core-icon-button icon="menu"></core-icon-button>
+       <core-dropdown class="dropdown" layered>
+         <core-menu>
+           <core-item>
+             <core-icon icon="search"></core-icon> Form
+           </core-item>
+         </core-menu>
+      </core-dropdown>
+     </core-menu-button>
    </div>
+   -->
+   
   </template>
   <script>
    Polymer('person-card', {
      created: function() { 
      }, 
      onMouseOver: function() {
-       this.$.cardmenu.style.display = "block";
+     //  this.$.cardmenu.style.display = "block";
+     //  this.$.content.style.display = "block";
      },
      onMouseOut: function() {
-       this.$.cardmenu.style.display = "none";
+    //   this.$.cardmenu.style.display = "none";
+    //   this.$.content.style.display = "none";
+     },
+     onTap: function() {
+       this.fire('person-selected', {id:this.docid});
      }
    });
   </script>

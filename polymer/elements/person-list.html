@@ -2,32 +2,22 @@
 <link rel="import" href="../bower_components/core-icons/core-icons.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
-<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
-<link rel="import" href="person-service.html">
 <link rel="import" href="person-card.html">
-<link rel="import" href="person-search.html">
 
-<polymer-element name="person-list">
+<polymer-element name="person-list" attributes="query">
   <template>
     <style>
     :host {
       display: block;
       width: 100%;
+      height:100%;
     }
-    person-card {
+    .result {
+      margin-bottom:15px;
       padding:10px;
-      margin: 10px;
-    }
-    person-search {
-      margin-bottom: 30px;
     }
     </style>
 
-  
-    <person-search text="{{query}}" placeholder="บัตรประชาชนไทย" active>
-    </person-search>
-    
-    <paper-toast id="count_toast" text="Found {{people_count}} documents"></paper-toast>
 
     <core-ajax id="people_count"
       auto
@@ -43,17 +33,23 @@
       handleAs="json">
     </core-ajax>
 
+     <div horizontal end-justified layout> 
+      <div class="result">Found {{people_count}} documents</div>
+     </div>
 
-      <div layout vertical center id="scroller">
-        <template repeat="{{person in people}}">
-          <person-card>
-            <h2>{{person.CID}}<h2> 
-            <h3>{{person.FirstName}} {{person.LastName}}</h3>
-          </person-card>
-        </template>
-        <paper-fab id="add_button" icon="add" on-click="{{loadMore}}"></paper-fab>
-      </div>
+     <div layout vertical center>
+      <template repeat="{{person in people}}">
+        <person-card docid="{{person.id}}">
+          <h2>{{person.CID}} {{person.FirstName}} {{person.LastName}}</h2>
+        </person-card>
       </template>
+
+      <div>
+      <paper-fab id="add_button" icon="add" on-click="{{loadMore}}"></paper-fab>
+      </div>
+    </div>
+
+  </template>
   
   <script>
 
@@ -62,6 +58,8 @@
       this.p_query = this.query;
       this.people=[];
       this.page = 0;
+    },
+    ready: function() {
     },
     loadMore: function() {
       this.page+=10;
@@ -88,7 +86,6 @@
     countReturn: function() {
       if(this.$.people_count.response) {
         this.people_count = this.$.people_count.response.count;
-        this.$.count_toast.show();
       }
     }
   });

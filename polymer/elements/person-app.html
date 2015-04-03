@@ -1,0 +1,57 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-icons/core-icons.html">
+<link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="search-bar.html">
+<link rel="import" href="person-list.html">
+
+<polymer-element name="person-app">
+  <template>
+    <style>
+    :host {
+      display: block;
+      width: 100%;
+      height:100%;
+    }
+    search-bar {
+      margin-bottom:20px;
+      padding:10px;
+    }
+    </style>
+
+    <core-animated-pages selected="{{selected}}" >
+      <section id="page1">
+       <div layout vertical>
+        <search-bar text="{{query}}" active start
+          placeholder="บัตรประจำตัวประชาชน"> </search-bar>
+        <person-list query="{{query}}"></person-list>
+       </div>
+      </section>
+      <section id="page2">
+       <div> 
+         Hello Page 2 
+         <button on-click="{{back}}">Back</button>
+       </div>
+      </section>
+    </core-animated-pages>
+
+  </template>
+  
+  <script>
+  Polymer('person-app',{
+    created: function() {
+      console.log("person-app created");
+    },
+    ready: function() {
+      this.addEventListener('person-selected', function(e) {
+        this.selected=1;
+        console.log(e.detail);
+      });
+    },
+    back: function() {
+      this.selected=0;
+    }
+  });
+  </script>
+</polymer-element>

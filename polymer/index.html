@@ -9,8 +9,7 @@
     <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
     <link rel="import" href="bower_components/core-icons/core-icons.html">
     <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
-    <link rel="import" href="elements/person-list.html">
-    <link rel="import" href="elements/person-search.html">
+    <link rel="import" href="elements/person-app.html">
     <link rel="stylesheet" href="css/app.css">
   </head>
 
@@ -19,20 +18,22 @@
     <core-scaffold id="scaffold">
      <nav>  
       <core-menu selected="0">
+       <!--
        <paper-item noink>
         <a href="#one">Single</a>
        </paper-item>
+       -->
       </core-menu>
      </nav>
      
      <core-toolbar tool flex>
-      <div flex>Case Manager</div>
+      <div>Case Manager</div>
      </core-toolbar>
       
      <div layout horizontal center-center fit>
-      <core-animated-pages id="pages" selected="0">
+      <core-animated-pages id="pages" selected="0" transitions="slide-from-right">
        <section layout vertical center-center>
-        <person-list show="all"></person-list>
+        <person-app></person-app>
        </section>
       </core-animated-pages>
      </div>

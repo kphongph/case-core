@@ -6,26 +6,24 @@
 <link rel="import" href="../bower_components/core-header-panel/core-header-panel.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
-<polymer-element name="person-search" attributes="text placeholder" 
+<polymer-element name="search-bar" 
+  attributes="text placeholder" 
+  on-tap="{{onTap}}"
   on-keyup="{{update}}">
+
  <template>
   <style>
   :host {
     display: none;
     margin: 0;
+    padding:5px;
     background: rgba(255, 255, 255, 0.9);
     color: #757575;
     z-index: 20;
   }
-
+  :host(:hover) {opacity:1;}
   :host([active]) {
     display: block;
-  }
-
-  .searchBar {
-    padding:10px;
-    background-color: white;
-    width:100%;
   }
 
   input {
@@ -36,17 +34,21 @@
     outline: none;
   }
   </style>
-    <div class="searchBar" flex>
-     <core-icon icon="search"></core-icon>
-     <input id="searchbox" placeholder="{{placeholder}}" flex>
-    </div>
+
+  <div class="searchBar" layout horizontal>
+    <core-icon icon="search"></core-icon>
+    <input id="searchbox" placeholder="{{placeholder}}" flex>
+  </div>
  </template>
 
  <script>
-  Polymer('person-search',{
+  Polymer('search-bar',{
    toggle: function() {
     // this.$.searchbox.focus();
      this.text = this.$.searchbox.value;
+   },
+   onTap: function() {
+    this.$.searchbox.focus();
    },
    update: function() {
     this.text = this.$.searchbox.value;
