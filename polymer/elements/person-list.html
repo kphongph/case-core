@@ -16,8 +16,10 @@
       margin-bottom:15px;
       padding:10px;
     }
+    #add_button {
+      margin:20px;
+    }
     </style>
-
 
     <core-ajax id="people_count"
       auto
@@ -28,7 +30,6 @@
 
     <core-ajax id="ajax"
       auto
-      url='../api/people?filter={"limit":10,"skip":{{page}},"where":{"CID":{"like":"{{query}}"}}}'
       on-core-response="{{peopleLoaded}}"
       handleAs="json">
     </core-ajax>
@@ -55,11 +56,14 @@
 
   Polymer('person-list',{
     created: function() {
+      this.query = '';
       this.p_query = this.query;
       this.people=[];
       this.page = 0;
     },
     ready: function() {
+      var ajax = this.$.ajax;
+      ajax.url = "../api/people?filter[limit]=10";
     },
     loadMore: function() {
       this.page+=10;
@@ -82,6 +86,29 @@
           this.$.add_button.style.display="block";
         }
       }
+    },
+    pageChanged: function(oldVal,newVal) {
+      var ajax = this.$.ajax;
+      var query_text = {limit:10, skip:newVal,
+        where: {
+         CID:{
+          like:this.query
+         }
+        }
+      };
+      ajax.url="../api/people?filter="+JSON.stringify(query_text);
+    },
+    queryChanged: function(oldVal, newVal) {
+      var ajax = this.$.ajax;
+      var query_text = {limit:10, skip:this.page,
+        where: {
+         CID:{
+          like:newVal
+         }
+        }
+      };
+      ajax.url="../api/people?filter="+JSON.stringify(query_text);
+      console.log(ajax.url);
     },
     countReturn: function() {
       if(this.$.people_count.response) {

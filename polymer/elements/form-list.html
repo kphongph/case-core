@@ -1,0 +1,86 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-icons/core-icons.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="form-card.html">
+
+<polymer-element name="form-list" attributes="ownerid">
+  <template>
+    <style>
+    :host {
+      display: block;
+      width: 100%;
+      height:100%;
+    }
+    .result {
+      margin-bottom:15px;
+      padding:10px;
+    }
+    #add_button {
+      margin:20px;
+    }
+    </style>
+
+    <core-ajax id="ajaxLoadForm"
+      auto
+      on-core-response="{{formLoaded}}"
+      handleAs="json">
+    </core-ajax>
+
+    <div layout vertical start>
+     <template repeat="{{form in forms}}">
+      <form-card>
+       <h2>{{form.name}}</h2>
+       {{form.createdDate}}
+      </form-card>
+     </template>
+    </div>
+
+  </template>
+  
+  <script>
+
+  Polymer('form-list',{
+    created: function() {
+      this.forms = [];
+    },
+    ready: function() {
+      console.log('form-list ready');
+    },
+    owneridChanged: function(oldVal, newVal) {
+      var query = "../api/people/"+newVal+"/forms";
+      query +="?filter[fields][id]=true";
+      query +="&filter[fields][name]=true";
+      this.$.ajaxLoadForm.url = query;
+    },
+    formLoaded: function() {
+      this.forms = this.$.ajaxLoadForm.response;
+      // console.log(JSON.stringify(this.forms[0]));
+    },
+    peopleLoaded: function() {
+      var list = this.$.ajax.response;
+      if(this.p_query!=this.query) {
+        this.p_query = this.query;
+        this.page = 0;
+        this.people=[];
+      }
+      if(list) {
+        for(var i=0;i<list.length;i++) {
+          this.people.push(list[i]);
+        }
+        console.log(this.people.length);
+        if(this.people_count == this.people.length) {
+          this.$.add_button.style.display="none";
+        } else {
+          this.$.add_button.style.display="block";
+        }
+      }
+    },
+    countReturn: function() {
+      if(this.$.people_count.response) {
+        this.people_count = this.$.people_count.response.count;
+      }
+    }
+  });
+  </script>
+</polymer-element>

@@ -5,6 +5,7 @@
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="search-bar.html">
 <link rel="import" href="person-list.html">
+<link rel="import" href="form-list.html">
 
 <polymer-element name="person-app">
   <template>
@@ -30,23 +31,21 @@
       </section>
       <section id="page2">
        <div> 
-         Hello Page 2 
-         <button on-click="{{back}}">Back</button>
+        <form-list ownerid="{{selectedPersonId}}"></form-list>
        </div>
       </section>
     </core-animated-pages>
-
   </template>
   
   <script>
   Polymer('person-app',{
     created: function() {
-      console.log("person-app created");
     },
     ready: function() {
       this.addEventListener('person-selected', function(e) {
         this.selected=1;
-        console.log(e.detail);
+        this.selectedPersonId = e.detail.id;
+        console.log(this.selectedPersonId);
       });
     },
     back: function() {
