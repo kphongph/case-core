@@ -65,7 +65,8 @@ var buildQuestionnaires = function(questionaire,cb) {
         results.forEach(function(result) {
           var obj = {
             'label':answerDict[result.AID],
-            'value':answerDict[result.AID]
+            'value':answerDict[result.AID],
+            'score':result.Value
           };
           question['choices'].push(obj);
         });
@@ -88,6 +89,7 @@ var buildQuestionnaires = function(questionaire,cb) {
               question['qid']=questionaire.QID;
               question['aid']=result.AID;
               question['label'] = answerDict[result.AID];
+              question['score'] = result.Value;
               questionnaire['questions'].push(question);
             })
             break;
@@ -200,6 +202,11 @@ var setValueForTemplate = function(document,cb) {
               if(qrecord.QID == question.qid) {
                 console.log('--> set value for [radio]');
                 question.value = answerDict[qrecord.AID];
+                question.choices.forEach(function(choice) {
+                  if(choice.value == question.value) {
+                    question.score = choice.score;
+                  }
+                });
               }
             } else {
               if(question.type == "checkbox") {

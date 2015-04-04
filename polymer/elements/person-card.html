@@ -7,6 +7,7 @@
 <link rel="import" href="../bower_components/core-icon/core-icon.html">
 <link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
 <link rel="import" href="../bower_components/core-pages/core-pages.html">
+<link rel="import" href="form-list.html">
 
 <polymer-element name="person-card" attributes="docid" 
   on-tap="{{onTap}}"
@@ -15,7 +16,6 @@
 
   <template>
     <style>
-
     :host {
       display: block;
       background-color: white;
@@ -53,43 +53,43 @@
    </style>
 
    <div layout vertical>
-     <div class="card-header" layout horizontal start-justified>
-       <content select="h2"></content>
+     <div layout horizontal>
+       <div class="card-header" flex>
+       <content select="h2" flex></content>
+       </div>
+       <core-icon-button icon="menu" on-click="{{selectForm}}">
+       </core-icon-button>
+       <!--
+       <div id="cardmenu">
+         <core-menu-button>
+          <core-icon-button icon="menu"></core-icon-button>
+           <core-dropdown class="dropdown" layered>
+           <core-menu>
+            <core-item>
+              <core-icon icon="search"></core-icon> Form
+            </core-item>
+           </core-menu>
+          </core-dropdown>
+         </core-menu-button>
+       </div>
+       -->
      </div>
-     <div flex>
-       <content></content>
+     <div>
+       <form-list active id="formList" ownerid="{{docid}}"></form-list>
      </div>
-   <div>
-   <!--
-   <div id="cardmenu">
-     <core-menu-button>
-       <core-icon-button icon="menu"></core-icon-button>
-       <core-dropdown class="dropdown" layered>
-         <core-menu>
-           <core-item>
-             <core-icon icon="search"></core-icon> Form
-           </core-item>
-         </core-menu>
-      </core-dropdown>
-     </core-menu-button>
    </div>
-   -->
-   
   </template>
   <script>
    Polymer('person-card', {
      created: function() { 
      }, 
      onMouseOver: function() {
-     //  this.$.cardmenu.style.display = "block";
-     //  this.$.content.style.display = "block";
      },
      onMouseOut: function() {
-    //   this.$.cardmenu.style.display = "none";
-    //   this.$.content.style.display = "none";
      },
-     onTap: function() {
-       this.fire('person-selected', {id:this.docid});
+     selectForm: function() {
+       this.$.formList.toggle();
+       console.log('select Form');
      }
    });
   </script>

@@ -3,26 +3,24 @@
 <link rel="import" href="../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../bower_components/core-dropdown/core-dropdown.html">
 <link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 <link rel="import" href="../bower_components/core-item/core-item.html">
 <link rel="import" href="../bower_components/core-icon/core-icon.html">
 <link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
 <link rel="import" href="../bower_components/core-pages/core-pages.html">
 
-<polymer-element name="form-card" attributes="docid" 
-  on-tap="{{onTap}}"
-  on-mouseover="{{onMouseOver}}"
-  on-mouseout="{{onMouseOut}}">
-
+<polymer-element name="form-card" attributes="docid"> 
   <template>
     <style>
 
     :host {
       display: block;
-      background-color: white;
+      background-color: #EEEEEE;
       padding-top: 5px;
       padding-bottom: 5px;
       margin-bottom: 10px;
-      width: 100%;
+      margin-left: 10px;
+      width: 80%;
       font-size: 1rem;
       font-weight: 200;
     }
@@ -44,7 +42,10 @@
     }
     
     .formDetail {
-      margin-left:40px;
+      width:85%;
+      margin:10px;
+      padding:0px;
+      background:white;
     }
 
     polyfill-next-selector { content: '.card-header h2'; }
@@ -54,14 +55,57 @@
       font-size: 1.1rem;
       font-weight: 200;
     }
+    .part {
+      font-weight:300;
+    }
+    .questionnaire {
+      margin-left:20px;
+      margin-bottom:20px;
+    }
+    .question {
+      margin-left:40px;
+    }
+    .answer {
+      margin-left:40px;
+      color:#00FF00;
+      margin-bottom:20px;
+    }
    </style>
 
+   <core-ajax id="ajax"
+     auto
+     on-core-response="{{documentLoaded}}"
+     handleAs="json">
+   </core-ajax>
+
    <div layout vertical>
-     <div class="card-header" layout horizontal start-justified>
-       <content select="h2"></content>
+     <div layout horizontal>
+       <div class="card-header" flex>
+         <content select="h2"></content>
+       </div>
+       <core-icon-button icon="menu" on-click="{{loadDocument}}">
+       </core-icon-button>
      </div>
-     <div class="formDetail">
-       <content></content>
+     <div class="formDetail" layout vertical>
+      <div>{{doc.type}}</div>
+      <div>{{doc.createdDate}}</div>
+      <template repeat="{{part in doc.parts}}">
+        <div layout vertical> 
+          <div class="part">{{part.name}}</div>
+          <div layout vertical>
+            <template repeat="{{questionnaire in part.questionnaires}}">
+              <div class="questionnaire">{{questionnaire.name}}</div>
+              <div layout vertical>
+                <template repeat="{{question in questionnaire.questions}}"> 
+                  <div class="question">{{question.label}}</div> 
+                  <div class="answer">{{question.score}}</div> 
+                  <div class="answer">{{question.value}}</div> 
+                </template>
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
      </div>
    <div>
    
@@ -71,15 +115,34 @@
      created: function() { 
      }, 
      onMouseOver: function() {
-     //  this.$.cardmenu.style.display = "block";
-     //  this.$.content.style.display = "block";
      },
      onMouseOut: function() {
-    //   this.$.cardmenu.style.display = "none";
-    //   this.$.content.style.display = "none";
      },
-     onTap: function() {
-       this.fire('person-selected', {id:this.docid});
+     documentLoaded: function() {
+       this.doc = this.$.ajax.response;
+       if(this.doc.name == "แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ" ) {
+         var score = 0;
+         for(var i=0;i<this.doc.parts.length;i++) {
+           var part = this.doc.parts[i];
+           for(var j=0;j<part.questionnaires.length;j++) {
+             var questionnaire = part.questionnaires[j];
+             for(var k=0;k<questionnaire.questions.length;k++) {
+               var question = questionnaire.questions[k];
+               score+=question.score;
+             }
+           }
+         }
+         if(score<=4) {
+           this.doc["type"] = "ผู้สูงอายุกลุ่มพึ่งตนเองไม่ได้";
+         } else {
+           if(score<=11) {
+             this.doc["type"] = "ผู้สูงอายุที่ดูแลตนเองได้บ้าง";
+           }
+         }
+       }
+     },
+     loadDocument: function() {
+       this.$.ajax.url = "../api/formtemplates/"+this.docid;
      }
    });
   </script>
