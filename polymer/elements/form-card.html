@@ -1,19 +1,24 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/core-menu-button/core-menu-button.html">
-<link rel="import" href="../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../bower_components/core-dropdown/core-dropdown.html">
 <link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 <link rel="import" href="../bower_components/core-item/core-item.html">
+<link rel="import" href="../bower_components/core-label/core-label.html">
 <link rel="import" href="../bower_components/core-icon/core-icon.html">
 <link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
 <link rel="import" href="../bower_components/core-pages/core-pages.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+
+<link rel="import" href="form-question.html">
 
 <polymer-element name="form-card" attributes="docid"> 
   <template>
     <style>
-
     :host {
       display: block;
       background-color: #EEEEEE;
@@ -21,7 +26,7 @@
       padding-bottom: 5px;
       margin-bottom: 10px;
       margin-left: 10px;
-      width: 80%;
+      width: 95%;
       font-size: 1rem;
       font-weight: 200;
     }
@@ -29,20 +34,8 @@
       margin-left: 10px;
     }
 
-    core-dropdown {
-      background-color: #eee;
-      color: #000;
-      border: 1px solid #ccc;
-      border-radius: 3px;
-    }
-
-    core-item {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-    
-    .formDetail {
+    #formDetail {
+      display: none;
       width:85%;
       margin:10px;
       padding:0px;
@@ -55,21 +48,6 @@
       padding: 5px;
       font-size: 1.1rem;
       font-weight: 200;
-    }
-    .part {
-      font-weight:300;
-    }
-    .questionnaire {
-      margin-left:20px;
-      margin-bottom:20px;
-    }
-    .question {
-      margin-left:40px;
-    }
-    .answer {
-      margin-left:40px;
-      color:#00FF00;
-      margin-bottom:20px;
     }
    </style>
 
@@ -85,39 +63,30 @@
          <content select="h2"></content>
        </div>
        <core-icon-button icon="menu" on-click="{{loadDocument}}">
+         Load Content
        </core-icon-button>
      </div>
-     <div class="formDetail" layout vertical>
-      <div>{{doc.type}}</div>
-      <div>{{doc.createdDate}}</div>
-      <paper-dialog transition="core-transition-center" id="dialogTest">
-      <template repeat="{{part in doc.parts}}">
-        <div layout vertical> 
-          <div class="part">{{part.name}}</div>
-          <div layout vertical>
-            <template repeat="{{questionnaire in part.questionnaires}}">
-              <div class="questionnaire">{{questionnaire.name}}</div>
-              <div layout vertical>
-                <template repeat="{{question in questionnaire.questions}}"> 
-                  <div class="question">{{question.label}}</div> 
-                  <div class="answer">{{question.score}}</div> 
-                  <div class="answer">{{question.value}}</div> 
-                  </section>
-                </template>
-              </div>
-            </template>
-          </div>
-        </div>
-      </template>
-      </paper-dialog>
+     <div>
+       <content></content>
      </div>
-   <div>
-   
+   </div>
+
+   <div id="formDetail" layout vertical>
+     <template if="{{doc.type}}">
+     <core-label>
+       ผลการประเมิน <div for>{{doc.type}}</div>
+     </core-label>
+     </template>
+   </div>
   </template>
+
   <script>
    Polymer('form-card', {
      created: function() { 
      }, 
+     date: function(value) {
+       return new Date(value);
+     },
      onMouseOver: function() {
      },
      onMouseOut: function() {
@@ -150,7 +119,7 @@
      },
      loadDocument: function() {
        this.$.ajax.url = "../api/formtemplates/"+this.docid;
-       this.$.dialogTest.opened = true; 
+       this.$.formDetail.style.display = "block"; 
      }
    });
   </script>

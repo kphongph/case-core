@@ -10,7 +10,7 @@
 <link rel="import" href="../bower_components/core-pages/core-pages.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 
-<polymer-element name="form-card" attributes="docid"> 
+<polymer-element name="form-question" attributes="label"> 
   <template>
     <style>
 
@@ -48,7 +48,7 @@
       padding:0px;
       background:white;
     }
-
+    
     polyfill-next-selector { content: '.card-header h2'; }
     .card-header ::content h2 {
       margin: 0px;
@@ -73,78 +73,21 @@
     }
    </style>
 
-   <div layout vertical>
-     <div layout horizontal>
-       <div class="card-header" flex>
-         <content select="h2"></content>
-       </div>
-       <core-icon-button icon="menu" on-click="{{loadDocument}}">
-       </core-icon-button>
-     </div>
-     <div class="formDetail" layout vertical>
-      <div>{{doc.type}}</div>
-      <div>{{doc.createdDate}}</div>
-      <paper-dialog transition="core-transition-center" id="dialogTest">
-      <template repeat="{{part in doc.parts}}">
-        <div layout vertical> 
-          <div class="part">{{part.name}}</div>
-          <div layout vertical>
-            <template repeat="{{questionnaire in part.questionnaires}}">
-              <div class="questionnaire">{{questionnaire.name}}</div>
-              <div layout vertical>
-                <template repeat="{{question in questionnaire.questions}}"> 
-                  <div class="question">{{question.label}}</div> 
-                  <div class="answer">{{question.score}}</div> 
-                  <div class="answer">{{question.value}}</div> 
-                  </section>
-                </template>
-              </div>
-            </template>
-          </div>
-        </div>
-      </template>
-      </paper-dialog>
-     </div>
-   <div>
+   <paper-dialog>
+     <p>{{label.name}}</p>
+   </paper-dialog>
    
   </template>
   <script>
-   Polymer('form-card', {
+   Polymer('form-question', {
      created: function() { 
      }, 
+     ready: function() {
+       console.log(this.label);
+     },
      onMouseOver: function() {
      },
      onMouseOut: function() {
-     },
-     dialogToggle: function() {
-      this.$.dialog.open = !this.$.dialog.open; 
-     },
-     documentLoaded: function() {
-       this.doc = this.$.ajax.response;
-       if(this.doc.name == "แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ" ) {
-         var score = 0;
-         for(var i=0;i<this.doc.parts.length;i++) {
-           var part = this.doc.parts[i];
-           for(var j=0;j<part.questionnaires.length;j++) {
-             var questionnaire = part.questionnaires[j];
-             for(var k=0;k<questionnaire.questions.length;k++) {
-               var question = questionnaire.questions[k];
-               score+=question.score;
-             }
-           }
-         }
-         if(score<=4) {
-           this.doc["type"] = "ผู้สูงอายุกลุ่มพึ่งตนเองไม่ได้";
-         } else {
-           if(score<=11) {
-             this.doc["type"] = "ผู้สูงอายุที่ดูแลตนเองได้บ้าง";
-           }
-         }
-       }
-     },
-     loadDocument: function() {
-       this.$.ajax.url = "../api/formtemplates/"+this.docid;
-       this.$.dialogTest.opened = true; 
      }
    });
   </script>

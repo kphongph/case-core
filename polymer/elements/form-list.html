@@ -9,6 +9,7 @@
     <style>
     :host {
       display: none;
+      margin-left:10px;
       width: 100%;
       height:100%;
     }
@@ -27,12 +28,17 @@
     </core-ajax>
 
     <div layout vertical start>
+     <template if="{{loaded}}">
+       <div>Found {{forms.length}}</div>
+     </template>
+     <div>
      <template repeat="{{form in forms}}">
       <form-card docid="{{form.id}}">
        <h2>{{form.name}}</h2>
-       {{form.createdDate}}
+       {{form.createdDate|date}}
       </form-card>
      </template>
+     </div>
     </div>
 
   </template>
@@ -42,8 +48,12 @@
   Polymer('form-list',{
     created: function() {
       this.forms = [];
+      this.loaded = false;
     },
     ready: function() {
+    },
+    date : function(value) {
+      return new Date(value);
     },
     toggle: function() {
       this.active =!this.active;
@@ -55,6 +65,7 @@
     owneridChanged: function(oldVal, newVal) {
       var query = "../api/people/"+newVal+"/forms";
       query +="?filter[fields][id]=true";
+      query +="&filter[fields][createdDate]=true";
       query +="&filter[fields][name]=true";
       this.$.ajaxLoadForm.url = query;
       if(this.active) {
@@ -63,6 +74,7 @@
     },
     formLoaded: function() {
       this.forms = this.$.ajaxLoadForm.response;
+      this.loaded = true;
     }
   });
   </script>
