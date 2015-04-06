@@ -64,6 +64,15 @@
       background:#EEEEEE;
     }
    </style>
+   
+   <core-ajax id="updateAjax"
+     method="PUT"
+     url="../api/formtemplates"
+     contentType="application/json"
+     on-core-response="{{documentUpdated}}"
+     handleAs="json">
+   </core-ajax>
+   
 
    <core-ajax id="ajax"
      auto
@@ -103,9 +112,9 @@
          <template repeat="{{question in questionnaire.questions}}">
            <template if="{{question.type == 'radio'}}">
              <div class="question" layout vertical>
-               
                <div class="question_label">{{question.label}}</div>
-               <paper-radio-group selected="{{question.value}}">
+               <paper-radio-group selected="{{question.value}}" 
+                 on-core-select="{{updateContent}}">
                  <template repeat="{{choice in question.choices}}">
                    <paper-radio-button name="{{choice.value}}"
                       label="{{choice.label}}"></paper-radio-button>
@@ -135,6 +144,11 @@
      },
      dialogToggle: function() {
       this.$.dialog.open = !this.$.dialog.open; 
+     },
+     updateContent: function() {
+      this.$.updateAjax.body = JSON.stringify(this.doc);
+      // console.log(this.$.updateAjax.params);
+      this.$.updateAjax.go();
      },
      documentLoaded: function() {
        this.doc = this.$.ajax.response;
