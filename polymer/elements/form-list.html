@@ -1,20 +1,24 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/core-icons/core-icons.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="form-card.html">
 
-<polymer-element name="form-list" attributes="ownerid active">
+<polymer-element name="form-list" attributes="ownerid active count">
   <template>
     <style>
     :host {
       display: none;
-      margin-left:10px;
       width: 100%;
       height:100%;
     }
     :host([active]) {
       display: block;
+    }
+    core-menu {
+      border:1px solid #EFEFEF;
     }
     .result {
       margin-bottom:15px;
@@ -23,22 +27,24 @@
     </style>
 
     <core-ajax id="ajaxLoadForm"
+      auto
       on-core-response="{{formLoaded}}"
       handleAs="json">
     </core-ajax>
 
-    <div layout vertical start>
-     <template if="{{loaded}}">
-       <div>Found {{forms.length}}</div>
-     </template>
-     <div>
-     <template repeat="{{form in forms}}">
-      <form-card docid="{{form.id}}">
-       <h2>{{form.name}}</h2>
-       {{form.createdDate|date}}
-      </form-card>
-     </template>
+    <div layout horizontal start>
+     <div flex>
+      <div layout vertical start>
+        <template repeat="{{form in forms}}">
+         <form-card docid="{{form.id}}" >
+          <h2>{{form.name}}</h2>
+          {{form.createdDate|date}}
+         </form-card>
+        </template>
+      </div>
      </div>
+    </div>
+
     </div>
 
   </template>
@@ -55,26 +61,16 @@
     date : function(value) {
       return new Date(value);
     },
-    toggle: function() {
-      this.active =!this.active;
-      console.log('toggle',this.active);
-      if(this.active) {
-        this.$.ajaxLoadForm.go();
-      }
-    },
     owneridChanged: function(oldVal, newVal) {
       var query = "../api/people/"+newVal+"/forms";
       query +="?filter[fields][id]=true";
       query +="&filter[fields][createdDate]=true";
       query +="&filter[fields][name]=true";
       this.$.ajaxLoadForm.url = query;
-      if(this.active) {
-        this.$.ajaxLoadForm.go();
-      }
     },
     formLoaded: function() {
       this.forms = this.$.ajaxLoadForm.response;
-      this.loaded = true;
+      this.count = this.forms.length;
     }
   });
   </script>

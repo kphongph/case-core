@@ -25,8 +25,7 @@
       padding-top: 5px;
       padding-bottom: 5px;
       margin-bottom: 10px;
-      margin-left: 10px;
-      width: 95%;
+      width:100%;
       font-size: 1rem;
       font-weight: 200;
     }
@@ -66,17 +65,30 @@
          Load Content
        </core-icon-button>
      </div>
-     <div>
+     <div style="text-align:right">
        <content></content>
      </div>
    </div>
 
    <div id="formDetail" layout vertical>
-     <template if="{{doc.type}}">
+     <!--
+     <template if="{{missing.length > 0}}">
+       <core-label>
+         จำนวนคำถามที่ไม่ได้ตอบ {{missing.length}}
+         <div vertical layout for>
+       <template repeat="{{question in missing}}">
+           <div style="margin-left:10px"> {{question.label}} </div>
+       </template>
+         </div>
+       </core-label>
+     </template>
+     -->
+     <core-label>
+       Score <div for>{{doc.score}}</div>
+     </core-label>
      <core-label>
        ผลการประเมิน <div for>{{doc.type}}</div>
      </core-label>
-     </template>
    </div>
   </template>
 
@@ -96,6 +108,7 @@
      },
      documentLoaded: function() {
        this.doc = this.$.ajax.response;
+       this.missing = [];
        if(this.doc.name == "แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ" ) {
          var score = 0;
          for(var i=0;i<this.doc.parts.length;i++) {
@@ -104,10 +117,16 @@
              var questionnaire = part.questionnaires[j];
              for(var k=0;k<questionnaire.questions.length;k++) {
                var question = questionnaire.questions[k];
-               score+=question.score;
+               if(question.score) {
+                 score+=question.score;
+               } else {
+                 this.missing.push(question);
+               }
              }
            }
          }
+         console.log(this.missing);
+         this.doc["score"] = score;
          if(score<=4) {
            this.doc["type"] = "ผู้สูงอายุกลุ่มพึ่งตนเองไม่ได้";
          } else {

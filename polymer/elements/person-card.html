@@ -7,7 +7,6 @@
 <link rel="import" href="../bower_components/core-icon/core-icon.html">
 <link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
 <link rel="import" href="../bower_components/core-pages/core-pages.html">
-<link rel="import" href="form-list.html">
 
 <polymer-element name="person-card" attributes="docid" 
   on-tap="{{onTap}}"
@@ -57,18 +56,9 @@
        <div class="card-header" flex>
          <content></content>
        </div>
-       <!--
-       <core-icon-button icon="menu" on-click="{{selectForm}}">
-         Load Forms
-       </core-icon-button>
-       -->
      </div>
-     <!--
-     <div>
-       <form-list active id="formList" ownerid="{{docid}}"></form-list>
-     </div>
-     -->
    </div>
+
   </template>
   <script>
    Polymer('person-card', {

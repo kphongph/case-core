@@ -4,8 +4,9 @@
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="person-card.html">
+<link rel="import" href="search-bar.html">
 
-<polymer-element name="person-list" attributes="query">
+<polymer-element name="person-list">
   <template>
     <style>
     :host {
@@ -13,12 +14,11 @@
       width: 100%;
       height:100%;
     }
-    .result {
-      margin-bottom:15px;
-      padding:10px;
-    }
     #add_button {
       margin:20px;
+    }
+    .result {
+      padding:10px;
     }
     </style>
 
@@ -34,21 +34,25 @@
       on-core-response="{{peopleLoaded}}"
       handleAs="json">
     </core-ajax>
+   
+    <search-bar text="{{query}}" active start
+       placeholder="บัตรประจำตัวประชาชน"> 
+    </search-bar>
 
-     <div horizontal end-justified layout> 
+    <div horizontal end-justified layout> 
       <div class="result">Found {{people_count}} documents</div>
-     </div>
+    </div>
 
-     <div layout vertical center>
+    <div layout vertical center>
       <template repeat="{{person in people}}">
         <person-card docid="{{person.id}}" 
           on-choose="{{onPersonSelected}}">
           {{person.CID}} {{person.FirstName}} {{person.LastName}}
         </person-card>
       </template>
-
       <div>
-      <paper-fab id="add_button" icon="add" on-click="{{loadMore}}"></paper-fab>
+      <paper-fab id="add_button" icon="add" 
+         on-click="{{loadMore}}"></paper-fab>
       </div>
     </div>
 
