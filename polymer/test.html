@@ -1,78 +1,55 @@
-
+<!DOCTYPE html>
 <!--
-    @license
-    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-    Code distributed by Google as part of the polymer project is also
-    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+Copyright 2013 The Polymer Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
 -->
-<!doctype html>
 <html>
-<head>
+  <head>
+    <title>Director</title>
+    <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+    <link rel="import" href="bower_components/flatiron-director/flatiron-director.html">
+    <link rel="import" href="bower_components/core-menu/core-menu.html">
+    <link rel="import" href="bower_components/paper-item/paper-item.html">
+    <link rel="import" href="bower_components/core-pages/core-pages.html">
+  </head>
+  <body>
 
-  <title>core-scroll-threshold</title>
+   <template is="auto-binding">
+      <flatiron-director id='page-director' route="{{route}}" 
+        autoHash on-director-route="{{routeChanged}}"></flatiron-director>
 
-  <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+    <core-menu id="menu">
+      <paper-item icon="list" label="1">
+        <a href="#1">1</a>
+      </paper-item>
+      <paper-item icon="swap-vert" label="2">
+        <a href="#2">2</a>
+      </paper-item>
+      <paper-item icon="file-download" label="3">
+        <a href="#3">3</a>
+      </paper-item>
+    </core-menu>
 
-  <link rel="import" href="bower_components/core-scroll-threshold/core-scroll-threshold.html">
+    <core-pages selected="{{route}}"  valueattr="page">
+      <div page="1">
+        page 1
+        <a href="#3">test</a>
+      </div>
+      <div page="2">
+         page 2
+      </div>
+      <div page="3">
+        page 3
+      </div>
+    </core-pages>
+   </template>
+   <script>
+     var template = document.querySelector('template');
 
-  <style>
-    #scroller {
-      height: 300px;
-      border: 1px solid red;
-      padding: 20px;
-      overflow: auto;
-    }
-    .thing {
-      padding: 10px;
-      margin: 10px;
-      background: lightblue;
-      border-radius: 10px;
-      font-size: 2em;
-    }
-  </style>
-
-</head>
-<body unresolved>
-
-<template is="auto-binding">
-  <core-scroll-threshold id="threshold" scrollTarget="{{$.scroller}}" lowerThreshold="100" on-lower-trigger="{{loadMore}}" fit></core-scroll-threshold>
-  <div id="scroller" fit>
-    <template repeat="{{i in data}}">
-      <div class="thing">{{i}}</div>
-    </template>
-    <div hidden?="{{!$.threshold.lowerTriggered}}">Please wait...</div>
-  </div> 
-</template>
-
-<script>
-
-  addEventListener('template-bound', function(e) {
-    
-
-    var scope = e.target;
-    console.log(scope);
-    var n;
-    scope.data = [];
-    for (n=0; n<20; n++) {
-      scope.data.push(n);
-    }
-    scope.loadMore = function() {
-      console.log('loadMore');
-      setTimeout(function() {
-        for (var i=n; i<n+10; i++) {
-          scope.data.push(i);
-        }
-        n = i;
-       // scope.$.threshold.clearLower();
-      }, 1000);
-    };
-  });
-
-</script>
-
-</body>
+template.addEventListener('template-bound', function() {
+  this.route = this.route || 1; // default route to "1".
+});
+   </script>
+  </body>
 </html>
-

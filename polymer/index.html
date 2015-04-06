@@ -9,12 +9,15 @@
     <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
     <link rel="import" href="bower_components/core-icons/core-icons.html">
     <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="bower_components/flatiron-director/flatiron-director.html">
     <link rel="import" href="elements/person-app.html">
     <link rel="stylesheet" href="css/app.css">
   </head>
 
   <body unresolved>
-   <template is="auto-binding">
+   <template id="t" is="auto-binding">
+    <flatiron-director id='page-director' route="{{route}}" 
+        autoHash on-director-route="{{routeChanged}}"></flatiron-director>
     <core-scaffold id="scaffold">
      <nav>  
       <core-menu selected="0">
@@ -31,13 +34,32 @@
      </core-toolbar>
       
      <div layout horizontal center-center fit>
-      <core-animated-pages id="pages" selected="0" transitions="slide-from-right">
-       <section layout vertical center-center>
-        <person-app></person-app>
+      <core-animated-pages id="pages" selected="{{route}}" 
+         valueattr="page"
+         transitions="slide-from-right">
+       <section page="person/list">
+        <person-app on-person-select="{{personSelected}}"></person-app>
+       </section>
+       <section page="person/detail">
+       
+         Form person  {{route}} <a href="#person/list">Back</a>
        </section>
       </core-animated-pages>
      </div>
     </core-scaffold>
    </template>
+
+   <script>
+     var template = document.querySelector('#t');
+
+     template.addEventListener('template-bound', function() {
+       this.route = this.route || "person/list"; // default route to "1".
+     });
+
+     template.personSelected = function(event, doc) {
+       console.log(doc);
+       this.route = "person/detail";
+     };
+   </script>
   </body>
 </html>

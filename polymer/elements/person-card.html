@@ -55,15 +55,19 @@
    <div layout vertical>
      <div layout horizontal>
        <div class="card-header" flex>
-       <content select="h2" flex></content>
+         <content></content>
        </div>
+       <!--
        <core-icon-button icon="menu" on-click="{{selectForm}}">
          Load Forms
        </core-icon-button>
+       -->
      </div>
+     <!--
      <div>
        <form-list active id="formList" ownerid="{{docid}}"></form-list>
      </div>
+     -->
    </div>
   </template>
   <script>
@@ -74,9 +78,8 @@
      },
      onMouseOut: function() {
      },
-     selectForm: function() {
-       this.$.formList.toggle();
-       console.log('select Form');
+     onTap: function() {
+       this.fire("choose", {id:this.docid});
      }
    });
   </script>

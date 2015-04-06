@@ -7,7 +7,7 @@
 <link rel="import" href="person-list.html">
 <link rel="import" href="form-list.html">
 
-<polymer-element name="person-app">
+<polymer-element name="person-app" attributes="person">
   <template>
     <style>
     :host {
@@ -26,7 +26,8 @@
        <div layout vertical>
         <search-bar text="{{query}}" active start
           placeholder="บัตรประจำตัวประชาชน"> </search-bar>
-        <person-list query="{{query}}"></person-list>
+        <person-list query="{{query}}"
+          on-person-select="{{personSelected}}"></person-list>
        </div>
       </section>
       <section id="page2">
@@ -42,14 +43,12 @@
     created: function() {
     },
     ready: function() {
-      this.addEventListener('person-selected', function(e) {
-      //  this.selected=1;
-      //  this.selectedPersonId = e.detail.id;
-     //   console.log(this.selectedPersonId);
-      });
     },
     back: function() {
       this.selected=0;
+    },
+    personSelected: function(e,doc) {
+    //  console.log(doc);
     }
   });
   </script>

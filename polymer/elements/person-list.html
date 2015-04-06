@@ -41,8 +41,9 @@
 
      <div layout vertical center>
       <template repeat="{{person in people}}">
-        <person-card docid="{{person.id}}">
-          <h2>{{person.CID}} {{person.FirstName}} {{person.LastName}}</h2>
+        <person-card docid="{{person.id}}" 
+          on-choose="{{onPersonSelected}}">
+          {{person.CID}} {{person.FirstName}} {{person.LastName}}
         </person-card>
       </template>
 
@@ -80,7 +81,6 @@
         for(var i=0;i<list.length;i++) {
           this.people.push(list[i]);
         }
-        console.log(this.people.length);
         if(this.people_count == this.people.length) {
           this.$.add_button.style.display="none";
         } else {
@@ -115,6 +115,9 @@
       if(this.$.people_count.response) {
         this.people_count = this.$.people_count.response.count;
       }
+    },
+    onPersonSelected: function(event, doc) {
+      this.fire('person-select', doc);
     }
   });
   </script>
