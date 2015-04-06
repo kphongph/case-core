@@ -5,12 +5,13 @@
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 <link rel="import" href="../bower_components/core-item/core-item.html">
 <link rel="import" href="../bower_components/core-label/core-label.html">
-<link rel="import" href="../bower_components/core-icon/core-icon.html">
-<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
 <link rel="import" href="../bower_components/core-pages/core-pages.html">
 <link rel="import" href="../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 
@@ -21,7 +22,7 @@
     <style>
     :host {
       display: block;
-      background-color: #EEEEEE;
+      background-color: white;
       padding-top: 5px;
       padding-bottom: 5px;
       margin-bottom: 10px;
@@ -48,6 +49,20 @@
       font-size: 1.1rem;
       font-weight: 200;
     }
+    .part {
+      padding:10px;
+    }
+    .questionnaire {
+      padding-left: 20px;
+    }
+    .question {
+      margin:20px;
+      border:1px solid #000000;
+    }
+    .question_label {
+      padding:10px;
+      background:#EEEEEE;
+    }
    </style>
 
    <core-ajax id="ajax"
@@ -61,28 +76,17 @@
        <div class="card-header" flex>
          <content select="h2"></content>
        </div>
-       <core-icon-button icon="menu" on-click="{{loadDocument}}">
-         Load Content
-       </core-icon-button>
+       <paper-icon-button icon="menu" on-click="{{loadDocument}}">
+       </paper-icon-button>
      </div>
      <div style="text-align:right">
        <content></content>
      </div>
    </div>
-
+   
+   
+   
    <div id="formDetail" layout vertical>
-     <!--
-     <template if="{{missing.length > 0}}">
-       <core-label>
-         จำนวนคำถามที่ไม่ได้ตอบ {{missing.length}}
-         <div vertical layout for>
-       <template repeat="{{question in missing}}">
-           <div style="margin-left:10px"> {{question.label}} </div>
-       </template>
-         </div>
-       </core-label>
-     </template>
-     -->
      <core-label>
        Score <div for>{{doc.score}}</div>
      </core-label>
@@ -90,12 +94,38 @@
        ผลการประเมิน <div for>{{doc.type}}</div>
      </core-label>
    </div>
+   
+   <div id="formId_1" layout vertical>
+     <template repeat="{{part in doc.parts}}">
+       <div class="part">{{part.name}}</div>
+       <template repeat="{{questionnaire in part.questionnaires}}">
+       <div class="questionnaire">{{questionnaire.name}}</div>
+         <template repeat="{{question in questionnaire.questions}}">
+           <template if="{{question.type == 'radio'}}">
+             <div class="question" layout vertical>
+               
+               <div class="question_label">{{question.label}}</div>
+               <paper-radio-group selected="{{question.value}}">
+                 <template repeat="{{choice in question.choices}}">
+                   <paper-radio-button name="{{choice.value}}"
+                      label="{{choice.label}}"></paper-radio-button>
+                 </template>
+               </paper-radio-group>
+             </div>
+           </template>
+         </template>
+       </template>
+     </template>
+   </div>
   </template>
 
   <script>
    Polymer('form-card', {
      created: function() { 
      }, 
+     ready: function() {
+       this.$.formId_1.style.display = "none";
+     },
      date: function(value) {
        return new Date(value);
      },
@@ -108,9 +138,12 @@
      },
      documentLoaded: function() {
        this.doc = this.$.ajax.response;
+       console.log(this.doc);
        this.missing = [];
        if(this.doc.name == "แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ" ) {
          var score = 0;
+         this.$.formId_1.style.display = "block";
+
          for(var i=0;i<this.doc.parts.length;i++) {
            var part = this.doc.parts[i];
            for(var j=0;j<part.questionnaires.length;j++) {
