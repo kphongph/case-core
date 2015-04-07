@@ -114,7 +114,7 @@
              <div class="question" layout vertical>
                <div class="question_label">{{question.label}}</div>
                <paper-radio-group selected="{{question.value}}" 
-                 on-core-select="{{updateContent}}">
+                 on-core-select="{{updateContent}}" vertical layout>
                  <template repeat="{{choice in question.choices}}">
                    <paper-radio-button name="{{choice.value}}"
                       label="{{choice.label}}"></paper-radio-button>
