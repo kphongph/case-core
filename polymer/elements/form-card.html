@@ -79,7 +79,6 @@
    
 
    <core-ajax id="ajax"
-     auto
      on-core-response="{{documentLoaded}}"
      handleAs="json">
    </core-ajax>
@@ -89,7 +88,7 @@
        <div class="card-header" flex>
          <content select="h2"></content>
        </div>
-       <paper-icon-button icon="menu" on-click="{{loadDocument}}">
+       <paper-icon-button icon="refresh" on-click="{{loadDocument}}">
        </paper-icon-button>
      </div>
      <div style="text-align:right">
@@ -111,7 +110,7 @@
     <template if="{{!question}}">
       <paper-button on-tap="{{doQuestion}}">Start</paper-button>
     </template>
-    <paper-shadow z="2" class="question" center-justified>
+    <paper-shadow z="2" class="question" center-justified fullbleed>
      <template if="{{question.type == 'radio'}}">
        <div layout vertical >
          <div class="question_label">
@@ -205,6 +204,7 @@
      loadDocument: function() {
        this.$.ajax.url = "../api/formtemplates/"+this.docid;
        this.$.formDetail.style.display = "block"; 
+       this.$.ajax.go();
      }
    });
   </script>
