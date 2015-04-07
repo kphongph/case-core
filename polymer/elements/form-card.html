@@ -57,6 +57,7 @@
     }
     .question {
       width:80%;
+      margin-bottom:20px;
     }
     .question_label {
       padding:10px;
@@ -138,18 +139,27 @@
    Polymer('form-card', {
      created: function() { 
        console.log('created');
-       this.question = {}; 
      }, 
      ready: function() {
+       this.question = {};
      },
      date: function(value) {
        return new Date(value);
      },
      doQuestion: function() {
+      this.start=true;
       this.question_index=1;
       this.question = this.questions[this.question_index-1];
      },
      updateContent: function() {
+      if(this.question.type=="radio") {
+        for(var i=0;i<this.question.choices.length;i++) {
+          if(this.question.value == this.question.choices[i].value) {
+            this.question.score = this.question.choices[i].score;
+            break;
+          }
+        }
+      }
       this.$.updateAjax.body = JSON.stringify(this.doc);
       this.question_index++;
       this.question = this.questions[this.question_index-1];
@@ -183,9 +193,12 @@
          } else {
            if(score<=11) {
              this.doc["type"] = "ผู้สูงอายุที่ดูแลตนเองได้บ้าง";
+           } else {
+             this.doc["type"] = "ผู้สูงอายุที่ดูแลตนเองได้";
            }
          }
        }
+       this.start = false;
        this.question_index = 1;
        this.question = this.questions[this.question_index-1];
      },
