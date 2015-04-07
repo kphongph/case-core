@@ -5,7 +5,7 @@ html,body {
   font-family: 'RobotoDraft', sans-serif;
 }
 
-body /deep/ core-toolbar {
+body core-toolbar {
   background: #03a9f4;
   color: white;
 }
