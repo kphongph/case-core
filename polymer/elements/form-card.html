@@ -170,24 +170,26 @@
      documentLoaded: function() {
        this.doc = this.$.ajax.response;
        this.questions = [];
-       console.log(this.question);
+       // gather questions
+       for(var i=0;i<this.doc.parts.length;i++) {
+         var part = this.doc.parts[i];
+         for(var j=0;j<part.questionnaires.length;j++) {
+           var questionnaire = part.questionnaires[j];
+           for(var k=0;k<questionnaire.questions.length;k++) {
+             var tmp = questionnaire.questions[k];
+             if(tmp.type=="radio") {
+               this.questions.push(tmp);
+             }
+           }
+         }
+       }
+      
 
        // gather questions
        if(this.doc.name == "แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ" ) {
          var score = 0;
-
-         for(var i=0;i<this.doc.parts.length;i++) {
-           var part = this.doc.parts[i];
-           for(var j=0;j<part.questionnaires.length;j++) {
-             var questionnaire = part.questionnaires[j];
-             for(var k=0;k<questionnaire.questions.length;k++) {
-               var tmp = questionnaire.questions[k];
-               this.questions.push(tmp);
-               if(tmp.score) {
-                 score+=tmp.score;
-               }
-             }
-           }
+         for(var i=0;i<this.questions.length;i++) {
+           score+=this.questions[i].score;                        
          }
          this.doc["score"] = score;
          if(score<=4) {
