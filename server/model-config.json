@@ -56,26 +56,6 @@
     "dataSource": "caseDs",
     "public": true 
   },
-  "Qrecord": {
-    "dataSource": "caseMongoDs",
-    "public": true 
-  },
-  "Qtimestamp": {
-    "dataSource": "caseMongoDs",
-    "public": true 
-  },
-  "Questionaire": {
-    "dataSource": "caseMongoDs",
-    "public": true 
-  },
-  "Questiontype": {
-    "dataSource": "caseMongoDs",
-    "public": true 
-  },
-  "Questionvsanswer": {
-    "dataSource": "caseMongoDs",
-    "public": true 
-  },
   "Title": {
     "dataSource": "caseDs",
     "public": true 
@@ -89,6 +69,10 @@
     "public": true 
   },
   "Person": {
+    "dataSource": "caseMongoDs",
+    "public": true 
+  },
+  "Planservice": {
     "dataSource": "caseMongoDs",
     "public": true 
   },
