@@ -4,32 +4,41 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
     <link rel="import" href="bower_components/font-roboto/roboto.html">
-    <link rel="import" href="bower_components/core-scaffold/core-scaffold.html">
-    <link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
-    <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
-    <link rel="import" href="bower_components/core-icons/core-icons.html">
-    <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
-    <link rel="import" href="bower_components/flatiron-director/flatiron-director.html">
-    <link rel="import" href="elements/person-list.html">
-    <link rel="import" href="elements/person-detail.html">
-    <link rel="stylesheet" href="css/app.css">
-  </head>
+    <link rel="import" href="elements/ltc-content.html">
 
-  <body unresolved vertical layout>
-   <template id="t" is="auto-binding">
-    <flatiron-director id='page-director' route="{{route}}" 
-        autoHash on-director-route="{{routeChanged}}">
-    </flatiron-director>
+    <style>
+    html, body {
+      font-family: RobotoDraft, 'Helvatica Neue', Helvetica, Arial;      
+      height: 100%;
+      width: 100%;
+      margin: 0px;
+    }
+    ltc-content {
+      height: 100%;
+    }
 
-    <core-toolbar>
-      <core-icon-button icon="{{$.pages.selected != 'person/list' ? 'arrow-back' : 'menu'}}" on-tap="{{back}}"></core-icon-button>
-      <div flex>Case Manager</div>
-    </core-toolbar>
+    input{
+      padding : 0;
+      maring: 0;
+    }
+
+    #mainContainer{
+      z-index: -100000;
+    }
+
+
    
-    <core-animated-pages id="pages" selected="{{route}}" 
-      valueattr="page"
-      transitions="cross-fade-all hero-transition"
-      flex>
+    </style>
+  </head>
+  <body unresolved vertical layout onresize="pageResize()">
+    
+    <ltc-content name="Chadpong P" img="" username="Staff">
+      
+    </ltc-content>
+    
+    
+    <!--
+    <core-animated-pages id="pages" selected="{{route}}" valueattr="page" transitions="cross-fade-all hero-transition" flex>
       <section page="person/list">
         <div layout center vertical>
           <person-list on-person-select="{{personSelected}}">
@@ -41,24 +50,15 @@
         </div>
       </section>
     </core-animated-pages>
+    -->
+    
    </template>
 
-   <script>
-     var template = document.querySelector('#t');
-
-     template.addEventListener('template-bound', function() {
-       this.route = this.route || "person/list"; // default route to "1".
-     });
-
-     template.personSelected = function(event, doc) {
-       this.route = "person/detail";
-       console.log(doc.id);
-       this.personId = doc.id;
-     };
-
-     template.back = function() {
-       this.$.pages.selected = "person/list";
-     };
-   </script>
+  <script>
+    function pageResize() {
+      console.log('on-page-resize');
+      // do responsive here
+    }
+  </script>
   </body>
 </html>
