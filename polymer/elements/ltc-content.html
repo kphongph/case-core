@@ -1,0 +1,126 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<link rel="import" href="/bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="/bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="/bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+
+
+<link rel="import" href="/elements/ltc-search-bar.html">
+<link rel="import" href="/elements/ltc-search-result.html">
+
+<polymer-element name="ltc-content" attributes="name img username" >
+  <template>
+    <style>
+    
+
+    .header {
+      position: absolute;
+      width: 100%;
+      top: 0px;
+      height: 100px;
+    }
+
+    .main-content {
+      position: absolute;
+      width: 100%;
+      top: 100px;
+      bottom: 0px;
+      background-color : #3e3e3e;
+      z-index: -1;
+    }
+    .header-bar {
+      background: #00BAD2;
+      color: white;
+      height: 100px;
+      vertical-align: middle;
+    }
+
+    .header-bar div {
+      margin-top: 36px;
+      height: 64px;
+      
+      vertical-align: middle;
+      line-height: 64px;
+    }
+
+    .header-bar .avatar {
+      width: 64px;
+      border-radius: 50%;
+    }
+
+    .header-bar .avatar img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: none;
+    }
+    
+    
+    </style>
+  <!-- header section -->
+  <div class="header">
+    <core-toolbar class="header-bar" >
+      <div class="avatar"><img src="{{selectedPersonImg}}" onerror="this.src='../images/avatar.png'" /></div>
+      <div flex one> {{selectedPersonName}} </div>
+      <div flex three>
+        <ltc-search-bar id="searchbar" on-search-keyup="{{searchKeyup}}"></ltc-search-bar>
+        <template repeat="{{r in personList}}">
+          <ltc-search-result id="searchresult" data="{{r}}" hidden?="$.list.length == 0" on-search-result-tap="{{searchResultTap}}"></ltc-search-result>
+        </template>        
+      </div>
+      <div flex one style="text-align:right;"> {{username}} </div>
+    </core-toolbar>  
+  </div>
+  <div class="main-content">
+    
+  </div> 
+    
+  
+  <!-- end header section -->
+  <core-ajax id="ajax" auto on-core-response="{{peopleLoaded}}" handleAs="json"></core-ajax>
+  </template>
+  
+  <script>
+
+  Polymer('ltc-content',{    
+    searchKeyup : function () {
+      console.log(this.$.searchbar.text); //
+      
+      var ajax = this.$.ajax;
+      var query_text = {limit:5, skip:this.page,
+        where: {
+         CID:{
+          like:this.$.searchbar.text
+         }
+        }
+      };
+      ajax.url="../api/people?filter="+JSON.stringify(query_text);
+      console.log(ajax.url);
+    },
+    peopleLoaded : function () {
+        var result = this.$.ajax.response; 
+        if (this.$.searchbar.text.length == 0){
+          result = null;
+          this.personList = ""; 
+        }       
+        else if(result != null) {          
+          this.personList = result; 
+
+          console.log(this.personList);         
+        }
+    },
+    searchResultTap : function (e, detail, sender) {
+      this.selectedPersonImg = "https://nuqlis.blob.core.windows.net/pic/" + detail.CID;      
+      this.selectedPersonName = detail.FirstName + " " + detail.LastName;
+      this.personList = [];
+      this.$.searchbar.text = "";
+      console.log(detail);
+    }
+
+
+  });
+
+   
+  </script>
+</polymer-element>
