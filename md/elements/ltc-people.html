@@ -4,29 +4,37 @@
 <link rel="import" href="../bower_components/core-icon/core-icon.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 <link rel="import" href="../bower_components/core-list/core-list.html">
+<link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
 
-<polymer-element name="ltc-people" vertical layout>
+<polymer-element name="ltc-people">
+
 <template>
   <link rel="stylesheet" href="ltc-people.css">
+
   <core-ajax id="searchAjax" handleAs="json" 
     on-core-response="{{handleResponse}}"> 
   </core-ajax>
-
-  <div flex vertical layout auto>
-    <div layout horizontal center>
+  
+  <div vertical layout>
+    <div horizontal center layout>
       <core-icon icon="search"></core-icon>
-      <paper-input label="รหัสบัตรประชาชน" flex value="{{query}}"></paper-input>
+      <paper-input label="รหัสบัตรประชาชน" 
+         flex value="{{query}}">
+      </paper-input>
     </div>
-    <paper-spinner class="blue" active?="{{loading}}"></paper-spinner>
-    <core-list flex data="{{people}}">
-      <template>
-        <paper-shadow z="1" class="item">
-          {{model.CID}} {{model.FirstName}} {{model.LastName}}
+    <div>
+      <paper-spinner class="blue" active?="{{loading}}">
+      </paper-spinner>
+    </div>
+    <div horizontal layout wrap>
+      <template repeat="{{model in people}}">
+        <paper-shadow z="1" class="item" layout vertical>
+          <div>{{model.CID}}</div> 
+          <div>{{model.FirstName}} {{model.LastName}}</div>
         </paper-shadow>
       </template>
-    </core-list>
+    </div>
   </div>
-   
   
 </template>
 
@@ -37,7 +45,7 @@
       this.ajax = this.$.searchAjax;
     },
     queryChanged : function(oldVal, newVal) {
-      var query = {where:{CID:{like:newVal}},limit:10};
+      var query = {where:{CID:{like:newVal}},limit:20};
       query['fields'] = {CID:true,FirstName:true,LastName:true};
       this.ajax.url = '../api/people?filter='+JSON.stringify(query);
       this.loading=true;
@@ -48,6 +56,9 @@
       if(this.ajax.response) {
         this.people = this.ajax.response;
       }
+    },
+    test: function(e,obj) {
+      console.log(e);
     }
   });
 </script>
