@@ -1,0 +1,15 @@
+:host {
+  overflow: hidden;
+}
+
+.splash {
+  background-color: #eee;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-image: url(download.svg);
+  background-size: 512px;
+}
+
+.splash.wide {
+  background-size: 512px;
+}

@@ -1,0 +1,54 @@
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/core-list/core-list.html">
+
+<polymer-element name="ltc-people" vertical layout>
+<template>
+  <link rel="stylesheet" href="ltc-people.css">
+  <core-ajax id="searchAjax" handleAs="json" 
+    on-core-response="{{handleResponse}}"> 
+  </core-ajax>
+
+  <div flex vertical layout auto>
+    <div layout horizontal center>
+      <core-icon icon="search"></core-icon>
+      <paper-input label="รหัสบัตรประชาชน" flex value="{{query}}"></paper-input>
+    </div>
+    <paper-spinner class="blue" active?="{{loading}}"></paper-spinner>
+    <core-list flex data="{{people}}">
+      <template>
+        <paper-shadow z="1" class="item">
+          {{model.CID}} {{model.FirstName}} {{model.LastName}}
+        </paper-shadow>
+      </template>
+    </core-list>
+  </div>
+   
+  
+</template>
+
+<script>
+  Polymer('ltc-people', {
+    loading:false,
+    ready : function() {
+      this.ajax = this.$.searchAjax;
+    },
+    queryChanged : function(oldVal, newVal) {
+      var query = {where:{CID:{like:newVal}},limit:10};
+      query['fields'] = {CID:true,FirstName:true,LastName:true};
+      this.ajax.url = '../api/people?filter='+JSON.stringify(query);
+      this.loading=true;
+      this.ajax.go();
+    },
+    handleResponse : function() {
+      this.loading=false;
+      if(this.ajax.response) {
+        this.people = this.ajax.response;
+      }
+    }
+  });
+</script>
+</polymer>

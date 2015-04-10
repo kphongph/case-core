@@ -1,0 +1,21 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="ltc-people.html">
+
+<polymer-element name="ltc-app" vertical layout>
+<template>
+  <link rel="stylesheet" href="ltc-app.css">
+  <core-animated-pages selected="{{selected}}" flex auto>
+    <div name="splash">
+      <span fit class="splash {{ {wide: wide} | tokenList }}" cross-fade></span>
+    </div>
+    <ltc-people name="people"></ltc-people>
+  </core-animated-pages>
+</template>
+
+<script>
+Polymer('ltc-app', {
+  selected:'people'
+});
+</script>
+</polymer-element>
