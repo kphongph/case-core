@@ -3,11 +3,14 @@
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../bower_components/core-icon/core-icon.html">
 <link rel="import" href="../bower_components/core-menu/core-menu.html">
-<link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../bower_components/core-menu/core-submenu.html">
+<link rel="import" href="../bower_components/core-selector/core-selector.html">
 <link rel="import" href="../bower_components/core-item/core-item.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 <link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
 <link rel="import" href="../bower_components/case-form/case-form.html">
+
+<link rel="import" href="forms/ltc-form-form33.html">
 
 <polymer-element name="ltc-person" attributes="person">
 
@@ -45,30 +48,27 @@
         <div>
           <core-menu selected="{{formType}}">
             <template repeat="{{form in formList}}">
-              <core-item name="{{form.label}}" label="{{form.label}}">
-              </core-item>
+              <core-submenu name="{{form.label}}" 
+                selected="{{selectedFormId}}"
+                label="{{form.label}}">
+                <template repeat="{{doc in ajaxForms}}">
+                  <template if="{{doc.name == form.label}}">
+                    <core-item name="{{doc.id}}" label="{{doc.id}}">
+                    </core-item>
+                  </template>
+                </template>
+              </core-submenu>
             </template>
           </core-menu>
         </div>
-        <div vertical layout>
-          <div class="selectedType">{{formType}}</div>
-          <div>
-            <core-menu selected="{{selectedForm}}">
-              <template repeat="{{form in ajaxForms}}">
-                <template if="{{form.name == formType}}">
-                  <core-item name="{{form.id}}" label="{{form.id}}">
-                  </core-item>
-                </template>
-              </template>
-            </core-menu>
-          </div>
-        </div>
       </div>
-    </div>
-    <div name="form33">
-      <case-form id="form33" 
-        src="forms/form33.json" filled="{{filledForm}}">
-      </case-form>
+      <div>
+       <core-selector id="formViews" notap 
+         selected="{{selectedForm.hash}}">
+         <ltc-form-form33 name="form33" form="{{selectedForm}}">
+         </ltc-form-form33>
+       </core-selector>
+      </div>
     </div>
   </core-animated-pages>
   
@@ -79,8 +79,8 @@
     loading:false,
     selected: 'menu',
     formList: [
-      {name:'form33', label:'แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ'},
-      {name:'form44', label:'แบบประเมินผู้สูงอายุที่ต้องได้รับการดูแลระยะยาว'}
+      {hash:'form33', label:'แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ'},
+      {hash:'form44', label:'แบบประเมินผู้สูงอายุที่ต้องได้รับการดูแลระยะยาว'}
     ],
     mainAction: function() {
       this.fire('main');
@@ -95,6 +95,23 @@
         this.$.getForms.url = query;
         this.$.getForms.go();
       }
+    },
+    selectedFormIdChanged: function(oldVal, newVal) {
+     if(newVal && this.ajaxForms) {
+       for(var i=0;i<this.ajaxForms.length;i++) {
+         if(newVal == this.ajaxForms[i].id) {
+           this.selectedForm = this.ajaxForms[i];
+           this.selectedForm['hash']=null;
+           for(var j=0;j<this.formList.length;j++) {
+             if(this.formList[j].label == this.selectedForm.name) {
+               this.selectedForm['hash']=this.formList[j].hash;
+               break;
+             }
+           }
+           break;
+         }
+       }
+     }
     }
   });
 </script>

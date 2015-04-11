@@ -1,0 +1,33 @@
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+
+<polymer-element name="ltc-form-base" attributes="form">
+
+<template>
+  <link rel="stylesheet" href="ltc-person.css">
+
+  <core-ajax 
+    id="getAjax"
+    handleAs="json" 
+    url="../api/formtemplates/{{form.id}}"
+    response="{{doc}}"> 
+  </core-ajax>
+
+  <div horizontal layout center>
+    <div flex>
+      {{doc.name}} 
+    </div>
+  </div>
+</template>
+
+<script>
+  Polymer('ltc-form-base', {
+    doc:null,
+    formChanged: function(oldVal, newVal) {
+      if(this.form.id) { 
+        this.$.getAjax.go();
+      }
+    }
+  });
+</script>
+</polymer>

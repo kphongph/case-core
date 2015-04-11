@@ -15,3 +15,10 @@ core-item.core-selected {
   margin:10px;
 }
 
+#formViews > * {
+  display: none;
+}
+
+#formViews > .core-selected {
+  display: block;
+}

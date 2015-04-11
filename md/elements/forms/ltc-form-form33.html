@@ -1,0 +1,121 @@
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../../bower_components/core-list/core-list.html">
+<link rel="import" href="../../bower_components/core-item/core-item.html">
+<link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../../bower_components/case-form/case-form.html">
+
+<link rel="import" href="../ltc-form-base.html">
+
+<polymer-element name="ltc-form-form33" extends="ltc-form-base">
+
+<template>
+  <style>
+    :host {
+      display:block;
+    }
+    .card {
+      padding:10px;
+      margin:10px;
+    }
+    .formLabel {
+      margin-bottom:20px;
+    }
+    .evaluatedResult {
+      padding:10px;
+      marging:5px;
+      background-color: #03A9F4;
+      color: #fff;
+    }
+    .reviewItem {
+      padding:5px;
+      margin-bottom:10px;
+    }
+    .reviewAnswer {
+      background: #eeeeee;
+      padding:5px;
+    }
+    case-form {
+      margin:10px;
+      background:#eeeeee;
+      max-width:400px;
+      width:100%;
+    }
+  </style>
+  <paper-shadow z="1" class="card">
+    <div layout vertical>
+      <div class="formLabel">{{doc.name}}</div>
+      <div hidden?="{{filling}}">
+        <div layout vertical>
+          <template if="{{computed}}">
+            <div class="evaluatedResult">
+             {{computed.label}} ({{computed.score}})
+            </div>
+          </template>
+          <div layout vertical>
+            <template if="{{filledForm}}">
+              <template repeat="{{model in filledForm.questions}}">
+               <div class="reviewItem" layout vertical>
+                <div><b>{{model.question}}</b></div> 
+                <div class="reviewAnswer">
+                   {{model.options[model.answer]}}
+                </div>
+               </div>
+              </template>
+            </template>
+          </div>
+        </div>
+      </div>
+      <div hidden?="{{filling}}">
+        <paper-button raised on-tap="{{startForm}}">
+         เริ่มทำแบบประเมินใหม่
+        </paper-button>
+      </div>
+      <div horizontal center-justified> 
+        <case-form src="form33.json" filled="{{filledForm}}"
+          hidden?="{{!filling}}">
+        </case-form>
+      </div>
+    </div>
+  </paper-shadow>
+</template>
+
+<script>
+  Polymer('ltc-form-form33', {
+    filling:false,
+    startForm: function() {
+      this.filledForm = null;
+      this.filling=true;
+    },
+    filledFormChanged: function() {
+      if(this.filledForm) {
+        this.filling=false;
+        this.computeScore();
+      }
+    },
+    computeScore: function() {
+      var sc = 0;
+      var label = '';
+      for(var i=0;i<this.filledForm.questions.length;i++) {
+        var tmp = this.filledForm.questions[i];
+        sc+=tmp.score[tmp.answer];
+      }
+      if(sc<=4) {
+        label = "กลุ่มที่ 3 ต้องการความช่วยเหลือ";
+      } else {
+        if(sc<=11) {
+          label = "กลุ่มที่ 2 ช่วยเหลือตนเองได้บ้าง";
+        } else {
+          label = "กลุ่มที่ 1 ช่วยเหลือตนเองได้";
+        }
+      }
+      this.computed = {score:sc, label:label};
+    }
+  });
+</script>
+</polymer>
