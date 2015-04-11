@@ -3,7 +3,6 @@ paper-spinner.blue::shadow .circle {
 }
 
 :host {
-  display:block;
   width:100%;
   overflow:auto;
   margin:20px;
@@ -11,21 +10,15 @@ paper-spinner.blue::shadow .circle {
 }
 
 input {
-    border: none;
-    background: transparent;
-    font: inherit;
-    font-size: 16px;
-    outline: none;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 16px;
+  outline: none;
 }
 
-core-toolbar {
-  background:#efefef;
-}
-
-.item {
-  margin-bottom:10px;
-  margin-left:10px;
+.searchBar {
   padding:10px;
-  min-width:200px;
+  width:80%;
 }
 

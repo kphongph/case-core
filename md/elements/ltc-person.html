@@ -1,0 +1,101 @@
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../bower_components/core-item/core-item.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../bower_components/case-form/case-form.html">
+
+<polymer-element name="ltc-person" attributes="person">
+
+<template>
+  <link rel="stylesheet" href="ltc-person.css">
+
+  <core-ajax 
+    id="getAjax"
+    handleAs="json" 
+    url="../api/people/{{person.id}}"
+    response="{{doc}}"> 
+  </core-ajax>
+
+  <core-ajax 
+    id="getForms"
+    handleAs="json" 
+    response="{{ajaxForms}}"> 
+  </core-ajax>
+
+  <core-toolbar>
+    <div horizontal layout center>
+      <div>
+        <paper-icon-button icon="arrow-back" on-tap="{{mainAction}}" 
+        </paper-icon-button>
+      </div>
+      <div flex>
+        {{doc.CID}} {{doc.FirstName}} {{doc.LastName}}
+      </div>
+    </div>
+  </core-toolbar>
+
+  <core-animated-pages selected="{{selected}}">
+    <div name="menu">
+      <div layout vertical>
+        <div>
+          <core-menu selected="{{formType}}">
+            <template repeat="{{form in formList}}">
+              <core-item name="{{form.label}}" label="{{form.label}}">
+              </core-item>
+            </template>
+          </core-menu>
+        </div>
+        <div vertical layout>
+          <div class="selectedType">{{formType}}</div>
+          <div>
+            <core-menu selected="{{selectedForm}}">
+              <template repeat="{{form in ajaxForms}}">
+                <template if="{{form.name == formType}}">
+                  <core-item name="{{form.id}}" label="{{form.id}}">
+                  </core-item>
+                </template>
+              </template>
+            </core-menu>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div name="form33">
+      <case-form id="form33" 
+        src="forms/form33.json" filled="{{filledForm}}">
+      </case-form>
+    </div>
+  </core-animated-pages>
+  
+</template>
+
+<script>
+  Polymer('ltc-person', {
+    loading:false,
+    selected: 'menu',
+    formList: [
+      {name:'form33', label:'แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ'},
+      {name:'form44', label:'แบบประเมินผู้สูงอายุที่ต้องได้รับการดูแลระยะยาว'}
+    ],
+    mainAction: function() {
+      this.fire('main');
+    },
+    personChanged: function(oldVal, newVal) {
+      console.log(newVal);
+      if(newVal.id) {
+        this.$.getAjax.go();
+        var query = "../api/people/"+newVal.id+"/forms";
+        query+= "?filter[fields][id]=true";
+        query+= "&filter[fields][name]=true";
+        this.$.getForms.url = query;
+        this.$.getForms.go();
+      }
+    }
+  });
+</script>
+</polymer>

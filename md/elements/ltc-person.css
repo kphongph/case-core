@@ -1,0 +1,17 @@
+:host {
+  display:block;
+  overflow:auto;
+}
+
+core-item {
+  padding-left:10px;         
+}
+
+core-item.core-selected {
+  background:#eeeeee;
+}
+
+.selectedType {
+  margin:10px;
+}
+

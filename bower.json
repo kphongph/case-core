@@ -22,6 +22,9 @@
     "core-ajax": "Polymer/core-ajax#~0.5.5",
     "paper-spinner": "Polymer/paper-spinner#~0.5.5",
     "core-list": "Polymer/core-list#~0.5.5",
-    "paper-shadow": "Polymer/paper-shadow#~0.5.5"
+    "paper-shadow": "Polymer/paper-shadow#~0.5.5",
+    "core-scroll-threshold": "Polymer/core-scroll-threshold#~0.5.5",
+    "paper-icon-button": "Polymer/paper-icon-button#~0.5.5",
+    "case-form": "kphongph/case-form"
   }
 }

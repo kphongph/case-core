@@ -1,0 +1,19 @@
+:host {
+  min-width:200px;
+}
+
+.item {
+  margin-left:10px;
+  margin-bottom:10px;
+  padding:10px;
+}
+
+.item:hover {
+  background:#eeeeee;
+}
+
+.content {
+  margin:5px;
+  padding:5px;
+  background:#eeeeee;
+}

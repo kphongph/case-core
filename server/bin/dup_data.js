@@ -2,7 +2,9 @@ var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;
 var MongoClient = require('mongodb').MongoClient;
 
-var mongourl = 'mongodb://128.199.108.210:27017/casedb';
+// var mongourl = 'mongodb://128.199.108.210:27017/casedb';
+
+var mongourl = 'mongodb://test:test@ds045988.mongolab.com:45988/casedb';
 
 var mssql_config = {
   "server":"j2o691xyq4.database.windows.net",
@@ -28,6 +30,7 @@ var query = function(config, st, cb) {
   
     request.on('row', function(columns) {
       var obj = {};
+      console.log('row');
       columns.forEach(function(column) {
         obj[column.metadata.colName] = column.value;
       });
@@ -41,8 +44,8 @@ var mongodb = null;
 
 MongoClient.connect(mongourl, function(err, db) {
   query(mssql_config,
-    "select * from PlanService", function(plans) {
-    var plan_col = db.collection('planservice');
+    "select * from Person", function(plans) {
+    var plan_col = db.collection('person');
     count = 0;
     plans.forEach(function(plan) {
       plan_col.insert(plan, {w:1}, function(err, doc) {
