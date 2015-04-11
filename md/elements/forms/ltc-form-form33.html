@@ -98,6 +98,10 @@
         this.computeScore();
       }
     },
+    docChanged: function() {
+      this.filledForm = null;
+      this.filling=false;
+    },
     computeScore: function() {
       var sc = 0;
       var label = '';
