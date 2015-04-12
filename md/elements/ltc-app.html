@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
 <link rel="import" href="ltc-people.html">
+<link rel="import" href="ltc-forms.html">
 <link rel="import" href="ltc-person.html">
 
 <polymer-element name="ltc-app" vertical layout>
@@ -15,9 +16,12 @@
     <div name="splash">
       <span fit class="splash {{ {wide: wide} | tokenList }}"></span>
     </div>
-    <ltc-people name="people" selectedPerson="{{person}}">
+    <ltc-people name="people" selectedPerson="{{person_id}}">
     </ltc-people>
-    <ltc-person name="person" person="{{person}}"></ltc-person>
+    <ltc-person name="person" docid="{{person_id}}" 
+        person="{{person}}">
+    </ltc-person>
+    <ltc-forms name="form" person="{{person}}"></ltc-forms>
   </core-animated-pages>
 
 </template>
@@ -26,16 +30,28 @@
 Polymer('ltc-app', {
   // testing
   selected:'person',
-  person:{id:'54fda8bf7b080506038dfab9'},
+  person_id:'54fda8bf7b080506038dfab9',
   eventDelegates: {
     'main':'showSearchPerson',
+    'form':'showForm',
+    'person':'showPerson'
+  },
+  showPerson: function() {
+    this.selected = 'person';
+  },
+  showForm: function() {
+    this.selected = 'form';
   },
   showSearchPerson: function() {
     this.selected = 'people';
   },
   personChanged: function(oldVal,newVal) {
     this.selected = 'person';
+  },
+  reset : function() {
+    console.log('reset');
   }
+
 });
 </script>
 </polymer-element>
