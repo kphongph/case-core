@@ -49,17 +49,17 @@
   </style>
   <paper-shadow z="1" class="card">
     <div layout vertical>
-      <div class="formLabel">{{doc.name}}</div>
+      <div class="formLabel">{{document.name}}</div>
       <div hidden?="{{filling}}">
         <div layout vertical>
-          <template if="{{computed}}">
+          <template if="{{document.result}}">
             <div class="evaluatedResult">
-             {{computed.label}} ({{computed.score}})
+             {{document.result.label}} ({{document.result.score}})
             </div>
           </template>
           <div layout vertical>
-            <template if="{{filledForm}}">
-              <template repeat="{{model in filledForm.questions}}">
+            <template if="{{document.questions}}">
+              <template repeat="{{model in document.questions}}">
                <div class="reviewItem" layout vertical>
                 <div><b>{{model.question}}</b></div> 
                 <div class="reviewAnswer">
@@ -96,11 +96,17 @@
       if(this.filledForm) {
         this.filling=false;
         this.computeScore();
+        for(var key in this.filledForm) {
+          this.document[key] = JSON.parse(JSON.stringify(this.filledForm[key]));
+        }
+        this.updateDocument();
       }
     },
-    docChanged: function() {
-      this.filledForm = null;
-      this.filling=false;
+    documentChanged: function(oldVal,newVal) {
+      if(newVal) {
+        this.filledForm = null;
+        this.filling=false;
+      }
     },
     computeScore: function() {
       var sc = 0;
@@ -118,7 +124,7 @@
           label = "กลุ่มที่ 1 ช่วยเหลือตนเองได้";
         }
       }
-      this.computed = {score:sc, label:label};
+      this.document['result'] = {score:sc, label:label};
     }
   });
 </script>

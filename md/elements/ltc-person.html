@@ -48,11 +48,11 @@
         <div>
           <core-menu selected="{{formType}}">
             <template repeat="{{form in formList}}">
-              <core-submenu name="{{form.label}}" 
+              <core-submenu name="{{form.name}}" 
                 selected="{{selectedFormId}}"
-                label="{{form.label}}">
+                label="{{form.name}}">
                 <template repeat="{{doc in ajaxForms}}">
-                  <template if="{{doc.name == form.label}}">
+                  <template if="{{doc.name == form.name}}">
                     <core-item name="{{doc.id}}" label="{{doc.id}}">
                     </core-item>
                   </template>
@@ -61,11 +61,18 @@
             </template>
           </core-menu>
         </div>
+        <div>
+          <template if="{{formType}}">
+            <paper-button raised on-tap="{{createForm}}">
+              สร้างแบบประเมินใหม่
+            </paper-button>
+          </template>
+        </div>
       </div>
       <div>
        <core-selector id="formViews" notap 
          selected="{{selectedForm.hash}}">
-         <ltc-form-form33 name="form33" form="{{selectedForm}}">
+         <ltc-form-form33 name="form33" form="{{selectedForm}}" owner="{{person}}">
          </ltc-form-form33>
        </core-selector>
       </div>
@@ -79,8 +86,8 @@
     loading:false,
     selected: 'menu',
     formList: [
-      {hash:'form33', label:'แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ'},
-      {hash:'form44', label:'แบบประเมินผู้สูงอายุที่ต้องได้รับการดูแลระยะยาว'}
+      {hash:'form33', name:'แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ'},
+      {hash:'form44', name:'แบบประเมินผู้สูงอายุที่ต้องได้รับการดูแลระยะยาว'}
     ],
     mainAction: function() {
       this.fire('main');
@@ -103,7 +110,7 @@
            this.selectedForm = this.ajaxForms[i];
            this.selectedForm['hash']=null;
            for(var j=0;j<this.formList.length;j++) {
-             if(this.formList[j].label == this.selectedForm.name) {
+             if(this.formList[j].name == this.selectedForm.name) {
                this.selectedForm['hash']=this.formList[j].hash;
                break;
              }
@@ -112,6 +119,17 @@
          }
        }
      }
+    },
+    createForm : function() {
+      if(this.formType) {
+        for(var i=0;i<this.formList.length;i++) {
+          if(this.formList[i].name == this.formType) {
+            this.selectedForm = this.formList[i];
+            console.log(this.selectedForm);
+            break;
+          }
+        }
+      }
     }
   });
 </script>
