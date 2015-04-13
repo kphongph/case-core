@@ -1,6 +1,10 @@
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+
 <link rel="import" href="../bower_components/core-icon/core-icon.html">
 <link rel="import" href="../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../bower_components/core-menu/core-submenu.html">
@@ -14,6 +18,10 @@
 <link rel="import" href="forms/ltc-form-form11.html">
 <link rel="import" href="forms/ltc-form-form12.html">
 <link rel="import" href="forms/ltc-form-form13.html">
+<link rel="import" href="forms/ltc-form-form14.html">
+<link rel="import" href="forms/ltc-form-form15.html">
+<link rel="import" href="forms/ltc-form-form16.html">
+<link rel="import" href="forms/ltc-form-form21.html">
 
 <polymer-element name="ltc-forms" attributes="person">
 
@@ -23,6 +31,11 @@
 :host {
   display:block;
   overflow:auto;
+}
+
+.formList {
+  padding:10px;
+  margin:10px;
 }
 
 core-item {
@@ -75,21 +88,25 @@ core-submenu::shadow #submenu {
 
   <core-animated-pages selected="{{selected}}">
     <div name="menu">
+      <core-menu selected="{{formType}}">
+        <template repeat="{{form in formList}}">
+          <core-item name="{{form.name}}" 
+            label="{{form.name}}">  
+          </core-item>
+        </template>
+      </core-menu>
+    </div>
+    <div name="formList" class="formList">
       <div layout vertical>
         <div>
-          <core-menu selected="{{formType}}">
-            <template repeat="{{form in formList}}">
-              <core-submenu name="{{form.name}}" 
-                selected="{{selectedFormId}}"
-                label="{{form.name}}">
-                <template repeat="{{doc in ajaxForms}}">
-                  <template if="{{doc.name == form.name}}">
-                    <core-item name="{{doc.id}}" 
-                      label="{{doc.createdDate | date}}">
-                    </core-item>
-                  </template>
-                </template>
-              </core-submenu>
+          {{formType}}
+        </div>
+        <div>
+          <core-menu selected="{{selectedFormId}}">
+            <template repeat="{{doc in ajaxForms}}">
+              <core-item name="{{doc.id}}" 
+                label="{{doc.createdDate | date}}">
+              </core-item>
             </template>
           </core-menu>
         </div>
@@ -120,7 +137,23 @@ core-submenu::shadow #submenu {
         <ltc-form-form13 name="form13" json="elements/forms/form13.json"
            active?="{{selectedForm.hash == 'form13'}}"
            form="{{selectedForm}}" owner="{{person}}">
-        </ltc-form-form12>
+        </ltc-form-form13>
+        <ltc-form-form14 name="form14" json="elements/forms/form14.json"
+           active?="{{selectedForm.hash == 'form14'}}"
+           form="{{selectedForm}}" owner="{{person}}">
+        </ltc-form-form14>
+        <ltc-form-form15 name="form15" json="elements/forms/form15.json"
+           active?="{{selectedForm.hash == 'form15'}}"
+           form="{{selectedForm}}" owner="{{person}}">
+        </ltc-form-form15>
+        <ltc-form-form16 name="form16" json="elements/forms/form16.json"
+           active?="{{selectedForm.hash == 'form16'}}"
+           form="{{selectedForm}}" owner="{{person}}">
+        </ltc-form-form16>
+        <ltc-form-form21 name="form21" json="elements/forms/form21.json"
+           active?="{{selectedForm.hash == 'form21'}}"
+           form="{{selectedForm}}" owner="{{person}}">
+        </ltc-form-form16>
       </core-selector>
     </div>
   </core-animated-pages>
@@ -135,17 +168,50 @@ core-submenu::shadow #submenu {
       {hash:'form33', name:'แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ'},
       {hash:'form11', name:'ข้อมูลเบื้องต้นของผู้สูงอายุ'},
       {hash:'form12', name:'แบบประเมินด้านสังคม'},
-      {hash:'form13', name:'แบบประเมินความสามารถในการทำกิจวัตรประจำวัน'}
+      {hash:'form13', name:'แบบประเมินความสามารถในการทำกิจวัตรประจำวัน'},
+      {hash:'form14', name:'แบบประเมินสภาพสมอง'},
+      {hash:'form15', name:'แบบประเมินภาวะกลืนลำบาก'},
+      {hash:'form16', name:'แบบประเมินภาวะซึมเศร้าในช่วง 2 สัปดาห์ที่ผ่านมารวมทั้งวันนี้'},
+      {hash:'form21', name:'ความต้องการในการดูแลทางการแพทย์'}
     ],
     backAction: function() {
       if(this.selected == "menu") {
         this.fire('person');
       } else {
-        this.selected="menu";
+        if(this.selected == "formPanel") {
+          // trick form type changed
+          this.selected="formList";
+          this.selectedFormId = null;
+          this.updateFormList();
+        } else {
+          this.selected="menu";
+          this.formType = null;
+        }
       }
     },
     date: function(val) {
       return new Date(val);
+    },
+    updateFormList : function() {
+      var query = "../api/people/"+this.person.id+"/forms";
+      query+= "?filter[fields][id]=true";
+      query+= "&filter[where][name]="+this.formType;
+      query+= "&filter[fields][name]=true";
+      query+= "&filter[fields][createdDate]=true";
+      this.$.getForms.url = query;
+      this.$.getForms.go();
+    },
+    formTypeChanged : function(oldVal, newVal) {
+      if(newVal && this.person) {
+        var query = "../api/people/"+this.person.id+"/forms";
+        query+= "?filter[fields][id]=true";
+        query+= "&filter[where][name]="+newVal;
+        query+= "&filter[fields][name]=true";
+        query+= "&filter[fields][createdDate]=true";
+        this.$.getForms.url = query;
+        this.selected="formList";
+        this.$.getForms.go();
+      }
     },
     personChanged: function(oldVal, newVal) {
       if(newVal) {

@@ -20,6 +20,12 @@
     :host {
       display:block;
     }
+    #reviewAnswer > * {
+      display:none;
+    }
+    #reviewAnswer > .core-selected {
+      display:block;
+    }
     .card {
       padding:10px;
       margin:10px;
@@ -61,9 +67,19 @@
             <template if="{{document.questions}}">
               <template repeat="{{model in document.questions}}">
                <div class="reviewItem" layout vertical>
-                <div><b>{{model.question}}</b></div> 
+                <div>{{model.question}}</div> 
                 <div class="reviewAnswer">
-                   {{model.options[model.answer]}}
+                  <core-selector id="reviewAnswer" 
+                    selected="{{model.type}}"> 
+                    <div name="single-select">
+                      {{model.options[model.answer]}}
+                    </div>
+                    <div name="multi-select">
+                      <template repeat="{{item in model.answer}}">
+                        - {{model.options[item]}}<br>
+                      </template>
+                    </div>
+                  </core>
                 </div>
                </div>
               </template>
