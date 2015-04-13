@@ -12,7 +12,8 @@
 
 <link rel="import" href="../ltc-form-base.html">
 
-<polymer-element name="ltc-form-form33" extends="ltc-form-base">
+<polymer-element name="ltc-form-form33" attributes="json" 
+  extends="ltc-form-base">
 
 <template>
   <style>
@@ -76,7 +77,7 @@
         </paper-button>
       </div>
       <div horizontal center-justified> 
-        <case-form src="form33.json" filled="{{filledForm}}"
+        <case-form src="{{json}}" filled="{{filledForm}}"
           hidden?="{{!filling}}">
         </case-form>
       </div>

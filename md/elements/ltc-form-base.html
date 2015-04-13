@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 
-<polymer-element name="ltc-form-base" attributes="form owner">
+<polymer-element name="ltc-form-base" attributes="form owner active">
 
 <template>
   <style>
@@ -37,8 +37,9 @@
 <script>
   Polymer('ltc-form-base', {
     document:null,
+    active:false,
     formChanged: function(oldVal, newVal) {
-      if(newVal.id) {
+      if(newVal.id && this.active) {
         this.$.getAjax.go();
       } else {
         this.document = this.form;
@@ -51,6 +52,7 @@
           this.$.updateAjax.body = JSON.stringify(this.document);
           this.$.updateAjax.go();
         } else {
+          console.log(this.owner);
           this.$.insertAjax.body = JSON.stringify(this.document);
           this.$.insertAjax.go();
         }

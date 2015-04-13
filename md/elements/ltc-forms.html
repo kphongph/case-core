@@ -11,6 +11,9 @@
 <link rel="import" href="../bower_components/case-form/case-form.html">
 
 <link rel="import" href="forms/ltc-form-form33.html">
+<link rel="import" href="forms/ltc-form-form11.html">
+<link rel="import" href="forms/ltc-form-form12.html">
+<link rel="import" href="forms/ltc-form-form13.html">
 
 <polymer-element name="ltc-forms" attributes="person">
 
@@ -102,9 +105,22 @@ core-submenu::shadow #submenu {
     <div name="formPanel">
       <core-selector id="formViews" notap 
         selected="{{selectedForm.hash}}">
-        <ltc-form-form33 name="form33" 
+        <ltc-form-form33 name="form33" json="elements/forms/form33.json"
+           active?="{{selectedForm.hash == 'form33'}}"
            form="{{selectedForm}}" owner="{{person}}">
         </ltc-form-form33>
+        <ltc-form-form11 name="form11" json="elements/forms/form11.json"
+           active?="{{selectedForm.hash == 'form11'}}"
+           form="{{selectedForm}}" owner="{{person}}">
+        </ltc-form-form11>
+        <ltc-form-form12 name="form12" json="elements/forms/form12.json"
+           active?="{{selectedForm.hash == 'form12'}}"
+           form="{{selectedForm}}" owner="{{person}}">
+        </ltc-form-form12>
+        <ltc-form-form13 name="form13" json="elements/forms/form13.json"
+           active?="{{selectedForm.hash == 'form13'}}"
+           form="{{selectedForm}}" owner="{{person}}">
+        </ltc-form-form12>
       </core-selector>
     </div>
   </core-animated-pages>
@@ -117,7 +133,9 @@ core-submenu::shadow #submenu {
     selected: 'menu',
     formList: [
       {hash:'form33', name:'แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ'},
-      {hash:'form44', name:'แบบประเมินผู้สูงอายุที่ต้องได้รับการดูแลระยะยาว'}
+      {hash:'form11', name:'ข้อมูลเบื้องต้นของผู้สูงอายุ'},
+      {hash:'form12', name:'แบบประเมินด้านสังคม'},
+      {hash:'form13', name:'แบบประเมินความสามารถในการทำกิจวัตรประจำวัน'}
     ],
     backAction: function() {
       if(this.selected == "menu") {
