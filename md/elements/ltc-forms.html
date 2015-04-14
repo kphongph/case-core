@@ -12,13 +12,18 @@
 <link rel="import" href="../bower_components/core-item/core-item.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 <link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
-<link rel="import" href="../bower_components/case-form/case-form.html">
-
-<link rel="import" href="ltc-form-card.html">
-
 
 <link rel="import" href="ltc-form-card-form11.html">
 <link rel="import" href="ltc-form-card-form12.html">
+<link rel="import" href="ltc-form-card-form13.html">
+<link rel="import" href="ltc-form-card-form14.html">
+<link rel="import" href="ltc-form-card-form15.html">
+<link rel="import" href="ltc-form-card-form16.html">
+<link rel="import" href="ltc-form-card-form21.html">
+<link rel="import" href="ltc-form-card-form33.html">
+<!--
+<link rel="import" href="ltc-form-card-form10.html">
+-->
 
 <polymer-element name="ltc-forms" attributes="person">
 
@@ -89,10 +94,17 @@ core-submenu::shadow #submenu {
       <div layout vertical>
       <template repeat="{{form in ajaxForms | orderBy(name)}}">
         <core-selector id="formViews" notap selected="{{form.hash}}">
-          <ltc-form-card-form11 name="form11" form="{{form}}">
-          </ltc-form-card-form11>
-          <ltc-form-card-form12 name="form12" form="{{form}}">
-          </ltc-form-card-form12>
+          <!--
+          <ltc-form-card-form10 name="form10" form="{{form}}"></ltc-form-card-form10>
+          -->
+          <ltc-form-card-form11 name="form11" form="{{form}}"></ltc-form-card-form11>
+          <ltc-form-card-form12 name="form12" form="{{form}}"></ltc-form-card-form12>
+          <ltc-form-card-form13 name="form13" form="{{form}}"></ltc-form-card-form13>
+          <ltc-form-card-form14 name="form14" form="{{form}}"></ltc-form-card-form14>
+          <ltc-form-card-form15 name="form15" form="{{form}}"></ltc-form-card-form15>
+          <ltc-form-card-form16 name="form16" form="{{form}}"></ltc-form-card-form16>
+          <ltc-form-card-form21 name="form21" form="{{form}}"></ltc-form-card-form21>
+          <ltc-form-card-form33 name="form33" form="{{form}}"></ltc-form-card-form33>
         </core-selector>
       </template>
       </div>

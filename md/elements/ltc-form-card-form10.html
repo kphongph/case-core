@@ -1,0 +1,202 @@
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/core-list/core-list.html">
+<link rel="import" href="../bower_components/core-item/core-item.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../bower_components/case-form/case-form.html">
+
+<link rel="import" href="ltc-form-card-base.html">
+
+<polymer-element name="ltc-form-card-form10" attributes="json" 
+  extends="ltc-form-card-base">
+
+<template>
+  <style>
+    :host {
+      display:block;
+    }
+    #reviewAnswer > * {
+      display:none;
+    }
+    #reviewAnswer > .core-selected {
+      display:block;
+    }
+    .card {
+      padding:10px;
+      margin:10px;
+    }
+    .formLabel {
+      margin-bottom:20px;
+    }
+    .evaluatedResult {
+      padding:10px;
+      marging:5px;
+      background-color: #03A9F4;
+      color: #fff;
+    }
+    .reviewItem {
+      padding:5px;
+      margin-bottom:10px;
+    }
+    .reviewAnswer {
+      background: #eeeeee;
+      padding:5px;
+    }
+    case-form {
+      margin-right:20px;
+      background:#efefef;
+      width:100%;
+    }
+  </style>
+
+  <core-ajax 
+    id="getOptions"
+    handleAs="json" 
+    loading="{{loading}}"
+    on-core-response="{{optionsLoaded}}"> 
+  </core-ajax>
+
+  <core-ajax 
+    id="getForm"
+    handleAs="json" 
+    loading="{{loading}}"
+    on-core-response="{{formLoaded}}"> 
+  </core-ajax>
+  
+
+  <paper-shadow z="1" class="card">
+    <div layout vertical>
+      <div class="formLabel">
+        {{form.name}}
+        <paper-spinner class="blue" active?="{{loading}}">
+        </paper-spinner>
+      </div>
+      <div hidden?="{{filling}}">
+        <div layout vertical>
+          <template if="{{document.result}}">
+            <div class="evaluatedResult">
+             {{document.result.label}} ({{document.result.score}})
+            </div>
+          </template>
+          <div layout vertical>
+            <template if="{{document.questions}}">
+              <template repeat="{{model in document.questions}}">
+               <div class="reviewItem" layout vertical>
+                <div>{{model.question}}</div> 
+                <div class="reviewAnswer">
+                  <core-selector id="reviewAnswer" 
+                    selected="{{model.type}}"> 
+                    <div name="single-select">
+                      {{model.result.label}} <br>
+                      {{model.result.date}}
+                    </div>
+                  </core>
+                </div>
+               </div>
+              </template>
+            </template>
+          </div>
+        </div>
+      </div>
+      <div hidden?="{{filling}}">
+        <paper-button raised on-tap="{{startForm}}">
+         เริ่มทำแบบประเมิน
+        </paper-button>
+        <paper-button raised on-tap="{{deleteForm}}" 
+          hidden?="{{!document.id}}">
+         ลบแบบประเมิน
+        </paper-button>
+      </div>
+      <div horizontal center-justified> 
+        <case-form src="{{json}}" filled="{{filledForm}}"
+          form="{{jsonForm}}"
+          hidden?="{{!filling}}">
+        </case-form>
+      </div>
+    </div>
+  </paper-shadow>
+</template>
+
+<script>
+  Polymer('ltc-form-form10', {
+    filling:false,
+    jsonForm:null,
+    startForm: function() {
+      this.filledForm = null;
+      this.filling=true;
+      if(this.jsonForm) {
+        this.$.getOptions.url = "../api/people/"+     
+          this.owner.id+"/forms?"+
+          "filter[fields][name]=true&"+
+          "filter[fields][id]=true&"+
+          "filter[fields][createdDate]=true";
+        this.$.getOptions.go();
+      }
+    },
+    optionsLoaded:function() {
+      var response = this.$.getOptions.response;
+      var tmpForm = this.jsonForm;
+      for(var i=0;i<tmpForm.questions.length;i++) {
+        var question = tmpForm.questions[i];
+        question.options =[];
+        for(var j=0;j<response.length;j++) {
+          if(question.question == response[j].name) {          
+            var obj = {};
+            obj['label']= new Date(response[j].createdDate);
+            obj['id']=response[j].id;
+            question.options.push(obj);
+          }
+        }
+      }
+    },
+    filledFormChanged: function() {
+      if(this.filledForm) {
+        this.filling=false;
+        this.computeScore();
+        for(var key in this.filledForm) {
+          this.document[key] = JSON.parse(JSON.stringify(this.filledForm[key]));
+        }
+        this.updateDocument();
+      }
+    },
+    documentChanged: function(oldVal,newVal) {
+      this.filledForm = null;
+      this.filling=false;
+      if(this.document && this.document.questions) {
+        this.$.getForm.url = "../api/people/"+     
+          this.owner.id+"/forms?"+
+          "filter[fields][createdDate]=true&"+
+          "filter[fields][id]=true&"+
+          "filter[fields][result]=true";
+        this.$.getForm.go();
+      }
+    },
+    formLoaded: function() {
+      var docs = this.$.getForm.response;
+      if(this.document.questions) {
+        for(var i=0;i<this.document.questions.length;i++) {
+          var question = this.document.questions[i];
+          var doc_id = question.options[question.answer].id;
+          for(var j=0;j<docs.length;j++) {
+            if(docs[j].id == doc_id) {
+              question.result = {
+                  label: docs[j].result.label,
+                  date: new Date(docs[j].createdDate)
+              };
+              break;
+            }
+          }
+        }
+      }
+      
+    },
+    computeScore: function() {
+    }
+  });
+</script>
+</polymer>

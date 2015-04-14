@@ -1,25 +1,24 @@
 <link rel="import" href="ltc-form-card-base.html">
 
-<polymer-element name="ltc-form-card-form12" attributes="form" 
-  extends="ltc-form-card-base">
+<polymer-element name="ltc-form-card-form14" extends="ltc-form-card-base">
 
 <template>
   <shadow></shadow>
 </template>
 
 <script>
-  Polymer('ltc-form-card-form12', {
-    computeScore : function(form) {
+  Polymer('ltc-form-card-form14', {
+    computeScore: function(form) {
       var sc = 0;
       var label = '';
       for(var i=0;i<form.questions.length;i++) {
-        var tmp=form.questions[i];
+        var tmp = form.questions[i];
         sc+=tmp.score[tmp.answer];
       }
-      if(sc==0) {
-        label = "กลุ่มที่ 2 ช่วยเหลือตนเองได้บ้าง";
-      } else {
+      if(sc<=14) {
         label = "กลุ่มที่ 3 ต้องการความช่วยเหลือ";
+      } else {
+        label = "กลุ่มที่ 2 ช่วยเหลือตนเองได้บ้าง";
       }
       this.document['result'] = {score:sc, label:label};
     }
