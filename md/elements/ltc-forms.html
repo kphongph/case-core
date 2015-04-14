@@ -33,6 +33,7 @@
 :host {
   display:block;
   overflow:auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .formList {
@@ -92,19 +93,19 @@ core-submenu::shadow #submenu {
   <core-animated-pages selected="{{selected}}">
     <div name="menu">
       <div layout vertical>
-      <template repeat="{{form in ajaxForms | orderBy(name)}}">
-        <core-selector id="formViews" notap selected="{{form.hash}}">
+      <template repeat="{{ajaxForms | orderBy('-updatedDate')}}">
+        <core-selector id="formViews" notap selected="{{hash}}">
           <!--
-          <ltc-form-card-form10 name="form10" form="{{form}}"></ltc-form-card-form10>
+          <ltc-form-card-form10 name="form10" form="{{}}"></ltc-form-card-form10>
           -->
-          <ltc-form-card-form11 name="form11" form="{{form}}"></ltc-form-card-form11>
-          <ltc-form-card-form12 name="form12" form="{{form}}"></ltc-form-card-form12>
-          <ltc-form-card-form13 name="form13" form="{{form}}"></ltc-form-card-form13>
-          <ltc-form-card-form14 name="form14" form="{{form}}"></ltc-form-card-form14>
-          <ltc-form-card-form15 name="form15" form="{{form}}"></ltc-form-card-form15>
-          <ltc-form-card-form16 name="form16" form="{{form}}"></ltc-form-card-form16>
-          <ltc-form-card-form21 name="form21" form="{{form}}"></ltc-form-card-form21>
-          <ltc-form-card-form33 name="form33" form="{{form}}"></ltc-form-card-form33>
+          <ltc-form-card-form11 name="form11" form="{{}}"></ltc-form-card-form11>
+          <ltc-form-card-form12 name="form12" form="{{}}"></ltc-form-card-form12>
+          <ltc-form-card-form13 name="form13" form="{{}}"></ltc-form-card-form13>
+          <ltc-form-card-form14 name="form14" form="{{}}"></ltc-form-card-form14>
+          <ltc-form-card-form15 name="form15" form="{{}}"></ltc-form-card-form15>
+          <ltc-form-card-form16 name="form16" form="{{}}"></ltc-form-card-form16>
+          <ltc-form-card-form21 name="form21" form="{{}}"></ltc-form-card-form21>
+          <ltc-form-card-form33 name="form33" form="{{}}"></ltc-form-card-form33>
         </core-selector>
       </template>
       </div>
