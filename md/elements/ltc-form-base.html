@@ -13,6 +13,13 @@
     url="../api/formtemplates/{{form.id}}"
     response="{{document}}"> 
   </core-ajax>
+
+  <core-ajax 
+    id="deleteFormAjax"
+    url="../api/people/{{owner.id}}/forms/{{document.id}}"
+    method="DELETE"
+    on-core-response="{{formDeleted}}"> 
+  </core-ajax>
   
   <core-ajax 
     id="updateAjax"
@@ -38,25 +45,34 @@
   Polymer('ltc-form-base', {
     document:null,
     active:false,
+    originalForm:null,
     formChanged: function(oldVal, newVal) {
       if(newVal.id && this.active) {
         this.$.getAjax.go();
       } else {
+        this.originalForm = JSON.parse(JSON.stringify(this.form));
         this.document = this.form;
       }
     },
     updateDocument: function() {
-      console.log(this.document);
       if(this.document) {
         if(this.document.id) {
           this.$.updateAjax.body = JSON.stringify(this.document);
           this.$.updateAjax.go();
         } else {
-          console.log(this.owner);
           this.$.insertAjax.body = JSON.stringify(this.document);
           this.$.insertAjax.go();
         }
       }
+    },
+    deleteForm: function() {
+      if(this.owner.id && this.document.id) {
+        this.$.deleteFormAjax.go();
+      }
+    },
+    formDeleted : function() {
+      this.document = this.originalForm;
+      this.fire('form-deleted');
     }
   });
 </script>

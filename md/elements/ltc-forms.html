@@ -15,6 +15,7 @@
 <link rel="import" href="../bower_components/case-form/case-form.html">
 
 <link rel="import" href="forms/ltc-form-form33.html">
+<link rel="import" href="forms/ltc-form-form10.html">
 <link rel="import" href="forms/ltc-form-form11.html">
 <link rel="import" href="forms/ltc-form-form12.html">
 <link rel="import" href="forms/ltc-form-form13.html">
@@ -71,6 +72,7 @@ core-submenu::shadow #submenu {
   <core-ajax 
     id="getForms"
     handleAs="json" 
+    loading="{{getFormsLoading}}"
     response="{{ajaxForms}}"> 
   </core-ajax>
 
@@ -100,15 +102,17 @@ core-submenu::shadow #submenu {
       <div layout vertical>
         <div>
           {{formType}}
+          <paper-spinner class="blue" active?="{{getFormsLoading}}">
+          </paper-spinner>
         </div>
         <div>
-          <core-menu selected="{{selectedFormId}}">
-            <template repeat="{{doc in ajaxForms}}">
-              <core-item name="{{doc.id}}" 
-                label="{{doc.createdDate | date}}">
-              </core-item>
-            </template>
-          </core-menu>
+            <core-menu selected="{{selectedFormId}}">
+              <template repeat="{{doc in ajaxForms}}">
+                <core-item name="{{doc.id}}" 
+                  label="{{doc.createdDate | date}}">
+                </core-item>
+              </template>
+            </core-menu>
         </div>
         <div>
           <template if="{{formType}}">
@@ -126,6 +130,10 @@ core-submenu::shadow #submenu {
            active?="{{selectedForm.hash == 'form33'}}"
            form="{{selectedForm}}" owner="{{person}}">
         </ltc-form-form33>
+        <ltc-form-form10 name="form10" json="elements/forms/form10.json"
+           active?="{{selectedForm.hash == 'form10'}}"
+           form="{{selectedForm}}" owner="{{person}}">
+        </ltc-form-form10>
         <ltc-form-form11 name="form11" json="elements/forms/form11.json"
            active?="{{selectedForm.hash == 'form11'}}"
            form="{{selectedForm}}" owner="{{person}}">
@@ -153,7 +161,7 @@ core-submenu::shadow #submenu {
         <ltc-form-form21 name="form21" json="elements/forms/form21.json"
            active?="{{selectedForm.hash == 'form21'}}"
            form="{{selectedForm}}" owner="{{person}}">
-        </ltc-form-form16>
+        </ltc-form-form21>
       </core-selector>
     </div>
   </core-animated-pages>
@@ -164,8 +172,12 @@ core-submenu::shadow #submenu {
   Polymer('ltc-forms', {
     loading:false,
     selected: 'menu',
+    eventDelegates: {
+      'form-deleted':'showFormList'
+    },
     formList: [
       {hash:'form33', name:'แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ'},
+      {hash:'form10', name:'แบบประเมินผู้สูงอายุที่ต้องได้รับการดูแลระยะยาว'},
       {hash:'form11', name:'ข้อมูลเบื้องต้นของผู้สูงอายุ'},
       {hash:'form12', name:'แบบประเมินด้านสังคม'},
       {hash:'form13', name:'แบบประเมินความสามารถในการทำกิจวัตรประจำวัน'},
@@ -180,14 +192,17 @@ core-submenu::shadow #submenu {
       } else {
         if(this.selected == "formPanel") {
           // trick form type changed
-          this.selected="formList";
-          this.selectedFormId = null;
-          this.updateFormList();
+          this.showFormList();
         } else {
           this.selected="menu";
           this.formType = null;
         }
       }
+    },
+    showFormList : function() {
+      this.selected="formList";
+      this.selectedFormId = null;
+      this.updateFormList();
     },
     date: function(val) {
       return new Date(val);

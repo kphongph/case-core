@@ -12,7 +12,7 @@
 
 <link rel="import" href="../ltc-form-base.html">
 
-<polymer-element name="ltc-form-form33" attributes="json" 
+<polymer-element name="ltc-form-form10" attributes="json" 
   extends="ltc-form-base">
 
 <template>
@@ -53,9 +53,29 @@
       width:100%;
     }
   </style>
+
+  <core-ajax 
+    id="getOptions"
+    handleAs="json" 
+    loading="{{loading}}"
+    on-core-response="{{optionsLoaded}}"> 
+  </core-ajax>
+
+  <core-ajax 
+    id="getForm"
+    handleAs="json" 
+    loading="{{loading}}"
+    on-core-response="{{formLoaded}}"> 
+  </core-ajax>
+  
+
   <paper-shadow z="1" class="card">
     <div layout vertical>
-      <div class="formLabel">{{form.name}}</div>
+      <div class="formLabel">
+        {{form.name}}
+        <paper-spinner class="blue" active?="{{loading}}">
+        </paper-spinner>
+      </div>
       <div hidden?="{{filling}}">
         <div layout vertical>
           <template if="{{document.result}}">
@@ -72,12 +92,8 @@
                   <core-selector id="reviewAnswer" 
                     selected="{{model.type}}"> 
                     <div name="single-select">
-                      {{model.options[model.answer]}}
-                    </div>
-                    <div name="multi-select">
-                      <template repeat="{{item in model.answer}}">
-                        - {{model.options[item]}}<br>
-                      </template>
+                      {{model.result.label}} <br>
+                      {{model.result.date}}
                     </div>
                   </core>
                 </div>
@@ -98,6 +114,7 @@
       </div>
       <div horizontal center-justified> 
         <case-form src="{{json}}" filled="{{filledForm}}"
+          form="{{jsonForm}}"
           hidden?="{{!filling}}">
         </case-form>
       </div>
@@ -106,11 +123,36 @@
 </template>
 
 <script>
-  Polymer('ltc-form-form33', {
+  Polymer('ltc-form-form10', {
     filling:false,
+    jsonForm:null,
     startForm: function() {
       this.filledForm = null;
       this.filling=true;
+      if(this.jsonForm) {
+        this.$.getOptions.url = "../api/people/"+     
+          this.owner.id+"/forms?"+
+          "filter[fields][name]=true&"+
+          "filter[fields][id]=true&"+
+          "filter[fields][createdDate]=true";
+        this.$.getOptions.go();
+      }
+    },
+    optionsLoaded:function() {
+      var response = this.$.getOptions.response;
+      var tmpForm = this.jsonForm;
+      for(var i=0;i<tmpForm.questions.length;i++) {
+        var question = tmpForm.questions[i];
+        question.options =[];
+        for(var j=0;j<response.length;j++) {
+          if(question.question == response[j].name) {          
+            var obj = {};
+            obj['label']= new Date(response[j].createdDate);
+            obj['id']=response[j].id;
+            question.options.push(obj);
+          }
+        }
+      }
     },
     filledFormChanged: function() {
       if(this.filledForm) {
@@ -123,28 +165,37 @@
       }
     },
     documentChanged: function(oldVal,newVal) {
-    //  if(newVal) {
-       this.filledForm = null;
-       this.filling=false;
-    //  }
-    },
-    computeScore: function() {
-      var sc = 0;
-      var label = '';
-      for(var i=0;i<this.filledForm.questions.length;i++) {
-        var tmp = this.filledForm.questions[i];
-        sc+=tmp.score[tmp.answer];
+      this.filledForm = null;
+      this.filling=false;
+      if(this.document && this.document.questions) {
+        this.$.getForm.url = "../api/people/"+     
+          this.owner.id+"/forms?"+
+          "filter[fields][createdDate]=true&"+
+          "filter[fields][id]=true&"+
+          "filter[fields][result]=true";
+        this.$.getForm.go();
       }
-      if(sc<=4) {
-        label = "กลุ่มที่ 3 ต้องการความช่วยเหลือ";
-      } else {
-        if(sc<=11) {
-          label = "กลุ่มที่ 2 ช่วยเหลือตนเองได้บ้าง";
-        } else {
-          label = "กลุ่มที่ 1 ช่วยเหลือตนเองได้";
+    },
+    formLoaded: function() {
+      var docs = this.$.getForm.response;
+      if(this.document.questions) {
+        for(var i=0;i<this.document.questions.length;i++) {
+          var question = this.document.questions[i];
+          var doc_id = question.options[question.answer].id;
+          for(var j=0;j<docs.length;j++) {
+            if(docs[j].id == doc_id) {
+              question.result = {
+                  label: docs[j].result.label,
+                  date: new Date(docs[j].createdDate)
+              };
+              break;
+            }
+          }
         }
       }
-      this.document['result'] = {score:sc, label:label};
+      
+    },
+    computeScore: function() {
     }
   });
 </script>
