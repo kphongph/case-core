@@ -3,12 +3,11 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/core-icon/core-icon.html">
 <link rel="import" href="../../bower_components/core-selector/core-selector.html">
-<link rel="import" href="../../bower_components/core-animated-pages/core-animated-pages.html">
 <link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
-<link rel="import" href="../../bower_components/core-toolbar/core-toolbar.html">
-<link rel="import" href="../../bower_components/case-form/case-form.html">
+
 
 <link rel="import" href="ltc-form-card-toolbar.html">
+<link rel="import" href="ltc-form-subform.html">
 
 <polymer-element name="ltc-form-card-form10" attributes="form"> 
 
@@ -43,6 +42,9 @@
       background-color: #03A9F4;
       color: #fff;
     }
+    ltc-form-subform {
+      margin-bottom:5px;
+    }
     .review {
       padding:5px;
       margin:5px;
@@ -67,43 +69,93 @@
         <ltc-form-card-toolbar 
            id="formToolbar"
            form="{{form}}" 
-           document="{{document}}" 
+           deletedisabled
+           document="{{document}}"
            active="{{active}}">
         </ltc-form-card-toolbar>
       </div>
-   
-      <div hidden?="{{!active}}" layout vertical>
-        <core-selector selected="{{selected}}">
-          <div name="result">
-            <div class="result" hidden?="{{!document.result}}">
-              {{document.result.label}}
+      <div hidden?="{{!active}}">
+      <core-selector selected="{{selected}}">
+        <div name="result">
+          <div class="review" layout vertical>
+            <div>ด้านสังคม</div>
+            <div class="reviewAnswer">
+              {{document.form12.result}}
             </div>
-            <template repeat="{{model in document.questions}}">
-              <div layout vertical class="review">
-                <div>
-                  {{model.question}}
-                </div>
-                <div class="reviewAnswer">
-                  <core-selector id="reviewAnswer" selected="{{model.type}}">
-                    <div name="single-select">
-                     <span hidden?="{{!model.options[model.answer].label.date}}">
-                     {{model.options[model.answer].label.date | date('yyyy-MM-dd HH:mm')}} 
-                     --
-                     </span> 
-                     {{model.options[model.answer].label.text}} 
-                    </div>
-                  </core-selector>
-                </div>
-              </div>
-            </template>
           </div>
-          <div name="form">
-            <case-form id="caseForm" 
-              form="{{jsonForm}}"
-              filled="{{filledForm}}">
-            </case-form>
+          <div class="review" layout vertical>
+            <div>ด้านความสามารถในการทำกิจวัตรประจำวัน</div>
+            <div class="reviewAnswer">
+              {{document.form13.result}}
+            </div>
           </div>
-        </core-selector>
+          <div class="review" layout vertical>
+            <div>ด้านสภาพสมอง</div>
+            <div class="reviewAnswer">
+              {{document.form14.result}}
+            </div>
+          </div>
+          <div class="review" layout vertical>
+            <div>ด้านภาวะการกลืนลำบาก</div>
+            <div class="reviewAnswer">
+              {{document.form15.result}}
+            </div>
+          </div>
+          <div class="review" layout vertical>
+            <div>ด้านภาวะซิมเศร้า</div>
+            <div class="reviewAnswer">
+              {{document.form16.result}}
+            </div>
+          </div>
+        </div>
+   
+        <div name="form">
+          <div layout vertical>
+            <div>
+              <ltc-form-subform 
+                json="elements/forms/form11.json" 
+                document="{{document.form11}}"
+                form="{{form11}}">
+              </ltc-form-subform>
+            </div>
+            <div>
+              <ltc-form-subform 
+                json="elements/forms/form12.json" 
+                document="{{document.form12}}"
+                form="{{form12}}">
+              </ltc-form-subform>
+            </div>
+            <div>
+              <ltc-form-subform 
+                json="elements/forms/form13.json" 
+                document="{{document.form13}}"
+                form="{{form13}}">
+              </ltc-form-subform>
+            </div>
+            <div>
+              <ltc-form-subform 
+                json="elements/forms/form14.json" 
+                document="{{document.form14}}"
+                form="{{form14}}">
+              </ltc-form-subform>
+            </div>
+            <div>
+              <ltc-form-subform 
+                json="elements/forms/form15.json" 
+                document="{{document.form15}}"
+                form="{{form15}}">
+              </ltc-form-subform>
+            </div>
+            <div>
+              <ltc-form-subform 
+                json="elements/forms/form16.json" 
+                document="{{document.form16}}"
+                form="{{form16}}">
+              </ltc-form-subform>
+            </div>
+          </div>
+        </div>
+      </core-selector>
       </div>
     </div>
   </paper-shadow>
@@ -113,9 +165,17 @@
   Polymer('ltc-form-card-form10', {
     active : false,
     selected:'result',
+    form:null,
     filledForm:null,
     eventDelegates : {
       'toggle-form':'toggleForm'
+    },
+    toggleForm : function() {
+      if(this.selected=='result') {
+        this.selected='form';
+      } else {
+        this.selected='result';
+      }
     },
     toggle : function() {
       this.active = !this.active;
@@ -126,75 +186,85 @@
         this.icon='expand-more';
       }
     },
-    documentChanged: function(oldVal, newVal) {
-      if(newVal && newVal.hash) {
-        this.$.caseForm.src = 'elements/forms/'+newVal.hash+'.json';
-        this.getOptions();
-      }
-    },
-    filledFormChanged: function(oldVal, newVal) {
-      if(newVal) {
-        for(var key in newVal) {
-          this.document[key] = JSON.parse(JSON.stringify(newVal[key]));
-        }
+    updateSubForm: function(name,val) {
+      if(val) {
+        this.document[name]=val;
         this.$.formToolbar.updateForm();
-        this.toggleForm();
-        this.filledForm = null;    
       }
     },
-    toggleForm: function() {
-     if(this.selected=='form') {
-       this.selected='result';
-     } else {
-       this.selected='form';
-     }
+    sumSingleSelect: function(form) {
+      var sc = 0;
+      for(var i=0;i<form.questions.length;i++) {
+        var tmp=form.questions[i];
+        sc+=tmp.score[tmp.answer];
+      }
+      return sc;
     },
-    getOptions: function() {
-      this.$.getOptions.url = "../api/people/"+
-      this.document.ownerId+"/forms?"+
-        "filter[fields][name]=true&"+
-        "filter[fields][id]=true&"+
-        "filter[fields][result]=true&"+
-        "filter[fields][updatedDate]=true&"+
-        "filter[fields][createdDate]=true";
-      this.$.getOptions.go();
+    form11Changed: function(oldVal, newVal) {
+      this.updateSubForm('form11', newVal);
     },
-    jsonFormChanged: function(oldVal, newVal) {
+    form12Changed: function(oldVal, newVal) {
       if(newVal) {
-        this.getOptions();
+        var sc = this.sumSingleSelect(newVal);
+        if(sc==0) {
+          label = "กลุ่มที่ 2 ช่วยเหลือตนเองได้บ้าง";
+        } else {
+          label = "กลุ่มที่ 3 ต้องการความช่วยเหลือ";
+        }
+        newVal.result = label;
+        this.updateSubForm('form12', newVal);
       }
     },
-    optionsLoaded:function() {
-      var response = this.$.getOptions.response;
-      if(!response) return;
-      var tmpForm = this.jsonForm;
-      for(var i=0;i<tmpForm.questions.length;i++) {
-        var question = tmpForm.questions[i];
-        question.options =[];
-        for(var j=0;j<response.length;j++) {
-          if(question.question == response[j].name) {
-            var obj = {};
-            obj['label']= new Date(response[j].updatedDate);
-            obj['id']=response[j].id;
-            question.options.push(obj);
-          }
+    form13Changed: function(oldVal, newVal) {
+      if(newVal) {
+        var sc = this.sumSingleSelect(newVal);
+        if(sc<=4) {
+          label = "กลุ่มที่ 3 ต้องการความช่วยเหลือ";
+        } else {
+          label = "กลุ่มที่ 2 ช่วยเหลือตนเองได้บ้าง";
         }
+        newVal.result = label;
+        this.updateSubForm('form13', newVal);
       }
-      if(this.document && this.document.questions) {
-        for(var i=0;i<this.document.questions.length;i++) {
-          var question = this.document.questions[i];
-          if('answer' in question) {
-            var answer_id = question.options[question.answer].id;
-            for(var j=0;j<response.length;j++) {
-              if(answer_id == response[j].id) {
-                question.options[question.answer]['label'] = {
-                  text:response[j].result.label,
-                  date:response[j].updatedDate}
-                break;
-              }
-            }
-          }
+    },
+    form14Changed: function(oldVal, newVal) {
+      if(newVal) {
+        var sc = this.sumSingleSelect(newVal);
+        if(sc<=14) {
+          label = "กลุ่มที่ 3 ต้องการความช่วยเหลือ";
+        } else {
+          label = "กลุ่มที่ 2 ช่วยเหลือตนเองได้บ้าง";
         }
+        newVal.result = label;
+        this.updateSubForm('form14', newVal);
+      }
+    },
+    form15Changed: function(oldVal, newVal) {
+      if(newVal) {
+        var sc=0;
+        for(var i=0;i<newVal.questions.length;i++) {
+          var tmp = newVal.questions[i];
+          sc+=tmp.answer.length;
+        }
+        if(sc > 0) {
+          label = "กลุ่มที่ 3 ต้องการความช่วยเหลือ";
+        } else {
+          label = "กลุ่มที่ 2 ช่วยเหลือตนเองได้บ้าง";
+        }
+        newVal.result = label;
+        this.updateSubForm('form15', newVal);
+      }
+    },
+    form16Changed: function(oldVal, newVal) {
+      if(newVal) {
+        var sc = this.sumSingleSelect(newVal);
+        if(sc<=6) {
+          label = "กลุ่มที่ 2 ช่วยเหลือตนเองได้บ้าง";
+        } else {
+          label = "กลุ่มที่ 3 ต้องการความช่วยเหลือ";
+        }
+        newVal.result = label;
+        this.updateSubForm('form16', newVal);
       }
     }
   });

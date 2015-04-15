@@ -10,7 +10,8 @@
 
 <link rel="import" href="ltc-form-datasource.html">
 
-<polymer-element name="ltc-form-card-toolbar" attributes="form active document"> 
+<polymer-element name="ltc-form-card-toolbar" 
+   attributes="form active document formdisabled deletedisabled"> 
 
 <template>
   <style>
@@ -24,18 +25,20 @@
       document="{{document}}">
   </ltc-form-datasource>
 
-  <div layout horizontal justified center>
-    <div flex>
-      {{form.updatedDate | date('yyyy-MM-dd HH:mm')}}
-    </div> 
-    <div flex four>{{form.name}}</div> 
-    <div flex>
+  <div layout horizontal center end-justified>
+    <div layout vertical flex>
+      <div>
+        {{form.updatedDate | date('yyyy-MM-dd HH:mm')}}
+      </div> 
+      <div>{{form.name}}</div> 
+    </div>
+    <div>
       <paper-icon-button icon="{{icon}}" on-tap="{{toggle}}">
       </paper-icon-button>
-      <paper-icon-button hidden?="{{!active}}"
+      <paper-icon-button hidden?="{{!active || formdisabled}}"
         icon="assignment" on-tap="{{toggleForm}}">
       </paper-icon-button>
-      <paper-icon-button hidden?="{{!active}}"
+      <paper-icon-button hidden?="{{!active || deletedisabled}}"
        icon="delete" on-tap="{{deleteForm}}">
       </paper-icon-button>
     </div>
@@ -47,6 +50,8 @@
   Polymer('ltc-form-card-toolbar', {
     active : false,
     icon:'expand-more',
+    deletedisabled:false,
+    formdisabled:false,
     selected:'result',
     filledForm:null,
     documentChanged: function(oldVal, newVal) {

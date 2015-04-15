@@ -109,17 +109,42 @@ core-submenu::shadow #submenu {
     </div>
     <div>
       <template repeat="{{ajaxForms | orderBy('-updatedDate')}}">
-        <core-selector id="formViews" notap selected="{{hash}}">
-        <ltc-form-card-form10 name="form10" form="{{}}"></ltc-form-card-form10>
-        <ltc-form-card-form11 name="form11" form="{{}}"></ltc-form-card-form11>
-        <ltc-form-card-form12 name="form12" form="{{}}"></ltc-form-card-form12>
-        <ltc-form-card-form13 name="form13" form="{{}}"></ltc-form-card-form13>
-        <ltc-form-card-form14 name="form14" form="{{}}"></ltc-form-card-form14>
-        <ltc-form-card-form15 name="form15" form="{{}}"></ltc-form-card-form15>
-        <ltc-form-card-form16 name="form16" form="{{}}"></ltc-form-card-form16>
-        <ltc-form-card-form21 name="form21" form="{{}}"></ltc-form-card-form21>
-        <ltc-form-card-form33 name="form33" form="{{}}"></ltc-form-card-form33>
-        </core-selector>
+        <template if="{{hash == 'form10'}}">
+          <ltc-form-card-form10 form="{{}}">
+          </ltc-form-card-form10>
+        </template>
+        <template if="{{hash == 'form11'}}">
+          <ltc-form-card-form11 form="{{}}">
+          </ltc-form-card-form11>
+        </template>
+        <template if="{{hash == 'form12'}}">
+          <ltc-form-card-form12 form="{{}}">
+          </ltc-form-card-form12>
+        </template>
+        <template if="{{hash == 'form13'}}">
+          <ltc-form-card-form13 form="{{}}">
+          </ltc-form-card-form13>
+        </template>
+        <template if="{{hash == 'form14'}}">
+          <ltc-form-card-form14 form="{{}}">
+          </ltc-form-card-form14>
+        </template>
+        <template if="{{hash == 'form15'}}">
+          <ltc-form-card-form15 form="{{}}">
+          </ltc-form-card-form15>
+        </template>
+        <template if="{{hash == 'form16'}}">
+          <ltc-form-card-form16 form="{{}}">
+          </ltc-form-card-form16>
+        </template>
+        <template if="{{hash == 'form21'}}">
+          <ltc-form-card-form21 form="{{}}">
+          </ltc-form-card-form21>
+        </template>
+        <template if="{{hash == 'form33'}}">
+          <ltc-form-card-form33 form="{{}}">
+          </ltc-form-card-form33>
+        </template>
       </template>
     </div>
   </div>
@@ -136,12 +161,6 @@ core-submenu::shadow #submenu {
     formList: [
       {hash:'form33', name:'แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ'},
       {hash:'form10', name:'แบบประเมินผู้สูงอายุที่ต้องได้รับการดูแลระยะยาว'},
-      {hash:'form11', name:'ข้อมูลเบื้องต้นของผู้สูงอายุ'},
-      {hash:'form12', name:'แบบประเมินด้านสังคม'},
-      {hash:'form13', name:'แบบประเมินความสามารถในการทำกิจวัตรประจำวัน'},
-      {hash:'form14', name:'แบบประเมินสภาพสมอง'},
-      {hash:'form15', name:'แบบประเมินภาวะกลืนลำบาก'},
-      {hash:'form16', name:'แบบประเมินภาวะซึมเศร้าในช่วง 2 สัปดาห์ที่ผ่านมารวมทั้งวันนี้'},
       {hash:'form21', name:'ความต้องการในการดูแลทางการแพทย์'}
     ],
     backAction: function() {
