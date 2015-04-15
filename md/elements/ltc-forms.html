@@ -1,29 +1,24 @@
-<link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 
 <link rel="import" href="../bower_components/core-icon/core-icon.html">
 <link rel="import" href="../bower_components/core-menu/core-menu.html">
-<link rel="import" href="../bower_components/core-menu/core-submenu.html">
-<link rel="import" href="../bower_components/core-selector/core-selector.html">
 <link rel="import" href="../bower_components/core-item/core-item.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
-<link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
 
-<link rel="import" href="ltc-form-card-form11.html">
-<link rel="import" href="ltc-form-card-form12.html">
-<link rel="import" href="ltc-form-card-form13.html">
-<link rel="import" href="ltc-form-card-form14.html">
-<link rel="import" href="ltc-form-card-form15.html">
-<link rel="import" href="ltc-form-card-form16.html">
-<link rel="import" href="ltc-form-card-form21.html">
-<link rel="import" href="ltc-form-card-form33.html">
-<!--
-<link rel="import" href="ltc-form-card-form10.html">
--->
+<link rel="import" href="forms/ltc-form-card-form11.html">
+<link rel="import" href="forms/ltc-form-card-form12.html">
+<link rel="import" href="forms/ltc-form-card-form13.html">
+<link rel="import" href="forms/ltc-form-card-form14.html">
+<link rel="import" href="forms/ltc-form-card-form15.html">
+<link rel="import" href="forms/ltc-form-card-form16.html">
+<link rel="import" href="forms/ltc-form-card-form21.html">
+<link rel="import" href="forms/ltc-form-card-form33.html">
+<link rel="import" href="forms/ltc-form-card-form10.html">
 
 <polymer-element name="ltc-forms" attributes="person">
 
@@ -78,6 +73,15 @@ core-submenu::shadow #submenu {
     response="{{ajaxForms}}"> 
   </core-ajax>
 
+  <core-ajax
+    id="insertForm"
+    handleAs="json"
+    method="POST"
+    url="../api/people/{{person.id}}/forms"
+    contentType="application/json"
+    on-core-response="{{updateFormList}}">
+  </core-ajax>
+
   <core-toolbar>
     <div horizontal layout center>
       <div>
@@ -90,57 +94,35 @@ core-submenu::shadow #submenu {
     </div>
   </core-toolbar>
 
-  <core-animated-pages selected="{{selected}}">
-    <div name="menu">
-      <div layout vertical>
+  <div layout vertical>
+    <div>
+      <paper-menu-button>
+        <paper-icon-button icon="add">เพิ่มแบบประเมิน</paper-icon-button>
+        <paper-dropdown class="dropdown">
+          <core-menu class="menu" selected="{{createForm}}">
+            <template repeat="{{form in formList}}">
+              <paper-item name="{{form.hash}}">{{form.name}}</paper-item>
+            </template>
+          </core-menu>
+        </paper-dropdown>
+      </paper-menu-button>
+    </div>
+    <div>
       <template repeat="{{ajaxForms | orderBy('-updatedDate')}}">
         <core-selector id="formViews" notap selected="{{hash}}">
-          <!--
-          <ltc-form-card-form10 name="form10" form="{{}}"></ltc-form-card-form10>
-          -->
-          <ltc-form-card-form11 name="form11" form="{{}}"></ltc-form-card-form11>
-          <ltc-form-card-form12 name="form12" form="{{}}"></ltc-form-card-form12>
-          <ltc-form-card-form13 name="form13" form="{{}}"></ltc-form-card-form13>
-          <ltc-form-card-form14 name="form14" form="{{}}"></ltc-form-card-form14>
-          <ltc-form-card-form15 name="form15" form="{{}}"></ltc-form-card-form15>
-          <ltc-form-card-form16 name="form16" form="{{}}"></ltc-form-card-form16>
-          <ltc-form-card-form21 name="form21" form="{{}}"></ltc-form-card-form21>
-          <ltc-form-card-form33 name="form33" form="{{}}"></ltc-form-card-form33>
+        <ltc-form-card-form10 name="form10" form="{{}}"></ltc-form-card-form10>
+        <ltc-form-card-form11 name="form11" form="{{}}"></ltc-form-card-form11>
+        <ltc-form-card-form12 name="form12" form="{{}}"></ltc-form-card-form12>
+        <ltc-form-card-form13 name="form13" form="{{}}"></ltc-form-card-form13>
+        <ltc-form-card-form14 name="form14" form="{{}}"></ltc-form-card-form14>
+        <ltc-form-card-form15 name="form15" form="{{}}"></ltc-form-card-form15>
+        <ltc-form-card-form16 name="form16" form="{{}}"></ltc-form-card-form16>
+        <ltc-form-card-form21 name="form21" form="{{}}"></ltc-form-card-form21>
+        <ltc-form-card-form33 name="form33" form="{{}}"></ltc-form-card-form33>
         </core-selector>
       </template>
-      </div>
     </div>
-    <div name="formList" class="formList">
-      <div layout vertical>
-        <div>
-          {{formType}}
-          <paper-spinner class="blue" active?="{{getFormsLoading}}">
-          </paper-spinner>
-        </div>
-        <div>
-            <core-menu selected="{{selectedFormId}}">
-              <template repeat="{{doc in ajaxForms}}">
-                <core-item name="{{doc.id}}" 
-                  label="{{doc.createdDate | date}}">
-                </core-item>
-              </template>
-            </core-menu>
-        </div>
-        <div>
-          <template if="{{formType}}">
-            <paper-button raised on-tap="{{createForm}}">
-              สร้างแบบประเมินใหม่
-            </paper-button>
-          </template>
-        </div>
-      </div>
-    </div>
-    <div name="formPanel">
-      <core-selector id="formViews" notap 
-        selected="{{selectedForm.hash}}">
-      </core-selector>
-    </div>
-  </core-animated-pages>
+  </div>
   
 </template>
 
@@ -149,9 +131,8 @@ core-submenu::shadow #submenu {
     loading:false,
     selected: 'menu',
     eventDelegates: {
-      'form-deleted':'showFormList'
+      'form-deleted':'updateFormList'
     },
-     
     formList: [
       {hash:'form33', name:'แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ'},
       {hash:'form10', name:'แบบประเมินผู้สูงอายุที่ต้องได้รับการดูแลระยะยาว'},
@@ -164,85 +145,36 @@ core-submenu::shadow #submenu {
       {hash:'form21', name:'ความต้องการในการดูแลทางการแพทย์'}
     ],
     backAction: function() {
-      if(this.selected == "menu") {
-        this.fire('person');
-      } else {
-        if(this.selected == "formPanel") {
-          // trick form type changed
-          this.showFormList();
-        } else {
-          this.selected="menu";
-          this.formType = null;
-        }
-      }
-    },
-    showFormList : function() {
-      this.selected="formList";
-      this.selectedFormId = null;
-      this.updateFormList();
-    },
-    date: function(val) {
-      return new Date(val);
+      this.fire('person');
     },
     updateFormList : function() {
       var query = "../api/people/"+this.person.id+"/forms";
       query+= "?filter[fields][id]=true";
-      query+= "&filter[where][name]="+this.formType;
+      query+= "&filter[fields][hash]=true";
+      query+= "&filter[fields][updatedDate]=true";
       query+= "&filter[fields][name]=true";
       query+= "&filter[fields][createdDate]=true";
       this.$.getForms.url = query;
       this.$.getForms.go();
     },
-    formTypeChanged : function(oldVal, newVal) {
-      if(newVal && this.person) {
-        var query = "../api/people/"+this.person.id+"/forms";
-        query+= "?filter[fields][id]=true";
-        query+= "&filter[where][name]="+newVal;
-        query+= "&filter[fields][name]=true";
-        query+= "&filter[fields][createdDate]=true";
-        this.$.getForms.url = query;
-        this.selected="formList";
-        this.$.getForms.go();
-      }
-    },
     personChanged: function(oldVal, newVal) {
       if(newVal) {
-        var query = "../api/people/"+newVal.id+"/forms";
-        query+= "?filter[fields][id]=true";
-        query+= "&filter[fields][name]=true";
-        query+= "&filter[fields][hash]=true";
-        query+= "&filter[fields][createdDate]=true";
-        query+= "&filter[fields][updatedDate]=true";
-        this.$.getForms.url = query;
-        this.$.getForms.go();
+        this.updateFormList();
       }
     },
-    selectedFormIdChanged: function(oldVal, newVal) {
-     if(newVal && this.ajaxForms) {
-       for(var i=0;i<this.ajaxForms.length;i++) {
-         if(newVal == this.ajaxForms[i].id) {
-           this.selectedForm = this.ajaxForms[i];
-           this.selectedForm['hash']=null;
-           for(var j=0;j<this.formList.length;j++) {
-             if(this.formList[j].name == this.selectedForm.name) {
-               this.selectedForm['hash']=this.formList[j].hash;
-               this.selected="formPanel";
-               break;
-             }
-           }
-           break;
-         }
-       }
-     }
-    },
-    createForm : function() {
-      if(this.formType) {
+    createFormChanged : function(oldVal, newVal) {
+      if(newVal) {
+        var tmp = {};
+        console.log(newVal);
         for(var i=0;i<this.formList.length;i++) {
-          if(this.formList[i].name == this.formType) {
-            this.selectedForm = this.formList[i];
-            this.selected="formPanel";
+          if(newVal == this.formList[i].hash) {
+            tmp = this.formList[i];
             break;
           }
+        }
+        if(tmp.name) {
+          this.$.insertForm.body = JSON.stringify(tmp);
+          this.$.insertForm.go();
         }
       }
     }

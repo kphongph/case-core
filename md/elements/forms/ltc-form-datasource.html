@@ -1,0 +1,53 @@
+<link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
+
+<polymer-element name="ltc-form-datasource" attributes="formid document loading"> 
+
+<template>
+  <style>
+    :host {
+      display:block;
+    }
+  </style>
+
+  <core-ajax 
+    id="getForm"
+    handleAs="json" 
+    url="../api/formtemplates/{{formid}}"
+    loading="{{loading}}"
+    response="{{document}}"> 
+  </core-ajax>
+
+  <core-ajax 
+    id="updateForm"
+    handleAs="json" 
+    method="PUT"
+    url="../api/formtemplates/{{formid}}"
+    contentType="application/json"
+    body="{{document}}"
+    response="{{document}}"> 
+  </core-ajax>
+
+  <core-ajax 
+    id="deleteForm"
+    method="DELETE"
+    url="../api/formtemplates/{{formid}}"
+    contentType="application/json"
+    on-core-response="{{formDeleted}}"> 
+  </core-ajax>
+
+</template>
+
+<script>
+  Polymer('ltc-form-datasource', {
+    getForm: function() {
+      this.$.getForm.go();
+    },
+    deleteForm: function() {
+      this.$.deleteForm.go();
+    },
+    formDeleted:function() {
+     this.fire('form-deleted');
+    }
+  });
+</script>
+</polymer>

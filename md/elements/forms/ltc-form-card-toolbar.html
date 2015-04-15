@@ -1,0 +1,70 @@
+<link rel="import" href="../../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../../bower_components/core-selector/core-selector.html">
+<link rel="import" href="../../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../../bower_components/case-form/case-form.html">
+
+<link rel="import" href="ltc-form-datasource.html">
+
+<polymer-element name="ltc-form-card-toolbar" attributes="form active document"> 
+
+<template>
+  <style>
+    :host {
+      display:block;
+    }
+  </style>
+
+  <ltc-form-datasource id="datasource" 
+      formid="{{form.id}}" 
+      document="{{document}}">
+  </ltc-form-datasource>
+
+  <div layout horizontal justified center>
+    <div flex>{{form.updatedDate | date('yyyy-MM-dd HH:mm')}}</div> 
+    <div flex four>{{form.name}}</div> 
+    <div flex>
+      <paper-icon-button icon="{{icon}}" on-tap="{{toggle}}">
+      </paper-icon-button>
+      <paper-icon-button hidden?="{{!active}}"
+        icon="assignment" on-tap="{{toggleForm}}">
+      </paper-icon-button>
+      <paper-icon-button hidden?="{{!active}}"
+       icon="delete" on-tap="{{deleteForm}}">
+      </paper-icon-button>
+    </div>
+  </div>
+
+</template>
+
+<script>
+  Polymer('ltc-form-card-toolbar', {
+    active : false,
+    icon:'expand-more',
+    selected:'result',
+    filledForm:null,
+    toggle : function() {
+      this.active = !this.active;
+      if(this.active) {
+        this.$.datasource.getForm();
+        this.icon='expand-less';
+      } else {
+        this.icon='expand-more';
+      }
+    },
+    toggleForm: function() {
+     this.fire('toggle-form');
+    },
+    deleteForm: function() {
+      this.$.datasource.deleteForm();
+    },
+    formDeleted:function() {
+     this.fire('form-deleted');
+    }
+  });
+</script>
+</polymer>

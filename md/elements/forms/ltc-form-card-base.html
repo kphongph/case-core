@@ -1,14 +1,16 @@
-<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/core-icon/core-icon.html">
-<link rel="import" href="../bower_components/core-selector/core-selector.html">
-<link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
-<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
-<link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
-<link rel="import" href="../bower_components/case-form/case-form.html">
+<link rel="import" href="../../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../../bower_components/core-selector/core-selector.html">
+<link rel="import" href="../../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../../bower_components/case-form/case-form.html">
 
-<polymer-element name="ltc-form-card-base" attributes="form">
+<link rel="import" href="ltc-form-card-toolbar.html">
+
+<polymer-element name="ltc-form-card-base" attributes="form"> 
 
 <template>
   <style>
@@ -17,6 +19,10 @@
     }
     core-selector > * {
       display:none;
+    }
+    paper-icon-button { 
+      height:16px;
+      width:16px;
     }
     core-selector > .core-selected {
       display:block;
@@ -28,6 +34,7 @@
     #panel {
       opacity:0.6;
       padding:5px;
+      padding-left:10px;
       margin:5px;
     }
     .result {
@@ -46,36 +53,14 @@
     }
   </style>
 
-  <core-ajax 
-    id="getForm"
-    handleAs="json" 
-    loading="{{getFormLoading}}"
-    response="{{document}}"> 
-  </core-ajax>
 
-  <core-ajax 
-    id="updateForm"
-    handleAs="json" 
-    method="PUT"
-    url="../api/formtemplates/{{document.id}}"
-    contentType="application/json"
-    response="{{document}}"> 
-  </core-ajax>
-  
   <paper-shadow id="panel" z="1" class="{{ {active:active} | tokenList}}">
     <div layout vertical>
-      <div layout horizontal justified center>
-        <div flex>{{form.updatedDate | date('yyyy-MM-dd')}}</div> 
-        <div flex four>{{form.name}}</div> 
-        <div flex>
-          <paper-icon-button icon="{{icon}}" on-tap="{{toggle}}">
-          </paper-icon-button>
-          <paper-icon-button hidden?="{{!active}}"
-            icon="assignment" on-tap="{{toggleForm}}">
-          </paper-icon-button>
-        </div>
-        
+      <div>
+        <ltc-form-card-toolbar form="{{form}}" document="{{document}}" active="{{active}}">
+        </ltc-form-card-toolbar>
       </div>
+   
       <div hidden?="{{!active}}" layout vertical>
         <core-selector selected="{{selected}}">
           <div name="result">
@@ -116,6 +101,9 @@
     icon:'expand-more',
     selected:'result',
     filledForm:null,
+    eventDelegates : {
+      'toggle-form':'toggleForm'
+    },
     toggle : function() {
       this.active = !this.active;
       if(this.active) {
@@ -151,9 +139,16 @@
        this.selected='form';
      }
     },
+    deleteForm: function() {
+      this.$.deleteForm.go();
+    },
+    formDeleted:function() {
+     this.fire('form-deleted');
+    },
     computeScore : function(form) {
     },
     jsonLoaded : function() {
+      console.log('jsonLoaded');
     }
   });
 </script>
