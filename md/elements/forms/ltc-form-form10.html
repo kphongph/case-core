@@ -61,14 +61,6 @@
     on-core-response="{{optionsLoaded}}"> 
   </core-ajax>
 
-  <core-ajax 
-    id="getForm"
-    handleAs="json" 
-    loading="{{loading}}"
-    on-core-response="{{formLoaded}}"> 
-  </core-ajax>
-  
-
   <paper-shadow z="1" class="card">
     <div layout vertical>
       <div class="formLabel">
@@ -134,7 +126,8 @@
           this.owner.id+"/forms?"+
           "filter[fields][name]=true&"+
           "filter[fields][id]=true&"+
-          "filter[fields][createdDate]=true";
+          "filter[fields][updatedDate]=true&";
+          "filter[fields][result]=true";
         this.$.getOptions.go();
       }
     },
@@ -150,6 +143,22 @@
             obj['label']= new Date(response[j].createdDate);
             obj['id']=response[j].id;
             question.options.push(obj);
+          }
+        }
+      }
+      if(this.document && this.document.questions) {
+        console.log('assign result');
+        for(var i=0;i<this.document.questions.length;i++) {   
+          var question = this.document.questions[i];
+          if(question.answer) {
+            var answer_id = question.options[question.answer].id;
+            for(var j=0;j<response.length;j++) {
+              if(answer_id == response[j].id) {
+                question.options[question.answer]['label'] = 
+                  response[j].result.label;
+                break;
+              }
+            }
           }
         }
       }
@@ -175,27 +184,6 @@
           "filter[fields][result]=true";
         this.$.getForm.go();
       }
-    },
-    formLoaded: function() {
-      var docs = this.$.getForm.response;
-      if(this.document.questions) {
-        for(var i=0;i<this.document.questions.length;i++) {
-          var question = this.document.questions[i];
-          var doc_id = question.options[question.answer].id;
-          for(var j=0;j<docs.length;j++) {
-            if(docs[j].id == doc_id) {
-              question.result = {
-                  label: docs[j].result.label,
-                  date: new Date(docs[j].createdDate)
-              };
-              break;
-            }
-          }
-        }
-      }
-      
-    },
-    computeScore: function() {
     }
   });
 </script>

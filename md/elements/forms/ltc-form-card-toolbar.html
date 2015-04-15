@@ -25,7 +25,9 @@
   </ltc-form-datasource>
 
   <div layout horizontal justified center>
-    <div flex>{{form.updatedDate | date('yyyy-MM-dd HH:mm')}}</div> 
+    <div flex>
+      {{form.updatedDate | date('yyyy-MM-dd HH:mm')}}
+    </div> 
     <div flex four>{{form.name}}</div> 
     <div flex>
       <paper-icon-button icon="{{icon}}" on-tap="{{toggle}}">
@@ -47,6 +49,14 @@
     icon:'expand-more',
     selected:'result',
     filledForm:null,
+    documentChanged: function(oldVal, newVal) {
+      if(!newVal) return;
+      for(var key in this.form) {
+        if(this.document[key]) {
+          this.form[key] = this.document[key];
+        }
+      }
+    },
     toggle : function() {
       this.active = !this.active;
       if(this.active) {
@@ -59,11 +69,11 @@
     toggleForm: function() {
      this.fire('toggle-form');
     },
+    updateForm: function() {
+      this.$.datasource.updateForm();
+    },
     deleteForm: function() {
       this.$.datasource.deleteForm();
-    },
-    formDeleted:function() {
-     this.fire('form-deleted');
     }
   });
 </script>

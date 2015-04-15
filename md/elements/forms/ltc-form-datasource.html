@@ -23,7 +23,6 @@
     method="PUT"
     url="../api/formtemplates/{{formid}}"
     contentType="application/json"
-    body="{{document}}"
     response="{{document}}"> 
   </core-ajax>
 
@@ -44,6 +43,10 @@
     },
     deleteForm: function() {
       this.$.deleteForm.go();
+    },
+    updateForm: function() {
+      this.$.updateForm.body = JSON.stringify(this.document);
+      this.$.updateForm.go();
     },
     formDeleted:function() {
      this.fire('form-deleted');

@@ -57,7 +57,11 @@
   <paper-shadow id="panel" z="1" class="{{ {active:active} | tokenList}}">
     <div layout vertical>
       <div>
-        <ltc-form-card-toolbar form="{{form}}" document="{{document}}" active="{{active}}">
+        <ltc-form-card-toolbar 
+           id="formToolbar"
+           form="{{form}}" 
+           document="{{document}}" 
+           active="{{active}}">
         </ltc-form-card-toolbar>
       </div>
    
@@ -117,7 +121,6 @@
     documentChanged: function(oldVal, newVal) {
       if(newVal && newVal.hash) {
         this.$.caseForm.src = 'elements/forms/'+newVal.hash+'.json';
-        this.jsonLoaded();
       }
     },
     filledFormChanged: function(oldVal, newVal) {
@@ -126,8 +129,7 @@
         for(var key in newVal) {
           this.document[key] = JSON.parse(JSON.stringify(newVal[key]));
         }
-        this.$.updateForm.body = JSON.stringify(this.document);
-        this.$.updateForm.go();
+        this.$.formToolbar.updateForm();
         this.toggleForm();
         this.filledForm = null;    
       }
@@ -139,16 +141,7 @@
        this.selected='form';
      }
     },
-    deleteForm: function() {
-      this.$.deleteForm.go();
-    },
-    formDeleted:function() {
-     this.fire('form-deleted');
-    },
     computeScore : function(form) {
-    },
-    jsonLoaded : function() {
-      console.log('jsonLoaded');
     }
   });
 </script>
