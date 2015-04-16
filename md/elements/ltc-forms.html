@@ -97,7 +97,7 @@ core-submenu::shadow #submenu {
   <div layout vertical>
     <div>
       <paper-menu-button>
-        <paper-icon-button icon="add">เพิ่มแบบประเมิน</paper-icon-button>
+        <paper-icon-button icon="add"></paper-icon-button>
         <paper-dropdown class="dropdown">
           <core-menu class="menu" selected="{{createForm}}">
             <template repeat="{{form in formList}}">
@@ -112,30 +112,6 @@ core-submenu::shadow #submenu {
         <template if="{{hash == 'form10'}}">
           <ltc-form-card-form10 form="{{}}">
           </ltc-form-card-form10>
-        </template>
-        <template if="{{hash == 'form11'}}">
-          <ltc-form-card-form11 form="{{}}">
-          </ltc-form-card-form11>
-        </template>
-        <template if="{{hash == 'form12'}}">
-          <ltc-form-card-form12 form="{{}}">
-          </ltc-form-card-form12>
-        </template>
-        <template if="{{hash == 'form13'}}">
-          <ltc-form-card-form13 form="{{}}">
-          </ltc-form-card-form13>
-        </template>
-        <template if="{{hash == 'form14'}}">
-          <ltc-form-card-form14 form="{{}}">
-          </ltc-form-card-form14>
-        </template>
-        <template if="{{hash == 'form15'}}">
-          <ltc-form-card-form15 form="{{}}">
-          </ltc-form-card-form15>
-        </template>
-        <template if="{{hash == 'form16'}}">
-          <ltc-form-card-form16 form="{{}}">
-          </ltc-form-card-form16>
         </template>
         <template if="{{hash == 'form21'}}">
           <ltc-form-card-form21 form="{{}}">
