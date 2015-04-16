@@ -48,9 +48,9 @@
   
   <script>
   Polymer('ltc-search-result',{
-    personClick : function () {
-      // console.log(this.data)
+    personClick : function () {      
       this.fire('search-result-tap',  this.data);
+
     }
   });
   </script>

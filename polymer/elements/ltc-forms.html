@@ -1,0 +1,203 @@
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+
+<link rel="import" href="../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/core-item/core-item.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+
+<link rel="import" href="forms/ltc-form-card-form11.html">
+<link rel="import" href="forms/ltc-form-card-form12.html">
+<link rel="import" href="forms/ltc-form-card-form13.html">
+<link rel="import" href="forms/ltc-form-card-form14.html">
+<link rel="import" href="forms/ltc-form-card-form15.html">
+<link rel="import" href="forms/ltc-form-card-form16.html">
+<link rel="import" href="forms/ltc-form-card-form21.html">
+<link rel="import" href="forms/ltc-form-card-form33.html">
+<link rel="import" href="forms/ltc-form-card-form10.html">
+
+<polymer-element name="ltc-forms" attributes="person">
+
+<template>
+  <style>
+
+:host {
+  display:block;
+  overflow:auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.formList {
+  padding:10px;
+  margin:10px;
+}
+
+core-item {
+  padding-left:10px;         
+}
+
+tmp.core-item.core-selected {
+ color: #fff;
+ background-color: #03A9F4;
+}
+
+core-item.core-selected {
+ background-color: #eeeeee;
+}
+
+.selectedType {
+  margin:10px;
+}
+
+core-submenu::shadow #submenu {
+  margin-left: 0px;
+}
+
+#formViews > * {
+  display: none;
+}
+
+#formViews > .core-selected {
+  display: block;
+}
+  </style>
+
+  <core-ajax 
+    id="getForms"
+    handleAs="json" 
+    loading="{{getFormsLoading}}"
+    response="{{ajaxForms}}"> 
+  </core-ajax>
+
+  <core-ajax
+    id="insertForm"
+    handleAs="json"
+    method="POST"
+    url="../api/people/{{person.id}}/forms"
+    contentType="application/json"
+    on-core-response="{{updateFormList}}">
+  </core-ajax>
+
+  <core-toolbar>
+    <div horizontal layout center>
+      <div>
+        <paper-icon-button icon="arrow-back" on-tap="{{backAction}}" 
+        </paper-icon-button>
+      </div>
+      <div flex>
+        {{person.CID}} {{person.FirstName}} {{person.LastName}}
+      </div>
+    </div>
+  </core-toolbar>
+
+  <div layout vertical>
+    <div>
+      <paper-menu-button>
+        <paper-icon-button icon="add">เพิ่มแบบประเมิน</paper-icon-button>
+        <paper-dropdown class="dropdown">
+          <core-menu class="menu" selected="{{createForm}}">
+            <template repeat="{{form in formList}}">
+              <paper-item name="{{form.hash}}">{{form.name}}</paper-item>
+            </template>
+          </core-menu>
+        </paper-dropdown>
+      </paper-menu-button>
+    </div>
+    <div>
+      <template repeat="{{ajaxForms | orderBy('-updatedDate')}}">
+        <template if="{{hash == 'form10'}}">
+          <ltc-form-card-form10 form="{{}}">
+          </ltc-form-card-form10>
+        </template>
+        <template if="{{hash == 'form11'}}">
+          <ltc-form-card-form11 form="{{}}">
+          </ltc-form-card-form11>
+        </template>
+        <template if="{{hash == 'form12'}}">
+          <ltc-form-card-form12 form="{{}}">
+          </ltc-form-card-form12>
+        </template>
+        <template if="{{hash == 'form13'}}">
+          <ltc-form-card-form13 form="{{}}">
+          </ltc-form-card-form13>
+        </template>
+        <template if="{{hash == 'form14'}}">
+          <ltc-form-card-form14 form="{{}}">
+          </ltc-form-card-form14>
+        </template>
+        <template if="{{hash == 'form15'}}">
+          <ltc-form-card-form15 form="{{}}">
+          </ltc-form-card-form15>
+        </template>
+        <template if="{{hash == 'form16'}}">
+          <ltc-form-card-form16 form="{{}}">
+          </ltc-form-card-form16>
+        </template>
+        <template if="{{hash == 'form21'}}">
+          <ltc-form-card-form21 form="{{}}">
+          </ltc-form-card-form21>
+        </template>
+        <template if="{{hash == 'form33'}}">
+          <ltc-form-card-form33 form="{{}}">
+          </ltc-form-card-form33>
+        </template>
+      </template>
+    </div>
+  </div>
+  
+</template>
+
+<script>
+  Polymer('ltc-forms', {
+    loading:false,
+    selected: 'menu',
+    eventDelegates: {
+      'form-deleted':'updateFormList'
+    },
+    formList: [
+      {hash:'form33', name:'แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ'},
+      {hash:'form10', name:'แบบประเมินผู้สูงอายุที่ต้องได้รับการดูแลระยะยาว'},
+      {hash:'form21', name:'ความต้องการในการดูแลทางการแพทย์'}
+    ],
+    backAction: function() {
+      this.fire('person');
+    },
+    updateFormList : function() {
+      var query = "../api/people/"+this.person.id+"/forms";
+      query+= "?filter[fields][id]=true";
+      query+= "&filter[fields][hash]=true";
+      query+= "&filter[fields][updatedDate]=true";
+      query+= "&filter[fields][name]=true";
+      query+= "&filter[fields][createdDate]=true";
+      this.$.getForms.url = query;
+      this.$.getForms.go();
+      // console.log('GO' + query);
+    },
+    personChanged: function(oldVal, newVal) {
+      if(newVal) {
+        this.updateFormList();
+      }
+    },
+    createFormChanged : function(oldVal, newVal) {
+      if(newVal) {
+        var tmp = {};
+        console.log(newVal);
+        for(var i=0;i<this.formList.length;i++) {
+          if(newVal == this.formList[i].hash) {
+            tmp = this.formList[i];
+            break;
+          }
+        }
+        if(tmp.name) {
+          this.$.insertForm.body = JSON.stringify(tmp);
+          this.$.insertForm.go();
+        }
+      }
+    }
+  });
+</script>
+</polymer>
