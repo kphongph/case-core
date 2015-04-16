@@ -10,12 +10,6 @@
 <link rel="import" href="../bower_components/core-item/core-item.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 
-<link rel="import" href="forms/ltc-form-card-form11.html">
-<link rel="import" href="forms/ltc-form-card-form12.html">
-<link rel="import" href="forms/ltc-form-card-form13.html">
-<link rel="import" href="forms/ltc-form-card-form14.html">
-<link rel="import" href="forms/ltc-form-card-form15.html">
-<link rel="import" href="forms/ltc-form-card-form16.html">
 <link rel="import" href="forms/ltc-form-card-form21.html">
 <link rel="import" href="forms/ltc-form-card-form33.html">
 <link rel="import" href="forms/ltc-form-card-form10.html">
@@ -32,6 +26,11 @@
 }
 
 .formList {
+  padding:10px;
+  margin:10px;
+}
+
+#panel {
   padding:10px;
   margin:10px;
 }
@@ -65,6 +64,13 @@ core-submenu::shadow #submenu {
   display: block;
 }
   </style>
+
+  <core-ajax
+    id="getParent"
+    handleAs="json"
+    response="{{parentDoc}}">
+  </core-ajax>
+  
 
   <core-ajax 
     id="getForms"
@@ -108,6 +114,21 @@ core-submenu::shadow #submenu {
       </paper-menu-button>
     </div>
     <div>
+      <div hidden?="{{!parentDoc}}" id="panel">
+        {{parentDoc.name}} <br>
+        {{parentDoc.updatedDate | date('yyyy-MM-dd HH:mm')}} <br>
+      <template if="{{formType == 'form10'}}">
+        {{parentDoc.result.label}}
+      </template>
+      <template if="{{formType == 'form21'}}">
+        {{parentDoc.form12.name}} - {{parentDoc.form12.result}} <br>
+        {{parentDoc.form13.name}} - {{parentDoc.form13.result}} <br>
+        {{parentDoc.form14.name}} - {{parentDoc.form14.result}} <br>
+        {{parentDoc.form15.name}} - {{parentDoc.form15.result}} <br>
+        {{parentDoc.form16.name}} - {{parentDoc.form16.result}} 
+      </template>
+      </div>
+
       <template repeat="{{ajaxForms | orderBy('-updatedDate')}}">
         <template if="{{hash == 'form10'}}">
           <ltc-form-card-form10 form="{{}}">
@@ -131,21 +152,67 @@ core-submenu::shadow #submenu {
   Polymer('ltc-forms', {
     loading:false,
     selected: 'menu',
+    stage: 0,
+    formType: 'form33',
+    stack : [],
     eventDelegates: {
-      'form-deleted':'updateFormList'
+      'form-deleted':'updateFormList',
+      'form-selected':'formSelected'
     },
     formList: [
-      {hash:'form33', name:'แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ'},
+      { 
+        hash:'form33', 
+        name:'แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ'
+      },
       {hash:'form10', name:'แบบประเมินผู้สูงอายุที่ต้องได้รับการดูแลระยะยาว'},
       {hash:'form21', name:'ความต้องการในการดูแลทางการแพทย์'}
     ],
     backAction: function() {
-      this.fire('person');
+      if(this.formType == 'form33') {
+        this.fire('person');
+      }
+
+      if(this.stack.length > 1) {
+        var p_id = this.stack.pop();
+        if(this.stack.length > 1) {
+          p_id = this.stack.pop();
+          this.$.getParent.url = "../api/formtemplates/"+p_id;
+          this.$.getParent.go();
+        } else {
+          this.parentDoc = null;
+        }
+      } else {
+        this.parentDoc = null;
+      }
+        
+      if(this.formType == 'form21') {
+        this.formType = 'form10';
+      } else {
+        if(this.formType == 'form10') {
+          this.formType = 'form33';
+          this.parentDoc = null;
+          this.stack = [];
+        }
+      }
+    },
+    formTypeChanged : function() {
+      this.updateFormList();
     },
     updateFormList : function() {
       var query = "../api/people/"+this.person.id+"/forms";
       query+= "?filter[fields][id]=true";
       query+= "&filter[fields][hash]=true";
+      if(this.formType) {
+        query+= "&filter[where][hash]="+this.formType;
+      }
+      if(this.stack.length > 1) {
+        var p_id = this.stack.pop();
+        if(p_id) {
+          query+= "&filter[where][parentId]="+p_id;
+        }
+        this.stack.push(p_id);
+        console.log(this.stack);
+      }
       query+= "&filter[fields][updatedDate]=true";
       query+= "&filter[fields][name]=true";
       query+= "&filter[fields][createdDate]=true";
@@ -160,7 +227,6 @@ core-submenu::shadow #submenu {
     createFormChanged : function(oldVal, newVal) {
       if(newVal) {
         var tmp = {};
-        console.log(newVal);
         for(var i=0;i<this.formList.length;i++) {
           if(newVal == this.formList[i].hash) {
             tmp = this.formList[i];
@@ -172,7 +238,18 @@ core-submenu::shadow #submenu {
           this.$.insertForm.go();
         }
       }
-    }
+    },
+    formSelected: function(event, obj) {
+      for(var i=0;i<this.formList.length-1;i++) {
+        if(obj.hash == this.formList[i].hash) {
+          this.formType = this.formList[i+1].hash;
+          this.$.getParent.url = "../api/formtemplates/"+obj.id;
+          this.$.getParent.go();
+          this.stack.push(obj.id);
+          break;
+        }
+      }
+    },
   });
 </script>
 </polymer>

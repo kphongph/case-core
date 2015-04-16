@@ -18,6 +18,10 @@
     :host {
       display:block;
     }
+
+    #panel:hover {
+      background:#bbb;
+    }
   </style>
 
   <ltc-form-datasource id="datasource" 
@@ -26,7 +30,7 @@
   </ltc-form-datasource>
 
   <div layout horizontal center end-justified>
-    <div layout vertical flex>
+    <div layout vertical flex id="panel" on-tap="{{selectForm}}">
       <div>
         {{form.updatedDate | date('yyyy-MM-dd HH:mm')}}
       </div> 
@@ -79,6 +83,9 @@
     },
     deleteForm: function() {
       this.$.datasource.deleteForm();
+    },
+    selectForm: function() {
+      this.fire('form-selected', {id:this.form.id,hash:this.form.hash});
     }
   });
 </script>
