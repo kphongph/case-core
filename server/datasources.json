@@ -14,7 +14,7 @@
   },
   "caseMongoDs" : {
     "connector": "mongodb",
-    "url":"mongodb://128.199.108.210:27017/casedb"
+    "url":"mongodb://52.74.105.192:27017/casedb_test"
   },
   "aclDs": {
     "connector": "mongodb",
