@@ -1,0 +1,139 @@
+<link rel="import" href="../../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../../bower_components/core-selector/core-selector.html">
+<link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
+
+
+<link rel="import" href="ltc-form-card-toolbar.html">
+<link rel="import" href="ltc-form-subform.html">
+
+<polymer-element name="ltc-form-card-form20" attributes="form"> 
+
+<template>
+  <style>
+    :host {
+      display:block;
+    }
+    core-selector > * {
+      display:none;
+    }
+    paper-icon-button { 
+      height:16px;
+      width:16px;
+    }
+    core-selector > .core-selected {
+      display:block;
+    }
+
+    #panel.active {
+      opacity:1;
+    }
+    #panel {
+      opacity:0.6;
+      padding:5px;
+      padding-left:10px;
+      margin:5px;
+    }
+    .result {
+      padding:5px;
+      marging:5px;
+      background-color: #03A9F4;
+      color: #fff;
+    }
+    ltc-form-subform {
+      margin-bottom:5px;
+    }
+    .review {
+      padding:5px;
+      margin:5px;
+    }
+    .reviewAnswer {
+      background:#eee;
+      padding:5px;
+    }
+  </style>
+
+
+  <paper-shadow id="panel" z="1" class="{{ {active:active} | tokenList}}">
+    <div layout vertical>
+      <div>
+        <ltc-form-card-toolbar 
+           id="formToolbar"
+           form="{{form}}" 
+           document="{{document}}"
+           active="{{active}}">
+        </ltc-form-card-toolbar>
+      </div>
+      <div hidden?="{{!active}}">
+      <core-selector selected="{{selected}}">
+        <div name="result">
+        </div>
+   
+        <div name="form">
+          <div layout vertical>
+            <div>
+              <ltc-form-subform 
+                json="elements/forms/form21.json" 
+                document="{{document.form21}}"
+                loadform="{{selected == 'form'}}"
+                form="{{form21}}">
+              </ltc-form-subform>
+            </div>
+            <div>
+              <ltc-form-subform 
+                json="elements/forms/form22.json" 
+                document="{{document.form22}}"
+                loadform="{{selected == 'form'}}"
+                form="{{form22}}">
+              </ltc-form-subform>
+            </div>
+          </div>
+        </div>
+      </core-selector>
+      </div>
+    </div>
+  </paper-shadow>
+</template>
+
+<script>
+  Polymer('ltc-form-card-form20', {
+    active : false,
+    selected:'result',
+    form:null,
+    filledForm:null,
+    eventDelegates : {
+      'toggle-form':'toggleForm'
+    },
+    toggleForm : function() {
+      if(this.selected=='result') {
+        this.selected='form';
+      } else {
+        this.selected='result';
+      }
+    },
+    toggle : function() {
+      this.active = !this.active;
+      if(this.active) {
+        this.$.formToolbar.getForm();
+        this.icon='expand-less';
+      } else {
+        this.icon='expand-more';
+      }
+    },
+    updateSubForm: function(name,val) {
+      if(val) {
+        this.document[name]=val;
+        this.$.formToolbar.updateForm();
+      }
+    },
+    form21Changed: function(oldVal, newVal) {
+      this.updateSubForm('form21', newVal);
+    },
+    form22Changed: function(oldVal, newVal) {
+      this.updateSubForm('form22', newVal);
+    }
+  });
+</script>
+</polymer>

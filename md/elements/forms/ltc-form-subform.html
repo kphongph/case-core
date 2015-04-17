@@ -8,7 +8,7 @@
 <link rel="import" href="../../bower_components/core-toolbar/core-toolbar.html">
 <link rel="import" href="../../bower_components/case-form/case-form.html">
 
-<polymer-element name="ltc-form-subform" attributes="form json document"> 
+<polymer-element name="ltc-form-subform" attributes="form json document loadform"> 
 
 <template>
   <style>
@@ -71,7 +71,8 @@
     <div hidden?="{{!active}}">
       <core-selector selected="{{selected}}">
         <div name="form">
-          <case-form src="{{json}}" filled="{{form}}" form="{{jsonForm}}">
+          <case-form src="{{json}}" filled="{{form}}" form="{{jsonForm}}" 
+            active?="{{loadform}}">
           </case-form>
         </div>
         <div name="result">

@@ -62,14 +62,12 @@
     on-core-response="{{optionsLoaded}}">
   </core-ajax>
 
-
   <paper-shadow id="panel" z="1" class="{{ {active:active} | tokenList}}">
     <div layout vertical>
       <div>
         <ltc-form-card-toolbar 
            id="formToolbar"
            form="{{form}}" 
-           deletedisabled
            document="{{document}}"
            active="{{active}}">
         </ltc-form-card-toolbar>
@@ -115,6 +113,7 @@
               <ltc-form-subform 
                 json="elements/forms/form11.json" 
                 document="{{document.form11}}"
+                loadform="{{selected == 'form'}}"
                 form="{{form11}}">
               </ltc-form-subform>
             </div>
@@ -122,6 +121,7 @@
               <ltc-form-subform 
                 json="elements/forms/form12.json" 
                 document="{{document.form12}}"
+                loadform="{{selected == 'form'}}"
                 form="{{form12}}">
               </ltc-form-subform>
             </div>
@@ -129,6 +129,7 @@
               <ltc-form-subform 
                 json="elements/forms/form13.json" 
                 document="{{document.form13}}"
+                loadform="{{selected == 'form'}}"
                 form="{{form13}}">
               </ltc-form-subform>
             </div>
@@ -136,6 +137,7 @@
               <ltc-form-subform 
                 json="elements/forms/form14.json" 
                 document="{{document.form14}}"
+                loadform="{{selected == 'form'}}"
                 form="{{form14}}">
               </ltc-form-subform>
             </div>
@@ -143,6 +145,7 @@
               <ltc-form-subform 
                 json="elements/forms/form15.json" 
                 document="{{document.form15}}"
+                loadform="{{selected == 'form'}}"
                 form="{{form15}}">
               </ltc-form-subform>
             </div>
@@ -150,6 +153,7 @@
               <ltc-form-subform 
                 json="elements/forms/form16.json" 
                 document="{{document.form16}}"
+                loadform="{{selected == 'form'}}"
                 form="{{form16}}">
               </ltc-form-subform>
             </div>

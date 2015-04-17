@@ -139,6 +139,8 @@
        this.selected='result';
      } else {
        this.selected='form';
+       console.log('toggleForm');
+       this.$.caseForm.active = true;
      }
     },
     computeScore : function(form) {
