@@ -89,6 +89,22 @@
                 form="{{form22}}">
               </ltc-form-subform>
             </div>
+            <div>
+              <ltc-form-subform 
+                json="elements/forms/form23.json" 
+                document="{{document.form23}}"
+                loadform="{{selected == 'form'}}"
+                form="{{form23}}">
+              </ltc-form-subform>
+            </div>
+            <div>
+              <ltc-form-subform 
+                json="elements/forms/form24.json" 
+                document="{{document.form24}}"
+                loadform="{{selected == 'form'}}"
+                form="{{form24}}">
+              </ltc-form-subform>
+            </div>
           </div>
         </div>
       </core-selector>
@@ -133,6 +149,12 @@
     },
     form22Changed: function(oldVal, newVal) {
       this.updateSubForm('form22', newVal);
+    },
+    form23Changed: function(oldVal, newVal) {
+      this.updateSubForm('form23', newVal);
+    },
+    form24Changed: function(oldVal, newVal) {
+      this.updateSubForm('form24', newVal);
     }
   });
 </script>

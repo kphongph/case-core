@@ -84,6 +84,12 @@
                   <div name="single-select">
                     {{model.options[model.answer]}}
                   </div>
+                  <div name="fill-blank">
+                    {{model.answer}}
+                  </div>
+                  <div name="fill-thai-date">
+                    {{model.answer | date ('yyyy-MM-dd HH:mm')}}
+                  </div>
                   <div name="multi-select">
                     <template repeat="{{item in model.answer}}">
                       - {{model.options[item]}}<br>
