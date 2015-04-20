@@ -1,0 +1,61 @@
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+<polymer-element name="ltc-user">
+
+<template>
+  <style>
+    :host {
+      display:block;
+    }
+  </style>
+
+  <core-ajax 
+    auto
+    handleAs="json" 
+    url="/account"
+    response="{{user}}"> 
+  </core-ajax>
+  
+  <div layout horizontal>
+    
+    <template if="{{unauthorized}}">
+      <a href="/auth/google">
+        <img src="/images/White-signin_Medium_base_32dp.png"></img>
+      </a>
+    </template>
+
+    <template if="{{email}}">
+      <div layout horizontal center>
+        <div>{{email}} - {{displayName}}</div>
+        <div>
+          <paper-button>
+            <a href="/auth/logout">Sign out</a>
+          </paper-button>
+        </div>
+      </div>
+    </template>
+  </div>
+
+</template>
+
+<script>
+  Polymer('ltc-user', {
+    unauthorized:true,
+    userChanged: function(oldVal, newVal) {
+      if(!newVal) return;
+      if(newVal.status == 401) {
+        this.unauthorized = true;
+      } else {
+        if(newVal.username) {
+          this.unauthorized = false;
+          this.email = newVal.email;
+          if(newVal.profiles.length > 0) {
+            this.displayName = newVal.profiles[0].profile.displayName;
+          }
+        }
+      }
+    }
+  });
+</script>
+</polymer>

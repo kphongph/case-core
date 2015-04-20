@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 
 <link rel="import" href="ltc-forms.html">
+<link rel="import" href="ltc-user.html">
 
 <polymer-element name="ltc-person" attributes="docid person" vertical flex>
 
@@ -24,13 +25,16 @@
   </core-ajax>
 
   <core-toolbar>
-    <div horizontal layout center>
+    <div horizontal layout center flex>
       <div>
         <paper-icon-button icon="arrow-back" on-tap="{{mainAction}}"> 
         </paper-icon-button>
       </div>
       <div flex>
         {{person.CID}} {{person.FirstName}} {{person.LastName}}
+      </div>
+      <div end-justified>
+        <ltc-user></ltc-user>
       </div>
     </div>
   </core-toolbar>

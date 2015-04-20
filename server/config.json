@@ -1,5 +1,6 @@
 {
   "restApiRoot":"/api",
   "host":"0.0.0.0",
-  "port":3000
+  "port":3000,
+  "cookieSecret": "246b1534-38ab-4b18-8589-04e8161b07c8"
 }

@@ -8,12 +8,12 @@
       "../node_modules/loopback-component-passport/lib/models"
     ]
   },
-  "AccessToken" : {
-    "dataSource": "aclDs",
+  "accessToken" : {
+    "dataSource": "caseMongoDs",
     "public": true
   },
   "ACL" : {
-    "dataSource": "aclDs",
+    "dataSource": "caseMongoDs",
     "public": true
   },
   "Address": {
@@ -85,11 +85,11 @@
     "public": true 
   },
   "Role" : {
-    "dataSource": "aclDs",
+    "dataSource": "caseMongoDs",
     "public": true
   },
   "RoleMapping" : {
-    "dataSource": "aclDs",
+    "dataSource": "caseMongoDs",
     "public": true
   },
   "Personvshost": {
@@ -104,8 +104,16 @@
     "dataSource": "caseMongoDs",
     "public": true 
   },
-  "User" : {
-    "dataSource" : "aclDs",
+  "user" : {
+    "dataSource" : "caseMongoDs",
+    "public": true
+  },
+  "userCredential" : {
+    "dataSource" : "caseMongoDs",
+    "public": true
+  },
+  "userIdentity" : {
+    "dataSource" : "caseMongoDs",
     "public": true
   },
   "Village": {
