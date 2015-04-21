@@ -15,9 +15,5 @@
   "caseMongoDs" : {
     "connector": "mongodb",
     "url":"mongodb://52.74.105.192:27017/casedb_test"
-  },
-  "aclDs": {
-    "connector": "mongodb",
-    "url":"mongodb://test:test123@ds047911.mongolab.com:47911/case_acl"
   }
 }

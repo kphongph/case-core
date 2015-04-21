@@ -14,7 +14,7 @@
   },
   "ACL" : {
     "dataSource": "caseMongoDs",
-    "public": true
+    "public": false
   },
   "Address": {
     "dataSource": "caseDs",
@@ -86,11 +86,11 @@
   },
   "Role" : {
     "dataSource": "caseMongoDs",
-    "public": true
+    "public": false
   },
   "RoleMapping" : {
     "dataSource": "caseMongoDs",
-    "public": true
+    "public": false
   },
   "Personvshost": {
     "dataSource": "caseDs",

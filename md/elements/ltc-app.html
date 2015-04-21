@@ -1,22 +1,31 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/polymer-filters/polymer-filters.html">
+<link rel="import" href="../bower_components/polymer-cookie/polymer-cookie.html">
 <link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 <link rel="import" href="ltc-people.html">
 <link rel="import" href="ltc-forms.html">
 <link rel="import" href="ltc-person.html">
+<link rel="import" href="ltc-token.html">
 
 <polymer-element name="ltc-app" vertical layout>
 
 <template>
 
   <link rel="stylesheet" href="ltc-app.css">
+  
+  <polymer-cookie name="access_token" value="{{value}}">
+  </polymer-cookie>
+
+  <ltc-token cookie="{{value}}"></ltc-token>
 
   <core-animated-pages selected="{{selected}}" 
     transitions="cross-fade-all"
     flex auto>
     <div name="splash">
       <a href="/auth/google">
-        <img src="/images/White-signin_Medium_base_32dp.png"></img>
+      <img src="/images/White-signin_Medium_base_32dp.png">
+      </img>
       </a>
     </div>
     <ltc-people name="people" selectedPerson="{{person_id}}">
@@ -42,10 +51,12 @@ Polymer('ltc-app', {
   },
   monitorAjax: function(e, o) {
     console.log('monitorAjax');
+    /*
     if(o.response == 401) {
       console.log('Unauthorized');
       this.selected = 'splash';
     }
+    */
   },
   showPerson: function() {
     this.selected = 'person';

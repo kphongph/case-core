@@ -7,6 +7,7 @@ module.exports = function(app) {
   var PassportConfigurator = loopbackPassport.PassportConfigurator;
   var passportConfigurator = new PassportConfigurator(app);
 
+  
   var bodyParser = require('body-parser');
   var flash = require('express-flash');
   
@@ -21,14 +22,14 @@ module.exports = function(app) {
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended:true}));
-  
-  /*
+
   app.use(loopback.token({
     model: app.models.accessToken
   }));
-  */
 
-  app.use(loopback.cookieParser('hello world'));
+
+  app.use(loopback.cookieParser('ltcnu'));
+
   app.use(loopback.session({
     secret:'kitty',
     saveUninitialized: true,
@@ -59,6 +60,7 @@ module.exports = function(app) {
   
   app.get('/auth/account',ensureLoggedIn('/unauthroized'),function(req,res,next) {
     // res.json(req.user);
+    // console.log('token',req.cookies);
     res.redirect('/');
   });
 

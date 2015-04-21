@@ -1,0 +1,21 @@
+
+<polymer-element name="ltc-token">
+  <script>
+   (function() {
+     var values = {};
+
+     Polymer({
+       ready: function() {
+         this.values = values;
+         for (var i = 0; i < this.attributes.length; ++i) {
+           var attr = this.attributes[i];
+           values[attr.nodeName] = attr.value;
+           if(attr.nodeName == "cookie") {
+             values['token'] = attr.value.substring(2,66);
+           }
+         }
+       }
+     });
+   })();
+  </script>
+</polymer-element>

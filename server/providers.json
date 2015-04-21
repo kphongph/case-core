@@ -11,6 +11,7 @@
     "successRedirect": "/auth/account",
     "failureRedirect": "/login",
     "scope": ["email", "profile"],
+    "json":false,
     "failureFlash": true
   },
   "google-link": {
