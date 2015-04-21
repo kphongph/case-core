@@ -446,12 +446,12 @@
       "accessType": "*",
       "principalType": "ROLE",
       "principalId" : "$everyone",
-      "permission": "ALLOW"
+      "permission": "DENY"
     },
     {
       "accessType": "*",
       "principalType": "ROLE",
-      "principalId" : "$everyone",
+      "principalId" : "$authenticated",
       "permission": "ALLOW"
     },
     {

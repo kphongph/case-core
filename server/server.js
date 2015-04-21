@@ -11,6 +11,10 @@ app.start = function() {
   });
 };
 
+  app.use(loopback.token({
+    model: app.models.accessToken
+  }));
+
 // boot scripts mount components like REST API
 boot(app, __dirname, function(err) {
   if(err) throw err;
@@ -19,11 +23,11 @@ boot(app, __dirname, function(err) {
   }
 });
 
-
 // Set up the /favicon.ico
 app.use(loopback.favicon());
 
 // request pre-processing middleware
+app.use(loopback.compress());
 
 var path = require('path');
 app.use(loopback.static(path.resolve(__dirname, '../md')));

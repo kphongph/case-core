@@ -15,7 +15,9 @@
     transitions="cross-fade-all"
     flex auto>
     <div name="splash">
-      <span fit class="splash {{ {wide: wide} | tokenList }}"></span>
+      <a href="/auth/google">
+        <img src="/images/White-signin_Medium_base_32dp.png"></img>
+      </a>
     </div>
     <ltc-people name="people" selectedPerson="{{person_id}}">
     </ltc-people>
@@ -35,7 +37,15 @@ Polymer('ltc-app', {
   eventDelegates: {
     'main':'showSearchPerson',
     'form':'showForm',
-    'person':'showPerson'
+    'person':'showPerson',
+    'core-complete':'monitorAjax'
+  },
+  monitorAjax: function(e, o) {
+    console.log('monitorAjax');
+    if(o.response == 401) {
+      console.log('Unauthorized');
+      this.selected = 'splash';
+    }
   },
   showPerson: function() {
     this.selected = 'person';

@@ -22,13 +22,15 @@ module.exports = function(app) {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended:true}));
   
+  /*
   app.use(loopback.token({
     model: app.models.accessToken
   }));
+  */
 
-  app.use(loopback.cookieParser(app.get('cookieSecret')));
+  app.use(loopback.cookieParser('hello world'));
   app.use(loopback.session({
-    secret:'longtermcare2558',
+    secret:'kitty',
     saveUninitialized: true,
     resave:true
   }));
@@ -50,17 +52,23 @@ module.exports = function(app) {
 
   var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
-  app.get('/account', ensureLoggedIn('/login'), function (req, res, next) {
+  app.get('/account', ensureLoggedIn('/unauthroized'), function (req, res, next) {
     res.json(req.user);
   });
 
   
-  app.get('/auth/account',ensureLoggedIn('/login'),function(req,res,next) {
+  app.get('/auth/account',ensureLoggedIn('/unauthroized'),function(req,res,next) {
+    // res.json(req.user);
     res.redirect('/');
   });
 
-  app.get('/login', function(req, res, next) {
-    res.json({'status':401,'message':'Unauthorized'});
+  app.get('/link/account', ensureLoggedIn('/unauthroized'),function(req,res,next) {
+    res.json(req.user);
+  });
+
+  app.get('/unauthroized', function(req, res, next) {
+    res.sendStatus(401);
+  //  res.json({'status':401,'message':'Unauthorized'});
   });
   
   app.get('/auth/logout', function (req, res, next) {
