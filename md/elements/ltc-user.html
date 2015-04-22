@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/polymer-cookie/polymer-cookie.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 
 <polymer-element name="ltc-user">
@@ -10,11 +11,35 @@
     }
   </style>
 
+  <polymer-cookie name="access_token" id="token"></polymer-cookie>
+  <polymer-cookie name="userId" id="userId"></polymer-cookie>
+
   <core-ajax 
     auto
     handleAs="json" 
     url="/account"
     response="{{user}}"> 
+  </core-ajax>
+
+  <core-ajax 
+    id="signinAjax"
+    url="/auth/google"
+    core-response="{{signinResponse}}">
+  </core-ajax>
+
+  <core-ajax 
+    id="signoutAjax"
+    handleAs="json" 
+    method="POST"
+    url="/api/users/logout"
+    core-response="{{signoutResponse}}">
+  </core-ajax>
+
+  <core-ajax 
+    id="logoutAjax"
+    handleAs="json" 
+    url="/auth/logout"
+    core-response="{{logoutResponse}}">
   </core-ajax>
   
   <div layout horizontal>
@@ -29,9 +54,7 @@
       <div layout horizontal center>
         <div>{{email}} - {{displayName}}</div>
         <div>
-          <paper-button>
-            <a href="/auth/logout">Sign out</a>
-          </paper-button>
+          <paper-button on-tap="{{signout}}">Sign out</paper-button>
         </div>
       </div>
     </template>
@@ -55,6 +78,18 @@
           }
         }
       }
+    },
+    signin : function() {
+      this.$.signinAjax.go();
+    },
+    signout: function() {
+      this.$.logoutAjax.go();
+      this.$.signoutAjax.go();
+      this.$.token.deleteCookie();
+      this.$.userId.deleteCookie();
+      this.unauthorized=true;
+      this.email = null;
+      this.displayName = null;
     }
   });
 </script>

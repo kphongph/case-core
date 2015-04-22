@@ -1,12 +1,10 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/polymer-filters/polymer-filters.html">
-<link rel="import" href="../bower_components/polymer-cookie/polymer-cookie.html">
 <link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 <link rel="import" href="ltc-people.html">
 <link rel="import" href="ltc-forms.html">
 <link rel="import" href="ltc-person.html">
-<link rel="import" href="ltc-token.html">
 
 <polymer-element name="ltc-app" vertical layout>
 
@@ -14,11 +12,6 @@
 
   <link rel="stylesheet" href="ltc-app.css">
   
-  <polymer-cookie name="access_token" value="{{value}}">
-  </polymer-cookie>
-
-  <ltc-token cookie="{{value}}"></ltc-token>
-
   <core-animated-pages selected="{{selected}}" 
     transitions="cross-fade-all"
     flex auto>

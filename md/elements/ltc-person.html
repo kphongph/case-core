@@ -4,7 +4,6 @@
 
 <link rel="import" href="ltc-forms.html">
 <link rel="import" href="ltc-user.html">
-<link rel="import" href="ltc-token.html">
 
 <polymer-element name="ltc-person" attributes="docid person" vertical flex>
 
@@ -18,12 +17,9 @@
     }
   </style>
 
-  <ltc-token id="token"></ltc-token>
-
   <core-ajax 
     id="getAjax"
     handleAs="json" 
-    headers='{"Authorization":"{{$.token.values.token}}"}',
     url="../api/people/{{docid}}"
     response="{{person}}"> 
   </core-ajax>
