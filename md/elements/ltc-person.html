@@ -24,6 +24,8 @@
     response="{{person}}"> 
   </core-ajax>
 
+  <ltc-user unauthorized="{{unauthorized}}" displayName="{{user}}"></ltc-user>
+
   <core-toolbar>
     <div horizontal layout center flex>
       <div>
@@ -33,14 +35,21 @@
       <div flex>
         {{person.CID}} {{person.FirstName}} {{person.LastName}}
       </div>
-      <div end-justified>
-        <ltc-user></ltc-user>
-      </div>
     </div>
   </core-toolbar>
   
   <div vertical layout>
+    <template if="{{!unauthorized}}">
+      <div layout horizontal end-justified>
+        <div flex>
+        Google Account : {{user}}
+        <a href="/auth/logout">Sign Out</a>
+        </div>
+      </div>
+    </template>
+    <div>
     <paper-item raised on-tap="{{showForm}}">แบบประเมิน</paper-item>
+    </div>
   </div>
 </template>
 
@@ -56,8 +65,10 @@
     },
     docidChanged: function(oldVal, newVal) {
       if(newVal) {
-        this.selected=null;
-        this.$.getAjax.go();
+        if(!this.unauthorized) {
+          this.selected=null;
+          this.$.getAjax.go();
+        }
       }
     }
   });

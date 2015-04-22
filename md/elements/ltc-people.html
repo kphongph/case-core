@@ -8,6 +8,7 @@
 <link rel="import" href="../bower_components/core-scroll-threshold/core-scroll-threshold.html">
 
 <link rel="import" href="ltc-person-card.html">
+<link rel="import" href="ltc-user.html">
 
 <polymer-element name="ltc-people" attributes="selectedPerson">
 
@@ -17,6 +18,8 @@
   <core-ajax id="searchAjax" handleAs="json" 
     on-core-response="{{handleResponse}}"> 
   </core-ajax>
+
+  <ltc-user unauthorized="{{unauthorized}}"></ltc-user>
 
   <core-scroll-threshold id="threshold" lowerThreshold="100"
     on-lower-trigger="{{loadMore}}" fit>
@@ -64,9 +67,11 @@
       this.submitQuery();
     },
     submitQuery : function() {
-      this.ajax.url = '../api/people?filter='+JSON.stringify(this.query);
-      this.loading=true;
-      this.ajax.go();
+      if(!this.unauthorized) {
+        this.ajax.url = '../api/people?filter='+JSON.stringify(this.query);
+        this.loading=true;
+        this.ajax.go();
+      }
     },
     handleResponse : function() {
       this.loading=false;

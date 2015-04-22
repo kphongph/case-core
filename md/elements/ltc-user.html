@@ -1,8 +1,8 @@
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
-<link rel="import" href="../bower_components/polymer-cookie/polymer-cookie.html">
+<link rel="import" href="../bower_components/polymer-cookie/polymer-cookie.html"> 
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 
-<polymer-element name="ltc-user">
+<polymer-element name="ltc-user" attributes="unauthorized displayName">
 
 <template>
   <style>
@@ -16,6 +16,7 @@
 
   <core-ajax 
     auto
+    id="getAccount"
     handleAs="json" 
     url="/account"
     response="{{user}}"> 
@@ -28,47 +29,30 @@
   </core-ajax>
 
   <core-ajax 
-    id="signoutAjax"
-    handleAs="json" 
-    method="POST"
-    url="/api/users/logout"
-    core-response="{{signoutResponse}}">
-  </core-ajax>
-
-  <core-ajax 
     id="logoutAjax"
     handleAs="json" 
     url="/auth/logout"
     core-response="{{logoutResponse}}">
   </core-ajax>
   
-  <div layout horizontal>
-    
-    <template if="{{unauthorized}}">
-      <a href="/auth/google">
-        <img src="/images/White-signin_Medium_base_32dp.png"></img>
-      </a>
-    </template>
-
-    <template if="{{email}}">
-      <div layout horizontal center>
-        <div>{{email}} - {{displayName}}</div>
-        <div>
-          <paper-button on-tap="{{signout}}">Sign out</paper-button>
-        </div>
-      </div>
-    </template>
-  </div>
-
 </template>
 
 <script>
+(function() {
+  var unauthroized = true;
+
   Polymer('ltc-user', {
-    unauthorized:true,
+    ready: function() {
+      this.unauthrozied = unauthroized;
+    },
+    checkAuthroized: function() {
+      this.$.getAccount.go();
+    },
     userChanged: function(oldVal, newVal) {
       if(!newVal) return;
       if(newVal.status == 401) {
         this.unauthorized = true;
+        this.signout();
       } else {
         if(newVal.username) {
           this.unauthorized = false;
@@ -79,12 +63,7 @@
         }
       }
     },
-    signin : function() {
-      this.$.signinAjax.go();
-    },
     signout: function() {
-      this.$.logoutAjax.go();
-      this.$.signoutAjax.go();
       this.$.token.deleteCookie();
       this.$.userId.deleteCookie();
       this.unauthorized=true;
@@ -92,5 +71,6 @@
       this.displayName = null;
     }
   });
+})();
 </script>
-</polymer>
+</polymer-element>

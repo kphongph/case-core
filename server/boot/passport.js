@@ -52,10 +52,13 @@ module.exports = function(app) {
 
   var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
-  app.get('/account', ensureLoggedIn('/'), function (req, res, next) {
-    console.log(req.signedCookies);
-    if(req.signedCookies.userId) {
-      res.json(req.user);
+  app.get('/account', function (req, res, next) {
+    if(req.signedCookies && req.signedCookies.userId) {
+      if(req.user) {
+        res.json(req.user);
+      } else {
+        res.json({'status':401,'message':'Unauthorized'});
+      }
     } else {
       res.json({'status':401,'message':'Unauthorized'});
     }
@@ -80,7 +83,10 @@ module.exports = function(app) {
   
   app.get('/auth/logout', function (req, res, next) {
     req.logout();
-    res.redirect('/');
+    app.models.user.logout(req.signedCookies.access_token, function(err) {
+      if(err) console.log(err);
+      res.redirect('/');
+    });
     // res.json({'status':200,'message':'Successful'});
   });
 
