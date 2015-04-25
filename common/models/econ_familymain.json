@@ -1,0 +1,74 @@
+{
+  "name": "EconFamilymain",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "econ_familymains"
+  },
+  "properties": {
+    "CID": {
+      "type": "String"
+    },
+    "EconPlaceHomeID": {
+      "type": "Number"
+    },
+    "EconHomeStatus1ID": {
+      "type": "Number"
+    },
+    "EconHomeStatus2ID": {
+      "type": "Number"
+    },
+    "EconAllHomeStatusID": {
+      "type": "Number"
+    },
+    "EconHoldingHomeStatusID": {
+      "type": "Number"
+    },
+    "InsystemObilegy": {
+      "type": "Number"
+    },
+    "OutSystemObilegy": {
+      "type": "Number"
+    },
+    "OutcomePerMonth": {
+      "type": "Number"
+    },
+    "CountCar": {
+      "type": "Number"
+    },
+    "CountMotorCycle": {
+      "type": "Number"
+    },
+    "CountBicycle": {
+      "type": "Number"
+    },
+    "CountOtherCar": {
+      "type": "Number"
+    },
+    "CountRefrigerator": {
+      "type": "Number"
+    },
+    "CountWasher": {
+      "type": "Number"
+    },
+    "CountCooking": {
+      "type": "Number"
+    },
+    "CountTV": {
+      "type": "Number"
+    },
+    "CountPlayer": {
+      "type": "Number"
+    },
+    "CountFan": {
+      "type": "Number"
+    },
+    "CountComputer": {
+      "type": "Number"
+    },
+    "DateTimeUpDate": {
+      "type": "Date"
+    }
+  }
+}

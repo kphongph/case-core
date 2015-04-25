@@ -1,98 +1,32 @@
 {
   "name": "Qrecord",
   "options": {
-    "idInjection": false,
-    "mongodb": {
-      "collection": "qrecords"
-    }
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "qrecords"
   },
   "properties": {
     "CID": {
-      "type": "String",
-      "length": 13,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "CID",
-        "dataType": "varchar",
-        "dataLength": 13,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "String"
     },
     "QTID": {
-      "type": "String",
-      "length": 5,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "QTID",
-        "dataType": "varchar",
-        "dataLength": 5,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "String"
     },
     "QTSID": {
-      "type": "Number",
-      "length": null,
-      "precision": 10,
-      "scale": 0,
-      "mssql": {
-        "columnName": "QTSID",
-        "dataType": "int",
-        "dataLength": null,
-        "dataPrecision": 10,
-        "dataScale": 0,
-        "nullable": "NO"
-      }
+      "type": "Number"
     },
     "QID": {
-      "type": "String",
-      "length": 5,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "QID",
-        "dataType": "varchar",
-        "dataLength": 5,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "String"
     },
     "AID": {
-      "type": "String",
-      "length": 5,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "AID",
-        "dataType": "varchar",
-        "dataLength": 5,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
-    }
-  },
-  "relations" : {
-    "qtimestamp" : {
-      "type":"belongsTo",
-      "model":"Qtimestamp",
-      "foreignKey":"qtimestampId"
+      "type": "String"
     },
-    "questionaire": {
-      "type":"belongsTo",
-      "model":"Questionaire",
-      "foreignKey":"questionaireId"
+    "id": {
+      "type": "Number"
     },
-    "answer": {
-      "type":"belongsTo",
-      "model":"Answer",
-      "foreignKey":"answerId"
+    "qtimestampid": {
+      "type": "Number"
     }
   }
 }

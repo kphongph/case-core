@@ -1,0 +1,23 @@
+{
+  "name": "Family",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "families"
+  },
+  "properties": {
+    "FMemberCID": {
+      "type": "String"
+    },
+    "CID": {
+      "type": "String"
+    },
+    "Relationship": {
+      "type": "String"
+    },
+    "DateTimeUpdate": {
+      "type": "Date"
+    }
+  }
+}

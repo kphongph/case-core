@@ -1,0 +1,26 @@
+{
+  "name": "HealthprojectActivitylist",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "healthproject_activitylists"
+  },
+  "properties": {
+    "ID": {
+      "type": "Number"
+    },
+    "ProjectID": {
+      "type": "Number"
+    },
+    "ActivityDescription": {
+      "type": "String"
+    },
+    "HostType": {
+      "type": "String"
+    },
+    "TimeStamp": {
+      "type": "Date"
+    }
+  }
+}

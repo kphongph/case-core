@@ -1,0 +1,17 @@
+{
+  "name": "Servicevspersontype",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "servicevspersontypes"
+  },
+  "properties": {
+    "SVCCode": {
+      "type": "String"
+    },
+    "PersonTypeID": {
+      "type": "String"
+    }
+  }
+}

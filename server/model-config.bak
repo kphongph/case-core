@@ -1,0 +1,127 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models",
+      "../node_modules/loopback-component-passport/lib/models"
+    ]
+  },
+  "accessToken" : {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "ACL" : {
+    "dataSource": "caseMongoDs",
+    "public": false
+  },
+  "Address": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Addresstype": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Adressvsperson": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Answer": {
+    "dataSource": "caseMongoDs",
+    "public": true 
+  },
+  "City": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Employee": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Form": {
+    "dataSource": "caseMongoDs",
+    "public": true 
+  },
+  "FormTemplate": {
+    "dataSource": "caseMongoDs",
+    "public": true 
+  },
+  "Host": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Gender": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Title": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Tumbon": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Nationality": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Organization" : {
+    "dataSource": "caseMongoDs",
+    "public": true 
+  },
+  "Person": {
+    "dataSource": "caseMongoDs",
+    "public": true 
+  },
+  "Planservice": {
+    "dataSource": "caseMongoDs",
+    "public": true 
+  },
+  "Race": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Religion": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Role" : {
+    "dataSource": "caseMongoDs",
+    "public": false
+  },
+  "RoleMapping" : {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Personvshost": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Province": {
+    "dataSource": "caseDs",
+    "public": true 
+  },
+  "Systemtype": {
+    "dataSource": "caseMongoDs",
+    "public": true 
+  },
+  "user" : {
+    "dataSource" : "caseMongoDs",
+    "public": true
+  },
+  "userCredential" : {
+    "dataSource" : "caseMongoDs",
+    "public": true
+  },
+  "userIdentity" : {
+    "dataSource" : "caseMongoDs",
+    "public": true
+  },
+  "Village": {
+    "dataSource": "caseDs",
+    "public": true 
+  }
+}

@@ -33,6 +33,7 @@
     "loopback-connector-mssql": "latest",
     "loopback-datasource-juggler": "^2.0.0",
     "passport-google-oauth": "^0.2.0",
+    "pluralize": "^1.1.2",
     "serve-favicon": "^2.0.1"
   },
   "optionalDependencies": {

@@ -1,0 +1,29 @@
+{
+  "name": "SummaryFormArea",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "summary_form_areas"
+  },
+  "properties": {
+    "DefID": {
+      "type": "Number"
+    },
+    "ResultID": {
+      "type": "String"
+    },
+    "ResultDesc": {
+      "type": "String"
+    },
+    "Area": {
+      "type": "String"
+    },
+    "CountValue": {
+      "type": "Number"
+    },
+    "UpdateTime": {
+      "type": "Date"
+    }
+  }
+}

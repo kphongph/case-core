@@ -1,0 +1,17 @@
+{
+  "name": "Ministry",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "ministries"
+  },
+  "properties": {
+    "MinistryCode": {
+      "type": "String"
+    },
+    "MinistryName": {
+      "type": "String"
+    }
+  }
+}

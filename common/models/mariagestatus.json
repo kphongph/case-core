@@ -1,0 +1,17 @@
+{
+  "name": "Mariagestatus",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "mariagestatuses"
+  },
+  "properties": {
+    "MariageStatusID": {
+      "type": "String"
+    },
+    "MariageStatusDescription": {
+      "type": "String"
+    }
+  }
+}

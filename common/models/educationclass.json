@@ -1,0 +1,17 @@
+{
+  "name": "Educationclass",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "educationclasses"
+  },
+  "properties": {
+    "EducationClassID": {
+      "type": "String"
+    },
+    "EducationClassDescription": {
+      "type": "String"
+    }
+  }
+}

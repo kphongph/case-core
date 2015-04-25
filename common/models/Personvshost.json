@@ -1,129 +1,32 @@
 {
   "name": "Personvshost",
   "options": {
-    "idInjection": false,
-    "mssql": {
-      "schema": "dbo",
-      "table": "PersonVsHost"
-    }
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "personvshosts"
   },
   "properties": {
     "CID": {
-      "type": "String",
-      "required": true,
-      "length": 13,
-      "precision": null,
-      "scale": null,
-      "id": 1,
-      "mssql": {
-        "columnName": "CID",
-        "dataType": "varchar",
-        "dataLength": 13,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "String"
     },
     "HostSource": {
-      "type": "String",
-      "required": true,
-      "length": 50,
-      "precision": null,
-      "scale": null,
-      "id": 2,
-      "mssql": {
-        "columnName": "HostSource",
-        "dataType": "varchar",
-        "dataLength": 50,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "String"
     },
     "HostDestination": {
-      "type": "String",
-      "required": true,
-      "length": 50,
-      "precision": null,
-      "scale": null,
-      "id": 3,
-      "mssql": {
-        "columnName": "HostDestination",
-        "dataType": "varchar",
-        "dataLength": 50,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "String"
     },
     "StartDatetime": {
-      "type": "Date",
-      "required": true,
-      "length": null,
-      "precision": null,
-      "scale": null,
-      "id": 4,
-      "mssql": {
-        "columnName": "StartDatetime",
-        "dataType": "datetime",
-        "dataLength": null,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "Date"
     },
     "EndDatetime": {
-      "type": "Date",
-      "required": false,
-      "length": null,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "EndDatetime",
-        "dataType": "datetime",
-        "dataLength": null,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+      "type": "Date"
     },
     "Hosttype": {
-      "type": "String",
-      "required": true,
-      "length": 8,
-      "precision": null,
-      "scale": null,
-      "id": 5,
-      "mssql": {
-        "columnName": "Hosttype",
-        "dataType": "varchar",
-        "dataLength": 8,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "String"
     },
     "Datetimeupdate": {
-      "type": "Date",
-      "required": false,
-      "length": null,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "Datetimeupdate",
-        "dataType": "datetime",
-        "dataLength": null,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
-    }
-  },
-  "relations" : {
-    "person": {
-      "type":"belongsTo",
-      "model":"Person",
-      "foreignKey":"CID"
+      "type": "Date"
     }
   }
 }

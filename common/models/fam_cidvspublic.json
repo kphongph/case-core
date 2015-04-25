@@ -1,0 +1,17 @@
+{
+  "name": "FamCidvspublic",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "fam_cidvspublics"
+  },
+  "properties": {
+    "CID": {
+      "type": "String"
+    },
+    "PublicUtilltyID": {
+      "type": "Number"
+    }
+  }
+}

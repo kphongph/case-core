@@ -1,0 +1,20 @@
+{
+  "name": "Villagevshost",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "villagevshosts"
+  },
+  "properties": {
+    "VillageID": {
+      "type": "String"
+    },
+    "HostOpt": {
+      "type": "String"
+    },
+    "HostHp": {
+      "type": "String"
+    }
+  }
+}

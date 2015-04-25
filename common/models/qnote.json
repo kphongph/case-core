@@ -1,0 +1,29 @@
+{
+  "name": "Qnote",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "qnotes"
+  },
+  "properties": {
+    "CID": {
+      "type": "String"
+    },
+    "QTID": {
+      "type": "String"
+    },
+    "QTSID": {
+      "type": "Number"
+    },
+    "QID": {
+      "type": "String"
+    },
+    "AID": {
+      "type": "String"
+    },
+    "Note": {
+      "type": "String"
+    }
+  }
+}

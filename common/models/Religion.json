@@ -1,43 +1,17 @@
 {
   "name": "Religion",
   "options": {
-    "idInjection": false,
-    "mssql": {
-      "schema": "dbo",
-      "table": "Religion"
-    }
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "religions"
   },
   "properties": {
-    "id": {
-      "type": "String",
-      "required": true,
-      "length": 10,
-      "precision": null,
-      "scale": null,
-      "id": 1,
-      "mssql": {
-        "columnName": "Id",
-        "dataType": "varchar",
-        "dataLength": 10,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+    "Id": {
+      "type": "String"
     },
-    "religion": {
-      "type": "String",
-      "required": true,
-      "length": 50,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "Religion",
-        "dataType": "nvarchar",
-        "dataLength": 50,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+    "Religion": {
+      "type": "String"
     }
   }
 }

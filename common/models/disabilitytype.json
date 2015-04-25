@@ -1,0 +1,23 @@
+{
+  "name": "Disabilitytype",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "disabilitytypes"
+  },
+  "properties": {
+    "DisabilityCode": {
+      "type": "String"
+    },
+    "Name": {
+      "type": "String"
+    },
+    "WelfareID": {
+      "type": "String"
+    },
+    "HostType": {
+      "type": "String"
+    }
+  }
+}

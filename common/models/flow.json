@@ -1,0 +1,20 @@
+{
+  "name": "Flow",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "flows"
+  },
+  "properties": {
+    "FlowID": {
+      "type": "String"
+    },
+    "FlowDesc": {
+      "type": "String"
+    },
+    "FlowImageURL": {
+      "type": "String"
+    }
+  }
+}

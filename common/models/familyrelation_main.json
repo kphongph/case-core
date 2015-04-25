@@ -1,0 +1,32 @@
+{
+  "name": "FamilyrelationMain",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "familyrelation_mains"
+  },
+  "properties": {
+    "CID": {
+      "type": "String"
+    },
+    "RelationStatus": {
+      "type": "String"
+    },
+    "EnvironmentVillage": {
+      "type": "String"
+    },
+    "FamilyCarerCID": {
+      "type": "String"
+    },
+    "Other": {
+      "type": "String"
+    },
+    "Relation": {
+      "type": "String"
+    },
+    "StartingCareDate": {
+      "type": "Date"
+    }
+  }
+}

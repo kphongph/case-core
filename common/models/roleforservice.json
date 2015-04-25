@@ -1,0 +1,26 @@
+{
+  "name": "Roleforservice",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "roleforservices"
+  },
+  "properties": {
+    "ApplicationId": {
+      "type": "String"
+    },
+    "RoleId": {
+      "type": "String"
+    },
+    "RoleName": {
+      "type": "String"
+    },
+    "LoweredRoleName": {
+      "type": "String"
+    },
+    "Description": {
+      "type": "String"
+    }
+  }
+}

@@ -1,28 +1,17 @@
 {
   "name": "Systemtype",
-  "mongodb" : {
-    "collection":"systemtype"
-  },
   "options": {
     "idInjection": true
   },
+  "mongodb": {
+    "collection": "systemtypes"
+  },
   "properties": {
     "SType_ID": {
-      "type": "String",
-      "required": true,
-      "length": 5
+      "type": "String"
     },
     "SType_Desc": {
-      "type": "String",
-      "required": false,
-      "length": -1
-    }
-  },
-  "relations": {
-    "forms" : {
-      "type" : "hasMany",
-      "model" : "Form",
-      "foreignKey": "systemtypeId"
+      "type": "String"
     }
   }
 }

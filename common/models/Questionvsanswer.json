@@ -1,113 +1,29 @@
 {
   "name": "Questionvsanswer",
   "options": {
-    "idInjection": true,
-    "mongodb": {
-      "collection": "questionvsanswers"
-    }
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "questionvsanswers"
   },
   "properties": {
     "QID": {
-      "type": "String",
-      "required": true,
-      "length": 5,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "QID",
-        "dataType": "varchar",
-        "dataLength": 5,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "String"
     },
     "AID": {
-      "type": "String",
-      "required": true,
-      "length": 5,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "AID",
-        "dataType": "varchar",
-        "dataLength": 5,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "String"
     },
     "Value": {
-      "type": "Number",
-      "required": false,
-      "length": null,
-      "precision": 10,
-      "scale": 0,
-      "mssql": {
-        "columnName": "Value",
-        "dataType": "int",
-        "dataLength": null,
-        "dataPrecision": 10,
-        "dataScale": 0,
-        "nullable": "YES"
-      }
+      "type": "Number"
     },
     "QTID": {
-      "type": "String",
-      "required": true,
-      "length": 5,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "QTID",
-        "dataType": "varchar",
-        "dataLength": 5,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "String"
     },
     "PrID": {
-      "type": "String",
-      "required": false,
-      "length": 5,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "PrID",
-        "dataType": "varchar",
-        "dataLength": 5,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+      "type": "String"
     },
     "PrType": {
-      "type": "String",
-      "required": false,
-      "length": 255,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "PrType",
-        "dataType": "varchar",
-        "dataLength": 255,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
-    }
-  },
-  "relations":{
-    "questionaire" : {
-      "type":"belongsTo",
-      "model":"Questionaire",
-      "foreignKey":"questionaireId"
-    },
-    "answer" : {
-      "type":"belongsTo",
-      "model":"Answer",
-      "foreignKey":"answerId"
+      "type": "String"
     }
   }
 }

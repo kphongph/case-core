@@ -1,0 +1,20 @@
+{
+  "name": "Serviceprovisiondetails",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "serviceprovisiondetails"
+  },
+  "properties": {
+    "id": {
+      "type": "Number"
+    },
+    "ACTCode": {
+      "type": "String"
+    },
+    "SACTCode": {
+      "type": "String"
+    }
+  }
+}

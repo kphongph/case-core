@@ -1,81 +1,41 @@
 {
   "name": "Planservice",
-  "mongodb": {
-    "collection":"planservice"
-  },
   "options": {
     "idInjection": true
   },
+  "mongodb": {
+    "collection": "planservices"
+  },
   "properties": {
     "CID": {
-      "type": "String",
-      "required": true,
-      "length": 13,
-      "precision": null,
-      "scale": null
+      "type": "String"
     },
     "CaseNo": {
-      "type": "Number",
-      "required": true,
-      "length": null,
-      "precision": 10,
-      "scale": 0
+      "type": "Number"
     },
     "CMPlanNo": {
-      "type": "Number",
-      "required": true,
-      "length": null,
-      "precision": 10,
-      "scale": 0
+      "type": "Number"
     },
     "SVCCode": {
-      "type": "String",
-      "required": true,
-      "length": 50,
-      "precision": null,
-      "scale": null
+      "type": "String"
     },
     "StartPlanTime": {
-      "type": "Date",
-      "required": false,
-      "length": null,
-      "precision": null,
-      "scale": null
+      "type": "Date"
     },
     "EndPlanTime": {
-      "type": "Date",
-      "required": false,
-      "length": null,
-      "precision": null,
-      "scale": null
+      "type": "Date"
     },
     "CMStaffID": {
-      "type": "String",
-      "required": false,
-      "length": 50,
-      "precision": null,
-      "scale": null
+      "type": "String"
     },
     "CMHostID": {
-      "type": "String",
-      "required": false,
-      "length": 50,
-      "precision": null,
-      "scale": null
+      "type": "String"
     },
     "TimeStamp": {
-      "type": "Date",
-      "required": true,
-      "length": null,
-      "precision": null,
-      "scale": null
+      "type": "Date"
     },
     "PlanStatus": {
-      "type": "Number",
-      "required": false,
-      "length": null,
-      "precision": 10,
-      "scale": 0
+      "type": "Number"
     }
   }
 }

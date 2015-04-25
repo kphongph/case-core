@@ -1,0 +1,17 @@
+{
+  "name": "Educationlevel",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "educationlevels"
+  },
+  "properties": {
+    "EducationLevelID": {
+      "type": "String"
+    },
+    "EducationLevelDescription": {
+      "type": "String"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Department",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "departments"
+  },
+  "properties": {
+    "DepartmentCode": {
+      "type": "String"
+    },
+    "DepartmentName": {
+      "type": "String"
+    },
+    "MinistryCode": {
+      "type": "String"
+    }
+  }
+}

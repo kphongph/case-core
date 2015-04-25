@@ -1,0 +1,17 @@
+{
+  "name": "Reasonmovetype",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "reasonmovetypes"
+  },
+  "properties": {
+    "ReasonMoveID": {
+      "type": "String"
+    },
+    "ReasonMoveDescription": {
+      "type": "String"
+    }
+  }
+}

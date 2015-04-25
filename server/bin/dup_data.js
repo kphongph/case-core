@@ -4,15 +4,16 @@ var MongoClient = require('mongodb').MongoClient;
 
 // var mongourl = 'mongodb://128.199.108.210:27017/casedb';
 
-var mongourl = 'mongodb://test:test@ds045988.mongolab.com:45988/casedb';
+var mongourl = 'mongodb://52.74.105.192:27017/casedb_test';
 
 var mssql_config = {
-  "server":"j2o691xyq4.database.windows.net",
+  "server":"AssertProjects.nu.ac.th",
   "port":1433,
-  "userName":"sjsniperdb",
+  "database":"2014_gen2_case",
+  "userName":"sa",
   "password":"Theerawutt53",
-  options :{ 
-    "database":"case2014",
+  "options" :{ 
+    "database":"2014_gen2_case",
     "encrypt": true
   }
 };
@@ -30,7 +31,6 @@ var query = function(config, st, cb) {
   
     request.on('row', function(columns) {
       var obj = {};
-      console.log('row');
       columns.forEach(function(column) {
         obj[column.metadata.colName] = column.value;
       });
@@ -44,8 +44,8 @@ var mongodb = null;
 
 MongoClient.connect(mongourl, function(err, db) {
   query(mssql_config,
-    "select * from Person", function(plans) {
-    var plan_col = db.collection('person');
+    "select * from Organization", function(plans) {
+    var plan_col = db.collection('organizations');
     count = 0;
     plans.forEach(function(plan) {
       plan_col.insert(plan, {w:1}, function(err, doc) {

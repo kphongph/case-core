@@ -1,92 +1,32 @@
 {
   "name": "Adressvsperson",
   "options": {
-    "idInjection": false,
-    "mssql": {
-      "schema": "dbo",
-      "table": "AdressVsPerson"
-    }
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "adressvspeople"
   },
   "properties": {
-    "startdate": {
-      "type": "Date",
-      "required": true,
-      "length": null,
-      "precision": null,
-      "scale": null,
-      "id":1,
-      "mssql": {
-        "columnName": "StartDate",
-        "dataType": "date",
-        "dataLength": null,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+    "AddressID": {
+      "type": "String"
     },
-    "exitdate": {
-      "type": "Date",
-      "required": false,
-      "length": null,
-      "precision": null,
-      "scale": null,
-      "id":1,
-      "mssql": {
-        "columnName": "ExitDate",
-        "dataType": "date",
-        "dataLength": null,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+    "CID": {
+      "type": "String"
+    },
+    "StartDate": {
+      "type": "Date"
+    },
+    "ExitDate": {
+      "type": "Date"
     },
     "decs": {
-      "type": "String",
-      "required": false,
-      "length": -1,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "decs",
-        "dataType": "varchar",
-        "dataLength": -1,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+      "type": "String"
     },
-    "datetimeupdate": {
-      "type": "Date",
-      "required": false,
-      "length": null,
-      "precision": null,
-      "scale": null,
-      "id":1,
-      "mssql": {
-        "columnName": "DateTimeUpdate",
-        "dataType": "datetime",
-        "dataLength": null,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
-    }
-  },
-  "relations" :{
-    "person": {
-      "type":"belongsTo",
-      "model":"Person",
-      "foreignKey":"CID"
+    "AddressTypeID": {
+      "type": "String"
     },
-    "address": {
-      "type":"belongsTo",
-      "model":"Address",
-      "foreignKey":"AddressID"
-    },
-    "addresstype": {
-      "type":"belongsTo",
-      "model":"Addresstype",
-      "foreignKey":"AddressTypeID"
+    "DateTimeUpdate": {
+      "type": "Date"
     }
   }
 }

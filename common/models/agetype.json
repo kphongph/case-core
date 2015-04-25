@@ -1,0 +1,17 @@
+{
+  "name": "Agetype",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "agetypes"
+  },
+  "properties": {
+    "ATID": {
+      "type": "Number"
+    },
+    "ATDesc": {
+      "type": "String"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "FamEnvironment",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "fam_environments"
+  },
+  "properties": {
+    "EnvironmentID": {
+      "type": "Number"
+    },
+    "Description": {
+      "type": "String"
+    }
+  }
+}

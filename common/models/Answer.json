@@ -1,71 +1,23 @@
 {
   "name": "Answer",
   "options": {
-    "idInjection": true,
-    "mongodb": {
-      "collection": "answers"
-    }
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "answers"
   },
   "properties": {
     "AID": {
-      "type": "String",
-      "required": true,
-      "length": 5,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "AID",
-        "dataType": "varchar",
-        "dataLength": 5,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "String"
     },
     "ADesc": {
-      "type": "String",
-      "required": true,
-      "length": -1,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "ADesc",
-        "dataType": "varchar",
-        "dataLength": -1,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "String"
     },
     "AnswerGroupID": {
-      "type": "String",
-      "required": false,
-      "length": 5,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "AnswerGroupID",
-        "dataType": "varchar",
-        "dataLength": 5,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+      "type": "String"
     },
     "SubAnswer": {
-      "type": "String",
-      "required": false,
-      "length": 5,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "SubAnswer",
-        "dataType": "varchar",
-        "dataLength": 5,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+      "type": "String"
     }
   }
 }

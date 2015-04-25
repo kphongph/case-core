@@ -1,58 +1,26 @@
 {
   "name": "Questionaire",
   "options": {
-    "idInjection": true,
-    "mongodb": {
-      "collection": "questionaire"
-    }
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "questionaires"
   },
   "properties": {
     "QID": {
-      "type": "String",
-      "required": true,
-      "length": 5,
-      "precision": null,
-      "scale": null
+      "type": "String"
     },
     "QDesc": {
-      "type": "String",
-      "required": true,
-      "length": -1,
-      "precision": null,
-      "scale": null
+      "type": "String"
     },
     "QTID": {
-      "type": "String",
-      "required": true,
-      "length": 5,
-      "precision": null,
-      "scale": null
+      "type": "String"
     },
     "AnswerGroupID": {
-      "type": "String",
-      "required": false,
-      "length": 5,
-      "precision": null,
-      "scale": null
+      "type": "String"
     },
     "IUControl": {
-      "type": "String",
-      "required": false,
-      "length": 5,
-      "precision": null,
-      "scale": null
-    }
-  },
-  "relations":{
-    "questiontype":{
-      "type":"belongsTo",
-      "model":"Questiontype",
-      "foreignKey":"questiontypeId"
-    },
-    "questionvsanswers" : {
-      "type":"hasMany",
-      "model":"Questionvsanswer",
-      "foreignKey":"questionaireId"
+      "type": "String"
     }
   }
 }
