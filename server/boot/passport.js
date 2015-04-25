@@ -68,8 +68,8 @@ module.exports = function(app) {
   app.get('/auth/account',ensureLoggedIn('/'),function(req,res,next) {
     // res.json({'status':200,'message':'Successful'});
     // console.log('token',req.cookies);
-    // res.send(req.user);
-    res.redirect('/');
+    res.send(req.user);
+    // res.redirect('/');
   });
 
   app.get('/link/account', ensureLoggedIn('/'),function(req,res,next) {
@@ -83,11 +83,15 @@ module.exports = function(app) {
   
   app.get('/auth/logout', function (req, res, next) {
     req.logout();
-    app.models.user.logout(req.signedCookies.access_token, function(err) {
-      if(err) console.log(err);
-      res.redirect('/');
-    });
-    // res.json({'status':200,'message':'Successful'});
+    if(req.query.access_token) {
+      app.models.user.logout(req.query.access_token, function(err) {
+        if(err) console.log(err);
+        res.json({'status':200,'message':'Successful'});
+      //res.redirect('/');
+      });
+    } else {
+      res.json({'status':200,'message':'Successful'});
+    }
   });
 
   console.log('passport plugin');
