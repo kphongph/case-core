@@ -1,0 +1,20 @@
+{
+  "name": "Uicontrol",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "uicontrols"
+  },
+  "properties": {
+    "UIControlID": {
+      "type": "String"
+    },
+    "UIControlName": {
+      "type": "String"
+    },
+    "UIControlDesc": {
+      "type": "String"
+    }
+  }
+}

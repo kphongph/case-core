@@ -1,0 +1,17 @@
+{
+  "name": "Insurancegroup",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "insurancegroups"
+  },
+  "properties": {
+    "GroupId": {
+      "type": "String"
+    },
+    "InsuranceGroupDescription": {
+      "type": "String"
+    }
+  }
+}

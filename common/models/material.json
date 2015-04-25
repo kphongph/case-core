@@ -1,0 +1,44 @@
+{
+  "name": "Material",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "materials"
+  },
+  "properties": {
+    "ID": {
+      "type": "Number"
+    },
+    "MaterialCode": {
+      "type": "String"
+    },
+    "MaterialDesc": {
+      "type": "String"
+    },
+    "Unit": {
+      "type": "String"
+    },
+    "EstimatedPrice": {
+      "type": "String"
+    },
+    "RealPrice": {
+      "type": "String"
+    },
+    "ACTCode": {
+      "type": "String"
+    },
+    "Note": {
+      "type": "String"
+    },
+    "TimeStamp": {
+      "type": "Date"
+    },
+    "StartDate": {
+      "type": "Date"
+    },
+    "EndDate": {
+      "type": "Date"
+    }
+  }
+}

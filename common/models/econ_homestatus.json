@@ -1,0 +1,17 @@
+{
+  "name": "EconHomestatus",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "econ_homestatuses"
+  },
+  "properties": {
+    "EconHomeStatusID": {
+      "type": "Number"
+    },
+    "Description": {
+      "type": "String"
+    }
+  }
+}

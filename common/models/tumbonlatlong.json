@@ -1,0 +1,23 @@
+{
+  "name": "Tumbonlatlong",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "tumbonlatlongs"
+  },
+  "properties": {
+    "TumbonID": {
+      "type": "String"
+    },
+    "Lat": {
+      "type": "String"
+    },
+    "Long": {
+      "type": "String"
+    },
+    "NumberOfSeries": {
+      "type": "Number"
+    }
+  }
+}

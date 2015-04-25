@@ -1,0 +1,29 @@
+{
+  "name": "Formstd",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "formstds"
+  },
+  "properties": {
+    "FSTDID": {
+      "type": "String"
+    },
+    "FID": {
+      "type": "String"
+    },
+    "SType_ID": {
+      "type": "String"
+    },
+    "min": {
+      "type": "Number"
+    },
+    "max": {
+      "type": "Number"
+    },
+    "ResultID": {
+      "type": "String"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "HealthprojectTarget",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "healthproject_targets"
+  },
+  "properties": {
+    "ID": {
+      "type": "Number"
+    },
+    "ProjectID": {
+      "type": "Number"
+    },
+    "TargetDescription": {
+      "type": "String"
+    },
+    "HostType": {
+      "type": "String"
+    },
+    "TimeStamp": {
+      "type": "Date"
+    }
+  }
+}

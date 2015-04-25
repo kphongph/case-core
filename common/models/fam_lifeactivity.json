@@ -1,0 +1,17 @@
+{
+  "name": "FamLifeactivity",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "fam_lifeactivities"
+  },
+  "properties": {
+    "FamilyLifeActivityID": {
+      "type": "Number"
+    },
+    "Description": {
+      "type": "String"
+    }
+  }
+}

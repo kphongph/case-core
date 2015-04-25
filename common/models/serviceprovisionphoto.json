@@ -1,0 +1,23 @@
+{
+  "name": "Serviceprovisionphoto",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "serviceprovisionphotos"
+  },
+  "properties": {
+    "sp_id": {
+      "type": "Number"
+    },
+    "imgNumber": {
+      "type": "Number"
+    },
+    "imgURL": {
+      "type": "String"
+    },
+    "imgDescription": {
+      "type": "String"
+    }
+  }
+}

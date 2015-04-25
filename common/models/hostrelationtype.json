@@ -1,0 +1,17 @@
+{
+  "name": "Hostrelationtype",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "hostrelationtypes"
+  },
+  "properties": {
+    "HostRelationTypeID": {
+      "type": "String"
+    },
+    "HostRelationTypeDesc": {
+      "type": "String"
+    }
+  }
+}

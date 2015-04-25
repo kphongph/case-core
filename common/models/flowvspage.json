@@ -1,0 +1,20 @@
+{
+  "name": "Flowvspage",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "flowvspages"
+  },
+  "properties": {
+    "FlowID": {
+      "type": "String"
+    },
+    "PageID": {
+      "type": "String"
+    },
+    "PageOrder": {
+      "type": "Number"
+    }
+  }
+}

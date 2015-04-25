@@ -1,0 +1,17 @@
+{
+  "name": "FamTraining",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "fam_trainings"
+  },
+  "properties": {
+    "FamilyTrainingID": {
+      "type": "Number"
+    },
+    "Description": {
+      "type": "String"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Icfcodemappingpart",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "icfcodemappingparts"
+  },
+  "properties": {
+    "AID": {
+      "type": "String"
+    },
+    "ICFCode": {
+      "type": "String"
+    },
+    "EvaluationID": {
+      "type": "String"
+    }
+  }
+}

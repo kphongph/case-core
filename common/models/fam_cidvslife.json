@@ -1,0 +1,17 @@
+{
+  "name": "FamCidvslife",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "fam_cidvslives"
+  },
+  "properties": {
+    "CID": {
+      "type": "String"
+    },
+    "LifeActivityID": {
+      "type": "Number"
+    }
+  }
+}

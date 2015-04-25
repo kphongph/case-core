@@ -1,0 +1,17 @@
+{
+  "name": "Occupation",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "occupations"
+  },
+  "properties": {
+    "OccupationID": {
+      "type": "String"
+    },
+    "OccupationDescription": {
+      "type": "String"
+    }
+  }
+}

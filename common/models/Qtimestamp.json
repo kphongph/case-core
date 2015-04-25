@@ -1,205 +1,50 @@
 {
   "name": "Qtimestamp",
   "options": {
-    "idInjection": true,
-    "mongodb": {
-      "collection": "qtimestamp"
-    }
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "qtimestamps"
   },
   "properties": {
     "CID": {
-      "type": "String",
-      "length": 13,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "CID",
-        "dataType": "varchar",
-        "dataLength": 13,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "String"
     },
     "QTID": {
-      "type": "String",
-      "length": 5,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "QTID",
-        "dataType": "varchar",
-        "dataLength": 5,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "String"
     },
     "QTSID": {
-      "type": "Number",
-      "length": null,
-      "precision": 10,
-      "scale": 0,
-      "mssql": {
-        "columnName": "QTSID",
-        "dataType": "int",
-        "dataLength": null,
-        "dataPrecision": 10,
-        "dataScale": 0,
-        "nullable": "NO"
-      }
+      "type": "Number"
     },
     "CaseNo": {
-      "type": "Number",
-      "required": false,
-      "length": null,
-      "precision": 10,
-      "scale": 0,
-      "mssql": {
-        "columnName": "CaseNo",
-        "dataType": "int",
-        "dataLength": null,
-        "dataPrecision": 10,
-        "dataScale": 0,
-        "nullable": "YES"
-      }
+      "type": "Number"
     },
     "CMPlanNo": {
-      "type": "Number",
-      "required": false,
-      "length": null,
-      "precision": 10,
-      "scale": 0,
-      "mssql": {
-        "columnName": "CMPlanNo",
-        "dataType": "int",
-        "dataLength": null,
-        "dataPrecision": 10,
-        "dataScale": 0,
-        "nullable": "YES"
-      }
+      "type": "Number"
     },
     "StaffID": {
-      "type": "String",
-      "required": false,
-      "length": 50,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "StaffID",
-        "dataType": "varchar",
-        "dataLength": 50,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+      "type": "String"
     },
     "UpdateTime": {
-      "type": "Date",
-      "required": false,
-      "length": null,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "UpdateTime",
-        "dataType": "datetime",
-        "dataLength": null,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+      "type": "Date"
     },
     "ConfirmID": {
-      "type": "Number",
-      "required": false,
-      "length": null,
-      "precision": 10,
-      "scale": 0,
-      "mssql": {
-        "columnName": "ConfirmID",
-        "dataType": "int",
-        "dataLength": null,
-        "dataPrecision": 10,
-        "dataScale": 0,
-        "nullable": "YES"
-      }
+      "type": "Number"
     },
     "ConfirmTime": {
-      "type": "Date",
-      "required": false,
-      "length": null,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "ConfirmTime",
-        "dataType": "datetime",
-        "dataLength": null,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+      "type": "Date"
     },
     "HostID": {
-      "type": "String",
-      "required": false,
-      "length": 50,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "HostID",
-        "dataType": "varchar",
-        "dataLength": 50,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+      "type": "String"
     },
     "RecordDate": {
-      "type": "Date",
-      "required": false,
-      "length": null,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "RecordDate",
-        "dataType": "date",
-        "dataLength": null,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+      "type": "Date"
     },
     "InputType": {
-      "type": "Number",
-      "required": false,
-      "length": null,
-      "precision": 3,
-      "scale": 0,
-      "mssql": {
-        "columnName": "InputType",
-        "dataType": "tinyint",
-        "dataLength": null,
-        "dataPrecision": 3,
-        "dataScale": 0,
-        "nullable": "YES"
-      }
-    }
-  },
-  "relations" :{
-    "questiontype" : {
-      "type":"belongsTo",
-      "model":"Questiontype",
-      "foreignKey":"questiontypeId"
+      "type": "Number"
     },
-    "person" : {
-      "type":"belongsTo",
-      "model":"Person",
-      "foreignKey":"personId"
-    },
-    "qrecords" :{
-      "type":"hasMany",
-      "model":"Qrecord",
-      "foreignKey":"qtimestampId"
+    "id": {
+      "type": "Number"
     }
   }
 }

@@ -1,0 +1,20 @@
+{
+  "name": "Result",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "results"
+  },
+  "properties": {
+    "ResultID": {
+      "type": "String"
+    },
+    "RDesc": {
+      "type": "String"
+    },
+    "Rvalue": {
+      "type": "Number"
+    }
+  }
+}

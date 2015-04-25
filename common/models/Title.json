@@ -1,43 +1,17 @@
 {
   "name": "Title",
   "options": {
-    "idInjection": false,
-    "mssql": {
-      "schema": "dbo",
-      "table": "Title"
-    }
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "titles"
   },
   "properties": {
-    "titleid": {
-      "type": "String",
-      "required": true,
-      "length": 4,
-      "precision": null,
-      "scale": null,
-      "id": 1,
-      "mssql": {
-        "columnName": "TitleID",
-        "dataType": "varchar",
-        "dataLength": 4,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+    "TitleID": {
+      "type": "String"
     },
-    "titledescription": {
-      "type": "String",
-      "required": false,
-      "length": -1,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "TitleDescription",
-        "dataType": "varchar",
-        "dataLength": -1,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+    "TitleDescription": {
+      "type": "String"
     }
   }
 }

@@ -1,58 +1,20 @@
 {
   "name": "Gender",
   "options": {
-    "idInjection": false,
-    "mssql": {
-      "schema": "dbo",
-      "table": "Gender"
-    }
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "genders"
   },
   "properties": {
-    "gendercode": {
-      "type": "String",
-      "required": true,
-      "length": 3,
-      "precision": null,
-      "scale": null,
-      "id": 1,
-      "mssql": {
-        "columnName": "GenderCode",
-        "dataType": "varchar",
-        "dataLength": 3,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+    "GenderCode": {
+      "type": "String"
     },
-    "genderthaidescription": {
-      "type": "String",
-      "required": false,
-      "length": -1,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "GenderThaiDescription",
-        "dataType": "varchar",
-        "dataLength": -1,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+    "GenderThaiDescription": {
+      "type": "String"
     },
-    "genderenglishdescription": {
-      "type": "String",
-      "required": false,
-      "length": -1,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "GenderEnglishDescription",
-        "dataType": "varchar",
-        "dataLength": -1,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+    "GenderEnglishDescription": {
+      "type": "String"
     }
   }
 }

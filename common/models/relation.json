@@ -1,0 +1,29 @@
+{
+  "name": "Relation",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "relations"
+  },
+  "properties": {
+    "RelationID": {
+      "type": "String"
+    },
+    "RelationThaiDescription": {
+      "type": "String"
+    },
+    "RelationHL7Code": {
+      "type": "String"
+    },
+    "RelationEngName": {
+      "type": "String"
+    },
+    "RelationEngLongDescription": {
+      "type": "String"
+    },
+    "OppositeThaiDescription": {
+      "type": "String"
+    }
+  }
+}

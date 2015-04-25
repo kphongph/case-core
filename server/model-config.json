@@ -8,116 +8,564 @@
       "../node_modules/loopback-component-passport/lib/models"
     ]
   },
-  "accessToken" : {
+  "accessToken": {
     "dataSource": "caseMongoDs",
     "public": true
   },
-  "ACL" : {
+  "ACL": {
     "dataSource": "caseMongoDs",
     "public": false
   },
   "Address": {
-    "dataSource": "caseDs",
-    "public": true 
+    "dataSource": "caseMongoDs",
+    "public": true
   },
   "Addresstype": {
-    "dataSource": "caseDs",
-    "public": true 
+    "dataSource": "caseMongoDs",
+    "public": true
   },
   "Adressvsperson": {
-    "dataSource": "caseDs",
-    "public": true 
+    "dataSource": "caseMongoDs",
+    "public": true
   },
   "Answer": {
     "dataSource": "caseMongoDs",
-    "public": true 
+    "public": true
   },
   "City": {
-    "dataSource": "caseDs",
-    "public": true 
+    "dataSource": "caseMongoDs",
+    "public": true
   },
   "Employee": {
-    "dataSource": "caseDs",
-    "public": true 
+    "dataSource": "caseMongoDs",
+    "public": true
   },
   "Form": {
     "dataSource": "caseMongoDs",
-    "public": true 
+    "public": true
   },
   "FormTemplate": {
     "dataSource": "caseMongoDs",
-    "public": true 
+    "public": true
   },
   "Host": {
-    "dataSource": "caseDs",
-    "public": true 
+    "dataSource": "caseMongoDs",
+    "public": true
   },
   "Gender": {
-    "dataSource": "caseDs",
-    "public": true 
+    "dataSource": "caseMongoDs",
+    "public": true
   },
   "Title": {
-    "dataSource": "caseDs",
-    "public": true 
+    "dataSource": "caseMongoDs",
+    "public": true
   },
   "Tumbon": {
-    "dataSource": "caseDs",
-    "public": true 
+    "dataSource": "caseMongoDs",
+    "public": true
   },
   "Nationality": {
-    "dataSource": "caseDs",
-    "public": true 
+    "dataSource": "caseMongoDs",
+    "public": true
   },
   "Person": {
     "dataSource": "caseMongoDs",
-    "public": true 
+    "public": true
   },
   "Planservice": {
     "dataSource": "caseMongoDs",
-    "public": true 
+    "public": true
   },
   "Race": {
-    "dataSource": "caseDs",
-    "public": true 
+    "dataSource": "caseMongoDs",
+    "public": true
   },
   "Religion": {
-    "dataSource": "caseDs",
-    "public": true 
+    "dataSource": "caseMongoDs",
+    "public": true
   },
-  "Role" : {
+  "Role": {
     "dataSource": "caseMongoDs",
     "public": false
   },
-  "RoleMapping" : {
+  "RoleMapping": {
     "dataSource": "caseMongoDs",
     "public": true
   },
   "Personvshost": {
-    "dataSource": "caseDs",
-    "public": true 
+    "dataSource": "caseMongoDs",
+    "public": true
   },
   "Province": {
-    "dataSource": "caseDs",
-    "public": true 
+    "dataSource": "caseMongoDs",
+    "public": true
   },
   "Systemtype": {
     "dataSource": "caseMongoDs",
-    "public": true 
-  },
-  "user" : {
-    "dataSource" : "caseMongoDs",
     "public": true
   },
-  "userCredential" : {
-    "dataSource" : "caseMongoDs",
+  "user": {
+    "dataSource": "caseMongoDs",
     "public": true
   },
-  "userIdentity" : {
-    "dataSource" : "caseMongoDs",
+  "userCredential": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "userIdentity": {
+    "dataSource": "caseMongoDs",
     "public": true
   },
   "Village": {
-    "dataSource": "caseDs",
-    "public": true 
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Organization": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Bloodtype": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Answergroup": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Activity": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Activitycost": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Activityvspersontype": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Activityvsrole": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Acvititytype": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Agetype": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Agevsanswer": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Annotation": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Department": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Disabilityanswer": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Disabilityevaluationcategory": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Disabilityevaluationsubcategory": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Disabilityquestion": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Disabilitytype": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Disabillityevaluation": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "EconAllhomestatus": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "EconFamilymain": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "EconHoldinghomestatus": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "EconHomestatus": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "EconHomestatus2": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "EconPlacehome": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Education": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Educationclass": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Educationlevel": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Existingwelfare": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "FamCidvslife": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "FamCidvspublic": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "FamCidvstraining": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "FamEnvironment": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "FamLifeactivity": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "FamPublicutillity": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "FamRelationstatus": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "FamTraining": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Family": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "FamilyrelationMain": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Flow": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Flowvspage": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Foreigner": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Formstd": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Formvsactivity": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Fresult": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "HealthprojectActivitylist": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "HealthprojectKpt": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "HealthprojectObjective": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "HealthprojectTarget": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "HealthprojectTargetarea": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Healthprojectestimatecost": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Hostrelation": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Hostrelationtype": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Hosttype": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Hosttypeid": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Hostvsarea": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Icfcodemappingpart": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Insurancecard": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Insurancegroup": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Livehomestatus": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Livestatus": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Mariagestatus": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Material": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "MaterialAct": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Ministry": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Occupation": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Otherdatadesc": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Page": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Partforevaluation": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Period": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Periodbyage": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Periodbyeduclass": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Personflowstatus": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Personflowstatusrecord": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Persontype": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Persontyperecord": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Planperson": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Planvsscreening": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Provider": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Qnote": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Qrecord": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Qresult": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Qtimestamp": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Qtschool": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Questionaire": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Questionstd": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Questiontype": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Questionvsanswer": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Reasonmovetype": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Recordplanning": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Recordserviceprovision": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Relation": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Result": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Roleforservice": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Rolevsflow": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Service": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Servicemappingicf": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Serviceprovision": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Serviceprovisiondetails": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Serviceprovisionhealthproject": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Serviceprovisionnote": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Serviceprovisionphoto": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Servicevspersontype": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Servicevsrole": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "SummaryFormArea": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "SummaryformDefinition": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Svcobjective": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "TravelMain": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "TravelSolution": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Tumbonlatlong": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Uicontrol": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Villagevshost": {
+    "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "Weighheight": {
+    "dataSource": "caseMongoDs",
+    "public": true
   }
 }

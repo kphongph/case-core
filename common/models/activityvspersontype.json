@@ -1,0 +1,17 @@
+{
+  "name": "Activityvspersontype",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "activityvspersontypes"
+  },
+  "properties": {
+    "ACTCode": {
+      "type": "String"
+    },
+    "PersonTypeID": {
+      "type": "String"
+    }
+  }
+}

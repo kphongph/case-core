@@ -1,80 +1,23 @@
 {
   "name": "Province",
   "options": {
-    "idInjection": false,
-    "mssql": {
-      "schema": "dbo",
-      "table": "Province"
-    }
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "provinces"
   },
   "properties": {
     "ProvinceID": {
-      "type": "String",
-      "required": true,
-      "length": 2,
-      "precision": null,
-      "scale": null,
-      "id": 1,
-      "mssql": {
-        "columnName": "ProvinceID",
-        "dataType": "varchar",
-        "dataLength": 2,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "String"
     },
     "ProvinceDescription": {
-      "type": "String",
-      "required": true,
-      "length": 150,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "ProvinceDescription",
-        "dataType": "varchar",
-        "dataLength": 150,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+      "type": "String"
     },
-    "latitude": {
-      "type": "Number",
-      "required": false,
-      "length": null,
-      "precision": 53,
-      "scale": null,
-      "mssql": {
-        "columnName": "Latitude",
-        "dataType": "float",
-        "dataLength": null,
-        "dataPrecision": 53,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+    "Latitude": {
+      "type": "Number"
     },
-    "longtitude": {
-      "type": "Number",
-      "required": false,
-      "length": null,
-      "precision": 53,
-      "scale": null,
-      "mssql": {
-        "columnName": "Longtitude",
-        "dataType": "float",
-        "dataLength": null,
-        "dataPrecision": 53,
-        "dataScale": null,
-        "nullable": "YES"
-      }
-    }
-  },
-  "relations" :{
-    "cities" : {
-      "type":"hasMany",
-      "model":"City",
-      "foreignKey":"ProvinceID"
+    "Longtitude": {
+      "type": "Number"
     }
   }
 }

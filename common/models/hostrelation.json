@@ -1,0 +1,20 @@
+{
+  "name": "Hostrelation",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "hostrelations"
+  },
+  "properties": {
+    "UpperHost": {
+      "type": "String"
+    },
+    "LowerHost": {
+      "type": "String"
+    },
+    "HostRelationType": {
+      "type": "String"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Otherdatadesc",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "otherdatadescs"
+  },
+  "properties": {
+    "Id": {
+      "type": "Number"
+    },
+    "CID": {
+      "type": "String"
+    },
+    "Attribute": {
+      "type": "String"
+    },
+    "Description": {
+      "type": "String"
+    }
+  }
+}

@@ -1,68 +1,26 @@
 {
   "name": "Questiontype",
   "options": {
-    "idInjection": true,
-    "mongodb": {
-      "collection": "questiontype"
-    }
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "questiontypes"
   },
   "properties": {
     "QTID": {
-      "type": "String",
-      "required": true,
-      "length": 5,
-      "precision": null,
-      "scale": null
+      "type": "String"
     },
     "QTDesc": {
-      "type": "String",
-      "required": false,
-      "length": -1,
-      "precision": null,
-      "scale": null
+      "type": "String"
     },
     "FID": {
-      "type": "String",
-      "required": false,
-      "length": 5,
-      "precision": null,
-      "scale": null
+      "type": "String"
     },
     "SType_ID": {
-      "type": "String",
-      "required": false,
-      "length": 5,
-      "precision": null,
-      "scale": null
+      "type": "String"
     },
-    "uicontrol": {
-      "type": "String",
-      "required": false,
-      "length": 5,
-      "precision": null,
-      "scale": null
-    }
-  },
-  "relations":{
-    "form": { 
-      "type":"belongsTo",
-      "model":"Form",
-      "foreignKey":"formId"
-    },
-    "questionvsanswers":{
-      "type":"hasMany",
-      "model":"Questionvsanswer",
-      "foreignKey":"QTID"
-    },
-    "questionaires":{
-      "type":"hasMany",
-      "model":"Questionaire",
-      "foreignKey":"questiontypeId"
-    },
-    "qtimestamps":{
-      "type":"hasMany",
-      "model":"Qtimestamp",
-      "foreignKey":"questiontypeId"
+    "UIControl": {
+      "type": "String"
     }
   }
 }

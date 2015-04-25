@@ -1,0 +1,17 @@
+{
+  "name": "Bloodtype",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "bloodtypes"
+  },
+  "properties": {
+    "BloodID": {
+      "type": "String"
+    },
+    "BloodType": {
+      "type": "String"
+    }
+  }
+}

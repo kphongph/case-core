@@ -1,0 +1,32 @@
+{
+  "name": "Rolevsflow",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "rolevsflows"
+  },
+  "properties": {
+    "RoleId": {
+      "type": "String"
+    },
+    "FlowID": {
+      "type": "String"
+    },
+    "HostTypeID": {
+      "type": "String"
+    },
+    "Gender": {
+      "type": "String"
+    },
+    "PrID": {
+      "type": "String"
+    },
+    "PrType": {
+      "type": "String"
+    },
+    "RequireCID": {
+      "type": "Boolean"
+    }
+  }
+}

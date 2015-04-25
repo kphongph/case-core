@@ -1,0 +1,38 @@
+{
+  "name": "Healthprojectestimatecost",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "healthprojectestimatecosts"
+  },
+  "properties": {
+    "ProjectID": {
+      "type": "Number"
+    },
+    "LabourCost": {
+      "type": "Number"
+    },
+    "MaterialCost": {
+      "type": "Number"
+    },
+    "CC_Equipment": {
+      "type": "Number"
+    },
+    "CC_Building": {
+      "type": "Number"
+    },
+    "IndirectCost": {
+      "type": "Number"
+    },
+    "CurrentCost": {
+      "type": "Number"
+    },
+    "HostType": {
+      "type": "String"
+    },
+    "TimeStamp": {
+      "type": "Date"
+    }
+  }
+}

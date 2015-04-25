@@ -1,0 +1,23 @@
+{
+  "name": "Planvsscreening",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "planvsscreenings"
+  },
+  "properties": {
+    "CID": {
+      "type": "String"
+    },
+    "ScreeningCaseNo": {
+      "type": "Number"
+    },
+    "CMPlanNo": {
+      "type": "Number"
+    },
+    "UpdateTime": {
+      "type": "Date"
+    }
+  }
+}

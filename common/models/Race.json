@@ -1,58 +1,20 @@
 {
   "name": "Race",
   "options": {
-    "idInjection": false,
-    "mssql": {
-      "schema": "dbo",
-      "table": "Race"
-    }
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "races"
   },
   "properties": {
-    "raceid": {
-      "type": "String",
-      "required": true,
-      "length": 50,
-      "precision": null,
-      "scale": null,
-      "id": 1,
-      "mssql": {
-        "columnName": "RaceID",
-        "dataType": "varchar",
-        "dataLength": 50,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "NO"
-      }
+    "RaceID": {
+      "type": "String"
     },
-    "nationalitydescription": {
-      "type": "String",
-      "required": false,
-      "length": -1,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "NationalityDescription",
-        "dataType": "nvarchar",
-        "dataLength": -1,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+    "NationalityDescription": {
+      "type": "String"
     },
-    "zone": {
-      "type": "String",
-      "required": false,
-      "length": 50,
-      "precision": null,
-      "scale": null,
-      "mssql": {
-        "columnName": "Zone",
-        "dataType": "nvarchar",
-        "dataLength": 50,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "YES"
-      }
+    "Zone": {
+      "type": "String"
     }
   }
 }

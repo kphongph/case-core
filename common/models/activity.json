@@ -1,0 +1,32 @@
+{
+  "name": "Activity",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "activities"
+  },
+  "properties": {
+    "ACTCode": {
+      "type": "String"
+    },
+    "ACTName": {
+      "type": "String"
+    },
+    "ACTDesc": {
+      "type": "String"
+    },
+    "SVCCode": {
+      "type": "String"
+    },
+    "ActivityTypeID": {
+      "type": "String"
+    },
+    "PeriodID": {
+      "type": "String"
+    },
+    "PeriodType": {
+      "type": "String"
+    }
+  }
+}

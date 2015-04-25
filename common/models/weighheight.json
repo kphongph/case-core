@@ -1,0 +1,29 @@
+{
+  "name": "Weighheight",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "weighheights"
+  },
+  "properties": {
+    "WHID": {
+      "type": "Number"
+    },
+    "CID": {
+      "type": "String"
+    },
+    "weigth": {
+      "type": "String"
+    },
+    "Height": {
+      "type": "String"
+    },
+    "Reccorddate": {
+      "type": "Date"
+    },
+    "timestamp": {
+      "type": "Date"
+    }
+  }
+}

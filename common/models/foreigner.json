@@ -1,0 +1,17 @@
+{
+  "name": "Foreigner",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "foreigners"
+  },
+  "properties": {
+    "ForeignTypeID": {
+      "type": "String"
+    },
+    "ForeignTypeDescription": {
+      "type": "String"
+    }
+  }
+}
