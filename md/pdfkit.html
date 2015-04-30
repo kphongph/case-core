@@ -41,7 +41,11 @@
             current.pos.x, current.pos.y,current.option);
         }
         if(current.type == 'text') {
-          if(!current.color) doc.fill('#000000');
+          if(!current.color) {
+            doc.fill('#000000');
+          } else {
+            doc.fill(current.color);
+          }
           doc.font(fonts[current.font.face])
           .fontSize(current.font.size)
           .text(current.text,current.pos.x, current.pos.y, current.option);
@@ -49,6 +53,11 @@
         if(current.type == 'rect') {
           doc.rect(current.pos.x, current.pos.y, current.width, current.height)
           .fill(current.color);
+        }
+        if(current.type == 'line') {
+          doc.moveTo(current.src.x,current.src.y);
+          doc.lineTo(current.des.x,current.des.y);
+          doc.stroke();
         }
       }
     }

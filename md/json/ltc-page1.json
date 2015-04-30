@@ -58,21 +58,44 @@
     "option":{"align":"center"}
   },
   {
+    "type":"rect",
+    "pos":{"x":40,"y":172},
+    "width":70,"height":25,
+    "color":"#000000"
+  },
+  {
+    "type":"line",
+    "src":{"x":40,"y":172},
+    "des":{"x":540,"y":172}
+  },
+  {
+    "type":"line",
+    "src":{"x":40,"y":197},
+    "des":{"x":540,"y":197}
+  },
+  {
     "type":"text",
     "font":{"face":"bold","size":18},
-    "pos":{"x":40,"y":175},
-    "text":"1. ข้อมูลทั่วไป"
+    "pos":{"x":50,"y":175},
+    "text":"ส่วนที่ 1.",
+    "color":"#FFFFFF"
+  },
+  {
+    "type":"text",
+    "font":{"face":"bold","size":18},
+    "pos":{"x":120,"y":175},
+    "text":"ข้อมูลทั่วไป"
   },
   {
     "type":"rect",
-    "pos":{"x":45,"y":198},
+    "pos":{"x":40,"y":198},
     "width":500,"height":25,
     "color":"#efefef"
   },
   {
     "type":"text",
     "font":{"face":"bold","size":16},
-    "pos":{"x":70,"y":200},
+    "pos":{"x":50,"y":200},
     "text":"ข้อมูลผู้สูงอายุ"
   },
   {
@@ -82,10 +105,20 @@
     "text":"ชื่อ - นามสกุล"
   },
   {
+    "type":"line",
+    "src":{"x":210,"y":225},
+    "des":{"x":210,"y":260}
+  },
+  {
     "type":"text",
     "font":{"face":"bold","size":13},
     "pos":{"x":220,"y":225},
     "text":"เลขบัตรประจำตัวประชาชน"
+  },
+  {
+    "type":"line",
+    "src":{"x":330,"y":225},
+    "des":{"x":330,"y":260}
   },
   {
     "type":"text",
@@ -94,22 +127,42 @@
     "text":"วัน/เดือน/ปีเกิด"
   },
   {
+    "type":"line",
+    "src":{"x":430,"y":225},
+    "des":{"x":430,"y":260}
+  },
+  {
     "type":"text",
     "font":{"face":"bold","size":13},
     "pos":{"x":440,"y":225},
     "text":"อายุ"
   },
   {
-    "type":"text",
-    "font":{"face":"bold","size":13},
-    "pos":{"x":70,"y":270},
-    "text":"ระดับการศึกษา"
+    "type":"line",
+    "src":{"x":40,"y":260},
+    "des":{"x":540,"y":260}
   },
   {
     "type":"text",
     "font":{"face":"bold","size":13},
-    "pos":{"x":220,"y":270},
+    "pos":{"x":70,"y":265},
+    "text":"ระดับการศึกษา"
+  },
+  {
+    "type":"line",
+    "src":{"x":210,"y":260},
+    "des":{"x":210,"y":298}
+  },
+  {
+    "type":"text",
+    "font":{"face":"bold","size":13},
+    "pos":{"x":220,"y":265},
     "text":"รายได้"
+  },
+  {
+    "type":"line",
+    "src":{"x":40,"y":298},
+    "des":{"x":540,"y":298}
   },
   {
     "type":"text",
@@ -142,26 +195,26 @@
   {
     "type":"text",
     "font":{"face":"normal","size":16},
-    "pos":{"x":70,"y":285},
+    "pos":{"x":70,"y":280},
     "text":"-"
   },
   {
     "type":"text",
     "font":{"face":"normal","size":16},
-    "pos":{"x":220,"y":285},
+    "pos":{"x":220,"y":280},
     "text":"0 บาทต่อเดือน",
     "option":{"width":150}
   },
   {
     "type":"rect",
-    "pos":{"x":45,"y":310},
+    "pos":{"x":40,"y":300},
     "width":500,"height":25,
     "color":"#efefef"
   },
   {
     "type":"text",
     "font":{"face":"bold","size":16},
-    "pos":{"x":70,"y":312},
+    "pos":{"x":50,"y":302},
     "text":"ข้อมูลที่อยู่ผู้สูงอายุที่สามารถติดต่อได้"
   }
 ]
