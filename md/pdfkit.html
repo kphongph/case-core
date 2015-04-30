@@ -1,0 +1,110 @@
+<html>
+<head>
+  <meta charset='utf-8'>
+  <script src="js/pdfkit.js"></script>
+  <script src="js/blob-stream.js"></script>
+</head>
+
+<body>
+  <iframe id="iframeD" width="100%" height="100%"></iframe>
+
+  <script>
+    var doc = new PDFDocument();
+    var stream = doc.pipe(blobStream());
+
+    var fonts = {};
+    var images = {};
+    
+    loadFont('/fonts/THSarabun.ttf', function(normal) {
+      fonts['normal'] = normal;
+      loadFont('/fonts/THSarabun Bold.ttf', function(bold) {
+        fonts['bold'] = bold;
+        convertImgToBase64URL('/images/ca3ikv31_1.jpg',function(base64Img) {
+          images['/images/ca3ikv31_1.jpg'] = base64Img;
+          convertImgToBase64URL('/images/Naresuanlogo.png',function(nulogo) {
+            images['/images/Naresuanlogo.jpg'] = nulogo;
+            loadJSON('/json/ltc-page1.json', function(jsonData) {
+              page(doc,fonts,images,jsonData);
+              doc.end();
+            });
+          });
+        });
+      });
+    });
+
+
+    function page(doc,fonts,images,contents) {
+      for(var i=0;i<contents.length;i++) {
+        var current = contents[i];
+        if(current.type == 'img') {
+          doc.image(images[current.name],
+            current.pos.x, current.pos.y,current.option);
+        }
+        if(current.type == 'text') {
+          if(!current.color) doc.fill('#000000');
+          doc.font(fonts[current.font.face])
+          .fontSize(current.font.size)
+          .text(current.text,current.pos.x, current.pos.y, current.option);
+        }
+        if(current.type == 'rect') {
+          doc.rect(current.pos.x, current.pos.y, current.width, current.height)
+          .fill(current.color);
+        }
+      }
+    }
+    
+    stream.on('finish', function() {
+      var iframe = document.getElementById("iframeD");
+      iframe.src= stream.toBlobURL('application/pdf');
+      /*
+      var blob = stream.toBlob('application/pdf');
+      var reader = new window.FileReader();
+      reader.readAsDataURL(blob); 
+      reader.onloadend = function() {
+        base64data = reader.result;                
+        window.open(base64data);
+      }
+      */
+    });
+
+    function convertImgToBase64URL(url, callback, outputFormat){
+      var img = new Image();
+      img.crossOrigin = 'Anonymous';
+      img.onload = function(){
+        var canvas = document.createElement('CANVAS'),
+        ctx = canvas.getContext('2d'), dataURL;
+        canvas.height = img.height;
+        canvas.width = img.width;
+        ctx.drawImage(img, 0, 0);
+        dataURL = canvas.toDataURL(outputFormat);
+        console.log(dataURL);
+        callback(dataURL);
+        canvas = null; 
+      };
+      img.src = url;
+    }
+
+    function loadJSON(url, cb) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, true);
+      xhr.responseType = 'text';
+      xhr.onload = function(e) {
+        cb(JSON.parse(xhr.responseText));
+      }
+      xhr.send();
+    }
+
+    function loadFont(url, cb) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, true);
+      xhr.responseType = 'arraybuffer';
+      xhr.onload = function(e) {
+        cb(xhr.response);
+      }
+      xhr.send();
+    }
+   
+    
+  </script>
+</body>
+</html>
