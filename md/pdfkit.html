@@ -43,7 +43,11 @@
     new Chart(ctx).Line(data, {
       bezierCurve: false,
       onAnimationComplete: function() {
-        chartContent = document.getElementById("myChart").toDataURL();
+        var obj = document.getElementById("myChart");
+        chartContent = obj.toDataURL();
+        obj.style.display="none";
+        
+        
         chartReady();
       }
     });
