@@ -3,54 +3,41 @@
   <meta charset='utf-8'>
   <script src="js/pdfkit.js"></script>
   <script src="js/blob-stream.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 </head>
 
 <body>
+  <div id="piechart" style="width:450px;height:250px"></div>
   
-  <canvas id="myChart" width="400" height="400" style="visibility:hidden">
-  </canvas>
   <iframe id="iframeD" width="100%" height="100%"></iframe>
 
   <script>
-    var data = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [
-        {
-            label: "My First dataset",
-            fillColor: "rgba(220,220,220,0.2)",
-            strokeColor: "rgba(220,220,220,1)",
-            pointColor: "rgba(220,220,220,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(220,220,220,1)",
-            data: [65, 59, 80, 81, 56, 55, 40]
-        },
-        {
-            label: "My Second dataset",
-            fillColor: "rgba(151,187,205,0.2)",
-            strokeColor: "rgba(151,187,205,1)",
-            pointColor: "rgba(151,187,205,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(151,187,205,1)",
-            data: [28, 48, 40, 19, 86, 27, 90]
-        }
-      ]
-    };
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart);
     var chartContent = null;
-    var ctx = document.getElementById("myChart").getContext("2d");
-    new Chart(ctx).Line(data, {
-      bezierCurve: false,
-      onAnimationComplete: function() {
-        var obj = document.getElementById("myChart");
-        chartContent = obj.toDataURL();
-        obj.style.display="none";
-        
-        
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Work',     11],
+          ['Eat',      2],
+          ['Commute',  2],
+          ['Watch TV', 2],
+          ['Sleep',    7]
+        ]);
+
+      var options = {
+        title: 'My Daily Activities'
+      };
+      
+      var myDiv = document.getElementById('piechart');
+      var chart = new google.visualization.PieChart(myDiv);
+      google.visualization.events.addListener(chart, 'ready', function () {
+        chartContent = chart.getImageURI();
+        myDiv.style.display="none";
         chartReady();
-      }
-    });
+      });
+      chart.draw(data);
+    }
 
     var doc = new PDFDocument();
     var stream = doc.pipe(blobStream());
@@ -69,7 +56,7 @@
             convertImgToBase64URL('/images/Naresuanlogo.png',function(nulogo) {
               images['/images/Naresuanlogo.jpg'] = nulogo;
                 loadJSON('/json/ltc-page1.json', function(jsonData) {
-                doc.image(chartContent,90,340, {width:300});
+                doc.image(chartContent,40,340, {width:450});
                 page(doc,fonts,images,jsonData);
                 doc.end();
               });
