@@ -3,34 +3,77 @@
   <meta charset='utf-8'>
   <script src="js/pdfkit.js"></script>
   <script src="js/blob-stream.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 </head>
 
 <body>
+  
+  <canvas id="myChart" width="400" height="400" style="visibility:hidden">
+  </canvas>
   <iframe id="iframeD" width="100%" height="100%"></iframe>
 
   <script>
+    var data = {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [
+        {
+            label: "My First dataset",
+            fillColor: "rgba(220,220,220,0.2)",
+            strokeColor: "rgba(220,220,220,1)",
+            pointColor: "rgba(220,220,220,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+            label: "My Second dataset",
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)",
+            data: [28, 48, 40, 19, 86, 27, 90]
+        }
+      ]
+    };
+    var chartContent = null;
+    var ctx = document.getElementById("myChart").getContext("2d");
+    new Chart(ctx).Line(data, {
+      bezierCurve: false,
+      onAnimationComplete: function() {
+        chartContent = document.getElementById("myChart").toDataURL();
+        chartReady();
+      }
+    });
+
     var doc = new PDFDocument();
     var stream = doc.pipe(blobStream());
+   
+    function chartReady() {
 
-    var fonts = {};
-    var images = {};
+      var fonts = {};
+      var images = {};
     
-    loadFont('/fonts/THSarabun.ttf', function(normal) {
-      fonts['normal'] = normal;
-      loadFont('/fonts/THSarabun Bold.ttf', function(bold) {
-        fonts['bold'] = bold;
-        convertImgToBase64URL('/images/ca3ikv31_1.jpg',function(base64Img) {
-          images['/images/ca3ikv31_1.jpg'] = base64Img;
-          convertImgToBase64URL('/images/Naresuanlogo.png',function(nulogo) {
-            images['/images/Naresuanlogo.jpg'] = nulogo;
-            loadJSON('/json/ltc-page1.json', function(jsonData) {
-              page(doc,fonts,images,jsonData);
-              doc.end();
+      loadFont('/fonts/THSarabun.ttf', function(normal) {
+        fonts['normal'] = normal;
+        loadFont('/fonts/THSarabun Bold.ttf', function(bold) {
+          fonts['bold'] = bold;
+          convertImgToBase64URL('/images/ca3ikv31_1.jpg',function(base64Img) {
+            images['/images/ca3ikv31_1.jpg'] = base64Img;
+            convertImgToBase64URL('/images/Naresuanlogo.png',function(nulogo) {
+              images['/images/Naresuanlogo.jpg'] = nulogo;
+                loadJSON('/json/ltc-page1.json', function(jsonData) {
+                doc.image(chartContent,90,340, {width:300});
+                page(doc,fonts,images,jsonData);
+                doc.end();
+              });
             });
           });
         });
       });
-    });
+    };
 
 
     function page(doc,fonts,images,contents) {
