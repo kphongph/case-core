@@ -9,3 +9,4 @@ dist
 client/vendor
 app/js/lb-services.js
 npm-debug.log
+server/datasource.json
