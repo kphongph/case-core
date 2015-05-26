@@ -1,0 +1,216 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-menu-button/core-menu-button.html">
+<link rel="import" href="../bower_components/core-dropdown/core-dropdown.html">
+<link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/core-item/core-item.html">
+<link rel="import" href="../bower_components/core-label/core-label.html">
+<link rel="import" href="../bower_components/core-pages/core-pages.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="form-question.html">
+
+<polymer-element name="form-card" attributes="docid"> 
+  <template>
+    <style>
+    :host {
+      display: block;
+      background-color: white;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+      width:100%;
+      font-size: 1rem;
+      font-weight: 200;
+    }
+    .card-header {
+      margin-left: 10px;
+    }
+
+    #formDetail {
+      display: none;
+      width:85%;
+      margin:10px;
+      padding:0px;
+      background:white;
+    }
+
+    polyfill-next-selector { content: '.card-header h2'; }
+    .card-header ::content h2 {
+      margin: 0px;
+      padding: 5px;
+      font-size: 1.1rem;
+      font-weight: 200;
+    }
+    .part {
+      padding:10px;
+    }
+    .questionnaire {
+      padding-left: 20px;
+    }
+    .question {
+      width:80%;
+      margin-bottom:20px;
+    }
+    .question_label {
+      padding:10px;
+      background:#EEEEEE;
+    }
+    paper-radio-button {
+      margin-right:20px;
+    }
+    paper-button {
+      background: #03a9f4;
+      color: white;
+    }
+   </style>
+   
+   <core-ajax id="updateAjax"
+     method="PUT"
+     url="../api/formtemplates"
+     contentType="application/json"
+     on-core-response="{{documentUpdated}}"
+     handleAs="json">
+   </core-ajax>
+   
+
+   <core-ajax id="ajax"
+     on-core-response="{{documentLoaded}}"
+     handleAs="json">
+   </core-ajax>
+
+   <div layout vertical>
+     <div layout horizontal>
+       <div class="card-header" flex>
+         <content select="h2"></content>
+       </div>
+       <paper-icon-button icon="refresh" on-click="{{loadDocument}}">
+       </paper-icon-button>
+     </div>
+     <div style="text-align:right">
+       <content></content>
+     </div>
+   </div>
+   
+   
+   <div id="formDetail" layout vertical>
+     <core-label>
+       Score <div for>{{doc.score}}</div>
+     </core-label>
+     <core-label>
+       ผลการประเมิน <div for>{{doc.type}}</div>
+     </core-label>
+   </div>
+   
+   <div layout horizontal center-center>
+    <template if="{{!question}}">
+      <paper-button on-tap="{{doQuestion}}">Start</paper-button>
+    </template>
+    <paper-shadow z="2" class="question" center-justified fullbleed>
+     <template if="{{question.type == 'radio'}}">
+       <div layout vertical >
+         <div class="question_label">
+           {{question_index}}/{{questions.length}}. {{question.label}}
+         </div>
+         <paper-radio-group selected="{{question.value}}" 
+            vertical layout>
+             <template repeat="{{choice in question.choices}}">
+               <paper-radio-button name="{{choice.value}}"
+                label="{{choice.label}}"></paper-radio-button>
+             </template>
+         </paper-radio-group>
+         <div horizontal layout end-justified>
+         <paper-button raised on-tap="{{updateContent}}" style="margin:5px">
+           Next
+         </paper-button>
+         </div>
+       </div>
+     </template>
+    </paper-shadow>
+   </div>
+  </template>
+
+  <script>
+   Polymer('form-card', {
+     created: function() { 
+       console.log('created');
+     }, 
+     ready: function() {
+       this.question = {};
+     },
+     date: function(value) {
+       return new Date(value);
+     },
+     doQuestion: function() {
+      this.start=true;
+      this.question_index=1;
+      this.question = this.questions[this.question_index-1];
+     },
+     updateContent: function() {
+      if(this.question.type=="radio") {
+        for(var i=0;i<this.question.choices.length;i++) {
+          if(this.question.value == this.question.choices[i].value) {
+            this.question.score = this.question.choices[i].score;
+            break;
+          }
+        }
+      }
+      this.$.updateAjax.body = JSON.stringify(this.doc);
+      this.question_index++;
+      this.question = this.questions[this.question_index-1];
+      this.$.updateAjax.go();
+     },
+     documentLoaded: function() {
+       this.doc = this.$.ajax.response;
+       this.questions = [];
+       // gather questions
+       for(var i=0;i<this.doc.parts.length;i++) {
+         var part = this.doc.parts[i];
+         for(var j=0;j<part.questionnaires.length;j++) {
+           var questionnaire = part.questionnaires[j];
+           for(var k=0;k<questionnaire.questions.length;k++) {
+             var tmp = questionnaire.questions[k];
+             if(tmp.type=="radio") {
+               this.questions.push(tmp);
+             }
+           }
+         }
+       }
+      
+
+       // gather questions
+       if(this.doc.name == "แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ" ) {
+         var score = 0;
+         for(var i=0;i<this.questions.length;i++) {
+           score+=this.questions[i].score;                        
+         }
+         this.doc["score"] = score;
+         if(score<=4) {
+           this.doc["type"] = "ผู้สูงอายุกลุ่มพึ่งตนเองไม่ได้";
+         } else {
+           if(score<=11) {
+             this.doc["type"] = "ผู้สูงอายุที่ดูแลตนเองได้บ้าง";
+           } else {
+             this.doc["type"] = "ผู้สูงอายุที่ดูแลตนเองได้";
+           }
+         }
+       }
+       this.start = false;
+       this.question_index = 1;
+       this.question = this.questions[this.question_index-1];
+     },
+     loadDocument: function() {
+       this.$.ajax.url = "../api/formtemplates/"+this.docid;
+       this.$.formDetail.style.display = "block"; 
+       this.$.ajax.go();
+     }
+   });
+  </script>
+</polymer-element>

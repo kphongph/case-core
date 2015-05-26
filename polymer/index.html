@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
+    <link rel="import" href="bower_components/font-roboto/roboto.html">
+    <link rel="import" href="elements/ltc-content.html">
+
+    <style>
+    html, body {
+      font-family: RobotoDraft, 'Helvatica Neue', Helvetica, Arial;      
+      height: 100%;
+      width: 100%;
+      margin: 0px;
+    }
+    ltc-content {
+      height: 100%;
+    }
+
+    input{
+      padding : 0;
+      maring: 0;
+    }
+
+    #mainContainer{
+      z-index: -100000;
+    }
+
+
+   
+    </style>
+  </head>
+  <body unresolved vertical layout onresize="pageResize()">
+    
+    <ltc-content name="Chadpong P" img="" username="Staff">
+      
+    </ltc-content>
+    
+    
+    <!--
+    <core-animated-pages id="pages" selected="{{route}}" valueattr="page" transitions="cross-fade-all hero-transition" flex>
+      <section page="person/list">
+        <div layout center vertical>
+          <person-list on-person-select="{{personSelected}}">
+        </person-list>
+      </section>
+      <section page="person/detail">
+        <div fit hero-p>
+        <person-detail docid="{{personId}}"></person-detail> 
+        </div>
+      </section>
+    </core-animated-pages>
+    -->
+    
+   </template>
+
+  <script>
+    function pageResize() {
+      console.log('on-page-resize');
+      // do responsive here
+    }
+  </script>
+  </body>
+</html>

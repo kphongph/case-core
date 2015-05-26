@@ -1,0 +1,94 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-menu-button/core-menu-button.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/core-dropdown/core-dropdown.html">
+<link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/core-item/core-item.html">
+<link rel="import" href="../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../bower_components/core-pages/core-pages.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+
+<polymer-element name="form-question" attributes="label"> 
+  <template>
+    <style>
+
+    :host {
+      display: block;
+      background-color: #EEEEEE;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+      margin-left: 10px;
+      width: 80%;
+      font-size: 1rem;
+      font-weight: 200;
+    }
+    .card-header {
+      margin-left: 10px;
+    }
+
+    core-dropdown {
+      background-color: #eee;
+      color: #000;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    core-item {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    
+    .formDetail {
+      width:85%;
+      margin:10px;
+      padding:0px;
+      background:white;
+    }
+    
+    polyfill-next-selector { content: '.card-header h2'; }
+    .card-header ::content h2 {
+      margin: 0px;
+      padding: 5px;
+      font-size: 1.1rem;
+      font-weight: 200;
+    }
+    .part {
+      font-weight:300;
+    }
+    .questionnaire {
+      margin-left:20px;
+      margin-bottom:20px;
+    }
+    .question {
+      margin-left:40px;
+    }
+    .answer {
+      margin-left:40px;
+      color:#00FF00;
+      margin-bottom:20px;
+    }
+   </style>
+
+   <paper-dialog>
+     <p>{{label.name}}</p>
+   </paper-dialog>
+   
+  </template>
+  <script>
+   Polymer('form-question', {
+     created: function() { 
+     }, 
+     ready: function() {
+       console.log(this.label);
+     },
+     onMouseOver: function() {
+     },
+     onMouseOut: function() {
+     }
+   });
+  </script>
+</polymer-element>

@@ -1,0 +1,76 @@
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/polymer-cookie/polymer-cookie.html"> 
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+<polymer-element name="ltc-user" attributes="unauthorized displayName">
+
+<template>
+  <style>
+    :host {
+      display:block;
+    }
+  </style>
+
+  <polymer-cookie name="access_token" id="token"></polymer-cookie>
+  <polymer-cookie name="userId" id="userId"></polymer-cookie>
+
+  <core-ajax 
+    auto
+    id="getAccount"
+    handleAs="json" 
+    url="/account"
+    response="{{user}}"> 
+  </core-ajax>
+
+  <core-ajax 
+    id="signinAjax"
+    url="/auth/google"
+    core-response="{{signinResponse}}">
+  </core-ajax>
+
+  <core-ajax 
+    id="logoutAjax"
+    handleAs="json" 
+    url="/auth/logout"
+    core-response="{{logoutResponse}}">
+  </core-ajax>
+  
+</template>
+
+<script>
+(function() {
+  var unauthroized = true;
+
+  Polymer('ltc-user', {
+    ready: function() {
+      this.unauthrozied = unauthroized;
+    },
+    checkAuthroized: function() {
+      this.$.getAccount.go();
+    },
+    userChanged: function(oldVal, newVal) {
+      if(!newVal) return;
+      if(newVal.status == 401) {
+        this.unauthorized = true;
+        this.signout();
+      } else {
+        if(newVal.username) {
+          this.unauthorized = false;
+          this.email = newVal.email;
+          if(newVal.profiles.length > 0) {
+            this.displayName = newVal.profiles[0].profile.displayName;
+          }
+        }
+      }
+    },
+    signout: function() {
+      this.$.token.deleteCookie();
+      this.$.userId.deleteCookie();
+      this.unauthorized=true;
+      this.email = null;
+      this.displayName = null;
+    }
+  });
+})();
+</script>
+</polymer-element>

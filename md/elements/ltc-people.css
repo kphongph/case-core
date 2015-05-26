@@ -1,0 +1,24 @@
+paper-spinner.blue::shadow .circle {
+  border-color: #4285f4;
+}
+
+:host {
+  width:100%;
+  overflow:auto;
+  margin:20px;
+  padding:10px;
+}
+
+input {
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 16px;
+  outline: none;
+}
+
+.searchBar {
+  padding:10px;
+  width:80%;
+}
+

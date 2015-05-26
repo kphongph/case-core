@@ -1,0 +1,15 @@
+.row
+  .page-header
+    %h2 ข้อมูลผู้รับบริการ
+
+.row
+  .col-md-4
+    .panel.panel-default
+      .panel-heading ข้อมูลส่วนตัว
+      .panel-body
+        %person-search{person:"person"}
+  .col-md-8
+    .panel.panel-default
+      .panel-heading ข้อมูลส่วนตัว
+      .panel-body
+        %pre {{person}}

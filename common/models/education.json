@@ -1,0 +1,23 @@
+{
+  "name": "Education",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "educations"
+  },
+  "properties": {
+    "CID": {
+      "type": "String"
+    },
+    "EducationClassID": {
+      "type": "String"
+    },
+    "HostID": {
+      "type": "String"
+    },
+    "DateTimeUpdate": {
+      "type": "Date"
+    }
+  }
+}

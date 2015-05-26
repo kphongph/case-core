@@ -1,0 +1,20 @@
+{
+  "name": "Disabilityevaluationsubcategory",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "disabilityevaluationsubcategories"
+  },
+  "properties": {
+    "SubCatID": {
+      "type": "Number"
+    },
+    "SubDisabilityEvalCatDesc": {
+      "type": "String"
+    },
+    "CatID": {
+      "type": "Number"
+    }
+  }
+}

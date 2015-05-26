@@ -1,0 +1,276 @@
+<link rel="import" href="../../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../../bower_components/core-selector/core-selector.html">
+<link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
+
+
+<link rel="import" href="ltc-form-card-toolbar.html">
+<link rel="import" href="ltc-form-subform.html">
+
+<polymer-element name="ltc-form-card-form10" attributes="form"> 
+
+<template>
+  <style>
+    :host {
+      display:block;
+    }
+    core-selector > * {
+      display:none;
+    }
+    paper-icon-button { 
+      height:16px;
+      width:16px;
+    }
+    core-selector > .core-selected {
+      display:block;
+    }
+
+    #panel.active {
+      opacity:1;
+    }
+    #panel {
+      opacity:0.6;
+      padding:5px;
+      padding-left:10px;
+      margin:5px;
+    }
+    .result {
+      padding:5px;
+      marging:5px;
+      background-color: #03A9F4;
+      color: #fff;
+    }
+    ltc-form-subform {
+      margin-bottom:5px;
+    }
+    .review {
+      padding:5px;
+      margin:5px;
+    }
+    .reviewAnswer {
+      background:#eee;
+      padding:5px;
+    }
+  </style>
+
+  <core-ajax
+    id="getOptions"
+    handleAs="json"
+    loading="{{loading}}"
+    on-core-response="{{optionsLoaded}}">
+  </core-ajax>
+
+  <paper-shadow id="panel" z="1" class="{{ {active:active} | tokenList}}">
+    <div layout vertical>
+      <div>
+        <ltc-form-card-toolbar 
+           id="formToolbar"
+           form="{{form}}" 
+           document="{{document}}"
+           active="{{active}}">
+        </ltc-form-card-toolbar>
+      </div>
+      <div hidden?="{{!active}}">
+      <core-selector selected="{{selected}}">
+        <div name="result">
+          <div class="review" layout vertical>
+            <div>ด้านสังคม</div>
+            <div class="reviewAnswer">
+              {{document.form12.result}}
+            </div>
+          </div>
+          <div class="review" layout vertical>
+            <div>ด้านความสามารถในการทำกิจวัตรประจำวัน</div>
+            <div class="reviewAnswer">
+              {{document.form13.result}}
+            </div>
+          </div>
+          <div class="review" layout vertical>
+            <div>ด้านสภาพสมอง</div>
+            <div class="reviewAnswer">
+              {{document.form14.result}}
+            </div>
+          </div>
+          <div class="review" layout vertical>
+            <div>ด้านภาวะการกลืนลำบาก</div>
+            <div class="reviewAnswer">
+              {{document.form15.result}}
+            </div>
+          </div>
+          <div class="review" layout vertical>
+            <div>ด้านภาวะซิมเศร้า</div>
+            <div class="reviewAnswer">
+              {{document.form16.result}}
+            </div>
+          </div>
+        </div>
+   
+        <div name="form">
+          <div layout vertical>
+            <div>
+              <ltc-form-subform 
+                json="elements/forms/form11.json" 
+                document="{{document.form11}}"
+                loadform="{{selected == 'form'}}"
+                form="{{form11}}">
+              </ltc-form-subform>
+            </div>
+            <div>
+              <ltc-form-subform 
+                json="elements/forms/form12.json" 
+                document="{{document.form12}}"
+                loadform="{{selected == 'form'}}"
+                form="{{form12}}">
+              </ltc-form-subform>
+            </div>
+            <div>
+              <ltc-form-subform 
+                json="elements/forms/form13.json" 
+                document="{{document.form13}}"
+                loadform="{{selected == 'form'}}"
+                form="{{form13}}">
+              </ltc-form-subform>
+            </div>
+            <div>
+              <ltc-form-subform 
+                json="elements/forms/form14.json" 
+                document="{{document.form14}}"
+                loadform="{{selected == 'form'}}"
+                form="{{form14}}">
+              </ltc-form-subform>
+            </div>
+            <div>
+              <ltc-form-subform 
+                json="elements/forms/form15.json" 
+                document="{{document.form15}}"
+                loadform="{{selected == 'form'}}"
+                form="{{form15}}">
+              </ltc-form-subform>
+            </div>
+            <div>
+              <ltc-form-subform 
+                json="elements/forms/form16.json" 
+                document="{{document.form16}}"
+                loadform="{{selected == 'form'}}"
+                form="{{form16}}">
+              </ltc-form-subform>
+            </div>
+          </div>
+        </div>
+      </core-selector>
+      </div>
+    </div>
+  </paper-shadow>
+</template>
+
+<script>
+  Polymer('ltc-form-card-form10', {
+    active : false,
+    selected:'result',
+    form:null,
+    filledForm:null,
+    eventDelegates : {
+      'toggle-form':'toggleForm'
+    },
+    toggleForm : function() {
+      if(this.selected=='result') {
+        this.selected='form';
+      } else {
+        this.selected='result';
+      }
+    },
+    toggle : function() {
+      this.active = !this.active;
+      if(this.active) {
+        this.$.formToolbar.getForm();
+        this.icon='expand-less';
+      } else {
+        this.icon='expand-more';
+      }
+    },
+    updateSubForm: function(name,val) {
+      if(val) {
+        this.document[name]=val;
+        this.$.formToolbar.updateForm();
+      }
+    },
+    sumSingleSelect: function(form) {
+      var sc = 0;
+      for(var i=0;i<form.questions.length;i++) {
+        var tmp=form.questions[i];
+        sc+=tmp.score[tmp.answer];
+      }
+      return sc;
+    },
+    form11Changed: function(oldVal, newVal) {
+      this.updateSubForm('form11', newVal);
+    },
+    form12Changed: function(oldVal, newVal) {
+      if(newVal) {
+        var sc = this.sumSingleSelect(newVal);
+        if(sc==0) {
+          label = "กลุ่มที่ 2 ช่วยเหลือตนเองได้บ้าง";
+        } else {
+          label = "กลุ่มที่ 3 ต้องการความช่วยเหลือ";
+        }
+        newVal.result = label;
+        this.updateSubForm('form12', newVal);
+      }
+    },
+    form13Changed: function(oldVal, newVal) {
+      if(newVal) {
+        var sc = this.sumSingleSelect(newVal);
+        if(sc<=4) {
+          label = "กลุ่มที่ 3 ต้องการความช่วยเหลือ";
+        } else {
+          label = "กลุ่มที่ 2 ช่วยเหลือตนเองได้บ้าง";
+        }
+        newVal.result = label;
+        this.updateSubForm('form13', newVal);
+      }
+    },
+    form14Changed: function(oldVal, newVal) {
+      if(newVal) {
+        var sc = this.sumSingleSelect(newVal);
+        if(sc<=14) {
+          label = "กลุ่มที่ 3 ต้องการความช่วยเหลือ";
+        } else {
+          label = "กลุ่มที่ 2 ช่วยเหลือตนเองได้บ้าง";
+        }
+        newVal.result = label;
+        this.updateSubForm('form14', newVal);
+      }
+    },
+    form15Changed: function(oldVal, newVal) {
+      if(newVal) {
+        var sc=0;
+        for(var i=0;i<newVal.questions.length;i++) {
+          var tmp = newVal.questions[i];
+          sc+=tmp.answer.length;
+        }
+        if(sc > 0) {
+          label = "กลุ่มที่ 3 ต้องการความช่วยเหลือ";
+        } else {
+          label = "กลุ่มที่ 2 ช่วยเหลือตนเองได้บ้าง";
+        }
+        newVal.result = label;
+        this.updateSubForm('form15', newVal);
+      }
+    },
+    form16Changed: function(oldVal, newVal) {
+      if(newVal) {
+        var sc = this.sumSingleSelect(newVal);
+        if(sc<=6) {
+          label = "กลุ่มที่ 2 ช่วยเหลือตนเองได้บ้าง";
+        } else {
+          label = "กลุ่มที่ 3 ต้องการความช่วยเหลือ";
+        }
+        newVal.result = label;
+        this.updateSubForm('form16', newVal);
+      }
+    }
+  });
+</script>
+</polymer>

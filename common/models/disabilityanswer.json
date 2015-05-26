@@ -1,0 +1,23 @@
+{
+  "name": "Disabilityanswer",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "disabilityanswers"
+  },
+  "properties": {
+    "DisabilityAnswerID": {
+      "type": "Number"
+    },
+    "DisabilityAnswerDesc": {
+      "type": "String"
+    },
+    "QuestionID": {
+      "type": "Number"
+    },
+    "AnswerValue": {
+      "type": "Number"
+    }
+  }
+}

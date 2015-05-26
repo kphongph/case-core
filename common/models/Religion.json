@@ -1,0 +1,17 @@
+{
+  "name": "Religion",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "religions"
+  },
+  "properties": {
+    "Id": {
+      "type": "String"
+    },
+    "Religion": {
+      "type": "String"
+    }
+  }
+}

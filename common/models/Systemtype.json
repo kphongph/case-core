@@ -1,0 +1,17 @@
+{
+  "name": "Systemtype",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "systemtypes"
+  },
+  "properties": {
+    "SType_ID": {
+      "type": "String"
+    },
+    "SType_Desc": {
+      "type": "String"
+    }
+  }
+}

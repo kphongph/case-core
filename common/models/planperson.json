@@ -1,0 +1,32 @@
+{
+  "name": "Planperson",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "planpeople"
+  },
+  "properties": {
+    "CID": {
+      "type": "String"
+    },
+    "PlanNo": {
+      "type": "Number"
+    },
+    "StaffID": {
+      "type": "String"
+    },
+    "HostID": {
+      "type": "String"
+    },
+    "StaffRole": {
+      "type": "String"
+    },
+    "DateRec": {
+      "type": "Date"
+    },
+    "UpdateTime": {
+      "type": "Date"
+    }
+  }
+}

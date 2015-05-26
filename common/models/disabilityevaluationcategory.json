@@ -1,0 +1,17 @@
+{
+  "name": "Disabilityevaluationcategory",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "disabilityevaluationcategories"
+  },
+  "properties": {
+    "CatID": {
+      "type": "Number"
+    },
+    "DisabilityEvalCatDesc": {
+      "type": "String"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Nationality",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "nationalities"
+  },
+  "properties": {
+    "NationalityID": {
+      "type": "String"
+    },
+    "NationalityDescription": {
+      "type": "String"
+    },
+    "Zone": {
+      "type": "String"
+    }
+  }
+}

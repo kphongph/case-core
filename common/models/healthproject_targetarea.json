@@ -1,0 +1,26 @@
+{
+  "name": "HealthprojectTargetarea",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "healthproject_targetareas"
+  },
+  "properties": {
+    "ID": {
+      "type": "Number"
+    },
+    "ProjectID": {
+      "type": "Number"
+    },
+    "TargetAreaDescription": {
+      "type": "String"
+    },
+    "HostType": {
+      "type": "String"
+    },
+    "TimeStamp": {
+      "type": "Date"
+    }
+  }
+}

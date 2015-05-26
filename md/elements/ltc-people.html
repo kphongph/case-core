@@ -1,0 +1,94 @@
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/core-list/core-list.html">
+<link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../bower_components/core-scroll-threshold/core-scroll-threshold.html">
+
+<link rel="import" href="ltc-person-card.html">
+<link rel="import" href="ltc-user.html">
+
+<polymer-element name="ltc-people" attributes="selectedPerson">
+
+<template>
+  <link rel="stylesheet" href="ltc-people.css">
+
+  <core-ajax id="searchAjax" handleAs="json" 
+    on-core-response="{{handleResponse}}"> 
+  </core-ajax>
+
+  <ltc-user unauthorized="{{unauthorized}}"></ltc-user>
+
+  <core-scroll-threshold id="threshold" lowerThreshold="100"
+    on-lower-trigger="{{loadMore}}" fit>
+  
+  <div vertical layout>
+    <div class="searchBar" horizontal center layout>
+      <core-icon icon="search"></core-icon>
+      <paper-input label="รหัสบัตรประชาชน" 
+         flex value="{{search}}">
+      </paper-input>
+    </div>
+    <div>
+      <paper-spinner class="blue" active?="{{loading}}">
+      </paper-spinner>
+    </div>
+    <div horizontal layout wrap>
+      <template repeat="{{model in people}}">
+        <ltc-person-card person="{{model}}" 
+           on-person-selected="{{personSelected}}">
+        </ltc-person-card>
+      </template>
+    </div>
+    <div>
+      <paper-spinner class="blue" active?="{{$.threshold.lowerTriggered}}">
+      </paper-spinner>
+    </div>
+  </div>
+  </core-scroll-threshold>
+  
+</template>
+
+<script>
+  Polymer('ltc-people', {
+    loading:false,
+    query : null,
+    people : [],
+    ready : function() {
+      this.ajax = this.$.searchAjax;
+    },
+    searchChanged : function(oldVal, newVal) {
+      this.people = [];
+      this.query = {where:{CID:{like:newVal}},limit:20};
+      this.query['skip'] = 0;
+      this.query['fields'] = {id:true,CID:true,FirstName:true,LastName:true};
+      this.submitQuery();
+    },
+    submitQuery : function() {
+      if(!this.unauthorized) {
+        this.ajax.url = '../api/people?filter='+JSON.stringify(this.query);
+        this.loading=true;
+        this.ajax.go();
+      }
+    },
+    handleResponse : function() {
+      this.loading=false;
+      if(this.ajax.response) {
+        for(var i=0;i<this.ajax.response.length;i++) {
+          this.people.push(this.ajax.response[i]);
+        }
+        this.$.threshold.clearLower();
+      }
+    },
+    loadMore: function() {
+      this.query['skip'] += 20;
+      this.submitQuery();
+    },
+    personSelected: function(e,o) {
+      this.selectedPerson = o.id;
+    }
+  });
+</script>
+</polymer>

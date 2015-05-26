@@ -1,0 +1,20 @@
+{
+  "name": "Activityvsrole",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "activityvsroles"
+  },
+  "properties": {
+    "ACTCode": {
+      "type": "String"
+    },
+    "RoleID": {
+      "type": "String"
+    },
+    "HostTypeID": {
+      "type": "String"
+    }
+  }
+}

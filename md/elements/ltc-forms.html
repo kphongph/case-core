@@ -1,0 +1,378 @@
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+
+<link rel="import" href="../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/core-item/core-item.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../bower_components/core-animated-pages/transitions/slide-from-right.html">
+
+<link rel="import" href="forms/ltc-form-card-form33.html">
+<link rel="import" href="forms/ltc-form-card-form10.html">
+<link rel="import" href="forms/ltc-form-card-form20.html">
+<link rel="import" href="forms/ltc-form-card-form40.html">
+
+<polymer-element name="ltc-forms" attributes="person">
+
+<template>
+  <style>
+
+:host {
+  display:block;
+  overflow:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.formList {
+  padding:10px;
+  margin:10px;
+}
+
+.panel {
+  padding:10px;
+  margin:10px;
+}
+
+core-item {
+  padding-left:10px;         
+}
+
+tmp.core-item.core-selected {
+ color: #fff;
+ background-color: #03A9F4;
+}
+
+core-item.core-selected {
+ background-color: #eeeeee;
+}
+
+.selectedType {
+  margin:10px;
+}
+
+core-submenu::shadow #submenu {
+  margin-left: 0px;
+}
+
+#formViews > * {
+  display: none;
+}
+
+#formViews > .core-selected {
+  display: block;
+}
+  </style>
+
+  <core-ajax
+    id="getParentForm33"
+    handleAs="json"
+    response="{{parentForm33}}">
+  </core-ajax>
+
+  <core-ajax
+    id="getParentForm10"
+    handleAs="json"
+    response="{{parentForm10}}">
+  </core-ajax>
+
+  <core-ajax
+    id="getParentForm20"
+    handleAs="json"
+    response="{{parentForm20}}">
+  </core-ajax>
+  
+
+  <core-ajax 
+    id="getForms"
+    handleAs="json" 
+    loading="{{getFormsLoading}}"
+    response="{{ajaxForms}}"> 
+  </core-ajax>
+
+  <core-ajax
+    id="insertForm"
+    handleAs="json"
+    method="POST"
+    url="../api/people/{{person.id}}/forms"
+    contentType="application/json"
+    on-core-response="{{updateFormList}}">
+  </core-ajax>
+
+  <div layout vertical>
+    <div layout horizontal center>
+      <div>
+        <paper-icon-button icon="arrow-back" on-tap="{{backAction}}" 
+        </paper-icon-button>
+      </div>
+      <div>
+        {{person.CID}} {{person.FirstName}} {{person.LastName}}
+      </div>
+    </div>
+
+    <div>
+      <core-animated-pages selected="{{formType}}" transitions="slide-from-right">
+        <section name="form33">
+         <paper-icon-button icon="add" on-tap="{{createForm33}}"></paper-icon-button>
+         <template repeat="{{ajaxForms | orderBy('-updatedDate')}}">
+            <template if="{{hash == 'form33'}}">
+              <ltc-form-card-form33 form="{{}}" 
+                on-form-selected="{{select33}}">
+              </ltc-form-card-form33>
+            </template>
+          </template>
+        </section>
+
+        <section name="form10">
+         <div layout vertical hidden?="{{!parentForm33}}">
+           <div vertical layout class="panel">
+             <div>{{parentForm33.name}}</div>
+             <div> 
+               {{parentForm33.updatedDate | date('yyyy-MM-dd HH:mm')}}
+             </div>
+             <div>{{parentForm33.result.label}}</div>
+           </div>
+           <div>
+             <paper-icon-button icon="add" hidden?="{{!add10able}}" on-tap="{{createForm10}}">
+             </paper-icon-button>
+           </div>
+           <div>
+             <template repeat="{{model in ajaxForms | orderBy('-updatedDate')}}">
+               <template if="{{model.hash == 'form10' && model.parentId == parentForm33.id}}">
+                 <ltc-form-card-form10 form="{{model}}" 
+                   on-form-selected="{{select10}}">
+                 </ltc-form-card-form10>
+               </template>
+             </template>
+           </div>
+          </div>
+        </section>
+
+        <section name="form20">
+         <div layout vertical hidden?="{{!parentForm10}}">
+           <div vertical layout class="panel">
+             <div>{{parentForm10.name}}</div>
+             <div> 
+               {{parentForm10.updatedDate | date('yyyy-MM-dd HH:mm')}}
+             </div>
+             <div>{{parentForm10.form12.name}}</div>
+             <div>{{parentForm10.form12.result}}</div>
+             <div>{{parentForm10.form13.name}}</div>
+             <div>{{parentForm10.form13.result}}</div>
+             <div>{{parentForm10.form14.name}}</div>
+             <div>{{parentForm10.form14.result}}</div>
+             <div>{{parentForm10.form15.name}}</div>
+             <div>{{parentForm10.form15.result}}</div>
+             <div>{{parentForm10.form16.name}}</div>
+             <div>{{parentForm10.form16.result}}</div>
+           </div>
+           <div>
+             <paper-icon-button icon="add" hidden?="{{!add20able}}" on-tap="{{createForm20}}">
+             </paper-icon-button>
+           </div>
+           <div>
+             <template repeat="{{model in ajaxForms | orderBy('-updatedDate')}}">
+               <template if="{{model.hash == 'form20' && model.parentId == parentForm10.id}}">
+                 <ltc-form-card-form20 form="{{model}}" 
+                   on-form-selected="{{select20}}">
+                 </ltc-form-card-form20>
+               </template>
+             </template>
+           </div>
+          </div>
+        </section>
+
+        <section name="form40">
+         <div layout vertical hidden?="{{!parentForm20}}">
+           <div vertical layout class="panel">
+             <div>{{parentForm20.name}}</div>
+             <div> 
+               {{parentForm20.updatedDate | date('yyyy-MM-dd HH:mm')}}
+             </div>
+             <div>{{parentForm20.result.label}}</div>
+           </div>
+           <div>
+             <paper-icon-button icon="add" hidden?="{{!add40able}}" on-tap="{{createForm40}}">
+             </paper-icon-button>
+           </div>
+           <div>
+             <template repeat="{{model in ajaxForms | orderBy('-updatedDate')}}">
+               <template if="{{model.hash == 'form40' && model.parentId == parentForm20.id}}">
+                 <ltc-form-card-form40 form="{{model}}" 
+                   on-form-selected="{{select40}}">
+                 </ltc-form-card-form40>
+               </template>
+             </template>
+           </div>
+          </div>
+        </section>
+      </core-animated-pages>
+    </div>
+  </div>
+  
+</template>
+
+<script>
+  Polymer('ltc-forms', {
+    loading:false,
+    selected: 'menu',
+    stage: 0,
+    formType: 'form33',
+    stack : [],
+    eventDelegates: {
+      'form-deleted':'updateFormList'
+    },
+    formList: [
+      { 
+        hash:'form33', 
+        name:'แบบคัดกรองเพื่อจำแนกกลุ่มผู้สูงอายุตามศักยภาพ'
+      },
+      {hash:'form10', name:'แบบประเมินผู้สูงอายุที่ต้องได้รับการดูแลระยะยาว'},
+      {hash:'form20', name:'แบบประเมินความต้องการ'},
+      {hash:'form40', name:'แบบการวางแผนให้บริการ'}
+      
+    ],
+    backAction: function() {
+      if(this.formType == 'form33') {
+        this.fire('person');
+      }
+
+      if(this.formType == 'form20') {
+        this.formType = 'form10';
+      } else {
+        if(this.formType == 'form10') {
+          this.formType = 'form33';
+        } else {
+          if(this.formType == 'form40') {
+            this.formType = 'form20';
+          }
+        }
+      }
+    },
+    updateFormList : function() {
+      var query = "../api/people/"+this.person.id+"/forms";
+      query+= "?filter[fields][id]=true";
+      query+= "&filter[fields][hash]=true";
+      query+= "&filter[fields][updatedDate]=true";
+      query+= "&filter[fields][name]=true";
+      query+= "&filter[fields][parentId]=true";
+      query+= "&filter[fields][createdDate]=true";
+      this.$.getForms.url = query;
+      this.$.getForms.go();
+    },
+    personChanged: function(oldVal, newVal) {
+      if(newVal) {
+        this.updateFormList();
+      }
+    },
+    createFormChanged : function(oldVal, newVal) {
+      if(newVal) {
+        var tmp = {};
+        for(var i=0;i<this.formList.length;i++) {
+          if(newVal == this.formList[i].hash) {
+            tmp = this.formList[i];
+            break;
+          }
+        }
+        if(tmp.name) {
+          this.$.insertForm.body = JSON.stringify(tmp);
+          this.$.insertForm.go();
+        }
+      }
+    },
+    select33: function(event, obj) {
+      this.$.getParentForm33.url = "../api/formtemplates/"+obj.id;
+      this.formType = 'form10';
+      this.$.getParentForm33.go();
+    },
+    select10: function(event, obj) {
+      this.$.getParentForm10.url = "../api/formtemplates/"+obj.id;
+      this.formType = 'form20';
+      this.$.getParentForm10.go();
+    },
+    select20: function(event, obj) {
+      this.$.getParentForm20.url = "../api/formtemplates/"+obj.id;
+      this.formType = 'form40';
+      this.$.getParentForm20.go();
+    },
+    createForm33: function(event, obj) {
+      var tmp = this.formList[0];
+      this.$.insertForm.body = JSON.stringify(tmp);
+      this.$.insertForm.go();
+    },
+    createForm10: function(event, obj) {
+      var tmp = this.formList[1];
+      tmp['parentId']=this.parentForm33.id;
+      this.$.insertForm.body = JSON.stringify(tmp);
+      this.$.insertForm.go();
+    },
+    createForm20: function(event, obj) {
+      var tmp = this.formList[2];
+      tmp['parentId']=this.parentForm10.id;
+      this.$.insertForm.body = JSON.stringify(tmp);
+      this.$.insertForm.go();
+    },
+    createForm40: function(event, obj) {
+      var tmp = this.formList[3];
+      tmp['parentId']=this.parentForm20.id;
+      this.$.insertForm.body = JSON.stringify(tmp);
+      this.$.insertForm.go();
+    },
+    countChild: function(parent) {
+      var child = 0;
+      for(var i=0;i<this.ajaxForms.length;i++) {
+        if(this.ajaxForms[i].parentId == parent.id) {
+          child++;
+        }
+      }
+      return child;
+    },
+    ajaxFormsChanged: function(oldVal, newVal) {
+      if(!newVal) return;
+      if(this.parentForm33 && this.countChild(this.parentForm33) == 2) {
+        this.add10able = false;
+      } else {
+        this.add10able = true;
+      }
+
+      if(this.parentForm10 && this.countChild(this.parentForm10) == 1) {
+        this.add20able = false;
+      } else {
+        this.add20able = true;
+      }
+
+      if(this.parentForm20 && this.countChild(this.parentForm20) == 1) {
+        this.add40able = false;
+      } else {
+        this.add40able = true;
+      }
+    },
+    parentForm33Changed: function(oldVal, newVal) {
+      if(!newVal) return;
+      this.add10able = false;
+      if(this.countChild(newVal) < 2) {
+        this.add10able = true;
+      }
+    },
+    parentForm10Changed: function(oldVal, newVal) {
+      if(!newVal) return;
+      this.add20able = false;
+      if(this.countChild(newVal) < 1) {
+        this.add20able = true;
+      }
+    },
+    parentForm20Changed: function(oldVal, newVal) {
+      if(!newVal) return;
+      this.add40able = false;
+      if(this.countChild(newVal) < 1) {
+        this.add40able = true;
+      }
+    }
+  });
+</script>
+</polymer>

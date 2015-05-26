@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--
+Copyright 2013 The Polymer Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<html>
+  <head>
+    <title>Director</title>
+    <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+    <link rel="import" href="bower_components/flatiron-director/flatiron-director.html">
+    <link rel="import" href="bower_components/core-menu/core-menu.html">
+    <link rel="import" href="bower_components/paper-item/paper-item.html">
+    <link rel="import" href="bower_components/core-pages/core-pages.html">
+  </head>
+  <body>
+
+   <template is="auto-binding">
+      <flatiron-director id='page-director' route="{{route}}" 
+        autoHash on-director-route="{{routeChanged}}"></flatiron-director>
+
+    <core-menu id="menu">
+      <paper-item icon="list" label="1">
+        <a href="#1">1</a>
+      </paper-item>
+      <paper-item icon="swap-vert" label="2">
+        <a href="#2">2</a>
+      </paper-item>
+      <paper-item icon="file-download" label="3">
+        <a href="#3">3</a>
+      </paper-item>
+    </core-menu>
+
+    <core-pages selected="{{route}}"  valueattr="page">
+      <div page="1">
+        page 1
+        <a href="#3">test</a>
+      </div>
+      <div page="2">
+         page 2
+      </div>
+      <div page="3">
+        page 3
+      </div>
+    </core-pages>
+   </template>
+   <script>
+     var template = document.querySelector('template');
+
+template.addEventListener('template-bound', function() {
+  this.route = this.route || 1; // default route to "1".
+});
+   </script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "Questiontype",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "questiontypes"
+  },
+  "properties": {
+    "QTID": {
+      "type": "String"
+    },
+    "QTDesc": {
+      "type": "String"
+    },
+    "FID": {
+      "type": "String"
+    },
+    "SType_ID": {
+      "type": "String"
+    },
+    "UIControl": {
+      "type": "String"
+    }
+  }
+}

@@ -1,0 +1,129 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-icons/core-icons.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="person-card.html">
+<link rel="import" href="search-bar.html">
+
+<polymer-element name="person-list">
+  <template>
+    <style>
+    :host {
+      display: block;
+      width: 100%;
+      height:100%;
+
+    }
+    #add_button {
+      margin:20px;
+    }
+    .result {
+      padding:10px;
+    }
+    </style>
+
+    <core-ajax id="people_count"
+      auto
+      url='../api/people/count?where={"CID":{"like":"{{query}}"}}'
+      on-core-response="{{countReturn}}"
+      handleAs="json">
+    </core-ajax>
+
+    <core-ajax id="ajax"
+      auto
+      on-core-response="{{peopleLoaded}}"
+      handleAs="json">
+    </core-ajax>
+   
+    <search-bar text="{{query}}" active start 
+       placeholder="บัตรประจำตัวประชาชน"> 
+    </search-bar>
+
+    <div horizontal end-justified layout> 
+      <div class="result">Found {{people_count}} documents</div>
+    </div>
+
+    <div layout vertical center>
+      <template repeat="{{person in people}}">
+        <person-card docid="{{person.id}}" 
+          on-choose="{{onPersonSelected}}">
+          {{person.CID}} {{person.FirstName}} {{person.LastName}}
+        </person-card>
+      </template>
+      <div>
+      <paper-fab id="add_button" icon="add" 
+         on-click="{{loadMore}}"></paper-fab>
+      </div>
+    </div>
+
+  </template>
+  
+  <script>
+
+  Polymer('person-list',{
+    created: function() {
+      this.query = '';
+      this.p_query = this.query;
+      this.people=[];
+      this.page = 0;
+    },
+    ready: function() {
+      var ajax = this.$.ajax;
+      ajax.url = "../api/people?filter[limit]=10";
+    },
+    loadMore: function() {
+      this.page+=10;
+    },
+    peopleLoaded: function() {
+      var list = this.$.ajax.response;
+      if(this.p_query!=this.query) {
+        this.p_query = this.query;
+        this.page = 0;
+        this.people=[];
+      }
+      if(list) {
+        for(var i=0;i<list.length;i++) {
+          this.people.push(list[i]);
+        }
+        if(this.people_count == this.people.length) {
+          this.$.add_button.style.display="none";
+        } else {
+          this.$.add_button.style.display="block";
+        }
+      }
+    },
+    pageChanged: function(oldVal,newVal) {
+      var ajax = this.$.ajax;
+      var query_text = {limit:10, skip:newVal,
+        where: {
+         CID:{
+          like:this.query
+         }
+        }
+      };
+      ajax.url="../api/people?filter="+JSON.stringify(query_text);
+    },
+    queryChanged: function(oldVal, newVal) {
+      var ajax = this.$.ajax;
+      var query_text = {limit:10, skip:this.page,
+        where: {
+         CID:{
+          like:newVal
+         }
+        }
+      };
+      ajax.url="../api/people?filter="+JSON.stringify(query_text);
+      console.log(ajax.url);
+    },
+    countReturn: function() {
+      if(this.$.people_count.response) {
+        this.people_count = this.$.people_count.response.count;
+      }
+    },
+    onPersonSelected: function(event, doc) {
+      this.fire('person-select', doc);
+    }
+  });
+  </script>
+</polymer-element>

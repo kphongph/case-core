@@ -1,0 +1,19 @@
+{
+  "db":{
+    "name":"db",
+    "connector":"memory"
+  },
+  "caseDs": {
+    "connector": "mssql",
+    "debug":false,
+    "host":"localhost",
+    "port":1433,
+    "database":"2014_gen2_case",
+    "username":"user",
+    "password":"password"
+  },
+  "caseMongoDs" : {
+    "connector": "mongodb",
+    "url":"mongodb://127.0.0.1:27017/casedb_test"
+  }
+}

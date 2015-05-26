@@ -1,1 +1,2 @@
-# case-core
+#Sample Readme file
+

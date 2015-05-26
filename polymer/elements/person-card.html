@@ -1,0 +1,76 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-menu-button/core-menu-button.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/core-dropdown/core-dropdown.html">
+<link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../bower_components/core-item/core-item.html">
+<link rel="import" href="../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../bower_components/core-pages/core-pages.html">
+
+<polymer-element name="person-card" attributes="docid" 
+  on-tap="{{onTap}}"
+  on-mouseover="{{onMouseOver}}"
+  on-mouseout="{{onMouseOut}}">
+
+  <template>
+    <style>
+    :host {
+      display: block;
+      background-color: white;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+      width: 100%;
+      font-size: 1rem;
+      font-weight: 200;
+    }
+    .card-header {
+      margin-left: 10px;
+    }
+
+    core-dropdown {
+      background-color: #eee;
+      color: #000;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    core-item {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    polyfill-next-selector { content: '.card-header h2'; }
+    .card-header ::content h2 {
+      margin: 0px;
+      padding: 5px;
+      font-size: 1.1rem;
+      font-weight: 200;
+    }
+   </style>
+
+   <div layout vertical>
+     <div layout horizontal>
+       <div class="card-header" flex>
+         <content></content>
+       </div>
+     </div>
+   </div>
+
+  </template>
+  <script>
+   Polymer('person-card', {
+     created: function() { 
+     }, 
+     onMouseOver: function() {
+     },
+     onMouseOut: function() {
+     },
+     onTap: function() {
+       this.fire("choose", {id:this.docid});
+     }
+   });
+  </script>
+</polymer-element>

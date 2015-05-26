@@ -1,0 +1,17 @@
+{
+  "name": "Svcobjective",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "svcobjectives"
+  },
+  "properties": {
+    "SVCObjectiveID": {
+      "type": "String"
+    },
+    "SVCObjectiveDescription": {
+      "type": "String"
+    }
+  }
+}

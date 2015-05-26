@@ -1,0 +1,20 @@
+{
+  "name": "Provider",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "providers"
+  },
+  "properties": {
+    "ProviderCode": {
+      "type": "String"
+    },
+    "ProviderName": {
+      "type": "String"
+    },
+    "OrgCode": {
+      "type": "String"
+    }
+  }
+}

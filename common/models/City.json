@@ -1,0 +1,26 @@
+{
+  "name": "City",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "cities"
+  },
+  "properties": {
+    "CityID": {
+      "type": "String"
+    },
+    "CityDescription": {
+      "type": "String"
+    },
+    "ProvinceID": {
+      "type": "String"
+    },
+    "Latitude": {
+      "type": "Number"
+    },
+    "Longtitude": {
+      "type": "Number"
+    }
+  }
+}

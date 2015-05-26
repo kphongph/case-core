@@ -1,0 +1,26 @@
+{
+  "name": "Qresult",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "qresults"
+  },
+  "properties": {
+    "CID": {
+      "type": "String"
+    },
+    "QTID": {
+      "type": "String"
+    },
+    "QTSID": {
+      "type": "Number"
+    },
+    "DESC": {
+      "type": "String"
+    },
+    "Point": {
+      "type": "Number"
+    }
+  }
+}

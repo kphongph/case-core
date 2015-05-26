@@ -1,0 +1,20 @@
+{
+  "name": "Form",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "forms"
+  },
+  "properties": {
+    "FID": {
+      "type": "String"
+    },
+    "FDesc": {
+      "type": "String"
+    },
+    "SType_ID": {
+      "type": "String"
+    }
+  }
+}

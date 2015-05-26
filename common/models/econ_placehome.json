@@ -1,0 +1,17 @@
+{
+  "name": "EconPlacehome",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "econ_placehomes"
+  },
+  "properties": {
+    "EconPlaceHomeID": {
+      "type": "Number"
+    },
+    "Description": {
+      "type": "String"
+    }
+  }
+}

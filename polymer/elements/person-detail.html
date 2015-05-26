@@ -1,0 +1,74 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-icons/core-icons.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="form-list.html">
+
+<polymer-element name="person-detail" attributes="docid">
+  <template>
+    <style>
+    :host {
+      display: block;
+      margin:10px;
+      padding:10px;
+      width: 100%;
+      height:100%;
+    }
+    .full {
+      width:100%;
+    }
+    #add_button {
+      margin:20px;
+    }
+    .result {
+      padding:10px;
+    }
+    </style>
+
+    <core-ajax id="ajax"
+      auto
+      on-core-response="{{docLoaded}}"
+      handleAs="json">
+    </core-ajax>
+
+    <div layout vertical center>
+     <div horizontal layout class="full">
+      <div flex>
+        {{person.CID}} {{person.FirstName}} {{person.LastName}}
+      </div>
+     </div>
+
+     <div vertical layout class="full">
+      <div>Forms: {{formCount}}</div>
+      <div>
+       <form-list ownerid="{{person.id}}" 
+         count="{{formCount}}" active></form-list>
+      </div>
+     </div>
+
+    </div>
+
+  </template>
+  
+  <script>
+
+  Polymer('person-detail',{
+    created: function() {
+    },
+    ready: function() {
+    },
+    loadMore: function() {
+    },
+    docidChanged: function(oldVal,newVal) {
+      console.log(oldVal, newVal);
+      if(newVal) {
+        this.$.ajax.url = "../api/people/"+newVal;
+      } 
+    },
+    docLoaded: function() {
+      this.person = this.$.ajax.response;
+    }
+  });
+  </script>
+</polymer-element>

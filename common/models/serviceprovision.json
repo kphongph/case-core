@@ -1,0 +1,41 @@
+{
+  "name": "Serviceprovision",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "serviceprovisions"
+  },
+  "properties": {
+    "id": {
+      "type": "Number"
+    },
+    "CID": {
+      "type": "String"
+    },
+    "CMPlanNo": {
+      "type": "Number"
+    },
+    "CaseNo": {
+      "type": "Number"
+    },
+    "PSNumber": {
+      "type": "Number"
+    },
+    "HostID": {
+      "type": "String"
+    },
+    "StaffID": {
+      "type": "String"
+    },
+    "PSDateTime": {
+      "type": "Date"
+    },
+    "TimeStamp": {
+      "type": "Date"
+    },
+    "StaffRole": {
+      "type": "String"
+    }
+  }
+}

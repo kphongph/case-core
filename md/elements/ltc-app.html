@@ -1,0 +1,74 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer-filters/polymer-filters.html">
+<link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="ltc-people.html">
+<link rel="import" href="ltc-forms.html">
+<link rel="import" href="ltc-person.html">
+<link rel="import" href="ltc-user.html">
+
+<polymer-element name="ltc-app" vertical layout>
+
+<template>
+
+  <link rel="stylesheet" href="ltc-app.css">
+
+  <ltc-user unauthorized="{{unauthorized}}"></ltc-user>
+  
+  <core-animated-pages selected="{{selected}}" 
+    transitions="cross-fade-all"
+    flex auto>
+    <div name="splash">
+      <a href="/auth/google">
+        <img src="/images/White-signin_Medium_base_32dp.png">
+        </img>
+      </a>
+    </div>
+    <ltc-people name="people" selectedPerson="{{person_id}}">
+    </ltc-people>
+    <ltc-person name="person" docid="{{person_id}}" 
+        person="{{person}}">
+    </ltc-person>
+    <ltc-forms name="form" person="{{person}}"></ltc-forms>
+  </core-animated-pages>
+
+</template>
+
+<script>
+Polymer('ltc-app', {
+  // testing
+  selected:'person',
+  person_id:'54fda8bf7b080506038dfab9',
+  eventDelegates: {
+    'main':'showSearchPerson',
+    'form':'showForm',
+    'person':'showPerson',
+    'core-complete':'monitorAjax'
+  },
+  monitorAjax: function(e, o) {
+    if(o.response == 401) {
+      this.unauthorized = true;
+      console.log('Unauthorized');
+      this.selected = 'splash';
+    }
+  },
+  showPerson: function() {
+    this.selected = 'person';
+  },
+  showForm: function() {
+    this.selected = 'form';
+    console.log(this.person);
+  },
+  showSearchPerson: function() {
+    this.selected = 'people';
+  },
+  personChanged: function(oldVal,newVal) {
+    this.selected = 'person';
+  },
+  reset : function() {
+    console.log('reset');
+  }
+
+});
+</script>
+</polymer-element>

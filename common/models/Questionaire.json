@@ -1,0 +1,26 @@
+{
+  "name": "Questionaire",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "questionaires"
+  },
+  "properties": {
+    "QID": {
+      "type": "String"
+    },
+    "QDesc": {
+      "type": "String"
+    },
+    "QTID": {
+      "type": "String"
+    },
+    "AnswerGroupID": {
+      "type": "String"
+    },
+    "IUControl": {
+      "type": "String"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "Adressvsperson",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "adressvspeople"
+  },
+  "properties": {
+    "AddressID": {
+      "type": "String"
+    },
+    "CID": {
+      "type": "String"
+    },
+    "StartDate": {
+      "type": "Date"
+    },
+    "ExitDate": {
+      "type": "Date"
+    },
+    "decs": {
+      "type": "String"
+    },
+    "AddressTypeID": {
+      "type": "String"
+    },
+    "DateTimeUpdate": {
+      "type": "Date"
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "name": "Employee",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "employees"
+  },
+  "properties": {
+    "Staff_id": {
+      "type": "String"
+    },
+    "CID": {
+      "type": "String"
+    },
+    "Title": {
+      "type": "String"
+    },
+    "Firstname": {
+      "type": "String"
+    },
+    "Lastname": {
+      "type": "String"
+    },
+    "DOB": {
+      "type": "Date"
+    },
+    "AddressID": {
+      "type": "String"
+    },
+    "Race": {
+      "type": "String"
+    },
+    "Nation": {
+      "type": "String"
+    },
+    "TelNumber": {
+      "type": "String"
+    },
+    "Education": {
+      "type": "String"
+    },
+    "Username": {
+      "type": "String"
+    },
+    "UDATE": {
+      "type": "Date"
+    },
+    "HostID": {
+      "type": "String"
+    },
+    "Staff_pic": {
+      "type": "String"
+    }
+  }
+}

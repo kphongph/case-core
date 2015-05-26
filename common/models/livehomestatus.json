@@ -1,0 +1,17 @@
+{
+  "name": "Livehomestatus",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "livehomestatuses"
+  },
+  "properties": {
+    "LiveHomeStatusID": {
+      "type": "String"
+    },
+    "LiveHomeStatusDescription": {
+      "type": "String"
+    }
+  }
+}

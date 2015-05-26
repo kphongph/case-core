@@ -1,0 +1,76 @@
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+
+<link rel="import" href="ltc-forms.html">
+<link rel="import" href="ltc-user.html">
+
+<polymer-element name="ltc-person" attributes="docid person" vertical flex>
+
+<template>
+  <style>
+    :host {
+      display:block;
+    }
+    paper-item {
+      background:#efefef;
+    }
+  </style>
+
+  <core-ajax 
+    id="getAjax"
+    handleAs="json" 
+    url="../api/people/{{docid}}"
+    response="{{person}}"> 
+  </core-ajax>
+
+  <ltc-user unauthorized="{{unauthorized}}" displayName="{{user}}"></ltc-user>
+
+  <core-toolbar>
+    <div horizontal layout center flex>
+      <div>
+        <paper-icon-button icon="arrow-back" on-tap="{{mainAction}}"> 
+        </paper-icon-button>
+      </div>
+      <div flex>
+        {{person.CID}} {{person.FirstName}} {{person.LastName}}
+      </div>
+    </div>
+  </core-toolbar>
+  
+  <div vertical layout>
+    <template if="{{!unauthorized}}">
+      <div layout horizontal end-justified>
+        <div flex>
+        Google Account : {{user}}
+        <a href="/auth/logout">Sign Out</a>
+        </div>
+      </div>
+    </template>
+    <div>
+    <paper-item raised on-tap="{{showForm}}">แบบประเมิน</paper-item>
+    </div>
+  </div>
+</template>
+
+<script>
+  Polymer('ltc-person', {
+    mainAction: function() {
+      this.docid = null;
+      this.selected = null;
+      this.fire('main');
+    },
+    showForm: function() {
+      this.fire('form');
+    },
+    docidChanged: function(oldVal, newVal) {
+      if(newVal) {
+        if(!this.unauthorized) {
+          this.selected=null;
+          this.$.getAjax.go();
+        }
+      }
+    }
+  });
+</script>
+</polymer>

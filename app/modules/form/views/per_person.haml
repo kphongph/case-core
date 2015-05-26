@@ -1,0 +1,73 @@
+.row
+  .page-header
+    %h2 Service
+
+.row
+  .col-md-5
+    .row
+      .panel.panel-default{ng-show:"person"}
+        .panel-heading Form
+        .panel-body
+          {{person.CID}} {{person.FirstName}} {{person.LastName}}
+          %ol
+            %li{ng-repeat:"form in system.forms"}
+              %a{ng-click:"selectForm(form)"}
+                {{form.FDesc}}
+              %ul
+                %li{ng-repeat:"questiontype in form.questiontypes"}
+                  %a{ng-click:"selectQuestiontype(questiontype)"}
+                    {{questiontype.QTDesc}}
+  .col-md-7
+    .row
+      .col-md-12
+        .panel.panel-default{ng-show:"person"}
+          .panel-heading {{form.FDesc}}
+          .panel-body
+            %p {{questiontype.QTDesc}}
+            %ol
+              %li{ng-repeat:"qtimestamp in questiontype.qtimestamps"}
+                %a{ng-click:"selectQtimestamp(qtimestamp)"}
+                  {{qtimestamp.RecordDate|date:"dd-MM-yyyy"}}
+                %span
+                  &nbsp; (#Record {{qtimestamp.qrecords.length}})
+
+              %li{ng-show:"questiontype && person"}
+                %a{ng-click:"createQtimestamp()"} 
+                  Create QTimestamp
+    .row
+      .col-md-12
+        .panel.panel-default{ng-show:"qtimestamp"}
+          .panel-heading {{qtimestamp.RecordDate|date:"dd-MM-yyyy"}}
+          .panel-body
+            %button.btn.btn-default{ng-show:"qtimestamp.qrecords.length > 0",type:"button",ng-click:"clearQrecords(qtimestamp)"}
+              %span.glyphicon.glyphicon-erase
+            %button.btn.btn-default{ng-show:"qtimestamp.qrecords.length == 0",type:"button",ng-click:"deleteQtimestamp(qtimestamp)"}
+              %span.glyphicon.glyphicon-remove
+            %hr
+            %pagination{total-items:"qtimestamp.questionaires.length",class:"pagination-sm",ng-model:"currentQuestion",max-size:"10",items-per-page:"1"}
+            %pre{ng-show:"qtimestamp.questionaires"} 
+              Question no: {{currentQuestion}}/{{qtimestamp.questionaires.length}} 
+            .form-group{ng-show:"qtimestamp.questionaires"}
+              %label
+                {{qtimestamp.questionaires[currentQuestion-1].QDesc}} {{qtimestamp.questionaires[currentQuestion-1].IUControl}}
+            
+              %span{ng-if:"qtimestamp.questionaires[currentQuestion-1].radio"} 
+                %div.radio{ng-repeat:"answer in qtimestamp.questionaires[currentQuestion-1].answers"} 
+                  %label
+                    != '<input type="radio" ng-model="qtimestamp.questionaires[currentQuestion-1].qrecord.answerId" ng-value="answer.answer.id" ng-change="updateRadio(qtimestamp.questionaires[currentQuestion-1].qrecord)"> {{answer.answer.ADesc}}'
+            
+            %span{ng-if:"qtimestamp.questionaires[currentQuestion-1].checkbox"}
+              .checkbox{ng-repeat:"answer in qtimestamp.questionaires[currentQuestion-1].answers"}
+                %label
+                  != '<input type="checkbox" ng-model="answer.selected" ng-change="updateCheckbox(qtimestamp,answer)"> {{answer.answer.ADesc}}'
+              
+              %span{ng-if:"qtimestamp.questionaires[currentQuestion-1].unknown"} 
+                %pre {{c_question}}
+                %ol
+                  %li{ng-repeat:"answer in qtimestamp.questionaires[currentQuestion-1].answers"}
+                    %span{ng-if:"answer.selected"} 
+                      %p.bg-success {{answer.answer.ADesc}}
+                    %span{ng-if:"!answer.selected"} 
+                      {{answer.answer.ADesc}}
+                    %pre {{answer}}
+

@@ -1,0 +1,31 @@
+<div class="row">
+ <div class="col-md-12">
+  <h4>
+    ข้อมูลหน่วยงาน จำนวน  
+    {{active_hosts.length}}
+   </h4>
+  <h5>
+
+  <pagination 
+     total-items="active_hosts.length" 
+     ng-model="currentPage" 
+     max-size="5" items-per-page="itemPerPage" 
+     class="pagination-sm" 
+     boundary-links="true">
+  </pagination>
+
+  <table class="table table-bordered table-hover table-condensed">
+   <thead>
+    <th>หน่วยงาน</th>
+    <th>จำนวนคน</th>
+   </thead>
+   <tbody>
+    <tr ng-repeat="host in hosts">
+      <td><a ng-href="#/host/{{host.HostID}}">{{host.HostName}}</a>
+     </td>
+     <td>{{host.activePerson}}</td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+</div>

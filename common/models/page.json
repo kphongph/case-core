@@ -1,0 +1,20 @@
+{
+  "name": "Page",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "pages"
+  },
+  "properties": {
+    "PageID": {
+      "type": "String"
+    },
+    "PageURL": {
+      "type": "String"
+    },
+    "PageDesc": {
+      "type": "String"
+    }
+  }
+}

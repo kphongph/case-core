@@ -1,0 +1,57 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+
+<polymer-element name="ltc-search-result" attributes="data">
+  <template>
+    <style>
+    .search-result {
+      width:100%;
+      height: 64px;
+      padding-left: 8px;
+      background-color : #efefef;
+      z-index: 100000;
+      color: #898989;
+    }
+
+    .search-result:hover {
+      background-color : #ffffff;
+      cursor: pointer;
+    }
+
+    .search-result .person-img {
+      width: 48px;
+      height: 48px;
+      background-color: white;
+      margin-top: 8px;
+      margin-right: 8px;
+      border-radius: 50%;
+    }
+
+    .search-result .person-cid{      
+      margin-right: 8px;
+    }
+
+    .search-result .person-img img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+    }
+
+    </style>
+    <div class="search-result" horizontal layout on-tap="{{personClick}}">       
+        <div class="person-img"><img src="https://nuqlis.blob.core.windows.net/pic/{{data.CID}}" onerror="this.src = '../images/avatar.png';" /></div>
+        <div class="person-cid"><h>{{data.CID}}</h></div>
+        <div>{{data.FirstName}} {{data.LastName}}</div>
+    </div>
+
+  </template>
+  
+  <script>
+  Polymer('ltc-search-result',{
+    personClick : function () {      
+      this.fire('search-result-tap',  this.data);
+
+    }
+  });
+  </script>
+</polymer-element>

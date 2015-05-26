@@ -1,0 +1,17 @@
+{
+  "name": "Acvititytype",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "acvititytypes"
+  },
+  "properties": {
+    "ActivityTypeID": {
+      "type": "String"
+    },
+    "ActivityTypeName": {
+      "type": "String"
+    }
+  }
+}

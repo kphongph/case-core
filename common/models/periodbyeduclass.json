@@ -1,0 +1,17 @@
+{
+  "name": "Periodbyeduclass",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "periodbyeduclasses"
+  },
+  "properties": {
+    "PbEID": {
+      "type": "String"
+    },
+    "PbEName": {
+      "type": "String"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "Personvshost",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "personvshosts"
+  },
+  "properties": {
+    "CID": {
+      "type": "String"
+    },
+    "HostSource": {
+      "type": "String"
+    },
+    "HostDestination": {
+      "type": "String"
+    },
+    "StartDatetime": {
+      "type": "Date"
+    },
+    "EndDatetime": {
+      "type": "Date"
+    },
+    "Hosttype": {
+      "type": "String"
+    },
+    "Datetimeupdate": {
+      "type": "Date"
+    }
+  }
+}

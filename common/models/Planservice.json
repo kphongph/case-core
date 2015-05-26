@@ -1,0 +1,41 @@
+{
+  "name": "Planservice",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "planservices"
+  },
+  "properties": {
+    "CID": {
+      "type": "String"
+    },
+    "CaseNo": {
+      "type": "Number"
+    },
+    "CMPlanNo": {
+      "type": "Number"
+    },
+    "SVCCode": {
+      "type": "String"
+    },
+    "StartPlanTime": {
+      "type": "Date"
+    },
+    "EndPlanTime": {
+      "type": "Date"
+    },
+    "CMStaffID": {
+      "type": "String"
+    },
+    "CMHostID": {
+      "type": "String"
+    },
+    "TimeStamp": {
+      "type": "Date"
+    },
+    "PlanStatus": {
+      "type": "Number"
+    }
+  }
+}

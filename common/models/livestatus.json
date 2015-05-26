@@ -1,0 +1,17 @@
+{
+  "name": "Livestatus",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "livestatuses"
+  },
+  "properties": {
+    "LiveStatusID": {
+      "type": "String"
+    },
+    "LiveStatusDescription": {
+      "type": "String"
+    }
+  }
+}

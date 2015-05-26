@@ -1,0 +1,17 @@
+{
+  "name": "Hosttypeid",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "hosttypeids"
+  },
+  "properties": {
+    "HostTypeID": {
+      "type": "String"
+    },
+    "HostTypeDescription": {
+      "type": "String"
+    }
+  }
+}

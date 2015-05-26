@@ -1,0 +1,20 @@
+{
+  "name": "Gender",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "genders"
+  },
+  "properties": {
+    "GenderCode": {
+      "type": "String"
+    },
+    "GenderThaiDescription": {
+      "type": "String"
+    },
+    "GenderEnglishDescription": {
+      "type": "String"
+    }
+  }
+}

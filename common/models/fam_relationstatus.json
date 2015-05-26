@@ -1,0 +1,17 @@
+{
+  "name": "FamRelationstatus",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "fam_relationstatuses"
+  },
+  "properties": {
+    "FamilyRelationStatusID": {
+      "type": "Number"
+    },
+    "Description": {
+      "type": "String"
+    }
+  }
+}

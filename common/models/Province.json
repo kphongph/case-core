@@ -1,0 +1,23 @@
+{
+  "name": "Province",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "provinces"
+  },
+  "properties": {
+    "ProvinceID": {
+      "type": "String"
+    },
+    "ProvinceDescription": {
+      "type": "String"
+    },
+    "Latitude": {
+      "type": "Number"
+    },
+    "Longtitude": {
+      "type": "Number"
+    }
+  }
+}

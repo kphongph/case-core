@@ -1,0 +1,35 @@
+{
+  "name": "Annotation",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "annotations"
+  },
+  "properties": {
+    "ID": {
+      "type": "Number"
+    },
+    "AID": {
+      "type": "String"
+    },
+    "AText": {
+      "type": "String"
+    },
+    "AnnotationID": {
+      "type": "String"
+    },
+    "Reference": {
+      "type": "String"
+    },
+    "TimeStamp": {
+      "type": "Date"
+    },
+    "StartDate": {
+      "type": "Date"
+    },
+    "EndDate": {
+      "type": "Date"
+    }
+  }
+}

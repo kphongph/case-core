@@ -1,0 +1,50 @@
+{
+  "name": "Host",
+  "options": {
+    "idInjection": true
+  },
+  "mongodb": {
+    "collection": "hosts"
+  },
+  "properties": {
+    "HostID": {
+      "type": "String"
+    },
+    "HostName": {
+      "type": "String"
+    },
+    "HostStreetAddress": {
+      "type": "String"
+    },
+    "HostStreetName": {
+      "type": "String"
+    },
+    "HostCity": {
+      "type": "String"
+    },
+    "HostProvince": {
+      "type": "String"
+    },
+    "HostPostcode": {
+      "type": "String"
+    },
+    "HostTypeID": {
+      "type": "String"
+    },
+    "HostTumbon": {
+      "type": "String"
+    },
+    "Latitude": {
+      "type": "Number"
+    },
+    "Longtitude": {
+      "type": "Number"
+    },
+    "HostType": {
+      "type": "String"
+    },
+    "ProviderCode": {
+      "type": "String"
+    }
+  }
+}
