@@ -1,0 +1,64 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="person-list">
+ <template>
+  <iron-ajax id="people_count"
+    auto
+    last-response="{{count}}"
+    handleAs="json">
+  </iron-ajax>
+
+  <iron-ajax id="ajax"
+    auto
+    last-response="{{people}}"
+    handleAs="json">
+  </iron-ajax>
+
+  <input type="text" value="{{query::input}}">
+   
+  <div horizontal end-justified layout> 
+    <div class="result">Found 
+    <span>{{count.count}}</span> documents</div>
+  </div>
+
+  <div layout vertical center>
+    <template is="dom-repeat" items="{{people}}">
+      <p>
+      <span>{{item.CID}}</span> 
+      <span>{{item.FirstName}}</span>
+      <span>{{item.LastName}}</span> 
+      </p>
+    </template>
+  </di>
+ </template>
+</dom-module>
+  
+<script>
+
+  Polymer({
+    is:'person-list',
+    properties: {
+      query: {
+        type: String,
+        observer: '_queryValueChanged'
+      }
+    },
+    _queryValueChanged: function() {
+      var query_text = {
+        limit:10, 
+        fields:['CID','FirstName','LastName'],
+        where: {
+         CID:{
+          like:this.query
+         }
+        }
+      };
+      this.$.ajax.url="../api/people?filter="+JSON.stringify(query_text);
+      this.$.ajax.generateRequest();
+      this.$.people_count.url = "../api/people/count?where="+
+        JSON.stringify(query_text.where); 
+      this.$.people_count.generateRequest();
+    }
+  });
+</script>
