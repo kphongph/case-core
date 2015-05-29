@@ -18,7 +18,7 @@
   <input type="text" value="{{query::input}}">
    
   <div horizontal end-justified layout> 
-    <div class="result">Found 
+    <div id="result" value="{{count.count}}">Found 
     <span>{{count.count}}</span> documents</div>
   </div>
 
@@ -30,35 +30,61 @@
       <span>{{item.LastName}}</span> 
       </p>
     </template>
-  </di>
+  </div>
+  
+  <div layout horizontal center>
+    <button on-click="previousClick">previous</button>
+    <button on-click="nextClick">next</button>
+  </div>
  </template>
 </dom-module>
-  
-<script>
 
+
+<script>
   Polymer({
     is:'person-list',
+    page_index: 1,
+    query_text: {
+      limit:10, 
+      skip: 0,
+      fields:['CID','FirstName','LastName'],
+      where: {
+        CID:{
+          like:this.query
+        }
+      }
+    },
     properties: {
       query: {
         type: String,
         observer: '_queryValueChanged'
-      }
+      },
     },
     _queryValueChanged: function() {
-      var query_text = {
-        limit:10, 
-        fields:['CID','FirstName','LastName'],
-        where: {
-         CID:{
-          like:this.query
-         }
-        }
-      };
-      this.$.ajax.url="../api/people?filter="+JSON.stringify(query_text);
-      this.$.ajax.generateRequest();
+      this.query_text.where.CID.like = this.query;
+      this.queryPerson();
       this.$.people_count.url = "../api/people/count?where="+
-        JSON.stringify(query_text.where); 
+        JSON.stringify(this.query_text.where); 
       this.$.people_count.generateRequest();
-    }
+    },
+    queryPerson: function(){
+      this.$.ajax.url="../api/people?filter="+JSON.stringify(this.query_text);
+      this.$.ajax.generateRequest();
+    },
+    previousClick: function() {
+      if(this.page_index > 1){
+        this.query_text.skip -= 10;;
+        this.page_index--;
+        this.queryPerson();
+      }
+    },
+    nextClick: function() {
+      if(this.$.result.value > this.query_text.skip){
+        // do query next
+        this.query_text.skip += 10;;
+        this.page_index++;
+        this.queryPerson();
+      }
+    },
   });
 </script>
