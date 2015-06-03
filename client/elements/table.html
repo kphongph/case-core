@@ -1,0 +1,70 @@
+<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<style>
+    .table-content {
+      border-collapse: collapse;
+      font-family: 'Roboto Regular', sans-serif;
+      font-size: 13px;
+      background-color: #FFFFFF;
+      border: 1px solid #e5e5e5;
+      color: rgba(0, 0, 0, 0.87);
+      border-radius: 3px;
+    }
+    .table-content thead{
+      padding-left: 50px;
+      color: rgba(0, 0, 0, 0.57);
+      height: 56px;
+    }
+    .table-content tbody tr:hover{
+      background-color: #EEEEEE;
+      cursor: pointer;
+    }
+    .table-content tr{
+      border-bottom: 2px solid #EEEEEE;
+      height: 48px;
+    }
+    .table-content tr td:first-child {
+      padding-left: 20px;
+      padding-right: 56px;
+    }
+    .table-content tr td:not(:first-child) {
+      padding-left: 56px;
+      padding-right: 56px;
+    }
+</style>
+  
+<dom-module id="dt-table">
+  <template>
+    <table class="table-content">
+      <!-- column header -->
+      <thead>
+        <tr>
+        <template is="dom-repeat" items="{{columns}}">
+          <td>{{item}}</td>
+        </template>
+        </tr>
+      </thead>
+      <!-- table body -->
+      <tbody>
+        <template is="dom-repeat" items="{{data}}" as="row">
+          <tr>
+            <td><paper-checkbox>label</paper-checkbox></td>
+            <template is="dom-repeat" items="{{row}}" as="col">
+              <td>{{col}}</td>
+            </template>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'dt-table',
+    properties: {
+      columns: Array,
+      data: Array
+    }
+  });
+</script>

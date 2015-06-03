@@ -12,6 +12,7 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.0.0",
-    "iron-ajax": "PolymerElements/iron-ajax#~0.9.6"
+    "iron-ajax": "PolymerElements/iron-ajax#~0.9.6",
+    "paper-checkbox": "PolymerElements/paper-checkbox#1.0.1"
   }
 }

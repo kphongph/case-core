@@ -1,0 +1,113 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../elements/table.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="person-list">
+ <template>
+  <iron-ajax id="people_count"
+    auto
+    last-response="{{count}}"
+    handleAs="json">
+  </iron-ajax>
+
+  <iron-ajax id="ajax"
+    auto
+    last-response="{{people}}"
+    on-response="parseToArray"
+    handleAs="json">
+  </iron-ajax>
+
+  <input type="text" value="{{query::input}}">
+   
+  <div horizontal end-justified layout> 
+    <div id="result" value="{{count.count}}">Found 
+    <span>{{count.count}}</span> documents</div>
+  </div>
+
+  <div>
+    <dt-table data="{{testData}}" columns="[11111, 22222, 33333, 44444, 55555]"></dt-table>
+  </div>
+  
+  <div layout horizontal center>
+    <br />
+    <button on-click="previousClick">previous</button>
+    <button on-click="nextClick">next</button>
+  </div>
+ </template>
+</dom-module>
+
+
+<script>
+  Polymer({
+    is:'person-list',
+    page_index: 1,
+    query_text: {
+      limit:10, 
+      skip: 0,
+      fields:['CID','FirstName','LastName'],
+      where: {
+        CID:{
+          like:this.query
+        }
+      }
+    },
+    properties: {
+      query: {
+        type: String,
+        observer: '_queryValueChanged'
+      },
+      testData: {
+        type: Array,
+        value: []
+      }
+    },
+    ready: function() {
+      this.testData = [
+         ['A1', 'B', 'C', 'D'],
+         ['A2', 'B', 'C', 'D'],
+         ['A3', 'B', 'C', 'D'],
+         ['A4', 'B', 'C', 'D']
+       ];
+    },
+    parseToArray: function(){
+      //console.log('parse array')
+      if(this.people){
+        this.testData = [];
+        for(var i=0; i< this.people.length; i++){
+          var tmp = [];
+          tmp.push(this.people[i]['CID']);
+          tmp.push(this.people[i]['FirstName']);
+          tmp.push(this.people[i]['LastName']);
+          var row = new Object();
+          row['rows'] = tmp;            
+          this.testData.push(tmp);
+        }
+      }
+    },
+    _queryValueChanged: function() {
+      this.query_text.where.CID.like = this.query;
+      this.queryPerson();
+      this.$.people_count.url = "../api/people/count?where="+
+        JSON.stringify(this.query_text.where); 
+      this.$.people_count.generateRequest();
+    },
+    queryPerson: function(){
+      this.$.ajax.url="../api/people?filter="+JSON.stringify(this.query_text);
+      this.$.ajax.generateRequest();
+    },
+    previousClick: function() {
+      if(this.page_index > 1){
+        this.query_text.skip -= 10;;
+        this.page_index--;
+        this.queryPerson();
+      }
+    },
+    nextClick: function() {
+      if(this.$.result.value > this.query_text.skip){
+        this.query_text.skip += 10;;
+        this.page_index++;
+        this.queryPerson();
+      }
+    },
+  });
+</script>
