@@ -39,18 +39,18 @@
       <!-- column header -->
       <thead>
         <tr>
-        <template is="dom-repeat" items="{{columns}}">
-          <td>{{item}}</td>
+        <template is="dom-repeat" items="[[columns]]">
+          <td>[[item]]</td>
         </template>
         </tr>
       </thead>
       <!-- table body -->
       <tbody>
-        <template is="dom-repeat" items="{{data}}" as="row">
+        <template is="dom-repeat" items="[[data]]" as="row">
           <tr>
-            <td><paper-checkbox>label</paper-checkbox></td>
-            <template is="dom-repeat" items="{{row}}" as="col">
-              <td>{{col}}</td>
+            <td><paper-checkbox>Select</paper-checkbox></td>
+            <template is="dom-repeat" items="[[row]]" as="col">
+              <td>[[col]]</td>
             </template>
           </tr>
         </template>

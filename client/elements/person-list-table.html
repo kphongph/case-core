@@ -13,7 +13,7 @@
   <iron-ajax id="ajax"
     auto
     last-response="{{people}}"
-    on-response="parseToArray"
+    on-last-response-changed="parseToArray"
     handleAs="json">
   </iron-ajax>
 
@@ -25,7 +25,7 @@
   </div>
 
   <div>
-    <dt-table data="{{testData}}" columns="[11111, 22222, 33333, 44444, 55555]"></dt-table>
+    <dt-table data="{{peopleArray}}" columns="{{columns}}"></dt-table>
   </div>
   
   <div layout horizontal center>
@@ -56,31 +56,29 @@
         type: String,
         observer: '_queryValueChanged'
       },
-      testData: {
+      peopleArray: {
         type: Array,
         value: []
+      },
+      columns:{
+        type: Array,
+        value: ['SELECT', 'CID', 'FirstName', 'LastName']
       }
     },
-    ready: function() {
-      this.testData = [
-         ['A1', 'B', 'C', 'D'],
-         ['A2', 'B', 'C', 'D'],
-         ['A3', 'B', 'C', 'D'],
-         ['A4', 'B', 'C', 'D']
-       ];
+    create2DArray: function(rows,columns) {
+      var x = new Array(rows);
+      for (var i = 0; i < rows; i++) {
+        x[i] = new Array(columns);
+      }
+      return x;
     },
     parseToArray: function(){
-      //console.log('parse array')
       if(this.people){
-        this.testData = [];
+        this.peopleArray = this.create2DArray(10, 3);
         for(var i=0; i< this.people.length; i++){
-          var tmp = [];
-          tmp.push(this.people[i]['CID']);
-          tmp.push(this.people[i]['FirstName']);
-          tmp.push(this.people[i]['LastName']);
-          var row = new Object();
-          row['rows'] = tmp;            
-          this.testData.push(tmp);
+          this.peopleArray[i][0] = this.people[i]['CID'];
+          this.peopleArray[i][1] = this.people[i]['FirstName'];
+          this.peopleArray[i][2] = this.people[i]['LastName'];
         }
       }
     },
