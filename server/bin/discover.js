@@ -1,6 +1,6 @@
 var path = require('path');
 var app = require(path.resolve(__dirname, '../server'));
-var datasource = app.dataSources['caseDs'];
+var datasource = app.dataSources['eduDs'];
 
 /*
 datasource.discoverModelDefinitions(function(err,models) {
@@ -11,7 +11,7 @@ datasource.discoverModelDefinitions(function(err,models) {
 });
 */
 
-datasource.discoverSchema('Organization', {schema:"dbo"},
+datasource.discoverSchema('Person', {schema:"dbo"},
   function(err, schema) {
   if (err) throw err;
   console.log(JSON.stringify(schema, null, '  '));

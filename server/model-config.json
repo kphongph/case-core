@@ -4,9 +4,14 @@
       "loopback/common/models",
       "loopback/server/models",
       "../common/models",
+      "../ds/edu/models",
       "./models",
       "../node_modules/loopback-component-passport/lib/models"
     ]
+  },
+  "PersonHost": {
+    "dataSource": "eduDs",
+    "public": true
   },
   "accessToken": {
     "dataSource": "caseMongoDs",
