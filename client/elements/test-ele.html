@@ -1,0 +1,32 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/google-chart/google-chart.html">
+
+<dom-module id="test-ele">
+ <style>
+   google-chart {
+     background-color: #e0e0e0;
+   }
+ </style>
+
+ <template>
+  <h1>Test Element</h1>
+  <google-chart
+    id="content"
+    options='{"title": "Inventory"}'
+    type="column">
+  </google-chart>
+
+ </template>
+</dom-module>
+
+<script>
+ Polymer({
+   is:'test-ele',
+   
+   ready: function() {
+     console.log('ready');
+      this.$.content.data = [["Year", "Things", "Stuff"], ["2004", 1000, 400], ["2005", 1170, 460], ["2006", 660, 1120], ["2007", 1030, 540]];
+    // console.log(this.$.googleChart.style.width);
+   }
+ });
+</script>
