@@ -13,7 +13,7 @@ app.use(loopback.favicon());
 app.use(loopback.compress());
 
 var path = require('path');
-app.use(loopback.static(path.resolve(__dirname, '../md')));
+app.use(loopback.static(path.resolve(__dirname, '../client')));
 
 app.use(loopback.urlNotFound());
 app.use(loopback.errorHandler());
