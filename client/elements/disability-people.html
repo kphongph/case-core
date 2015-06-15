@@ -1,0 +1,82 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/google-chart/google-chart.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="disability-people">
+
+  <style>
+    :host {
+      display: block;
+      box-sizing: border-box;
+    }
+    google-chart {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+
+  <template>
+    <iron-ajax
+      id="ajax"
+      on-response="_createChartCallback"
+      handleAs="json">
+    </iron-ajax>
+    <google-chart
+      id="chart"
+      type='column'
+      cols='{{cols}}'
+      options='{"legend": {"position":"bottom"},"title":"ร้อยละเด็กพิเศษ"}'
+      rows='{{rows}}'>
+    </google-chart>
+  </template>
+
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'disability-people',
+    properties: {
+      cols: {
+        type: Array,
+        value: [
+          {label: "label", type: "string"},
+          {label: "พิการ", type: "number"},
+          {label: "ออทิสติก", type: "number"},
+          {label: "สมาธิสั้น", type: "number"}
+        ]
+      },
+      rows: {
+        type: Array,
+        value: [
+          ["จำนวน", 31, 22, 23]
+        ]
+      }
+    },
+    ready: function() {
+      this._createChart();
+    },
+    _createChart: function(){
+      var whereObj = {
+        where: {
+          HostType: "02"
+        },
+        fields:["DisabilityCode", "Name"]
+      }
+      this.$.ajax.url="../api/disabilitytypes?filter=" + JSON.stringify(whereObj);
+      this.$.ajax.generateRequest();
+    },
+    _createChartCallback: function(request){
+      var response = request.detail.response;
+      if(response){
+        this.cols = new Array(response.length + 1);
+        this.cols[0] = {label: "label", type: "string"};
+        this.rows[0] = [];
+        this.rows[0].push("จำนวน");
+        for(var i = 0; i< response.length; i++){
+          this.cols[i+1] = {label: response[i]['Name'], type: "number"};
+          this.rows[0].push(Math.floor((Math.random() * 100) + 1)); // fake value
+        }
+      }
+    }
+  });
+</script>
