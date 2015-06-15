@@ -2,19 +2,28 @@
  <head>
   <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js">
   </script>
-  <link rel="import" href="elements/test-ele.html">
+  <link rel="import" href="elements/lp-query.html">
   <link rel="import" href="elements/student-in-class.html">
-  <link rel="import" href="elements/disability-people.html">
-
  </head>
+
  <body>
-  <test-ele></test-ele>
-  <br /><br />
   <div style="width:300px;height:150px">
     <student-in-class filter="m1"></student-in-class>
   </div>
+
+  <template is="dom-bind">
+    <lp-query 
+       ds="/api/educationchildren/count" 
+       where='{"and":[{"educationclassid":4},{"enddate":null}]}'
+       result="{{result}}">
+    </lp-query>
+    <span>{{result.count}}</span>
+  </template>
+
+  <!--
   <div style="width:600px;height:200px">
     <disability-people></disability-people>
   </div>
+  -->
  </body>
 </html>

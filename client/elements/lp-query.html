@@ -1,0 +1,48 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="lp-query">
+  <template>
+    <iron-ajax id="ajax" last-response="{{result}}"></iron-ajax>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'lp-query',
+    properties: {
+      ds: {
+        type:String
+      },
+      filter : {
+        type:Object
+      },
+      where : {
+        type:Object
+      },
+      result : {
+        type:Object,
+        notify:true,
+        observer:'_resultChanged'
+      }
+    },
+    ready: function() {
+      if(this.ds) {
+        var url = this.ds;
+        if(this.filter) {
+          url += "?filter="+JSON.stringify(this.filter);
+        } else { 
+          if(this.where) {
+            url += "?where="+JSON.stringify(this.where);
+          } 
+        }
+        this.$.ajax.url = url;
+        this.$.ajax.generateRequest();
+      }
+    },
+    _resultChanged : function() {
+      console.log(this.result);
+    }
+   
+  });
+</script>
