@@ -12,6 +12,7 @@
 
   <template>
     <google-chart
+      id="chart"
       type='table'
       cols='{{cols}}'
       rows='{{rows}}'>
@@ -24,10 +25,9 @@
   Polymer({
     is: 'student-in-class',
     properties: {
-      filter: {
+      action: {
         type: String,
-        notify: true,
-        computed: '_createChart(filter)',
+        observer:'_actionChanged'
       },
       cols: {
         type: Array,
@@ -38,6 +38,7 @@
       },
       rows: {
         type: Array,
+        notify: true,
         value: [
           ["ป.1", 31],
           ["ป.4", 28],
@@ -46,12 +47,22 @@
         ]
       }
     },
-    _createChart: function(){
-      if(this.filter){
-        // if filter = p1 p2 m1 m2 all
-        // call service to get new value
-        console.log(this.filter);
-      
+    _actionChanged : function() {
+      var data = JSON.parse(this.action);
+      if(data){
+        if(data.operation == 'insert'){
+          
+        }
+        else if(data.operation == 'delete'){
+          for(var i=0; i<this.rows.length; i++){
+            if(this.rows[i][0] == data.target.text){
+              this.rows.splice(i, 1);
+              this.$.chart.rows = this.rows;
+              this.$.chart._loadData();
+              break;
+            }
+          }
+        }
       }
     }
   });

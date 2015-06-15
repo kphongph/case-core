@@ -1,29 +1,62 @@
-<html>
- <head>
-  <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js">
+<script src="bower_components/webcomponentsjs/webcomponents-lite.min.js">
   </script>
+  <link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
   <link rel="import" href="elements/lp-query.html">
   <link rel="import" href="elements/student-in-class.html">
- </head>
 
- <body>
-  <div style="width:300px;height:150px">
-    <student-in-class filter="m1"></student-in-class>
-  </div>
 
-  <template is="dom-bind">
-    <lp-query 
-       ds="/api/educationchildren/count" 
-       where='{"and":[{"educationclassid":4},{"enddate":null}]}'
-       result="{{result}}">
-    </lp-query>
-    <span>{{result.count}}</span>
-  </template>
+<dom-module id="i-report">
+  <template>
+    <div style="width:300px;height:150px">
+      <student-in-class action="{{actionString}}"></student-in-class>
+    </div>
+    <div>
+      <paper-checkbox on-change="_checkChanged" value=4>ป.1</paper-checkbox>
+      <paper-checkbox on-change="_checkChanged" value=7>ป.4</paper-checkbox>
+      <paper-checkbox on-change="_checkChanged" value=10>ม.1</paper-checkbox>
+      <paper-checkbox on-change="_checkChanged" value=13>ม.4</paper-checkbox>
+    </div>
+    <div>
+      <lp-query 
+         ds="/api/educationchildren/count" 
+         where='{"and":[{"educationclassid":4},{"enddate":null}]}'
+         result="{{result}}">
+      </lp-query>
+      <span>{{result.count}}</span>
+    </div>
+ </template>
+</dom-module>
 
-  <!--
-  <div style="width:600px;height:200px">
-    <disability-people></disability-people>
-  </div>
-  -->
- </body>
-</html>
+<script>
+  Polymer({
+    is:'i-report',
+    properties: {
+     actionString: {
+        type: String
+      },
+      action: {
+        type: Object,
+        value: {
+          target: {
+            id: String,
+            text: String
+          },
+          operation: {
+            type: String
+          }
+        }
+      },
+    },
+    _checkChanged: function(e) {
+      var checkbox = e.target;
+      this.action.target.id = checkbox.getAttribute('value');
+      this.action.target.text = Polymer.dom(checkbox).textContent;
+      this.action.operation = 'insert';
+      if(!checkbox.checked){
+        this.action.operation = 'delete';
+      }
+      this.actionString = JSON.stringify(this.action);
+    }
+  });
+</script>
+<i-report></i-report>

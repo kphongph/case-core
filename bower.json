@@ -11,6 +11,7 @@
     "tests"
   ],
   "dependencies": {
-    "google-chart": "GoogleWebComponents/google-chart#^1.0.0"
+    "google-chart": "GoogleWebComponents/google-chart#^1.0.0",
+	"paper-checkbox": "PolymerElements/paper-checkbox#~1.0.1"
   }
 }
