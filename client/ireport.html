@@ -8,7 +8,7 @@
 <dom-module id="i-report">
   <template>
     <div style="width:300px;height:150px">
-      <student-in-class action="{{actionString}}"></student-in-class>
+      <student-in-class action="{{actionString}}" cols="{{cols}}" rows="{{rows}}"></student-in-class>
     </div>
     <div>
       <paper-checkbox on-change="_checkChanged" value=4>ป.1</paper-checkbox>
@@ -19,7 +19,7 @@
     <div>
       <lp-query 
          ds="/api/educationchildren/count" 
-         where='{"and":[{"educationclassid":4},{"enddate":null}]}'
+         where="{{where}}"
          result="{{result}}">
       </lp-query>
       <span>{{result.count}}</span>
@@ -30,15 +30,26 @@
 <script>
   Polymer({
     is:'i-report',
+    ready: function() {
+      this.cols = [
+          {label: "ระดับชั้น", type: "string"},
+          {label: "จำนวนนักเรียนที่ลงทะเบียน", type: "number"}
+        ];
+      this.rows = [[null, null]]
+    },
     properties: {
      actionString: {
         type: String
       },
+      cols: Object,
+      rows: Object,
+      where: Object,
       action: {
         type: Object,
         value: {
           target: {
             id: String,
+            value: String,
             text: String
           },
           operation: {
@@ -46,6 +57,16 @@
           }
         }
       },
+      result: {
+        type: Object,
+        observer: '_resultChanged'
+      }
+    },
+    _resultChanged: function(){
+      if(this.result){
+        this.action.target.value = this.result.count;
+        this.actionString = JSON.stringify(this.action);
+      }
     },
     _checkChanged: function(e) {
       var checkbox = e.target;
@@ -54,8 +75,16 @@
       this.action.operation = 'insert';
       if(!checkbox.checked){
         this.action.operation = 'delete';
+        this.actionString = JSON.stringify(this.action);
       }
-      this.actionString = JSON.stringify(this.action);
+      else{
+        this.where = {
+          and:[
+            {educationclassid:this.action.target.id},
+            {enddate:null}
+          ]
+        }
+      }
     }
   });
 </script>

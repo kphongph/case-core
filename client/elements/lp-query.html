@@ -15,10 +15,12 @@
         type:String
       },
       filter : {
-        type:Object
+        type:Object,
+        observer: '_callService'
       },
       where : {
-        type:Object
+        type:Object,
+        observer: '_callService'
       },
       result : {
         type:Object,
@@ -27,6 +29,9 @@
       }
     },
     ready: function() {
+     //this. _callService();
+    },
+    _callService: function(){
       if(this.ds) {
         var url = this.ds;
         if(this.filter) {

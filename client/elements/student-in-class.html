@@ -29,34 +29,29 @@
         type: String,
         observer:'_actionChanged'
       },
-      cols: {
-        type: Array,
-        value: [
-          {label: "ระดับชั้น", type: "string"},
-          {label: "จำนวนนักเรียนที่ลงทะเบียน", type: "number"}
-        ]
-      },
-      rows: {
-        type: Array,
-        notify: true,
-        value: [
-          ["ป.1", 31],
-          ["ป.4", 28],
-          ["ม.1", 31],
-          ["ม.4", 20]
-        ]
-      }
+      cols: Array,
+      rows: Array
     },
     _actionChanged : function() {
       var data = JSON.parse(this.action);
       if(data){
         if(data.operation == 'insert'){
-          
+          if(this.rows.length > 0){
+            if(this.rows[0][0] === null){
+              this.rows = [];
+            }
+          }
+          this.rows.push([data.target.text, data.target.value]);
+          this.$.chart.rows = this.rows;
+          this.$.chart._loadData();
         }
         else if(data.operation == 'delete'){
           for(var i=0; i<this.rows.length; i++){
             if(this.rows[i][0] == data.target.text){
               this.rows.splice(i, 1);
+              if(this.rows.length == 0){
+                this.rows.push([null, null]);
+              }
               this.$.chart.rows = this.rows;
               this.$.chart._loadData();
               break;
