@@ -32,11 +32,12 @@
      //this. _callService();
     },
     _callService: function(){
-      if(this.ds) {
+      if(this.ds && (this.where||this.filter)) {
         var url = this.ds;
         if(this.filter) {
           url += "?filter="+JSON.stringify(this.filter);
-        } else { 
+        } 
+        else { 
           if(this.where) {
             url += "?where="+JSON.stringify(this.where);
           } 
