@@ -1,0 +1,101 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/google-chart/google-chart.html">
+<link rel="import" href="lp-query.html">
+
+<dom-module id="registered-student">
+
+  <style>
+    :host {
+      display: block;
+      box-sizing: border-box;
+    }
+  </style>
+
+  <template>
+    <google-chart
+      id="chart"
+      type='table'
+      cols='{{cols}}'
+      rows='{{rows}}'>
+    </google-chart>
+    <lp-query 
+      ds="/api/educationchildren/count"
+      where="{{where}}"
+      result="{{result}}">
+    </lp-query>
+  </template>
+
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'registered-student',
+    ready: function() {
+      this.hostid = "3720140208";
+      this.topic = [
+        {"id":4, "text":"ประถมศึกษาปีที่ 1"}, 
+        {"id":7, "text":"ประถมศึกษาปีที่ 4"}, 
+        {"id":10, "text":"มัธยมศึกษาปีที่ 1"}, 
+        {"id":13, "text":"มัธยมศึกษาปีที่ 4"}
+      ];
+      var currentYear = new Date().getFullYear();
+      this.year = [(currentYear-2), (currentYear-1), currentYear];
+      this.cols = [{label: "ระดับชั้น", type: "string"}];
+      for(var i = 0; i<this.year.length; i++){
+        this.cols.push({label: "ปี " + (this.year[i]+543), type: "number"});
+      }
+      this.rows = [];
+      for(var i = 0; i<this.topic.length; i++){
+        this._addRows(this.topic[i].id, this.topic[i].text, this.year.length);
+      }
+      this._queryWhere(this.topic[0].id, this.year[0]);
+    },
+    properties: {
+      cols: Array,
+      rows: Array,
+      topic: Array,
+      hostid: String,
+      year: Array,
+      result: {
+        type: Object,
+        observer: '_resultChanged'
+      }
+    },
+    _addRows: function(topicid, topictext, length){
+      var tmpRows = [topictext];
+      for(var i = 0; i<length; i++){
+        tmpRows.push(null);
+      }
+      this.rows.push(tmpRows);
+    },
+    _queryWhere: function(id, year){
+      this.where = {
+        and:[
+          {educationclassid:id},
+          {
+            startdate:{
+              between:[year + "-03-01",(year + 1) +"-03-01"]
+            }
+          }
+        ]
+      };
+    },
+    _resultChanged: function(){
+      var isExist = false;
+      for(var i = 0; i<this.rows.length; i++){
+        for(var j = 1; j<this.rows[i].length; j++){
+          if(this.rows[i][j] === null){
+            isExist = true;
+            this.rows[i][j] = this.result.count;
+            this._queryWhere(this.topic[i].id, this.year[j]);
+            return;
+          }
+        }
+      }
+      if(!isExist){
+        this.$.chart.rows = this.rows;
+        this.$.chart._loadData();
+      }
+    }
+  });
+</script>

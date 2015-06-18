@@ -2,7 +2,7 @@
 <link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="elements/lp-query.html">
 <link rel="import" href="elements/student-in-class.html">
-
+<link rel="import" href="elements/registered-student.html">
 
 <dom-module id="i-report">
   <style>
@@ -15,6 +15,9 @@
     }
   </style>
   <template>
+    <div style="padding:15px;">
+      <registered-student></registered-student>
+    </div>
     <div style="width:300px;height:150px">
       <student-in-class action="{{actionString}}" cols="{{cols}}" rows="{{rows}}"></student-in-class>
     </div>
