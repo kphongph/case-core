@@ -31,7 +31,7 @@
   Polymer({
     is: 'registered-student',
     ready: function() {
-      this.hostid = "3720140208";
+      this.hostid = "3030100156";
       this.topic = [
         {"id":4, "text":"ประถมศึกษาปีที่ 1"}, 
         {"id":7, "text":"ประถมศึกษาปีที่ 4"}, 
@@ -70,13 +70,18 @@
     },
     _queryWhere: function(id, year){
       this.where = {
-        and:[
-          {educationclassid:id},
+        and: [
           {
-            startdate:{
-              between:[year + "-03-01",(year + 1) +"-03-01"]
-            }
-          }
+            and:[
+              {educationclassid:id},
+              {
+                startdate:{
+                  between:[year + "-03-01",(year + 1) +"-03-01"]
+                }
+              }
+            ]
+          },
+          {hostid: this.hostid}
         ]
       };
     },
