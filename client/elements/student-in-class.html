@@ -1,22 +1,67 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/google-chart/google-chart.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 
 <dom-module id="student-in-class">
 
   <style>
     :host {
-      display: block;
+      display: inline;
       box-sizing: border-box;
+    }
+    .content {
+      display: inline;
+      width: 100%;
+    }
+    .content table{
+      padding-bottom: 100px;
+    }
+    .content google-chart{
+      display: inline;
+      width: 80%;
+    }
+    .menu-content{
+      position: absolute;
+      width: 100px;
+    }
+    .menu-content paper-item{
+      cursor: pointer;
+    }
+    .menu-content paper-item:hover{
+      background-color: rgba(0, 0, 0, 0.2);
     }
   </style>
 
   <template>
-    <google-chart
-      id="chart"
-      type='table'
-      cols='{{cols}}'
-      rows='{{rows}}'>
-    </google-chart>
+    <div class="content">
+      <table>
+        <tr>
+          <td>
+            <google-chart
+              id="chart"
+              type='table'
+              cols='{{cols}}'
+              rows='{{rows}}'>
+            </google-chart> 
+          </td>
+          <td>
+            <paper-fab mini icon="assessment" on-click="_menuClicked"></paper-fab>
+            <div hidden$="{{!showMenu}}" class="menu-content">
+              <paper-material elevation="1">
+                <paper-menu>
+                  <paper-item on-click="_liClicked">Item 1</paper-item>
+                  <paper-item on-click="_liClicked">Item 2</paper-item>
+                </paper-menu>
+              </paper-material>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
   </template>
 
 </dom-module>
@@ -30,7 +75,17 @@
         observer:'_actionChanged'
       },
       cols: Array,
-      rows: Array
+      rows: Array,
+      showMenu: {
+        type: Boolean,
+        value: false
+      }
+    },
+    _menuClicked: function(){
+      this.showMenu = !this.showMenu;
+    },
+    _liClicked: function(){
+      this._menuClicked();
     },
     _actionChanged : function() {
       var data = JSON.parse(this.action);
