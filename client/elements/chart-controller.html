@@ -6,27 +6,43 @@
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 
-<dom-module id="student-in-class">
+<dom-module id="chart-controller">
 
   <style>
     :host {
       display: inline;
       box-sizing: border-box;
     }
+    .google-chart{
+      min-width: 500px,
+      height: 500px,
+    }
     .content {
       display: inline;
       width: 100%;
     }
     .content table{
-      padding-bottom: 100px;
+      padding-bottom: 200px;
     }
     .content google-chart{
       display: inline;
-      width: 80%;
+      width: 100%;
+    }
+    .menu {
+      position: absolute;
+      top:0;
+      margin-top: 10px;
+      margin-left: 10px;
     }
     .menu-content{
       position: absolute;
-      width: 100px;
+      top:55px;
+      margin-left: 10px;
+      width: 180px;
+    }
+    .menu-content paper-menu{
+      height: 200px;
+      overflow-y: scroll;
     }
     .menu-content paper-item{
       cursor: pointer;
@@ -49,12 +65,13 @@
             </google-chart> 
           </td>
           <td>
-            <paper-fab mini icon="assessment" on-click="_menuClicked"></paper-fab>
+            <paper-fab id="menu" mini icon="assessment" on-click="_menuClicked" class="menu"></paper-fab>
             <div hidden$="{{!showMenu}}" class="menu-content">
               <paper-material elevation="1">
                 <paper-menu>
-                  <paper-item on-click="_liClicked">Item 1</paper-item>
-                  <paper-item on-click="_liClicked">Item 2</paper-item>
+                  <template is="dom-repeat" items="{{chartTypes}}">
+                    <paper-item on-click="_typeChanged" value$="{{item}}">{{item}}</paper-item>
+                  </template>
                 </paper-menu>
               </paper-material>
             </div>
@@ -68,7 +85,15 @@
 
 <script>
   Polymer({
-    is: 'student-in-class',
+    is: 'chart-controller',
+    ready: function(){
+      if(!this.chartTypes){
+        this.showMenu = true;
+        this.$.chart._loadPackageByChartType();
+        this.chartTypes = Object.keys(this.$.chart._packages);
+        this.showMenu = false;
+      }
+    },
     properties: {
       action: {
         type: String,
@@ -76,15 +101,18 @@
       },
       cols: Array,
       rows: Array,
-      showMenu: {
-        type: Boolean,
-        value: false
-      }
+      chartTypes: Array,
+      showMenu: Boolean
     },
     _menuClicked: function(){
       this.showMenu = !this.showMenu;
     },
-    _liClicked: function(){
+    _typeChanged: function(e){
+      var type = e.target.getAttribute('value');
+      var dom = Polymer.dom(this.$.chart).node;
+      dom.querySelector('div').setAttribute('style', 'width:300px;height:300px;');
+      this.$.chart.type = type;
+      this.$.chart._readyForAction();
       this._menuClicked();
     },
     _actionChanged : function() {

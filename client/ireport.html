@@ -1,7 +1,7 @@
 <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 <link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="elements/lp-query.html">
-<link rel="import" href="elements/student-in-class.html">
+<link rel="import" href="elements/chart-controller.html">
 <link rel="import" href="elements/registered-student.html">
 
 <dom-module id="i-report">
@@ -15,8 +15,8 @@
     }
   </style>
   <template>
-    <div>
-      <student-in-class action="{{actionString}}" cols="{{cols}}" rows="{{rows}}"></student-in-class>
+    <div style="width:500px;">
+      <chart-controller action="{{actionString}}" cols="{{cols}}" rows="{{rows}}"></chart-controller>
     </div>
     <div>
       <paper-checkbox on-change="_checkChanged" name="education" value=4>ป.1</paper-checkbox>
