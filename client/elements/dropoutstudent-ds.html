@@ -1,0 +1,74 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="dropoutstudent-ds">
+  <template>
+    <iron-ajax id="getAll" 
+      url="/api/dropoutstudents"
+      handle-as="json"
+      on-response="_handleAllResponse">
+    </iron-ajax>
+
+    <iron-ajax id="findEducationRecordsWithCid" 
+      url="/api/educationchildren"
+      handle-as="json"
+      on-response="_handleEducationChildrenWithCid">
+    </iron-ajax>
+    <span>{{resultToString}}</span>
+
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'dropoutstudent-ds',
+    _all : [],
+    properties: {
+      command : { 
+        type: String,
+        notify: true
+      },
+      result : {
+        type: Object,
+        notify: true
+      },
+      resultToString : {
+        type: String,
+        computed: '_computeResultToString(result)'
+      }
+    },
+    ready: function() {
+    },
+    _computeResultToString : function(result) {
+      return JSON.stringify(result);
+    },
+    attached: function() {
+      console.log(this.command);
+      if(this.command=="getAllWithEducationRecords") {
+        this.$.getAll.generateRequest();
+      }
+    },
+    _handleAllResponse:function() {
+      this._all = this.$.getAll.lastResponse;
+      if(this.command=="getAllWithEducationRecords") {
+        for(var i=0;i<this._all.length;i++) {
+          var filter = {where:{cid:this._all[i].cid}};
+          var url="/api/educationchildren?filter="+JSON.stringify(filter);
+          this.$.findEducationRecordsWithCid.url = url;
+          this.$.findEducationRecordsWithCid.generateRequest();
+        }
+      }
+    },
+    _handleEducationChildrenWithCid: function() {
+     var response = this.$.findEducationRecordsWithCid.lastResponse[0];
+     if(response) {
+       for(var i=0;i<this._all.length;i++) {
+         if(this._all[i].cid == response.cid) {
+           this._all[i]['records']=response;
+         }
+       }
+       this.result = this._all;
+     }
+    }
+  });
+</script>
