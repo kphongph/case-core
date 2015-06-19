@@ -13,8 +13,9 @@
   "dependencies": {
     "google-chart": "GoogleWebComponents/google-chart#^1.0.0",
     "paper-checkbox": "PolymerElements/paper-checkbox#~1.0.1",
-	"paper-item": "PolymerElements/paper-item#1.0.0",
+    "paper-item": "PolymerElements/paper-item#1.0.0",
     "paper-material": "PolymerElements/paper-material#1.0.0",
-    "paper-fab": "PolymerElements/paper-fab#1.0.0"
+    "paper-fab": "PolymerElements/paper-fab#1.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#~1.0.2"
   }
 }
