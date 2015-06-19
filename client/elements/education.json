@@ -1,0 +1,68 @@
+[ 
+  {
+    "text": "นักเรียนชั้น ป.1 ที่เข้าสู่ระบบ",
+    "ds": "/api/educationchildren/count",
+    "where": "{\"and\":[{\"and\":[{\"educationclassid\":4},{\"enddate\":null}]},{\"hostid\":\"_hostid\"}]}",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนชั้น ป.4 ที่เข้าสู่ระบบ",
+    "ds": "/api/educationchildren/count",
+    "where": "{\"and\":[{\"and\":[{\"educationclassid\":7},{\"enddate\":null}]},{\"hostid\":\"_hostid\"}]}",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนชั้น ม.1 ที่เข้าสู่ระบบ",
+    "ds": "/api/educationchildren/count",
+    "where": "{\"and\":[{\"and\":[{\"educationclassid\":10},{\"enddate\":null}]},{\"hostid\":\"_hostid\"}]}",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนชั้น ม.4 ที่เข้าสู่ระบบ",
+    "ds": "/api/educationchildren/count",
+    "where": "{\"and\":[{\"and\":[{\"educationclassid\":13},{\"enddate\":null}]},{\"hostid\":\"_hostid\"}]}",
+    "filter": null
+  },
+  {
+    "text": "อัตราเรียนต่อ ม.4",
+    "ds": "/api/aftergradstudents/count",
+    "where": "{\"and\":[{\"aftergradid\":{\"inq\":[\"01\",\"02\",\"03\",\"04\"]}},{\"hostid\":\"_hostid\"}]}",
+    "filter": null
+  },
+  {
+    "text": "จำนวนเด็กหลุดออกจากระบบการศึกษาภาคบังคับ",
+    "ds": "",
+    "where": "",
+    "filter": null
+  },
+  {
+    "text": "จำนวนเด็กที่อยู่ในครอบครัวยากจน",
+    "ds": "/api/welfarepeople/count",
+    "where": "{\"and\":[{\"welfareid\":\"06\"},{\"hostid\":\"_hostid\"}]}",
+    "filter": null
+  },
+  {
+    "text": "จำนวนนักเรียนทั้งหมด",
+    "ds": "/api/educationchildren/count",
+    "where": "{\"and\":[{\"enddate\":null},{\"hostid\":\"_hostid\"}]}",
+    "filter": null
+  },
+  {
+    "text": "จำนวนคอมพิวเตอร์สำหรับนักเรียน",
+    "ds": "/api/hostcomputers",
+    "where": null,
+    "filter": "{\"hostid\":\"_hostid\",\"order\":\"updatetime DESC\",\"limit\":1,\"fields\":[\"studentpc\"]}"
+  },
+  {
+    "text": "จำนวนคอมพิวเตอร์สำหรับครู",
+    "ds": "/api/hostcomputers",
+    "where": null,
+    "filter": "{\"hostid\":\"_hostid\",\"order\":\"updatetime DESC\",\"limit\":1,\"fields\":[\"teacherpc\"]}"
+  },
+  {
+    "text": "จำนวนคอมพิวเตอร์ที่ใช้งาน Internet ได้",
+    "ds": "/api/hostcomputers",
+    "where": null,
+    "filter": "{\"hostid\":\"_hostid\",\"order\":\"updatetime DESC\",\"limit\":1,\"fields\":[\"internetpc\"]}"
+  }
+]

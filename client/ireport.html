@@ -2,8 +2,7 @@
 <link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="elements/lp-query.html">
 <link rel="import" href="elements/chart-controller.html">
-<link rel="import" href="elements/registered-student.html">
-<link rel="import" href="elements/disability-people.html">
+<link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="i-report">
   <style>
@@ -16,31 +15,23 @@
     }
   </style>
   <template>
-    <div style="width:100%;height:300px">
+    <iron-ajax auto url="elements/education.json" last-response="{{services}}"></iron-ajax>
+    <div style="width:100%;height:200px">
       <chart-controller action="{{actionString}}" cols="{{cols}}" rows="{{rows}}"></chart-controller>
     </div>
-    <div>
-      <paper-checkbox on-change="_checkChanged" name="education" value=4>ป.1</paper-checkbox>
-      <paper-checkbox on-change="_checkChanged" name="education" value=7>ป.4</paper-checkbox>
-      <paper-checkbox on-change="_checkChanged" name="education" value=10>ม.1</paper-checkbox>
-      <paper-checkbox on-change="_checkChanged" name="education" value=13>ม.4</paper-checkbox>
-    </div>
     <div class="list">
-      <br /><paper-checkbox on-change="_checkChanged" name="graduate" value=13>อัตราเรียนต่อ ม.4</paper-checkbox>
-      <br /><paper-checkbox on-change="_checkChanged" name="exist" value=13>จำนวนเด็กหลุดออกจากระบบการศึกษาภาคบังคับ</paper-checkbox>
-      <br /><paper-checkbox on-change="_checkChanged" name="poor" value=13>จำนวนเด็กที่อยู่ในครอบครัวยากจน</paper-checkbox>
-      <h3>การเข้าถึงสื่อคอมพิวเตอร์</h3>
-      <paper-checkbox on-change="_checkChanged" name="allStudents" value=13>นักเรียนทั้งหมด</paper-checkbox><br />
-      <paper-checkbox on-change="_checkChanged" name="allComputers" value=13>คอมพิวเตอร์ทั้งหมด</paper-checkbox>
+      <template is="dom-repeat" items="{{services}}">
+        <paper-checkbox 
+          on-change="_checkChanged"
+          ds$="{{item.ds}}" 
+          where$="{{item.where}}" 
+          filter$="{{item.filter}}">{{item.text}}</paper-checkbox><br />
+      </template>
     </div>
     <div>
       <lp-query 
-         ds="{{ds}}"
-         where="{{where}}"
-         filter="{{filter}}"
-         result="{{result}}">
+         ds="{{ds}}" where="{{where}}" filter="{{filter}}" result="{{result}}">
       </lp-query>
-      <span>{{result.count}}</span>
     </div>
  </template>
 </dom-module>
@@ -54,7 +45,6 @@
           {label: "Result(value)", type: "number"}
         ];
       this.rows = [[null, null]];
-      this.ds = "/api/educationchildren/count";
       this.hostid = "3720140208";
     },
     properties: {
@@ -66,6 +56,7 @@
       ds: String,
       rows: Object,
       where: Object,
+      services: Array,
       action: {
         type: Object,
         value: {
@@ -106,51 +97,20 @@
         this.actionString = JSON.stringify(this.action);
       }
       else{
-        this._query(checkbox.getAttribute('name'));
-      }
-    },
-    _query: function(name){
-      if(name == 'education'){
-        this.ds = "/api/educationchildren/count";
-        this.filter = null;
-        this.where = {
-          and:[
-            {educationclassid:this.action.target.id},
-            {enddate:null}
-          ]
-        };
-      }
-      else if(name == 'graduate'){
-        this.ds = "/api/aftergradstudents/count";
-        this.filter = null;
-        this.where = {
-          aftergradid:{
-            inq:["01","02","03","04"]
+        var ds = checkbox.getAttribute('ds');
+        if(ds){
+          this.ds = ds;
+          var where = checkbox.getAttribute('where');
+          var filter = checkbox.getAttribute('filter');
+          this.where = null;
+          this.filter = null;
+          if(filter){
+            this.filter = JSON.parse(filter.replace("_hostid", this.hostid));
           }
-        };
-      }
-      else if(name == 'exist'){
-        // relation
-      }
-      else if(name == 'poor'){
-        this.ds = "/api/welfarepeople/count";
-        this.filter = null;
-        this.where = { welfareid :"06" };
-      }
-      else if(name == 'allStudents'){
-        this.ds = "/api/educationchildren/count";
-        this.filter = null;
-        this.where = { enddate :null }
-      }
-      else if(name == 'allComputers'){
-        this.ds = "/api/hostcomputers";
-        this.where = null;
-        this.filter = {
-          hostid: this.hostid,
-          order: 'updatetime DESC',
-          limit: 1,
-          fields:["studentpc"]
-        };
+          if(where){
+            this.where = JSON.parse(where.replace("_hostid", this.hostid));
+          }
+        }
       }
     }
   });

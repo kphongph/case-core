@@ -12,69 +12,52 @@
       display: inline;
       box-sizing: border-box;
     }
-    .content {
-      display: inline;
-      width: 100%;
+    google-chart{
+      min-width: 100%;
+      height: 100%;
+      padding-right: 0;
     }
-    .content table{
-      padding-bottom: 200px;
-    }
-    .content google-chart{
-      display: inline;
-      width: 100%;
-    }
-    .menu {
+    paper-fab{
       position: absolute;
-      top:0;
-      margin-top: 10px;
-      margin-left: 10px;
+      top: 15px;
+      margin-left: -25px;
     }
-    .menu-content{
+    paper-material{
       position: absolute;
-      top:55px;
-      margin-left: 10px;
-      width: 180px;
-    }
-    .menu-content paper-material{
+      top: 50px;
+      margin-left: -20px;
       height: 200px;
       overflow-y: scroll;
     }
-    .menu-content paper-item{
+    paper-item{
       cursor: pointer;
     }
-    .menu-content paper-item:hover{
+    paper-item:hover{
       background-color: rgba(0, 0, 0, 0.2);
     }
   </style>
 
   <template>
-    <div class="content">
-      <table>
-        <tr>
-          <td>
-            <google-chart
-              id="chart"
-              type='table'
-              options='{"legend": "bottom"}'
-              cols='{{cols}}'
-              rows='{{rows}}'>
-            </google-chart> 
-          </td>
-          <td>
-            <paper-fab id="menu" mini icon="assessment" on-click="_menuClicked" class="menu"></paper-fab>
-            <div hidden$="{{!showMenu}}" class="menu-content">
-              <paper-material elevation="2">
-                <template is="dom-repeat" items="{{chartTypes}}">
-                  <paper-item on-click="_typeChanged" value$="{{item}}">{{item}}</paper-item>
-                </template>
-              </paper-material>
-            </div>
-          </td>
-        </tr>
-      </table>
+    <div style="display: inline-block;">
+      <google-chart
+         id="chart"
+         type='table'
+         options='{"legend": "none"}'
+         cols='{{cols}}'
+        rows='{{rows}}'>
+      </google-chart>
+    </div>
+    <div style="display: inline-block;">
+      <paper-fab id="menu" mini icon="assessment" on-click="_menuClicked">asdasd</paper-fab>
+      <div hidden$="{{!showMenu}}">
+        <paper-material elevation="2">
+          <template is="dom-repeat" items="{{chartTypes}}">
+            <paper-item on-click="_typeChanged" value$="{{item}}">{{item}}</paper-item>
+          </template>
+        </paper-material>
+      </div>
     </div>
   </template>
-
 </dom-module>
 
 <script>
@@ -82,11 +65,10 @@
     is: 'chart-controller',
     ready: function(){
       if(!this.chartTypes){
-        this.showMenu = true;
         this.$.chart._loadPackageByChartType();
         this.chartTypes = Object.keys(this.$.chart._packages);
-        this.showMenu = false;
       }
+      this.showMenu = false;
     },
     properties: {
       action: {
@@ -104,9 +86,6 @@
     _typeChanged: function(e){
       var type = e.target.getAttribute('value');
       var dom = Polymer.dom(this.$.chart).node;
-      console.log(dom.querySelector('div'))
-      console.log(this.$.chart.width)
-      dom.querySelector('div div div').setAttribute('style', 'width:300px;');
       this.$.chart.type = type;
       this.$.chart._readyForAction();
       this._menuClicked();
