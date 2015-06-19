@@ -1,7 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/google-chart/google-chart.html">
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
-<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
@@ -12,10 +11,6 @@
     :host {
       display: inline;
       box-sizing: border-box;
-    }
-    .google-chart{
-      min-width: 500px,
-      height: 500px,
     }
     .content {
       display: inline;
@@ -40,7 +35,7 @@
       margin-left: 10px;
       width: 180px;
     }
-    .menu-content paper-menu{
+    .menu-content paper-material{
       height: 200px;
       overflow-y: scroll;
     }
@@ -60,6 +55,7 @@
             <google-chart
               id="chart"
               type='table'
+              options='{"legend": "bottom"}'
               cols='{{cols}}'
               rows='{{rows}}'>
             </google-chart> 
@@ -67,12 +63,10 @@
           <td>
             <paper-fab id="menu" mini icon="assessment" on-click="_menuClicked" class="menu"></paper-fab>
             <div hidden$="{{!showMenu}}" class="menu-content">
-              <paper-material elevation="1">
-                <paper-menu>
-                  <template is="dom-repeat" items="{{chartTypes}}">
-                    <paper-item on-click="_typeChanged" value$="{{item}}">{{item}}</paper-item>
-                  </template>
-                </paper-menu>
+              <paper-material elevation="2">
+                <template is="dom-repeat" items="{{chartTypes}}">
+                  <paper-item on-click="_typeChanged" value$="{{item}}">{{item}}</paper-item>
+                </template>
               </paper-material>
             </div>
           </td>
@@ -110,7 +104,9 @@
     _typeChanged: function(e){
       var type = e.target.getAttribute('value');
       var dom = Polymer.dom(this.$.chart).node;
-      dom.querySelector('div').setAttribute('style', 'width:300px;height:300px;');
+      console.log(dom.querySelector('div'))
+      console.log(this.$.chart.width)
+      dom.querySelector('div div div').setAttribute('style', 'width:300px;');
       this.$.chart.type = type;
       this.$.chart._readyForAction();
       this._menuClicked();
