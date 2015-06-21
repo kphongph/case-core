@@ -1,24 +1,31 @@
 <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 <link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="elements/lp-query.html">
-<link rel="import" href="elements/chart-controller.html">
+<link rel="import" href="elements/chart-core.html">
 <link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <dom-module id="i-report">
   <style>
     :host {
-      display: block;
-      box-sizing: border-box;
+      @apply(--layout-horizontal);
+    }
+    body{
+      background-color: #E0E0E0;
     }
     .list paper-checkbox{
       padding-bottom: 10px;
     }
+    .chart{
+      @apply(--layout-horizontal);
+      @apply(--layout-center-justified);
+      width:100%;
+      height:500px;
+    }
   </style>
   <template>
     <iron-ajax auto url="elements/education.json" last-response="{{services}}"></iron-ajax>
-    <div style="width:100%;height:300px">
-      <chart-controller action="{{actionString}}" cols="{{cols}}" rows="{{rows}}"></chart-controller>
-    </div>
+    
     <div class="list">
       <template is="dom-repeat" items="{{services}}">
         <paper-checkbox 
@@ -28,6 +35,12 @@
           filter$="{{item.filter}}">{{item.text}}</paper-checkbox><br />
       </template>
     </div>
+    <div class="chart">
+      <div style="width:60%">
+        <chart-core action="{{actionString}}" cols="{{cols}}" rows="{{rows}}"></chart-core>
+      </div>
+    </div>
+    
     <div>
       <lp-query 
          ds="{{ds}}" where="{{where}}" filter="{{filter}}" result="{{result}}">
