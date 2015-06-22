@@ -1,0 +1,107 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="summary-card.html">
+
+<dom-module id="card-controller">
+
+  <style>
+    :host {
+      display: block;
+      @apply(--layout-vertical);
+    }
+    .container {
+      width: 100%;
+      height: 100%;
+      @apply(--layout-horizontal);
+      @apply(--layout-wrap);
+    }
+    .container summary-card{
+      padding: 10px;
+    }
+  </style>
+
+  <template>
+    <iron-ajax id="ajax" on-response="_handleResponse"></iron-ajax>
+    <div class="container">
+      <template is="dom-repeat" items="{{services}}">
+        <summary-card 
+        header="{{item.header}}"
+        title="{{item.title}}"
+        value="{{item.value}}"
+        unit="{{item.unit}}"
+        description="{{item.description}}"></summary-card><br />
+      </template>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'card-controller',
+    ready: function(){
+      this.hostid = "3720140208";
+      this.index = 0;
+      this.$.ajax.url = "../data/cards.json";
+      this.$.ajax.generateRequest();
+    },
+    properties: {
+      services: {
+        type: Array,
+        value: []
+      },
+      hostid: String,
+      index: Number,
+      tmpResult: Array
+    },
+    _getServiceResult: function(obj){
+      if(obj){
+        var key = Object.keys(obj)[0];
+        if(key == 0){
+          return obj[key][Object.keys(obj[key])];
+        }
+        else{
+          return obj[key];
+        }
+      }
+    },
+    _handleResponse: function(e){
+      var response = null;
+      if(e){
+        response = e.detail.response;
+      }
+      if(this.index == 0){
+        this.tmpResult = response;
+        this.index++;
+      }
+      else{
+        if(this.index == this.tmpResult.length){
+          this.services = this.tmpResult;
+          this.index++;
+        }
+        else{
+          var result = this._getServiceResult(response);
+          if(result){
+            this.tmpResult[this.index-1].value = result;
+          }
+          this.index++;
+        }
+      }
+      if(this.tmpResult){
+        if(this.tmpResult.length >= this.index){
+          var api = this.tmpResult[this.index-1].api;
+          
+          if(api){
+            api = api.replace("_hostid", this.hostid);
+            this.$.ajax.url = api;
+            this.$.ajax.generateRequest();
+          }
+          else{
+            this._handleResponse(null);
+          }
+        }
+      }
+    }
+  });
+</script>

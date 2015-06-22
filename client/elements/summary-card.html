@@ -1,0 +1,146 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="summary-card">
+
+  <style>
+    :host {
+      display: block;
+      @apply(--layout-vertical);
+    }
+    .container {
+      width: 220px;
+      height: 250px;
+      /*background-color: #90CAF9;*/
+      border-radius: 2px;
+      color: rgba(0, 0, 0, 0.57);
+      font-weight: bold;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .container:hover {
+      box-shadow: 0px 0px 8px #BDBDBD;
+    }
+    .header {
+      color: black;
+      padding: 16px 16px 0px 16px;
+      font-size: 150%;
+    }
+    .title {
+      padding: 0px 16px 16px 16px;
+      font-size: 80%;
+    }
+    .card-body {
+      display: inline;
+      padding-left: 16px;
+      font-size: 350%;
+    }
+    .card-body-tail {
+      display: inline;
+      font-size: 200%;
+    }
+    .card-unit {
+      padding: 16px 0px 16px 16px;
+      font-size: 130%;
+    }
+    .container hr{
+      display: block;
+      margin: 0px 16px 0px 16px;
+      border: 0px;
+      background-color: rgba(0, 0, 0, 0.57);
+      height: 1px;
+    }
+    .description {
+      padding: 0px 16px 16px 16px;
+      font-size: 80%;
+    }
+  </style>
+
+  <template>
+    <div id="card" class="container" on-click="_cardClicked">
+      <div class="header">{{header}}</div>
+      <div class="title">{{title}}</div>
+      <div class="card-body">{{text}}</div>
+      <div class="card-body-tail">{{tail}}</div>
+      <div class="card-unit">{{unit}}</div>
+      <hr noshaded>
+      <div class="description">{{description}}</div>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'summary-card',
+    ready: function(){
+      this.title = "Title here";
+      this.unit = "Bath.";
+      this.description = "This is description.";
+      this.link = "/ireport.html";
+      if(!this.color){
+        this.$.card.style.background = 
+        this.colorList[Math.floor((Math.random()*(this.colorList.length-1))+1)];
+      }
+      this._runAnimation(this.$.card, 
+      'translateY(80px)', 'translateY(0px)', 300);
+    },
+    _runAnimation(elem, tranStart, tranEnd, duration){
+      elem.animate([
+        {opacity: 0.5, transform: tranStart},
+        {opacity: 1.0, transform: tranEnd}
+      ],
+      {
+        duration: duration, iterations: 1
+      });
+    },
+    properties: {
+      header: String,
+      title: String,
+      value: {
+        type: String,
+        observer: '_valueChanged'
+      },
+      text: String,
+      tail: String,
+      unit: String,
+      link: String,
+      description: String,
+      color: {
+        type: String,
+        observer: '_colorChanged'
+      },
+      colorList: {
+        type: Array,
+        value: ["#E57373", "#F06292", "#BA68C8", "#9575CD", "#7986CB", 
+        "#64B5F6", "#4FC3F7", "#4DD0E1", "#4DB6AC", "#81C784", 
+        "#AED581", "#DCE775", "#FFF176", "#FFD54F", "#FFB74D",
+        "#FF8A65", "#A1887F", "#BDBDBD", "#90A4AE", "#FFFFFF"]
+      }
+    },
+    _colorChanged: function(){
+      this.$.card.style.background = this.color;
+    },
+    _valueChanged: function(){
+      this.text = this.value;
+      if(this.text.toString().indexOf('.') == -1){
+        this.text += '.00';
+      }
+      if(this.text.length > 8){
+        var body = Polymer.dom(this.$.card).querySelector('.card-body')
+        body.style.fontSize = "150%";
+      }
+      
+      var splited = this.text.split('.');
+      if(splited.length == 2){
+        this.text = splited[0] + '.';
+        this.tail = splited[1];
+      }
+      else{
+        this.tail = '';
+      }
+    },
+    _cardClicked: function(){
+      window.location.href = this.link;
+    }
+  });
+</script>
