@@ -57,7 +57,7 @@
   </style>
 
   <template>
-    <div id="card" class="container" on-click="_cardClicked">
+    <div id="card" class="container" url$="{{url}}">
       <div class="header">{{header}}</div>
       <div class="title">{{title}}</div>
       <div class="card-body">{{text}}</div>
@@ -76,7 +76,6 @@
       this.title = "Title here";
       this.unit = "Bath.";
       this.description = "This is description.";
-      this.link = "/ireport.html";
       if(!this.color){
         this.$.card.style.background = 
         this.colorList[Math.floor((Math.random()*(this.colorList.length-1))+1)];
@@ -100,10 +99,10 @@
         type: String,
         observer: '_valueChanged'
       },
+      url: String,
       text: String,
       tail: String,
       unit: String,
-      link: String,
       description: String,
       color: {
         type: String,
@@ -138,9 +137,6 @@
       else{
         this.tail = '';
       }
-    },
-    _cardClicked: function(){
-      window.location.href = this.link;
     }
   });
 </script>

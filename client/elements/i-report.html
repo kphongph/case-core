@@ -1,8 +1,7 @@
-<script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
-<link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
-<link rel="import" href="elements/lp-query.html">
-<link rel="import" href="elements/chart-core.html">
-<link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="lp-query.html">
+<link rel="import" href="chart-core.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <dom-module id="i-report">
@@ -10,42 +9,45 @@
     :host {
       @apply(--layout-horizontal);
     }
-    body{
-      background-color: #E0E0E0;
+    .container{
+      @apply(--layout-horizontal);
+      width: 100%;
+      height: 100%;
+      background-color: #FFFFFF;
+    }
+    .list{
+      width: 40%;
+      margin: 5px 0px 0px 5px;
     }
     .list paper-checkbox{
       padding-bottom: 10px;
     }
-    .chart{
-      @apply(--layout-horizontal);
-      @apply(--layout-center-justified);
-      width:100%;
-      height:500px;
+    .ichart{
+      width: 60%;
     }
   </style>
   <template>
-    <iron-ajax auto url="data/education.json" last-response="{{services}}"></iron-ajax>
+    <iron-ajax id="ajax" last-response="{{services}}"></iron-ajax>
     
-    <div class="list">
-      <template is="dom-repeat" items="{{services}}">
-        <paper-checkbox 
-          on-change="_checkChanged"
-          ds$="{{item.ds}}" 
-          where$="{{item.where}}" 
-          filter$="{{item.filter}}">{{item.text}}</paper-checkbox><br />
-      </template>
-    </div>
-    <div class="chart">
-      <div style="width:60%">
+    <div class="container">
+      <div class="list">
+        <template is="dom-repeat" items="{{services}}">
+          <paper-checkbox 
+            on-change="_checkChanged"
+            ds$="{{item.ds}}" 
+            where$="{{item.where}}" 
+            filter$="{{item.filter}}">{{item.text}}</paper-checkbox><br />
+        </template>
+      </div>
+      <div class="ichart">
         <chart-core action="{{actionString}}" cols="{{cols}}" rows="{{rows}}"></chart-core>
       </div>
     </div>
     
-    <div>
-      <lp-query 
-         ds="{{ds}}" where="{{where}}" filter="{{filter}}" result="{{result}}">
-      </lp-query>
-    </div>
+    
+    <lp-query 
+      ds="{{ds}}" where="{{where}}" filter="{{filter}}" result="{{result}}">
+    </lp-query>
  </template>
 </dom-module>
 
@@ -67,6 +69,10 @@
       hostid: String,
       cols: Object,
       ds: String,
+      url: {
+        type: String,
+        observer: '_urlChanged'
+      },
       rows: Object,
       where: Object,
       services: Array,
@@ -86,6 +92,12 @@
       result: {
         type: Object,
         observer: '_resultChanged'
+      }
+    },
+    _urlChanged: function(){
+      if(this.url){
+        this.$.ajax.url = this.url;
+        this.$.ajax.generateRequest();
       }
     },
     _resultChanged: function(){
@@ -128,4 +140,3 @@
     }
   });
 </script>
-<i-report></i-report>

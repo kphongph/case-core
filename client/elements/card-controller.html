@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="summary-card.html">
+<link rel="import" href="i-report.html">
 
 <dom-module id="card-controller">
 
@@ -20,19 +21,27 @@
     .container summary-card{
       padding: 10px;
     }
+    .ireport {
+      width: 100%;
+    }
   </style>
 
   <template>
     <iron-ajax id="ajax" on-response="_handleResponse"></iron-ajax>
-    <div class="container">
+    <div class="container" hidden$="{{isChart}}">
       <template is="dom-repeat" items="{{services}}">
         <summary-card 
         header="{{item.header}}"
         title="{{item.title}}"
         value="{{item.value}}"
         unit="{{item.unit}}"
-        description="{{item.description}}"></summary-card><br />
+        description="{{item.description}}"
+        url="{{item.services}}"
+        on-click="_cardClicked"></summary-card>
       </template>
+    </div>
+    <div class="ireport" hidden$="{{!isChart}}">
+      <i-report url="{{url}}"></i-report>
     </div>
   </template>
 </dom-module>
@@ -41,6 +50,7 @@
   Polymer({
     is: 'card-controller',
     ready: function(){
+      this.isChart = false;
       this.hostid = "3720140208";
       this.index = 0;
       this.$.ajax.url = "../data/cards.json";
@@ -51,6 +61,8 @@
         type: Array,
         value: []
       },
+      url: String,
+      isChart: Boolean,
       hostid: String,
       index: Number,
       tmpResult: Array
@@ -65,6 +77,14 @@
           return obj[key];
         }
       }
+    },
+    _cardClicked: function(e){
+      this.isChart = !this.isChart;
+      var tmpUrl = e.target.getAttribute('url');
+      if(!tmpUrl){
+        tmpUrl = e.target.parentElement.getAttribute('url');
+      }
+      this.url = tmpUrl;
     },
     _handleResponse: function(e){
       var response = null;

@@ -5,6 +5,7 @@
     "value": "00.00",
     "unit": "คน",
     "api" : "/api/educationchildren/count?{\"and\":[{\"enddate\":null},{\"hostid\":\"_hostid\"}]}",
+    "services" : "../data/opportunities.json",
     "description": "ข้อมูลการเข้าถึงการศึกษา การเรียนต่อและอื่นๆ"
   },
   {
@@ -13,6 +14,7 @@
     "value": "00.00",
     "unit": "%",
     "api" : "",
+    "services" : "../data/qualities.json",
     "description": "ผลสัมฤทธิ์ พฤติกรรมเสี่ยงและอื่นๆ"
   },
   {
@@ -21,6 +23,7 @@
     "value": "00.00",
     "unit": "คน",
     "api" : "",
+    "services" : "../data/performances.json",
     "description": "จำนวนครู งบประมาณและอื่นๆ"
   },
   {
@@ -29,6 +32,7 @@
     "value": "00.00",
     "unit": "บาท",
     "api" : "",
+    "services" : "../data/others.json",
     "description": "ข้อมูลทั่วไป"
   }
 ]
