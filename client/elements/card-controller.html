@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="summary-card.html">
 <link rel="import" href="i-report.html">
 
@@ -21,8 +22,10 @@
     .container summary-card{
       padding: 10px;
     }
-    .ireport {
-      width: 100%;
+    paper-fab{
+      position: absolute;
+      top: 20px;
+      left: 20px;
     }
   </style>
 
@@ -40,7 +43,8 @@
         on-click="_cardClicked"></summary-card>
       </template>
     </div>
-    <div class="ireport" hidden$="{{!isChart}}">
+    <div hidden$="{{!isChart}}">
+      <paper-fab id="backMenu" mini icon="arrow-back" on-click="_backMenuClicked"></paper-fab>
       <i-report url="{{url}}"></i-report>
     </div>
   </template>
@@ -85,6 +89,9 @@
         tmpUrl = e.target.parentElement.getAttribute('url');
       }
       this.url = tmpUrl;
+    },
+    _backMenuClicked: function(){
+      this.isChart = !this.isChart;
     },
     _handleResponse: function(e){
       var response = null;
