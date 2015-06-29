@@ -46,7 +46,7 @@
     </div>
     <div hidden$="{{!isChart}}">
       <paper-fab id="backMenu" mini icon="arrow-back" on-click="_backMenuClicked"></paper-fab>
-      <i-report url="{{url}}"></i-report>
+      <i-report url="{{url}}" cmservices={{cmservices}}></i-report>
     </div>
   </template>
 </dom-module>
@@ -132,7 +132,7 @@
               var value = {'detail':
                   {
                     'response': {
-                      'count': this.getValueFromJSON(where)
+                      'count': this.getValueFromJSON(where, JSON.parse(this.cmservices))
                     }
                   }};
               this._handleResponse(value);
@@ -149,24 +149,13 @@
         }
       }
     },
-    getValueFromJSON: function(selector){
-      var keys = selector.split('.');
-      var tmp;
-      if(this.cmservices){
-        tmp = JSON.parse(this.cmservices);
-      }
-      else{
-        return 0;
-      }
-      for(var i = 0; i < keys.length; i++){
-        try {
-            tmp = tmp[keys[i]];
-        }
-        catch(err) {
-          tmp = eval("tmp." + keys[i]);
-        }
-      }
-      return Number(tmp);
+    splitter: function(text){
+      var separators = [' ', '\\\+', '-', '\\\(', '\\\)', '\\*', '/', ':', '\\\?'];
+      var tokens = text.split(new RegExp(separators.join('|'), 'g'));
+      return tokens.filter(function(n){ return n != "" });
+    },
+    getValueFromJSON: function(selector, jsonData){
+      return Number(eval("jsonData" + selector));
     }
   });
 </script>

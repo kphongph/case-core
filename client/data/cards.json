@@ -15,7 +15,7 @@
     "value": "00.00",
     "unit": "%",
     "api" : "cmservices",
-    "where" : "Risk.1.juEle",
+    "where" : ".Risk[1].juEle",
     "services" : "../data/qualities.json",
     "description": "ผลสัมฤทธิ์ พฤติกรรมเสี่ยงและอื่นๆ"
   },

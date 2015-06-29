@@ -32,7 +32,7 @@
   {
     "text": "จำนวนเด็กหลุดออกจากระบบการศึกษาภาคบังคับ",
     "ds": "cmservices",
-    "where": "DropNCont.0.Year",
+    "where": ".DropNCont[0].Year",
     "filter": null
   },
   {

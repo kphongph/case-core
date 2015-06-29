@@ -39,7 +39,6 @@
   </style>
   <template>
     <iron-ajax id="ajax" last-response="{{services}}"></iron-ajax>
-    <iron-ajax id="cmajax" last-response="{{cmservices}}"></iron-ajax>
     <div class="container">
       <div class="list">
         <div class="header" flex>รายการ</div>
@@ -73,8 +72,6 @@
         ];
       this.rows = [[null, null]];
       this.hostid = "3720140208";
-      this.$.cmajax.url = "http://localhost:49552/ServiceControl/Service.svc/GetSchoolReport?host=3720140208&year=2015";
-      this.$.cmajax.generateRequest();
     },
     properties: {
      actionString: {
@@ -140,7 +137,8 @@
         var ds = checkbox.getAttribute('ds');
         if(ds){
           if(ds == 'cmservices'){
-            this.action.target.value = this.getValueFromJSON(checkbox.getAttribute('where'));
+            this.action.target.value = this.getValueFromJSON(
+              checkbox.getAttribute('where'), JSON.parse(this.cmservices));
             this.actionString = JSON.stringify(this.action);
           }
           else{
@@ -159,24 +157,8 @@
         }
       }
     },
-    getValueFromJSON: function(selector){
-      var keys = selector.split('.');
-      var tmp;
-      if(this.cmservices){
-        tmp = JSON.parse(this.cmservices);
-      }
-      else{
-        return 0;
-      }
-      for(var i = 0; i < keys.length; i++){
-        try {
-            tmp = tmp[keys[i]];
-        }
-        catch(err) {
-          tmp = eval("tmp." + keys[i]);
-        }
-      }
-      return Number(tmp);
+    getValueFromJSON: function(selector, jsonData){
+      return Number(eval("jsonData" + selector));
     }
   });
 </script>
