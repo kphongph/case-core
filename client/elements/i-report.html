@@ -39,6 +39,7 @@
   </style>
   <template>
     <iron-ajax id="ajax" last-response="{{services}}"></iron-ajax>
+    <iron-ajax id="cmajax" last-response="{{cmservices}}"></iron-ajax>
     <div class="container">
       <div class="list">
         <div class="header" flex>รายการ</div>
@@ -72,6 +73,8 @@
         ];
       this.rows = [[null, null]];
       this.hostid = "3720140208";
+      this.$.cmajax.url = "http://localhost:49552/ServiceControl/Service.svc/GetSchoolReport?host=3720140208&year=2015";
+      this.$.cmajax.generateRequest();
     },
     properties: {
      actionString: {
@@ -87,6 +90,7 @@
       rows: Object,
       where: Object,
       services: Array,
+      cmservices: Object,
       action: {
         type: Object,
         value: {
@@ -135,19 +139,44 @@
       else{
         var ds = checkbox.getAttribute('ds');
         if(ds){
-          this.ds = ds;
-          var where = checkbox.getAttribute('where');
-          var filter = checkbox.getAttribute('filter');
-          this.where = null;
-          this.filter = null;
-          if(filter){
-            this.filter = JSON.parse(filter.replace("_hostid", this.hostid));
+          if(ds == 'cmservices'){
+            this.action.target.value = this.getValueFromJSON(checkbox.getAttribute('where'));
+            this.actionString = JSON.stringify(this.action);
           }
-          if(where){
-            this.where = JSON.parse(where.replace("_hostid", this.hostid));
+          else{
+            this.ds = ds;
+            var where = checkbox.getAttribute('where');
+            var filter = checkbox.getAttribute('filter');
+            this.where = null;
+            this.filter = null;
+            if(filter){
+              this.filter = JSON.parse(filter.replace("_hostid", this.hostid));
+            }
+            if(where){
+              this.where = JSON.parse(where.replace("_hostid", this.hostid));
+            }
           }
         }
       }
+    },
+    getValueFromJSON: function(selector){
+      var keys = selector.split('.');
+      var tmp;
+      if(this.cmservices){
+        tmp = JSON.parse(this.cmservices);
+      }
+      else{
+        return 0;
+      }
+      for(var i = 0; i < keys.length; i++){
+        try {
+            tmp = tmp[keys[i]];
+        }
+        catch(err) {
+          tmp = eval("tmp." + keys[i]);
+        }
+      }
+      return Number(tmp);
     }
   });
 </script>

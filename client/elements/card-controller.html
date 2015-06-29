@@ -31,6 +31,7 @@
 
   <template>
     <iron-ajax id="ajax" on-response="_handleResponse"></iron-ajax>
+    <iron-ajax id="cmajax" on-response="_handleCMResponse"></iron-ajax>
     <div class="container" hidden$="{{isChart}}">
       <template is="dom-repeat" items="{{services}}">
         <summary-card 
@@ -57,14 +58,15 @@
       this.isChart = false;
       this.hostid = "3720140208";
       this.index = 0;
-      this.$.ajax.url = "../data/cards.json";
-      this.$.ajax.generateRequest();
+      this.$.cmajax.url = "http://localhost:49552/ServiceControl/Service.svc/GetSchoolReport?host=3720140208&year=2015";
+      this.$.cmajax.generateRequest();
     },
     properties: {
       services: {
         type: Array,
         value: []
       },
+      cmservices: Object,
       url: String,
       isChart: Boolean,
       hostid: String,
@@ -93,6 +95,11 @@
     _backMenuClicked: function(){
       this.isChart = !this.isChart;
     },
+    _handleCMResponse: function(e){
+      this.cmservices = e.detail.response;
+      this.$.ajax.url = "../data/cards.json";
+      this.$.ajax.generateRequest();
+    },
     _handleResponse: function(e){
       var response = null;
       if(e){
@@ -118,17 +125,48 @@
       if(this.tmpResult){
         if(this.tmpResult.length >= this.index){
           var api = this.tmpResult[this.index-1].api;
+          var where = this.tmpResult[this.index-1].where;
           
           if(api){
-            api = api.replace("_hostid", this.hostid);
-            this.$.ajax.url = api;
-            this.$.ajax.generateRequest();
+            if(api == "cmservices"){
+              var value = {'detail':
+                  {
+                    'response': {
+                      'count': this.getValueFromJSON(where)
+                    }
+                  }};
+              this._handleResponse(value);
+            }
+            else{
+              where = where.replace("_hostid", this.hostid);
+              this.$.ajax.url = api + "?where=" + where;
+              this.$.ajax.generateRequest();
+            }
           }
           else{
             this._handleResponse(null);
           }
         }
       }
+    },
+    getValueFromJSON: function(selector){
+      var keys = selector.split('.');
+      var tmp;
+      if(this.cmservices){
+        tmp = JSON.parse(this.cmservices);
+      }
+      else{
+        return 0;
+      }
+      for(var i = 0; i < keys.length; i++){
+        try {
+            tmp = tmp[keys[i]];
+        }
+        catch(err) {
+          tmp = eval("tmp." + keys[i]);
+        }
+      }
+      return Number(tmp);
     }
   });
 </script>

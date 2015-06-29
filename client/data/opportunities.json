@@ -31,8 +31,8 @@
   },
   {
     "text": "จำนวนเด็กหลุดออกจากระบบการศึกษาภาคบังคับ",
-    "ds": "",
-    "where": "",
+    "ds": "cmservices",
+    "where": "DropNCont.0.Year",
     "filter": null
   },
   {

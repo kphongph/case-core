@@ -4,16 +4,18 @@
     "title": "นักเรียนเข้าสู่ระบบ",
     "value": "00.00",
     "unit": "คน",
-    "api" : "/api/educationchildren/count?{\"and\":[{\"enddate\":null},{\"hostid\":\"_hostid\"}]}",
+    "api" : "/api/educationchildren/count",
+    "where" : "{\"and\":[{\"enddate\":null},{\"hostid\":\"_hostid\"}]}",
     "services" : "../data/opportunities.json",
     "description": "ข้อมูลการเข้าถึงการศึกษา การเรียนต่อและอื่นๆ"
   },
   {
     "header": "ด้านคุณภาพ",
-    "title": "นักเรียนที่เกรดสูงกว่า 2.00",
+    "title": "นักเรียนที่เกรดต่ำกว่า 2.00",
     "value": "00.00",
     "unit": "%",
-    "api" : "",
+    "api" : "cmservices",
+    "where" : "Risk.1.juEle",
     "services" : "../data/qualities.json",
     "description": "ผลสัมฤทธิ์ พฤติกรรมเสี่ยงและอื่นๆ"
   },
