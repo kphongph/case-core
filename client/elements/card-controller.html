@@ -132,7 +132,7 @@
               var value = {'detail':
                   {
                     'response': {
-                      'count': this.getValueFromJSON(where, JSON.parse(this.cmservices))
+                      'count': this.evalSelector(where, JSON.parse(this.cmservices))
                     }
                   }};
               this._handleResponse(value);
@@ -149,13 +149,18 @@
         }
       }
     },
+    evalSelector: function(selector, jsonData){
+      var tokens = this.splitter(selector);
+      var resultStr = "selector";
+      for(var i = 0; i < tokens.length; i++){
+        resultStr += '.replace("' + tokens[i] + '", ' + 'Number(eval("jsonData" + "' + tokens[i] + '")))';
+      }
+      return eval(eval(resultStr));
+    },
     splitter: function(text){
       var separators = [' ', '\\\+', '-', '\\\(', '\\\)', '\\*', '/', ':', '\\\?'];
       var tokens = text.split(new RegExp(separators.join('|'), 'g'));
       return tokens.filter(function(n){ return n != "" });
-    },
-    getValueFromJSON: function(selector, jsonData){
-      return Number(eval("jsonData" + selector));
     }
   });
 </script>
