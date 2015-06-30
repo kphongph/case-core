@@ -153,9 +153,21 @@
       var tokens = this.splitter(selector);
       var resultStr = "selector";
       for(var i = 0; i < tokens.length; i++){
-        resultStr += '.replace("' + tokens[i] + '", ' + 'Number(eval("jsonData" + "' + tokens[i] + '")))';
+        if(isNaN(tokens[i])){
+          if(tokens[i].indexOf('[...]') == -1){
+            resultStr += '.replace("' + tokens[i] + '", ' + 'Number(eval("jsonData" + "' + tokens[i] + '")))';
+          }
+          else{
+            //var length = eval("jsonData" + tokens[i].split('[')[0] + ".length");
+            //resultStr += '.replace("' + tokens[i] + '", 0';
+            //for(var j = 0; j < 2; j++){
+            //  resultStr += '+Number(eval("jsonData" + "' + tokens[i] + '".replace("[...]", "[1]")"))';
+            //}
+            //console.log(resultStr)
+          }
+        }
       }
-      return eval(eval(resultStr));
+      return Number(eval(eval(resultStr))).toFixed(2);
     },
     splitter: function(text){
       var separators = [' ', '\\\+', '-', '\\\(', '\\\)', '\\*', '/', ':', '\\\?'];

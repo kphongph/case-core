@@ -13,18 +13,19 @@
     "header": "ด้านคุณภาพ",
     "title": "นักเรียนที่เกรดต่ำกว่า 2.00",
     "value": "00.00",
-    "unit": "%",
+    "unit": "คน",
     "api" : "cmservices",
-    "where" : ".NumOfReg[0].RegYearpass2+.NumOfReg[0].RegYearpass1",
+    "where" : ".Risk[1].juEle+.Risk[1].seEle+.Risk[1].juHigh+.Risk[1].seHigh",
     "services" : "../data/qualities.json",
     "description": "ผลสัมฤทธิ์ พฤติกรรมเสี่ยงและอื่นๆ"
   },
   {
     "header": "ด้านประสิทธิภาพ",
-    "title": "จำนวนครูขาดแคลน",
+    "title": "ครูที่สอนตรงสาขา",
     "value": "00.00",
-    "unit": "คน",
-    "api" : "",
+    "unit": "%",
+    "api" : "cmservices",
+    "where" : "(.TeacherCorrectDegree[0].pratom+.TeacherCorrectDegree[0].moTon+.TeacherCorrectDegree[0].moPai)/3",
     "services" : "../data/performances.json",
     "description": "จำนวนครู งบประมาณและอื่นๆ"
   },
@@ -33,7 +34,8 @@
     "title": "ค่าใช้จ่ายตลอดหลักสูตร",
     "value": "00.00",
     "unit": "บาท",
-    "api" : "",
+    "api" : "cmservices",
+    "where" : "",
     "services" : "../data/others.json",
     "description": "ข้อมูลทั่วไป"
   }
