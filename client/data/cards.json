@@ -35,7 +35,7 @@
     "value": "00.00",
     "unit": "บาท",
     "api" : "cmservices",
-    "where" : "",
+    "where" : ".Expense.Expense[...].Sem1+.Expense.Expense[...].Sem2+.Expense.Expense[...].ESem1+.Expense.Expense[...].ESem2",
     "services" : "../data/others.json",
     "description": "ข้อมูลทั่วไป"
   }

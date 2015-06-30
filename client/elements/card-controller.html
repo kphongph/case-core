@@ -58,7 +58,7 @@
       this.isChart = false;
       this.hostid = "3720140208";
       this.index = 0;
-      this.$.cmajax.url = "http://localhost:49552/ServiceControl/Service.svc/GetSchoolReport?host=3720140208&year=2015";
+      this.$.cmajax.url = "http://newtestnew.azurewebsites.net//ServiceControl/Service.svc/GetSchoolReport?host=3720140208&year=2015";
       this.$.cmajax.generateRequest();
     },
     properties: {
@@ -110,12 +110,13 @@
         this.index++;
       }
       else{
+        var result = this._getServiceResult(response);
         if(this.index == this.tmpResult.length){
+          this.tmpResult[this.index-1].value = result;
           this.services = this.tmpResult;
           this.index++;
         }
         else{
-          var result = this._getServiceResult(response);
           if(result){
             this.tmpResult[this.index-1].value = result;
           }
@@ -130,11 +131,11 @@
           if(api){
             if(api == "cmservices"){
               var value = {'detail':
-                  {
-                    'response': {
-                      'count': this.evalSelector(where, JSON.parse(this.cmservices))
-                    }
-                  }};
+                {
+                  'response': {
+                    'count': this.evalSelector(where, JSON.parse(this.cmservices))
+                  }
+                }};
               this._handleResponse(value);
             }
             else{
@@ -158,12 +159,12 @@
             resultStr += '.replace("' + tokens[i] + '", ' + 'Number(eval("jsonData" + "' + tokens[i] + '")))';
           }
           else{
-            //var length = eval("jsonData" + tokens[i].split('[')[0] + ".length");
-            //resultStr += '.replace("' + tokens[i] + '", 0';
-            //for(var j = 0; j < 2; j++){
-            //  resultStr += '+Number(eval("jsonData" + "' + tokens[i] + '".replace("[...]", "[1]")"))';
-            //}
-            //console.log(resultStr)
+            var length = eval("jsonData" + tokens[i].split('[')[0] + ".length");
+            resultStr += '.replace("' + tokens[i] + '", 0';
+            for(var j = 0; j < length; j++){
+              resultStr += '+Number(eval("jsonData' + tokens[i].replace("[...]", "[1]") + '"))';
+            }
+            resultStr += ')';
           }
         }
       }
