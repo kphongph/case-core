@@ -1,50 +1,219 @@
 [ 
   {
+    "text": "จำนวนนักเรียนทั้งหมด",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result1[0].NumOfSchool",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนที่มีภาวะความพิการ",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result1[1].NumOfSchool",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนที่มีปัญหาความยากจน",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result1[2].NumOfSchool",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนชั้น เตรียมอนุบาล ที่เข้าสู่ระบบ",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result2?where=[{'Category':'เตรียมอนุบาล'}].NumOfSchool",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนชั้น อนุบาล 1 ที่เข้าสู่ระบบ",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result2?where=[{'Category':'อนุบาล 1'}].NumOfSchool",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนชั้น อนุบาล 2 ที่เข้าสู่ระบบ",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result2?where=[{'Category':'อนุบาล 2'}].NumOfSchool",
+    "filter": null
+  },
+  {
     "text": "นักเรียนชั้น ป.1 ที่เข้าสู่ระบบ",
-    "ds": "/api/educationchildren/count",
-    "where": "{\"and\":[{\"and\":[{\"educationclassid\":4},{\"enddate\":null}]},{\"hostid\":\"_hostid\"}]}",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result2?where=[{'Category':'ประถมศึกษาปีที่ 1'}].NumOfSchool",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนชั้น ป.2 ที่เข้าสู่ระบบ",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result2?where=[{'Category':'ประถมศึกษาปีที่ 2'}].NumOfSchool",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนชั้น ป.3 ที่เข้าสู่ระบบ",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result2?where=[{'Category':'ประถมศึกษาปีที่ 3'}].NumOfSchool",
     "filter": null
   },
   {
     "text": "นักเรียนชั้น ป.4 ที่เข้าสู่ระบบ",
-    "ds": "/api/educationchildren/count",
-    "where": "{\"and\":[{\"and\":[{\"educationclassid\":7},{\"enddate\":null}]},{\"hostid\":\"_hostid\"}]}",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result2?where=[{'Category':'ประถมศึกษาปีที่ 4'}].NumOfSchool",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนชั้น ป.5 ที่เข้าสู่ระบบ",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result2?where=[{'Category':'ประถมศึกษาปีที่ 5'}].NumOfSchool",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนชั้น ป.6 ที่เข้าสู่ระบบ",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result2?where=[{'Category':'ประถมศึกษาปีที่ 6'}].NumOfSchool",
     "filter": null
   },
   {
     "text": "นักเรียนชั้น ม.1 ที่เข้าสู่ระบบ",
-    "ds": "/api/educationchildren/count",
-    "where": "{\"and\":[{\"and\":[{\"educationclassid\":10},{\"enddate\":null}]},{\"hostid\":\"_hostid\"}]}",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result2?where=[{'Category':'มัธยมศึกษาปีที่ 1'}].NumOfSchool",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนชั้น ม.2 ที่เข้าสู่ระบบ",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result2?where=[{'Category':'มัธยมศึกษาปีที่ 2'}].NumOfSchool",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนชั้น ม.3 ที่เข้าสู่ระบบ",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result2?where=[{'Category':'มัธยมศึกษาปีที่ 3'}].NumOfSchool",
     "filter": null
   },
   {
     "text": "นักเรียนชั้น ม.4 ที่เข้าสู่ระบบ",
-    "ds": "/api/educationchildren/count",
-    "where": "{\"and\":[{\"and\":[{\"educationclassid\":13},{\"enddate\":null}]},{\"hostid\":\"_hostid\"}]}",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result2?where=[{'Category':'มัธยมศึกษาปีที่ 4'}].NumOfSchool",
     "filter": null
   },
   {
-    "text": "อัตราเรียนต่อ ม.4",
-    "ds": "/api/aftergradstudents/count",
-    "where": "{\"and\":[{\"aftergradid\":{\"inq\":[\"01\",\"02\",\"03\",\"04\"]}},{\"hostid\":\"_hostid\"}]}",
+    "text": "นักเรียนชั้น ม.5 ที่เข้าสู่ระบบ",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result2?where=[{'Category':'มัธยมศึกษาปีที่ 5'}].NumOfSchool",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนชั้น ม.6 ที่เข้าสู่ระบบ",
+    "ds": "cmservices",
+    "where": ".NumOfReg.result2?where=[{'Category':'มัธยมศึกษาปีที่ 6'}].NumOfSchool",
+    "filter": null
+  },
+    
+  {
+    "text": "ขนาดชั้นเรียน เตรียมอนุบาล",
+    "ds": "cmservices",
+    "where": ".NumOfRoomSize?where=[{'Category':'เตรียมอนุบาล'}].NowSRoom+.NumOfRoomSize?where=[{'Category':'เตรียมอนุบาล'}].NowMRoom+.NumOfRoomSize?where=[{'Category':'เตรียมอนุบาล'}].NowLRoom",
+    "filter": null
+  },
+  {
+    "text": "ขนาดชั้นเรียน อนุบาล 1",
+    "ds": "cmservices",
+    "where": ".NumOfRoomSize?where=[{'Category':'อนุบาล 1'}].NowSRoom+.NumOfRoomSize?where=[{'Category':'อนุบาล 1'}].NowMRoom+.NumOfRoomSize?where=[{'Category':'อนุบาล 1'}].NowLRoom",
+    "filter": null
+  },
+  {
+    "text": "ขนาดชั้นเรียน อนุบาล 2",
+    "ds": "cmservices",
+    "where": ".NumOfRoomSize?where=[{'Category':'อนุบาล 2'}].NowSRoom+.NumOfRoomSize?where=[{'Category':'อนุบาล 2'}].NowMRoom+.NumOfRoomSize?where=[{'Category':'อนุบาล 2'}].NowLRoom",
+    "filter": null
+  },
+  {
+    "text": "ขนาดชั้นเรียน ป.1",
+    "ds": "cmservices",
+    "where": ".NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 1'}].NowSRoom+.NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 1'}].NowMRoom+.NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 1'}].NowLRoom",
+    "filter": null
+  },
+  {
+    "text": "ขนาดชั้นเรียน ป.2",
+    "ds": "cmservices",
+    "where": ".NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 2'}].NowSRoom+.NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 2'}].NowMRoom+.NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 2'}].NowLRoom",
+    "filter": null
+  },
+  {
+    "text": "ขนาดชั้นเรียน ป.3",
+    "ds": "cmservices",
+    "where": ".NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 3'}].NowSRoom+.NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 3'}].NowMRoom+.NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 3'}].NowLRoom",
+    "filter": null
+  },
+  {
+    "text": "ขนาดชั้นเรียน ป.4",
+    "ds": "cmservices",
+    "where": ".NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 4'}].NowSRoom+.NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 4'}].NowMRoom+.NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 4'}].NowLRoom",
+    "filter": null
+  },
+  {
+    "text": "ขนาดชั้นเรียน ป.5",
+    "ds": "cmservices",
+    "where": ".NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 5'}].NowSRoom+.NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 5'}].NowMRoom+.NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 5'}].NowLRoom",
+    "filter": null
+  },
+  {
+    "text": "ขนาดชั้นเรียน ป.6",
+    "ds": "cmservices",
+    "where": ".NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 6'}].NowSRoom+.NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 6'}].NowMRoom+.NumOfRoomSize?where=[{'Category':'ประถมศึกษาปีที่ 6'}].NowLRoom",
+    "filter": null
+  },
+  {
+    "text": "ขนาดชั้นเรียน ม.1",
+    "ds": "cmservices",
+    "where": ".NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 1'}].NowSRoom+.NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 1'}].NowMRoom+.NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 1'}].NowLRoom",
+    "filter": null
+  },
+  {
+    "text": "ขนาดชั้นเรียน ม.2",
+    "ds": "cmservices",
+    "where": ".NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 2'}].NowSRoom+.NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 2'}].NowMRoom+.NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 2'}].NowLRoom",
+    "filter": null
+  },
+  {
+    "text": "ขนาดชั้นเรียน ม.3",
+    "ds": "cmservices",
+    "where": ".NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 3'}].NowSRoom+.NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 3'}].NowMRoom+.NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 3'}].NowLRoom",
+    "filter": null
+  },
+  {
+    "text": "ขนาดชั้นเรียน ม.4",
+    "ds": "cmservices",
+    "where": ".NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 4'}].NowSRoom+.NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 4'}].NowMRoom+.NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 4'}].NowLRoom",
+    "filter": null
+  },
+  {
+    "text": "ขนาดชั้นเรียน ม.5",
+    "ds": "cmservices",
+    "where": ".NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 5'}].NowSRoom+.NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 5'}].NowMRoom+.NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 5'}].NowLRoom",
+    "filter": null
+  },
+  {
+    "text": "ขนาดชั้นเรียน ม.6",
+    "ds": "cmservices",
+    "where": ".NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 6'}].NowSRoom+.NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 6'}].NowMRoom+.NumOfRoomSize?where=[{'Category':'มัธยมศึกษาปีที่ 6'}].NowLRoom",
     "filter": null
   },
   {
     "text": "จำนวนเด็กหลุดออกจากระบบการศึกษาภาคบังคับ",
     "ds": "cmservices",
-    "where": ".DropNCont[0].Year",
+    "where": ".DropOut[0].ScNumber",
+    "filter": null
+  },
+  {
+    "text": "อัตราเรียนต่อ ม.4",
+    "ds": "cmservices",
+    "where": ".DropOut[1].ScNumber",
     "filter": null
   },
   {
     "text": "จำนวนเด็กที่อยู่ในครอบครัวยากจน",
     "ds": "/api/welfarepeople/count",
     "where": "{\"and\":[{\"welfareid\":\"06\"},{\"hostid\":\"_hostid\"}]}",
-    "filter": null
-  },
-  {
-    "text": "จำนวนนักเรียนทั้งหมด",
-    "ds": "/api/educationchildren/count",
-    "where": "{\"and\":[{\"enddate\":null},{\"hostid\":\"_hostid\"}]}",
     "filter": null
   },
   {

@@ -4,8 +4,8 @@
     "title": "นักเรียนเข้าสู่ระบบ",
     "value": "00.00",
     "unit": "คน",
-    "api" : "/api/educationchildren/count",
-    "where" : "{\"and\":[{\"enddate\":null},{\"hostid\":\"_hostid\"}]}",
+    "api" : "cmservices",
+    "where" : ".NumOfReg.result1[0].NumOfSchool",
     "services" : "../data/opportunities.json",
     "description": "ข้อมูลการเข้าถึงการศึกษา การเรียนต่อและอื่นๆ"
   },
@@ -25,7 +25,7 @@
     "value": "00.00",
     "unit": "%",
     "api" : "cmservices",
-    "where" : "(.TeacherCorrectDegree[0].pratom+.TeacherCorrectDegree[0].moTon+.TeacherCorrectDegree[0].moPai)/3",
+    "where" : ".TeacherInCat[...].CorrDegree/.TeacherTrans[0].ndCount",
     "services" : "../data/performances.json",
     "description": "จำนวนครู งบประมาณและอื่นๆ"
   },

@@ -161,12 +161,60 @@
       var tokens = this.splitter(selector);
       var resultStr = "selector";
       for(var i = 0; i < tokens.length; i++){
-        resultStr += '.replace("' + tokens[i] + '", ' + 'Number(eval("jsonData" + "' + tokens[i] + '")))';
+        if(isNaN(tokens[i])){
+          if(tokens[i].indexOf('[...]') == -1 && tokens[i].indexOf('where') == -1){
+            resultStr += '.replace("' + tokens[i] + '", ' + 'Number(eval("jsonData" + "' + tokens[i] + '")))';
+          }
+          else{
+            if(tokens[i].indexOf('[...]') != -1){ // all in array
+              var length = eval("jsonData" + tokens[i].split('[')[0] + ".length");
+              resultStr += '.replace("' + tokens[i] + '", 0';
+              for(var j = 0; j < length; j++){
+                resultStr += '+Number(eval("jsonData' + tokens[i].replace("[...]", "[" + j + "]") + '"))';
+              }
+              resultStr += ')';
+            }
+            if(tokens[i].indexOf('where') != -1){ // where query
+              var query = tokens[i].split('?where=');
+              if(query){
+                for(var j = 0; j < query.length; j++){
+                  if(j%2 != 0){
+                    var text = query[j].substring(0,query[j].indexOf(']')+1);
+                    var list = JSON.parse(text.replace(/'/g, "\""));
+                    for(var k = 0; k < list.length; k++){
+                      var data = eval("jsonData" + query[j-1]);
+                      var key = Object.keys(list[k]);
+                      var value = list[k][key];
+                      var index = -1;
+                      for(var l = 0; l < data.length; l++){
+                        if(data[l][key] === value){
+                          index = l;
+                          break;
+                        }
+                      }
+                      query[j] = query[j].replace(text, "[" + index + "]");
+                    }
+                  }
+                }
+                resultStr += '.replace("' 
+                  + tokens[i] + '", ' 
+                  + 'Number(eval("jsonData" + "' 
+                  + query.join('') + '")))';
+              }
+            }
+          }
+        }
       }
-      return eval(eval(resultStr));
+      try {
+        return Number(eval(eval(resultStr)));
+      }
+      catch(err) {
+        console.log(selector + ' : ' + err.message);
+        return 0;
+      }
     },
     splitter: function(text){
-      var separators = [' ', '\\\+', '-', '\\\(', '\\\)', '\\*', '/', ':', '\\\?'];
+      var separators = ['\\\+', '-', '\\\(', '\\\)', '\\*', '/'];
       var tokens = text.split(new RegExp(separators.join('|'), 'g'));
       return tokens.filter(function(n){ return n != "" });
     }
