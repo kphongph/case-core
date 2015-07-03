@@ -215,23 +215,5 @@
     "ds": "/api/welfarepeople/count",
     "where": "{\"and\":[{\"welfareid\":\"06\"},{\"hostid\":\"_hostid\"}]}",
     "filter": null
-  },
-  {
-    "text": "จำนวนคอมพิวเตอร์สำหรับนักเรียน",
-    "ds": "/api/hostcomputers",
-    "where": null,
-    "filter": "{\"hostid\":\"_hostid\",\"order\":\"updatetime DESC\",\"limit\":1,\"fields\":[\"studentpc\"]}"
-  },
-  {
-    "text": "จำนวนคอมพิวเตอร์สำหรับครู",
-    "ds": "/api/hostcomputers",
-    "where": null,
-    "filter": "{\"hostid\":\"_hostid\",\"order\":\"updatetime DESC\",\"limit\":1,\"fields\":[\"teacherpc\"]}"
-  },
-  {
-    "text": "จำนวนคอมพิวเตอร์ที่ใช้งาน Internet ได้",
-    "ds": "/api/hostcomputers",
-    "where": null,
-    "filter": "{\"hostid\":\"_hostid\",\"order\":\"updatetime DESC\",\"limit\":1,\"fields\":[\"internetpc\"]}"
   }
 ]

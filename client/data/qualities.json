@@ -1,0 +1,62 @@
+[ 
+  {
+    "text": "ความสามารถด้านภาษา",
+    "ds": "cmservices",
+    "where": ".Nt[0].schoolAvg",
+    "filter": null
+  },
+  {
+    "text": "ความสามารถด้านคำนวณ",
+    "ds": "cmservices",
+    "where": ".Nt[1].schoolAvg",
+    "filter": null
+  },
+  {
+    "text": "ความสามารถด้านเหตุผล",
+    "ds": "cmservices",
+    "where": ".Nt[2].schoolAvg",
+    "filter": null
+  },
+  {
+    "text": "จำนวนคอมพิวเตอร์สำหรับนักเรียน",
+    "ds": "/api/hostcomputers",
+    "where": null,
+    "filter": "{\"hostid\":\"_hostid\",\"order\":\"updatetime DESC\",\"limit\":1,\"fields\":[\"studentpc\"]}"
+  },
+  {
+    "text": "จำนวนคอมพิวเตอร์สำหรับครู",
+    "ds": "/api/hostcomputers",
+    "where": null,
+    "filter": "{\"hostid\":\"_hostid\",\"order\":\"updatetime DESC\",\"limit\":1,\"fields\":[\"teacherpc\"]}"
+  },
+  {
+    "text": "จำนวนคอมพิวเตอร์ที่ใช้งาน Internet ได้",
+    "ds": "/api/hostcomputers",
+    "where": null,
+    "filter": "{\"hostid\":\"_hostid\",\"order\":\"updatetime DESC\",\"limit\":1,\"fields\":[\"internetpc\"]}"
+  },
+  {
+    "text": "ผลการทดสอบ O-Net ประถมศึกษาปีที่ 3",
+    "ds": "cmservices",
+    "where": ".Onet.result1?where=[{'Category':'ประถมศึกษาปีที่ 3'}].schoolAcc",
+    "filter": null
+  },
+  {
+    "text": "ผลการทดสอบ O-Net ประถมศึกษาปีที่ 6",
+    "ds": "cmservices",
+    "where": ".Onet.result1?where=[{'Category':'ประถมศึกษาปีที่ 6'}].schoolAcc",
+    "filter": null
+  },
+  {
+    "text": "ผลการทดสอบ O-Net มัธยมศึกษาปีที่ 3",
+    "ds": "cmservices",
+    "where": ".Onet.result1?where=[{'Category':'มัธยมศึกษาปีที่ 3'}].schoolAcc",
+    "filter": null
+  },
+  {
+    "text": "ผลการทดสอบ O-Net มัธยมศึกษาปีที่ 6",
+    "ds": "cmservices",
+    "where": ".Onet.result1?where=[{'Category':'มัธยมศึกษาปีที่ 6'}].schoolAcc",
+    "filter": null
+  }
+]

@@ -101,7 +101,12 @@
       this.$.chart._readyForAction();
       this._menuClicked();
     },
-    _actionChanged : function() {
+    clear: function(){
+      this.rows = [[null, null]];
+      this.$.chart.rows = this.rows;
+      this.$.chart._loadData();
+    },
+    _actionChanged: function() {
       var data = JSON.parse(this.action);
       if(data){
         if(data.operation == 'insert'){

@@ -25,7 +25,8 @@
       overflow-y: scroll;
     }
     .list paper-checkbox{
-      padding-bottom: 10px;
+      padding-left: 15px;
+      padding-top: 15px;
     }
     .ichart{
       width: 60%;
@@ -42,18 +43,18 @@
     <div class="container">
       <div class="list">
         <div class="header" flex>รายการ</div>
-        <div class="list-body">
+        <div class="list-body" id="listItems">
           <template is="dom-repeat" items="{{services}}">
             <paper-checkbox 
               on-change="_checkChanged"
-              ds$="{{item.ds}}" 
-              where$="{{item.where}}" 
+              ds$="{{item.ds}}"
+              where$="{{item.where}}"
               filter$="{{item.filter}}">{{item.text}}</paper-checkbox><br />
           </template>
         </div>
       </div>
       <div class="ichart">
-        <chart-core action="{{actionString}}" cols="{{cols}}" rows="{{rows}}"></chart-core>
+        <chart-core id="gChart" action="{{actionString}}" cols="{{cols}}" rows="{{rows}}"></chart-core>
       </div>
     </div>
     <lp-query 
@@ -74,7 +75,7 @@
       this.hostid = "3720140208";
     },
     properties: {
-     actionString: {
+      actionString: {
         type: String
       },
       hostid: String,
@@ -108,6 +109,16 @@
     },
     _urlChanged: function(){
       if(this.url){
+        // clear old value
+        var items = Polymer.dom(this.$.listItems).node.querySelectorAll('paper-checkbox');
+        if(items){
+          for(var i = 0; i < items.length; i++){
+            items[i].removeAttribute('checked');
+          }
+        }
+        // clear data in chart
+        this.$.gChart.clear();
+        // generate new request
         this.$.ajax.url = this.url;
         this.$.ajax.generateRequest();
       }
