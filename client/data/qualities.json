@@ -58,5 +58,113 @@
     "ds": "cmservices",
     "where": ".Onet.result1?where=[{'Category':'มัธยมศึกษาปีที่ 6'}].schoolAcc",
     "filter": null
+  },
+  {
+    "text": "ผลสัมฤทธิ์ประถมศึกษาปีที่ 3 ภาษาไทย",
+    "ds": "cmservices",
+    "where": ".Onet.result2?where=[{'Category':'ภาษาไทย'}].schoolM3Avg",
+    "filter": null
+  },
+  {
+    "text": "ผลสัมฤทธิ์ประถมศึกษาปีที่ 6 ภาษาไทย",
+    "ds": "cmservices",
+    "where": ".Onet.result2?where=[{'Category':'ภาษาไทย'}].schoolP6Avg",
+    "filter": null
+  },
+  {
+    "text": "ผลสัมฤทธิ์ประถมศึกษาปีที่ 3 สังคมศาสนาและวัฒนธรรม",
+    "ds": "cmservices",
+    "where": ".Onet.result2?where=[{'Category':'สังคมศาสนาและวัฒนธรรม'}].schoolM3Avg",
+    "filter": null
+  },
+  {
+    "text": "ผลสัมฤทธิ์ประถมศึกษาปีที่ 6 สังคมศาสนาและวัฒนธรรม",
+    "ds": "cmservices",
+    "where": ".Onet.result2?where=[{'Category':'สังคมศาสนาและวัฒนธรรม'}].schoolP6Avg",
+    "filter": null
+  },
+  {
+    "text": "ผลสัมฤทธิ์ประถมศึกษาปีที่ 3 ภาษาอังกฤษ",
+    "ds": "cmservices",
+    "where": ".Onet.result2?where=[{'Category':'ภาษาอังกฤษ'}].schoolM3Avg",
+    "filter": null
+  },
+  {
+    "text": "ผลสัมฤทธิ์ประถมศึกษาปีที่ 6 ภาษาอังกฤษ",
+    "ds": "cmservices",
+    "where": ".Onet.result2?where=[{'Category':'ภาษาอังกฤษ'}].schoolP6Avg",
+    "filter": null
+  },
+  {
+    "text": "ผลสัมฤทธิ์ประถมศึกษาปีที่ 3 คณิตศาสตร์",
+    "ds": "cmservices",
+    "where": ".Onet.result2?where=[{'Category':'คณิตศาสตร์'}].schoolM3Avg",
+    "filter": null
+  },
+  {
+    "text": "ผลสัมฤทธิ์ประถมศึกษาปีที่ 6 คณิตศาสตร์",
+    "ds": "cmservices",
+    "where": ".Onet.result2?where=[{'Category':'คณิตศาสตร์'}].schoolP6Avg",
+    "filter": null
+  },
+  {
+    "text": "ผลสัมฤทธิ์ประถมศึกษาปีที่ 3 วิทยาศาสตร์",
+    "ds": "cmservices",
+    "where": ".Onet.result2?where=[{'Category':'วิทยาศาสตร์'}].schoolM3Avg",
+    "filter": null
+  },
+  {
+    "text": "ผลสัมฤทธิ์ประถมศึกษาปีที่ 6 วิทยาศาสตร์",
+    "ds": "cmservices",
+    "where": ".Onet.result2?where=[{'Category':'วิทยาศาสตร์'}].schoolP6Avg",
+    "filter": null
+  },
+  {
+    "text": "ผลสัมฤทธิ์ประถมศึกษาปีที่ 3 สุขศึกษาและพลศึกษา",
+    "ds": "cmservices",
+    "where": ".Onet.result2?where=[{'Category':'สุขศึกษาและพลศึกษา'}].schoolM3Avg",
+    "filter": null
+  },
+  {
+    "text": "ผลสัมฤทธิ์ประถมศึกษาปีที่ 6 สุขศึกษาและพลศึกษา",
+    "ds": "cmservices",
+    "where": ".Onet.result2?where=[{'Category':'สุขศึกษาและพลศึกษา'}].schoolP6Avg",
+    "filter": null
+  },
+  {
+    "text": "ผลสัมฤทธิ์ประถมศึกษาปีที่ 3 ศิลปะ",
+    "ds": "cmservices",
+    "where": ".Onet.result2?where=[{'Category':'ศิลปะ'}].schoolM3Avg",
+    "filter": null
+  },
+  {
+    "text": "ผลสัมฤทธิ์ประถมศึกษาปีที่ 6 ศิลปะ",
+    "ds": "cmservices",
+    "where": ".Onet.result2?where=[{'Category':'ศิลปะ'}].schoolP6Avg",
+    "filter": null
+  },
+  {
+    "text": "ผลสัมฤทธิ์ประถมศึกษาปีที่ 3 การงานอาชีพและเทคโนโลยี",
+    "ds": "cmservices",
+    "where": ".Onet.result2?where=[{'Category':'การงานอาชีพและเทคโนโลยี'}].schoolM3Avg",
+    "filter": null
+  },
+  {
+    "text": "ผลสัมฤทธิ์ประถมศึกษาปีที่ 6 การงานอาชีพและเทคโนโลยี",
+    "ds": "cmservices",
+    "where": ".Onet.result2?where=[{'Category':'การงานอาชีพและเทคโนโลยี'}].schoolP6Avg",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนกลุ่มเสี่ยง",
+    "ds": "cmservices",
+    "where": ".Risk[0].juEle+.Risk.seEle+.Risk.juHigh+.Risk.seHigh",
+    "filter": null
+  },
+  {
+    "text": "นักเรียนที่เกรดเฉลี่ยต่ำกว่า 2.00",
+    "ds": "cmservices",
+    "where": ".Risk[1].juEle+.Risk.seEle+.Risk.juHigh+.Risk.seHigh",
+    "filter": null
   }
 ]
