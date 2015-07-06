@@ -1,0 +1,72 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="attr-filter">
+  <template>
+    <iron-ajax id="worker" 
+      handle-as="json"
+      on-response="_handleRequest">
+    </iron-ajax>
+    <paper-checkbox id="checkbox" on-change="_handleSelect">{{_propertyToString(description)}}</paper-checkbox>
+    <div id="valuePanel">
+      <template is="dom-repeat" items="{{content}}">
+       <p>
+        <span>{{item.name}}</span>-<span>{{item.value.count}}</span>
+       </p>
+      </template>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'attr-filter',
+    properties: {
+      description : {
+        type: Object,
+        notify: true
+      },
+      resource : String,
+      content: {
+        type: Object,
+        notify: true
+      }
+    },
+    ready: function() {
+    },
+    _handleSelect : function(e) {
+      if(!this.$.checkbox.checked) {
+        this.$.valuePanel.style.display = 'none';
+      } else {
+        this.$.valuePanel.style.display = 'block';
+      }
+      if(this.$.checkbox.checked && !this.content) {
+        console.log(this.description);
+        var query = {fields:{}};
+        query.fields[this.description.name] = true;
+        this.content = [];
+        this.$.worker.url = this.resource+'?filter='+JSON.stringify(query);
+        this.$.worker.generateRequest();
+      }
+    },
+    _handleRequest : function() {
+      var response = this.$.worker.lastResponse;
+      var tmp = {};
+      var j=0;
+      for(var i=0;i<response.length&&j<50;i++) {
+        if(!tmp[response[i][this.description.name]]) {
+          tmp[response[i][this.description.name]] = {count:0};
+          j++;
+        }
+        tmp[response[i][this.description.name]].count++;
+      }
+      this.content  = Object.keys(tmp).map(function(key) {
+        return {name:key,value:tmp[key]};
+      });
+    },
+    _propertyToString: function(obj) {
+      return obj.name+' ('+obj.value.type+')';
+    }
+  });
+</script>

@@ -1,0 +1,93 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="./attr-filter.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="ds-manager">
+  <template>
+    <iron-ajax id="getDescription" 
+      auto
+      url="{{url}}"
+      handle-as="json"
+      on-response="_handleDescription">
+    </iron-ajax>
+
+    <iron-ajax id="countAjax" 
+      handle-as="json"
+      on-response="_handleCount">
+    </iron-ajax>
+
+    <iron-ajax id="worker" 
+      handle-as="json"
+      on-response="_handleRequest">
+    </iron-ajax>
+
+    <template is="dom-repeat" items="{{_toArray(model_description.models)}}">
+      <h2>Model: <span>{{item.name}}</span></h2>
+      <h3>#Records: <span>{{records}}</span></h3>
+      <h3>Properties</h3>
+      <template is="dom-repeat" items="{{_toArray(item.value.properties)}}">
+        <p>
+        <attr-filter 
+          description="{{item}}"
+          resource="{{resourcePath}}">
+        </attr-filter>
+        </p>
+      </template>
+    </template>
+
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'ds-manager',
+    properties: {
+      model_description : {
+        type: Object,
+        notify: true
+      },
+      resourcePath : {
+        type: String,
+        computed: '_computeResourcePath(model_description)'
+      },
+      where : {
+        type: Object,
+        notify: true
+      },
+      records : {
+        type: String,
+        computed: '_computeReturnRecords(where)'
+      }
+    },
+    ready: function() {
+    },
+    _computeResourcePath: function(desc) {
+      return desc.basePath+desc.resourcePath;
+    },
+    _computeReturnRecords: function(where) {
+      this.$.countAjax.url = this.resourcePath+'/count';
+      this.$.countAjax.generateRequest();
+    },
+    _handleDescription : function() {
+      this.model_description = this.$.getDescription.lastResponse;
+      this.where = {};
+      console.log(this.$.getDescription.lastResponse);
+    },
+    _handleCheckbox : function(e) {
+      var attrs = e.target.innerText.split(' ');
+      var att_name = attrs[1];
+      // if(this.model_description.models
+    },
+    _toArray: function(obj) {
+      return Object.keys(obj).map(function(key) {
+        return {name:key,value:obj[key]};
+      });
+    },
+    _propertyToString: function(obj) {
+      return obj.name+' ('+obj.value.type+')';
+    },
+    _handleCount : function() {
+      this.records = this.$.countAjax.lastResponse.count;
+    }
+  });
+</script>
