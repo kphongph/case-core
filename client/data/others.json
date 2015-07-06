@@ -1,0 +1,50 @@
+[ 
+  {
+    "text": "งบประมาณจากส่วนกลาง งบบุคลากร",
+    "ds": "cmservices",
+    "where": ".Grant.grant1[0].sem1+.Grant.grant1[0].sem2+.Grant.grant1[1].sem1+.Grant.grant1[1].sem2+.Grant.grant1[2].sem1+.Grant.grant1[2].sem2+.Grant.grant1[3].sem1+.Grant.grant1[3].sem2",
+    "filter": null
+  },
+  {
+    "text": "งบประมาณจากส่วนกลาง งบดำเนินงาน",
+    "ds": "cmservices",
+    "where": ".Grant.grant1[4].sem1+.Grant.grant1[4].sem2+.Grant.grant1[5].sem1+.Grant.grant1[5].sem2+.Grant.grant1[6].sem1+.Grant.grant1[6].sem2+.Grant.grant1[7].sem1+.Grant.grant1[7].sem2+.Grant.grant1[8].sem1+.Grant.grant1[8].sem2+.Grant.grant1[9].sem1+.Grant.grant1[9].sem2+.Grant.grant1[10].sem1+.Grant.grant1[10].sem2+.Grant.grant1[11].sem1+.Grant.grant1[11].sem2+.Grant.grant1[12].sem1+.Grant.grant1[12].sem2+.Grant.grant1[13].sem1+.Grant.grant1[13].sem2+.Grant.grant1[14].sem1+.Grant.grant1[14].sem2+.Grant.grant1[15].sem1+.Grant.grant1[15].sem2+.Grant.grant1[16].sem1+.Grant.grant1[16].sem2+.Grant.grant1[17].sem1+.Grant.grant1[17].sem2+.Grant.grant1[18].sem1+.Grant.grant1[18].sem2+.Grant.grant1[19].sem1+.Grant.grant1[19].sem2",
+    "filter": null
+  },
+  {
+    "text": "งบประมาณจากส่วนกลาง งบลงทุน",
+    "ds": "cmservices",
+    "where": ".Grant.grant1[20].sem1+.Grant.grant1[20].sem2+.Grant.grant1[21].sem1+.Grant.grant1[21].sem2+.Grant.grant1[22].sem1+.Grant.grant1[22].sem2",
+    "filter": null
+  },
+  {
+    "text": "งบประมาณจากส่วนกลาง งบอุดหนุน",
+    "ds": "cmservices",
+    "where": ".Grant.grant1[23].sem1+.Grant.grant1[23].sem2+.Grant.grant1[24].sem1+.Grant.grant1[24].sem2+.Grant.grant1[25].sem1+.Grant.grant1[25].sem2+.Grant.grant1[26].sem1+.Grant.grant1[26].sem2+.Grant.grant1[27].sem1+.Grant.grant1[27].sem2+.Grant.grant1[28].sem1+.Grant.grant1[28].sem2+.Grant.grant1[29].sem1+.Grant.grant1[29].sem2+.Grant.grant1[30].sem1+.Grant.grant1[30].sem2+.Grant.grant1[31].sem1+.Grant.grant1[31].sem2",
+    "filter": null
+  },
+  {
+    "text": "งบประมาณจากส่วนกลาง งบรายจ่ายอื่นๆ",
+    "ds": "cmservices",
+    "where": ".Grant.grant1[32].sem1+.Grant.grant1[32].sem2+.Grant.grant1[33].sem1+.Grant.grant1[33].sem2+.Grant.grant1[34].sem1+.Grant.grant1[34].sem2+.Grant.grant1[35].sem1+.Grant.grant1[35].sem2",
+    "filter": null
+  },
+  {
+    "text": "งบประมาณเพิ่มเติม งบดำเนินการ",
+    "ds": "cmservices",
+    "where": ".Grant.grant2[0].sem1+.Grant.grant2[0].sem2+.Grant.grant2[1].sem1+.Grant.grant2[1].sem2+.Grant.grant2[2].sem1+.Grant.grant2[2].sem2+.Grant.grant2[3].sem1+.Grant.grant2[3].sem2+.Grant.grant2[4].sem1+.Grant.grant2[4].sem2+.Grant.grant2[5].sem1+.Grant.grant2[5].sem2+.Grant.grant2[6].sem1+.Grant.grant2[6].sem2",
+    "filter": null
+  },
+  {
+    "text": "งบประมาณเพิ่มเติม งบลงทุน",
+    "ds": "cmservices",
+    "where": ".Grant.grant2[7].sem1+.Grant.grant2[7].sem2+.Grant.grant2[8].sem1+.Grant.grant2[8].sem2+.Grant.grant2[9].sem1+.Grant.grant2[9].sem2",
+    "filter": null
+  },
+  {
+    "text": "งบประมาณเพิ่มเติม งบรายจ่ายอื่นๆ",
+    "ds": "cmservices",
+    "where": ".Grant.grant2[10].sem1+.Grant.grant2[10].sem2+.Grant.grant2[11].sem1+.Grant.grant2[11].sem2+.Grant.grant2[12].sem1+.Grant.grant2[12].sem2+.Grant.grant2[13].sem1+.Grant.grant2[13].sem2+.Grant.grant2[14].sem1+.Grant.grant2[14].sem2",
+    "filter": null
+  }
+]

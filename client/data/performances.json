@@ -1,0 +1,146 @@
+[ 
+  {
+    "text": "ครูผู้สอน ปีปัจจุบัน",
+    "ds": "cmservices",
+    "where": ".TeacherTrans[0].ndCount",
+    "filter": null
+  },
+  {
+    "text": "ครูผู้สอน ปีก่อนหน้า",
+    "ds": "cmservices",
+    "where": ".TeacherTrans[0].stCount",
+    "filter": null
+  },
+  {
+    "text": "ครูผู้สอน เข้าใหม่",
+    "ds": "cmservices",
+    "where": ".TeacherTrans[0].newCount",
+    "filter": null
+  },
+  {
+    "text": "ผู้บริหาร ปีปัจจุบัน",
+    "ds": "cmservices",
+    "where": ".TeacherTrans[1].ndCount",
+    "filter": null
+  },
+  {
+    "text": "ผู้บริหาร ปีก่อนหน้า",
+    "ds": "cmservices",
+    "where": ".TeacherTrans[1].stCount",
+    "filter": null
+  },
+  {
+    "text": "ผู้บริหาร เข้าใหม่",
+    "ds": "cmservices",
+    "where": ".TeacherTrans[1].newCount",
+    "filter": null
+  },
+  {
+    "text": "จำนวนครูผู้สอน เตรียมอนุบาล",
+    "ds": "cmservices",
+    "where": ".ElementTeacher?where=[{'Category':'เตรียมอนุบาล'}].totalTeacher",
+    "filter": null
+  },
+  {
+    "text": "จำนวนครูผู้สอน อนุบาล 1",
+    "ds": "cmservices",
+    "where": ".ElementTeacher?where=[{'Category':'อนุบาล 1'}].totalTeacher",
+    "filter": null
+  },
+  {
+    "text": "จำนวนครูผู้สอน อนุบาล 2",
+    "ds": "cmservices",
+    "where": ".ElementTeacher?where=[{'Category':'อนุบาล 2'}].totalTeacher",
+    "filter": null
+  },
+  {
+    "text": "จำนวนครูผู้สอน ประถมศึกษาปีที่ 1",
+    "ds": "cmservices",
+    "where": ".ElementTeacher?where=[{'Category':'ประถมศึกษาปีที่ 1'}].totalTeacher",
+    "filter": null
+  },
+  {
+    "text": "จำนวนครูผู้สอน ประถมศึกษาปีที่ 2",
+    "ds": "cmservices",
+    "where": ".ElementTeacher?where=[{'Category':'ประถมศึกษาปีที่ 2'}].totalTeacher",
+    "filter": null
+  },
+  {
+    "text": "จำนวนครูผู้สอน ประถมศึกษาปีที่ 3",
+    "ds": "cmservices",
+    "where": ".ElementTeacher?where=[{'Category':'ประถมศึกษาปีที่ 3'}].totalTeacher",
+    "filter": null
+  },
+  {
+    "text": "จำนวนครูผู้สอน ประถมศึกษาปีที่ 4",
+    "ds": "cmservices",
+    "where": ".ElementTeacher?where=[{'Category':'ประถมศึกษาปีที่ 4'}].totalTeacher",
+    "filter": null
+  },
+  {
+    "text": "จำนวนครูผู้สอน ประถมศึกษาปีที่ 5",
+    "ds": "cmservices",
+    "where": ".ElementTeacher?where=[{'Category':'ประถมศึกษาปีที่ 5'}].totalTeacher",
+    "filter": null
+  },
+  {
+    "text": "จำนวนครูผู้สอน ประถมศึกษาปีที่ 6",
+    "ds": "cmservices",
+    "where": ".ElementTeacher?where=[{'Category':'ประถมศึกษาปีที่ 6'}].totalTeacher",
+    "filter": null
+  },
+  {
+    "text": "กลุ่มสาระการเรียนรู้วิทยาศาสตร์",
+    "ds": "cmservices",
+    "where": ".TeacherInCat?where=[{'knowledgeCatDesc':'กลุ่มสาระการเรียนรู้วิทยาศาสตร์'}].HadTeacher",
+    "filter": null
+  },
+  {
+    "text": "กลุ่มสาระการเรียนรู้คณิตศาสตร์",
+    "ds": "cmservices",
+    "where": ".TeacherInCat?where=[{'knowledgeCatDesc':'กลุ่มสาระการเรียนรู้คณิตศาสตร์'}].HadTeacher",
+    "filter": null
+  },
+  {
+    "text": "กลุ่มสาระการเรียนรู้ศิลปะ",
+    "ds": "cmservices",
+    "where": ".TeacherInCat?where=[{'knowledgeCatDesc':'กลุ่มสาระการเรียนรู้ศิลปะ'}].HadTeacher",
+    "filter": null
+  },
+  {
+    "text": "กลุ่มสาระการเรียนรู้วิทยาศาสตร์",
+    "ds": "cmservices",
+    "where": ".TeacherInCat?where=[{'knowledgeCatDesc':'กลุ่มสาระการเรียนรู้วิทยาศาสตร์'}].HadTeacher",
+    "filter": null
+  },
+  {
+    "text": "กลุ่มสาระการเรียนรู้ภาษาไทย",
+    "ds": "cmservices",
+    "where": ".TeacherInCat?where=[{'knowledgeCatDesc':'กลุ่มสาระการเรียนรู้ภาษาไทย'}].HadTeacher",
+    "filter": null
+  },
+  {
+    "text": "กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ",
+    "ds": "cmservices",
+    "where": ".TeacherInCat?where=[{'knowledgeCatDesc':'กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ'}].HadTeacher",
+    "filter": null
+  },
+  {
+    "text": "กลุ่มสาระการเรียนรู้สังคมศึกษา ศาสนา และวัฒนธรรม",
+    "ds": "cmservices",
+    "where": ".TeacherInCat?where=[{'knowledgeCatDesc':'กลุ่มสาระการเรียนรู้สังคมศึกษา ศาสนา และวัฒนธรรม'}].HadTeacher",
+    "filter": null
+  },
+  {
+    "text": "กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี",
+    "ds": "cmservices",
+    "where": ".TeacherInCat?where=[{'knowledgeCatDesc':'กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี'}].HadTeacher",
+    "filter": null
+  },
+  {
+    "text": "กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา",
+    "ds": "cmservices",
+    "where": ".TeacherInCat?where=[{'knowledgeCatDesc':'กลุ่มสาระการเรียนรู้สุขศึกษาและพลศึกษา'}].HadTeacher",
+    "filter": null
+  }
+]
