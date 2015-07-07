@@ -1,0 +1,60 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-slider/paper-slider.html">
+
+<dom-module id="date-filter">
+  <template>
+    <div style="padding-left:20px;">
+      <paper-slider min="0" max="{{diff}}" value="{{startValue}}"></paper-slider>
+      <span>{{startDate}}</span>
+    </div>
+    <div style="padding-left:20px;">
+      <paper-slider min="0" max="{{diff}}" value="{{endValue}}"></paper-slider>
+      <span>{{endDate}}</span>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'date-filter',
+    properties: {
+      start : {
+        type: Date,
+        notify: true
+      },
+      end : {
+        type: Date,
+        notify: true
+      },
+      diff : Number,
+      startValue : Number,
+      endValue : Number,
+      selected : {
+        type: Object,
+        notify: true
+      }
+    },
+    observers: [
+      'computeDiff(start,end)',
+      'selectedDate(startValue,endValue)',
+    ],
+    ready: function() {
+    },
+    computeDiff : function(start,end) {
+      var diff_time = end.getTime() - start.getTime();
+      this.diff = diff_time/(60*1000*60*24);
+    },
+    selectedDate : function(s_value,e_value) {
+      var s_time = this.start.getTime() + s_value*(60*1000*60*24);
+      var e_time = this.start.getTime() + e_value*(60*1000*60*24);
+      this.startDate = new Date(s_time);
+      this.endDate = new Date(e_time);
+      this.selected = {
+        start:this.startDate,
+        end:this.endDate
+      }
+      console.log('fire');
+      this.fire('date-change',this.selected);
+    }
+  });
+</script>

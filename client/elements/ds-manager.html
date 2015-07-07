@@ -59,7 +59,7 @@
       },
       records : {
         type: String,
-        computed: '_computeReturnRecords(where)'
+      //  computed: '_computeReturnRecords(where)'
       }
     },
     ready: function() {
@@ -74,6 +74,7 @@
     _handleDescription : function() {
       this.model_description = this.$.getDescription.lastResponse;
       this.where = {'and':[]};
+      this._computeReturnRecords(this.where);
     },
     _handleAttrFilter : function(e) {
       var models = this._toArray(this.model_description.models);
