@@ -1,0 +1,69 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="people-ds">
+  <template>
+    <iron-ajax id="countAjax"
+      handle-as="json"
+      response="{{records}}">
+    </iron-ajax>
+    
+    <iron-ajax id="listAjax" 
+      handle-as="json"
+      on-response="_handleCount">
+    </iron-ajax>
+    
+    <template>
+      <h2>People</h2>
+      <h3>#Records: <span>{{records}}</span></h3>
+    </template>
+
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'people-ds',
+    properties: {
+      url: {
+        type: String,
+        computed: '_computeRequest(url)'
+      },
+      records: String,
+      dataTable: {
+        type: Array,
+        notify: true
+      }
+    },
+    ready: function() {
+    },
+    _computeRequest: function(url) {
+      if(url){
+        // count
+        this.$.countAjax.url = url+'/count';
+        this.$.countAjax.generateRequest();
+        
+        // CID list
+        this.$.listAjax.url = url+'?filter={"fields":["cid"],"limit":500}';
+        this.$.listAjax.generateRequest();
+      }
+    },
+    _handleCount : function() {
+      //console.log(this.$.listAjax.lastResponse);
+      var response = this.$.listAjax.lastResponse;
+      var distincts = [];
+      var j=0;
+      for(var i=0;i<response.length&&j<50;i++) {
+          if(!distincts[response[i]] && response[i].cid) {
+            distincts.push(response[i]);
+            j++;
+          }
+        
+      }
+      this.dataTable = Object.keys(distincts).map(function(key) {
+        return {name:distincts[key].cid,value:null};
+      });
+      console.log(this.dataTable)
+    }
+  });
+</script>
