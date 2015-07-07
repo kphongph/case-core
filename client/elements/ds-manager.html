@@ -21,14 +21,17 @@
       on-response="_handleRequest">
     </iron-ajax>
 
-    <template is="dom-repeat" items="{{_toArray(model_description.models)}}">
-      <h2>Model: <span>{{item.name}}</span></h2>
+    <template is="dom-repeat" as="model"
+      items="{{_toArray(model_description.models)}}">
+      <h2>Model: <span>{{model.name}}</span></h2>
       <h3>#Records: <span>{{records}}</span></h3>
       <h3>Properties</h3>
-      <template is="dom-repeat" items="{{_toArray(item.value.properties)}}">
+      <template is="dom-repeat" items="{{_toArray(model.value.properties)}}">
         <p>
         <attr-filter 
+          model="{{model}}"
           description="{{item}}"
+          on-filter="_handleAttrFilter"
           resource="{{resourcePath}}">
         </attr-filter>
         </p>
@@ -65,18 +68,36 @@
       return desc.basePath+desc.resourcePath;
     },
     _computeReturnRecords: function(where) {
-      this.$.countAjax.url = this.resourcePath+'/count';
+      this.$.countAjax.url = this.resourcePath+'/count?where='+JSON.stringify(where);
       this.$.countAjax.generateRequest();
     },
     _handleDescription : function() {
       this.model_description = this.$.getDescription.lastResponse;
-      this.where = {};
+      this.where = {'and':[]};
       console.log(this.$.getDescription.lastResponse);
     },
-    _handleCheckbox : function(e) {
-      var attrs = e.target.innerText.split(' ');
-      var att_name = attrs[1];
-      // if(this.model_description.models
+    _handleAttrFilter : function(e) {
+      var models = this._toArray(this.model_description.models);
+      for(var i=0;i<models.length;i++) {
+        if(e.detail.model.name == models[i].name) {
+          this._generateQuery(this.model_description.models[models[i].name],e.detail);
+        }
+      }
+    //  this.where['and'].push(e.detail);
+    //  console.log(JSON.stringify(this.where));
+    //  this._computeReturnRecords(this.where);
+    },
+    _generateQuery : function(model,filter) {
+      model.properties[filter.attr]['query'] = filter.query; 
+      var attr_and = [];
+      for(var key in model.properties) {
+        if(model.properties[key].query) {
+          attr_and.push(model.properties[key].query);
+        }
+      }
+      console.log(this.model_description);
+      this.where['and']=attr_and;
+      this._computeReturnRecords(this.where);
     },
     _toArray: function(obj) {
       return Object.keys(obj).map(function(key) {

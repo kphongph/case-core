@@ -8,12 +8,21 @@
       handle-as="json"
       on-response="_handleRequest">
     </iron-ajax>
-    <paper-checkbox id="checkbox" on-change="_handleSelect">{{_propertyToString(description)}}</paper-checkbox>
+    <paper-checkbox id="checkbox" on-change="_handleSelect">
+      <span>{{_propertyToString(description)}}</span>
+    </paper-checkbox>
     <div id="valuePanel">
-      <template is="dom-repeat" items="{{content}}">
-       <p>
-        <span>{{item.name}}</span>-<span>{{item.value.count}}</span>
-       </p>
+      <template is="dom-if" if="{{attr.isCategory}}">
+        <h4>Type: Category</h4>
+        <template is="dom-repeat" items="{{content}}">
+         <p>
+         &nbsp;&nbsp;&nbsp;
+         <paper-checkbox on-change="_handleCategorySelect">
+          <span>{{item.name}}</span> &nbsp;
+          (<span>{{item.value.count}}</span>)
+         </paper-checkbox>
+         </p>
+        </template>
       </template>
     </div>
   </template>
@@ -27,7 +36,15 @@
         type: Object,
         notify: true
       },
+      model: String,
+      query: {
+        type: Object,
+        notify:true
+      },
       resource : String,
+      attr : {
+        type: Object,
+      },
       content: {
         type: Object,
         notify: true
@@ -42,7 +59,6 @@
         this.$.valuePanel.style.display = 'block';
       }
       if(this.$.checkbox.checked && !this.content) {
-        console.log(this.description);
         var query = {fields:{}};
         query.fields[this.description.name] = true;
         this.content = [];
@@ -53,17 +69,53 @@
     _handleRequest : function() {
       var response = this.$.worker.lastResponse;
       var tmp = {};
+      var max_categories = 50;
       var j=0;
-      for(var i=0;i<response.length&&j<50;i++) {
+      for(var i=0;i<response.length&&j<max_categories;i++) {
         if(!tmp[response[i][this.description.name]]) {
           tmp[response[i][this.description.name]] = {count:0};
           j++;
         }
         tmp[response[i][this.description.name]].count++;
       }
-      this.content  = Object.keys(tmp).map(function(key) {
+
+      this.content = Object.keys(tmp).map(function(key) {
         return {name:key,value:tmp[key]};
       });
+
+      if(j<max_categories) {
+        // categories data 
+        this.attr = {isCategory:true};
+      } else {
+      }
+    },
+    _handleCategorySelect: function(e) {
+      var attr_values = e.target.innerText.split(' ');
+      var tmp = {};
+      tmp[this.description.name]=attr_values[1];
+      if(e.srcElement.checked) {
+        if(!this.query) {
+          this.query = {'or':[]};
+        }
+        this.query.or.push(tmp);
+      } else {
+        var remove_idx = -1;
+        for(var i=0;i<this.query.or.length;i++) {
+          if(this.query.or[i][this.description.name] == tmp[this.description.name]) {
+             remove_idx = i;
+          }
+        }
+        if(remove_idx!=-1) {
+          this.query.or.splice(remove_idx,1);
+        }
+      }
+      var obj = {
+        'attr':this.description.name,
+        'query':this.query,
+        'model':this.model
+      };
+      this.fire('filter',obj);
+      console.log(this.query);
     },
     _propertyToString: function(obj) {
       return obj.name+' ('+obj.value.type+')';
