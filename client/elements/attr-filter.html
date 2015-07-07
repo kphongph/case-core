@@ -1,6 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/gold-cc-expiration-input/gold-cc-expiration-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 
 <dom-module id="attr-filter">
   <template>
@@ -24,6 +26,23 @@
          </p>
         </template>
       </template>
+      
+      <template is="dom-if" if="{{attr.isDate}}">
+        <div style="padding-left:20px;">
+          <gold-cc-expiration-input 
+            label="Start date filter"
+            value={{startDate}}
+            error-message="Please enter a valid date">
+          </gold-cc-expiration-input><br />
+          <gold-cc-expiration-input 
+            label="End date filter"
+            value={{endDate}}
+            error-message="Please enter a valid date">
+          </gold-cc-expiration-input><br />
+          <paper-button raised on-click="_handleDateSelect">OK</paper-button>
+        </div>
+      </template>
+        
     </div>
   </template>
 </dom-module>
@@ -53,6 +72,11 @@
     ready: function() {
     },
     _handleSelect : function(e) {
+      if(this.description.value.type == "string" && this.description.value.format == "date"){
+        this.attr = {isDate:true};
+        return;
+      }
+      
       if(!this.$.checkbox.checked) {
         this.$.valuePanel.style.display = 'none';
       } else {
@@ -84,9 +108,8 @@
       });
 
       if(j<max_categories) {
-        // categories data 
+        // categories data
         this.attr = {isCategory:true};
-      } else {
       }
     },
     _handleCategorySelect: function(e) {
@@ -115,7 +138,22 @@
         'model':this.model
       };
       this.fire('filter',obj);
-      console.log(this.query);
+    },
+    _handleDateSelect: function(){
+      if(this.startDate && this.endDate){
+        this.query = {};
+        this.query[this.description.name] = {'between':[]}
+        var tmpStartDate = '20' + this.startDate.split('/')[1] + '-' + this.startDate.split('/')[0] + '-01';
+        var tmpEndDate = '20' + this.endDate.split('/')[1] + '-' + this.endDate.split('/')[0] + '-01';
+        this.query[this.description.name].between.push(tmpStartDate);
+        this.query[this.description.name].between.push(tmpEndDate);
+        var obj = {
+          'attr':this.description.name,
+          'query':this.query,
+          'model':this.model
+        };
+        this.fire('filter',obj);
+      }
     },
     _propertyToString: function(obj) {
       return obj.name+' ('+obj.value.type+')';

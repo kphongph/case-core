@@ -74,7 +74,6 @@
     _handleDescription : function() {
       this.model_description = this.$.getDescription.lastResponse;
       this.where = {'and':[]};
-      console.log(this.$.getDescription.lastResponse);
     },
     _handleAttrFilter : function(e) {
       var models = this._toArray(this.model_description.models);
@@ -95,7 +94,6 @@
           attr_and.push(model.properties[key].query);
         }
       }
-      console.log(this.model_description);
       this.where['and']=attr_and;
       this._computeReturnRecords(this.where);
     },

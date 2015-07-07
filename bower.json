@@ -12,6 +12,8 @@
   ],
   "dependencies": {
     "google-chart": "GoogleWebComponents/google-chart#^1.0.0",
-    "paper-checkbox": "PolymerElements/paper-checkbox#~1.0.0"
+    "paper-checkbox": "PolymerElements/paper-checkbox#~1.0.0",
+    "gold-cc-expiration-input": "PolymerElements/gold-cc-expiration-input#1.0.0",
+    "paper-button": "PolymerElements/paper-button#1.0.0"
   }
 }
