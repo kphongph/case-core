@@ -28,11 +28,13 @@
       </template>
       
       <template is="dom-if" if="{{attr.isDate}}">
-        <date-filter 
-          end="{{attr.end_date}}"
-          on-date-change="_handleDateSelect"
-          start="{{attr.start_date}}">
-        </date-filter>
+        <div style="padding-left:10px">
+          <date-filter 
+            end="{{attr.end_date}}"
+            on-date-change="_handleDateSelect"
+            start="{{attr.start_date}}">
+          </date-filter>
+        </div>
       </template>
         
     </div>

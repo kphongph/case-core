@@ -1,15 +1,31 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-slider/paper-slider.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 
 <dom-module id="date-filter">
+  <style>
+    .container{
+      display:inline;
+    }
+    .row{
+      padding: 10px;
+    }
+    paper-slider{
+      margin-bottom: -10px;
+    }
+  </style>
   <template>
-    <div style="padding-left:20px;">
-      <paper-slider min="0" max="{{diff}}" value="{{startValue}}"></paper-slider>
-      <span>{{startDate}}</span>
-    </div>
-    <div style="padding-left:20px;">
-      <paper-slider min="0" max="{{diff}}" value="{{endValue}}"></paper-slider>
-      <span>{{endDate}}</span>
+    <div class="container">
+      <div class="row">
+        <paper-checkbox checked={{isStart}}></paper-checkbox>
+        <paper-slider disabled={{!isStart}} min="0" max="{{diff}}" value="{{startValue}}"></paper-slider>
+        <span>{{startDate}}</span>
+      </div>
+      <div class="row">
+        <paper-checkbox checked={{isEnd}}></paper-checkbox>
+        <paper-slider disabled={{!isEnd}} min="0" max="{{diff}}" value="{{endValue}}"></paper-slider>
+        <span>{{endDate}}</span>
+      </div>
     </div>
   </template>
 </dom-module>
