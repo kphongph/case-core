@@ -152,23 +152,29 @@
       this.fire('filter',obj);
     },
     _handleDateSelect: function(e){
-      console.log(e.detail);
-      /*
-      if(this.startDate && this.endDate){
-        this.query = {};
+      var s_date = e.detail.start;
+      var e_date = e.detail.end;
+      this.query = {};
+      if(s_date && e_date){
         this.query[this.description.name] = {'between':[]}
-        var tmpStartDate = '20' + this.startDate.split('/')[1] + '-' + this.startDate.split('/')[0] + '-01';
-        var tmpEndDate = '20' + this.endDate.split('/')[1] + '-' + this.endDate.split('/')[0] + '-01';
-        this.query[this.description.name].between.push(tmpStartDate);
-        this.query[this.description.name].between.push(tmpEndDate);
-        var obj = {
-          'attr':this.description.name,
-          'query':this.query,
-          'model':this.model
-        };
-        this.fire('filter',obj);
+        this.query[this.description.name].between.push(s_date);
+        this.query[this.description.name].between.push(e_date);
       }
-      */
+      else if(s_date){
+        this.query[this.description.name] = {'gt': s_date}
+      }
+      else if(e_date){
+        this.query[this.description.name] = {'lt':e_date}
+      }
+      else{
+        return;
+      }
+      var obj = {
+        'attr':this.description.name,
+        'query':this.query,
+        'model':this.model
+      };
+      this.fire('filter',obj);
     },
     _propertyToString: function(obj) {
       return obj.name+' ('+obj.value.type+')';
