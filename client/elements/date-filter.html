@@ -81,15 +81,17 @@
       }
     },
     toPinDateString: function(dateTime){
-      if(dateTime.getDate() && dateTime.getMonth()){
+      if(dateTime.getDate() >= 1 && dateTime.getMonth() >= 0){
         return dateTime.getDate() + '-' + (dateTime.getMonth() + 1);
       }
+      return null;
     },
     toDateString: function(dateTime){
-      if(dateTime.getDate() && dateTime.getMonth()){
+      if(dateTime.getDate() >= 1 && dateTime.getMonth() >= 0){
         return dateTime.getDate() + '-' + (dateTime.getMonth() + 1) + '-' 
         + dateTime.getFullYear();
       }
+      return '- -';
     },
     computeDiff : function(start,end) {
       var diff_time = end.getTime() - start.getTime();
