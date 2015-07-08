@@ -56,9 +56,12 @@
     is: 'card-controller',
     ready: function(){
       this.isChart = false;
-      this.hostid = "3720140208";
+      this.hostid = this.getURLParam('hostid');
+      this.year = this.getURLParam('year');
       this.index = 0;
-      this.$.cmajax.url = "http://newbintest.azurewebsites.net/ServiceControl/Service.svc/GetSchoolReportVsHost?host=3720140208&year=2015";
+      var url = "http://newbintest.azurewebsites.net/ServiceControl/Service.svc/GetSchoolReportVsHost?";
+      url += "host=" + this.hostid + "&year=" + this.year;
+      this.$.cmajax.url = url;
       this.$.cmajax.generateRequest();
     },
     properties: {
@@ -70,8 +73,14 @@
       url: String,
       isChart: Boolean,
       hostid: String,
+      year: String,
       index: Number,
       tmpResult: Array
+    },
+    getURLParam: function(name){
+      return decodeURIComponent
+      ((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)')
+      .exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
     },
     _getServiceResult: function(obj){
       if(obj){
@@ -199,7 +208,13 @@
         }
       }
       try {
-        return Number(eval(eval(resultStr))).toFixed(2);
+        var value = Number(eval(eval(resultStr)));
+        if(value){
+          return value.toFixed(2);
+        }
+        else{
+          return 0;
+        }
       }
       catch(err) {
         console.log(selector + ' : ' + err.message);
