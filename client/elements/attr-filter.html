@@ -66,8 +66,14 @@
     ready: function() {
     },
     _handleSelect : function(e) {
-
       if(!this.$.checkbox.checked) {
+        var checkBoxList = this.$.valuePanel.querySelectorAll('paper-checkbox');
+        for(var i=0; i<checkBoxList.length; i++){
+          if(checkBoxList[i].checked){
+            checkBoxList[i].checked = !checkBoxList[i].checked;
+            checkBoxList[i].fire('change');
+          }
+        }
         this.$.valuePanel.style.display = 'none';
       } else {
         this.$.valuePanel.style.display = 'block';
@@ -143,6 +149,9 @@
         if(remove_idx!=-1) {
           this.query.or.splice(remove_idx,1);
         }
+      }
+      if(this.query.or.length == 0){
+        this.query = null;
       }
       var obj = {
         'attr':this.description.name,
