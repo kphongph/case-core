@@ -10,17 +10,26 @@
       handle-as="json"
       on-response="_handleRequest">
     </iron-ajax>
+
+    <iron-ajax id="nullWorker" 
+      handle-as="json"
+      on-response="_handleNullRequest">
+    </iron-ajax>
+
     <paper-checkbox id="checkbox" on-change="_handleSelect">
       <span>{{_propertyToString(description)}}</span>
     </paper-checkbox>
+
     <div id="valuePanel">
+      <template is="dom-if" if="{{attr.nullExist}}">
+        <h4>Type: isNULL</h4>
+        <p>
+         &nbsp;&nbsp;&nbsp;
+         <paper-checkbox on-change="_handleNullSelect">Null?</paper-checkbox>
+        </p>
+      </template>
          
       <template is="dom-if" if="{{attr.isCategory}}">
-        <h4>Null value filter</h4>
-        <div style="padding-left:15px;">
-          <paper-checkbox>is Null</paper-checkbox>
-        </div>
-      
         <h4>Type: Category</h4>
         <template is="dom-repeat" items="{{content}}">
          <p>
@@ -34,11 +43,6 @@
       </template>
       
       <template is="dom-if" if="{{attr.isDate}}">
-        <h4>Null value filter</h4>
-        <div style="padding-left:15px;">
-          <paper-checkbox>is Null</paper-checkbox>
-        </div>
-        
         <div style="padding-left:10px">
           <date-filter 
             end="{{attr.end_date}}"
@@ -47,8 +51,8 @@
           </date-filter>
         </div>
       </template>
-        
     </div>
+
   </template>
 </dom-module>
 
@@ -68,6 +72,7 @@
       resource : String,
       attr : {
         type: Object,
+        notify:true,
       },
       content: {
         type: Object,
@@ -91,9 +96,20 @@
       }
 
       if(this.$.checkbox.checked && !this.content) {
-        var query = {fields:{}};
-        query.fields[this.description.name] = true;
+
         this.content = [];
+        this.set('attr',{});
+
+        // check null
+        var query_null = {};
+        query_null[this.description.name] = null;
+        this.$.nullWorker.url = this.resource+'/count?where='+JSON.stringify(query_null);
+        this.$.nullWorker.generateRequest();
+        
+        // query all without null
+        var query = {fields:{},where:{}};
+        query.fields[this.description.name] = true;
+        query.where[this.description.name] = {'neq':null};
         this.$.worker.url = this.resource+'?filter='+JSON.stringify(query);
         this.$.worker.generateRequest();
       }
@@ -117,11 +133,11 @@
 
       if(j<max_categories) {
         // categories data
-        this.attr = {isCategory:true};
+        this.set('attr.isCategory',true);
       } else {
         if(this.description.value.type == "string" && 
            this.description.value.format == "date") {
-          this.attr = {isDate:true};
+          this.set('attr.isDate',true);
           var min_date = new Date();
           var max_date = new Date(1970,1,1);
           for(var i=0;i<response.length;i++) {
@@ -133,11 +149,45 @@
               min_date = tmp_date;
             }
           }
-          this.attr['start_date'] = min_date;
-          this.attr['end_date'] = max_date;
+          this.set('attr.start_date',min_date);
+          this.set('attr.end_date',max_date);
         }
-        
       }
+    },
+    _handleNullRequest: function() {
+      if(this.$.nullWorker.lastResponse.count > 0) {
+        this.set('attr.nullExist',true);
+      }
+    },
+    _handleNullSelect: function(e) {
+      var tmp = {};
+      tmp[this.description.name]=null;
+      if(e.srcElement.checked) {
+        if(!this.query) {
+          this.query = {'or':[]};
+        }
+        this.query.or.push(tmp);
+      } else {
+        var remove_idx = -1;
+        for(var i=0;i<this.query.or.length;i++) {
+          if(this.query.or[i][this.description.name] == null) {
+             remove_idx = i;
+          }
+        }
+        if(remove_idx!=-1) {
+          this.query.or.splice(remove_idx,1);
+        }
+      }
+      if(this.query.or.length == 0){
+        this.query = null;
+      }
+      var obj = {
+        'attr':this.description.name,
+        'query':this.query,
+        'model':this.model
+      };
+      this.fire('filter',obj);
+      
     },
     _handleCategorySelect: function(e) {
       var attr_values = e.target.innerText.split(' ');
@@ -162,15 +212,9 @@
       if(this.query.or.length == 0){
         this.query = null;
       }
-      var checkBoxNull = this.$.valuePanel.querySelectorAll('paper-checkbox')[0];
-      var isNull = false;
-      if(checkBoxNull.checked){
-        isNull = true;
-      }
       var obj = {
         'attr':this.description.name,
         'query':this.query,
-        'isNull':isNull,
         'model':this.model
       };
       this.fire('filter',obj);
