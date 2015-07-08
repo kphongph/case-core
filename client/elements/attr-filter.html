@@ -14,7 +14,13 @@
       <span>{{_propertyToString(description)}}</span>
     </paper-checkbox>
     <div id="valuePanel">
+         
       <template is="dom-if" if="{{attr.isCategory}}">
+        <h4>Null value filter</h4>
+        <div style="padding-left:15px;">
+          <paper-checkbox>is Null</paper-checkbox>
+        </div>
+      
         <h4>Type: Category</h4>
         <template is="dom-repeat" items="{{content}}">
          <p>
@@ -28,6 +34,11 @@
       </template>
       
       <template is="dom-if" if="{{attr.isDate}}">
+        <h4>Null value filter</h4>
+        <div style="padding-left:15px;">
+          <paper-checkbox>is Null</paper-checkbox>
+        </div>
+        
         <div style="padding-left:10px">
           <date-filter 
             end="{{attr.end_date}}"
@@ -124,8 +135,6 @@
           }
           this.attr['start_date'] = min_date;
           this.attr['end_date'] = max_date;
-          console.log(min_date);
-          console.log(max_date);
         }
         
       }
@@ -153,9 +162,15 @@
       if(this.query.or.length == 0){
         this.query = null;
       }
+      var checkBoxNull = this.$.valuePanel.querySelectorAll('paper-checkbox')[0];
+      var isNull = false;
+      if(checkBoxNull.checked){
+        isNull = true;
+      }
       var obj = {
         'attr':this.description.name,
         'query':this.query,
+        'isNull':isNull,
         'model':this.model
       };
       this.fire('filter',obj);

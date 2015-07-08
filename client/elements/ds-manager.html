@@ -83,12 +83,10 @@
           this._generateQuery(this.model_description.models[models[i].name],e.detail);
         }
       }
-    //  this.where['and'].push(e.detail);
-    //  console.log(JSON.stringify(this.where));
-    //  this._computeReturnRecords(this.where);
     },
     _generateQuery : function(model,filter) {
-      model.properties[filter.attr]['query'] = filter.query; 
+      model.properties[filter.attr]['query'] = filter.query;
+      console.log(filter.isNull) // -----------------------------------
       var attr_and = [];
       for(var key in model.properties) {
         if(model.properties[key].query) {
