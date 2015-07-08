@@ -15,7 +15,7 @@
     "value": "00.00",
     "unit": "คน",
     "api" : "cmservices",
-    "where" : ".Risk[1].juEle+.Risk[1].seEle+.Risk[1].juHigh+.Risk[1].seHigh",
+    "where" : ".Risk[1].numOfChild",
     "services" : "../data/qualities.json",
     "description": "ผลสัมฤทธิ์ พฤติกรรมเสี่ยงและอื่นๆ"
   },
