@@ -86,7 +86,6 @@
     },
     _generateQuery : function(model,filter) {
       model.properties[filter.attr]['query'] = filter.query;
-      console.log(filter.isNull) // -----------------------------------
       var attr_and = [];
       for(var key in model.properties) {
         if(model.properties[key].query) {
