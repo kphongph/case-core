@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-slider/paper-slider.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="date-filter.html">
 
 <dom-module id="attr-filter">
@@ -49,6 +50,12 @@
             on-date-change="_handleDateSelect"
             start="{{attr.start_date}}">
           </date-filter>
+        </div>
+      </template>
+      
+      <template is="dom-if" if="{{attr.isText}}">
+        <div style="padding-left:10px">
+          <paper-input label="Text to find" on-input="_handleTextChanged"></paper-input>
         </div>
       </template>
     </div>
@@ -105,8 +112,10 @@
             }
           }
         }
-        if(this.query.or.length == 0){
-          this.query = null;
+        if(this.query){
+          if(this.query.or.length == 0){
+            this.query = null;
+          }
         }
         var obj = {
           'attr':this.description.name,
@@ -175,6 +184,9 @@
           }
           this.set('attr.start_date',min_date);
           this.set('attr.end_date',max_date);
+        } else if(this.description.value.type == "string"){
+          this.set('attr.isText',true);
+          
         }
       }
     },
@@ -246,7 +258,9 @@
     _handleDateSelect: function(e){
       var s_date = e.detail.start;
       var e_date = e.detail.end;
-      this.query = {};
+      if(!this.query) {
+        this.query = {};
+      }
       if(s_date && e_date){
         this.query[this.description.name] = {'between':[]}
         this.query[this.description.name].between.push(s_date);
@@ -261,6 +275,19 @@
       else{
         return;
       }
+      var obj = {
+        'attr':this.description.name,
+        'query':this.query,
+        'model':this.model
+      };
+      this.fire('filter',obj);
+    },
+    _handleTextChanged: function(e){
+      if(!this.query) {
+        this.query = {};
+      }
+      
+      this.query[this.description.name] = { like:e.target.value };
       var obj = {
         'attr':this.description.name,
         'query':this.query,
