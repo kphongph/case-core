@@ -91,31 +91,13 @@
     _handleSelect : function(e) {
       if(!this.$.checkbox.checked) {
         var allCheckbox = this.$.valuePanel.querySelectorAll('paper-checkbox');
-        var tmp = [];
         for(var i=0; i<allCheckbox.length; i++){
           if(allCheckbox[i].checked){
             allCheckbox[i].checked = !allCheckbox[i].checked;
-            tmp.push(allCheckbox[i].innerText.split(' ')[1]);
-          }
-        }
-        
-        for(var i = 0; i < tmp.length; i++){
-          if(this.query.or){
-            var remove_idx = -1;
-            for(var j = 0;j<this.query.or.length; j++) {
-              if(this.query.or[j][this.description.name] == tmp[i]) {
-                 remove_idx = j;
-              }
-            }
-            if(remove_idx!=-1) {
-              this.query.or.splice(remove_idx,1);
-            }
           }
         }
         if(this.query){
-          if(this.query.or.length == 0){
-            this.query = null;
-          }
+          this.query = null;
         }
         var obj = {
           'attr':this.description.name,
@@ -286,7 +268,6 @@
       if(!this.query) {
         this.query = {};
       }
-      
       this.query[this.description.name] = { like:e.target.value };
       var obj = {
         'attr':this.description.name,
