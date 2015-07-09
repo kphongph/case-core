@@ -54,8 +54,17 @@
       </template>
       
       <template is="dom-if" if="{{attr.isText}}">
-        <div style="padding-left:10px">
+        <div style="padding-left:15px">
           <paper-input label="Text to find" on-input="_handleTextChanged"></paper-input>
+        </div>
+      </template>
+      
+      <template is="dom-if" if="{{attr.isNumber}}">
+        <div style="padding-left:15px">
+          <paper-input label="Number to find" 
+          on-input="_handleNumberChanged" 
+          auto-validate pattern="[0-9]*" 
+          error-message="Number only!"></paper-input>
         </div>
       </template>
     </div>
@@ -96,9 +105,7 @@
             allCheckbox[i].checked = !allCheckbox[i].checked;
           }
         }
-        if(this.query){
-          this.query = null;
-        }
+        this.query = null;
         var obj = {
           'attr':this.description.name,
           'query':this.query,
@@ -168,7 +175,8 @@
           this.set('attr.end_date',max_date);
         } else if(this.description.value.type == "string"){
           this.set('attr.isText',true);
-          
+        } else if(this.description.value.type == "number"){
+          this.set('attr.isNumber',true);
         }
       }
     },
@@ -212,7 +220,7 @@
       var tmp = {};
       tmp[this.description.name]=attr_values[1];
       if(e.srcElement.checked) {
-        if(!this.query) {
+        if(!this.query || !this.query.or) {
           this.query = {'or':[]};
         }
         this.query.or.push(tmp);
@@ -266,15 +274,55 @@
     },
     _handleTextChanged: function(e){
       if(!this.query) {
-        this.query = {};
+        this.query = {'or':[]};
+      } else{
+        this.query.or = [];
+        var tmp = {};
+        tmp[this.description.name]=null;
+        this.query.or.push(tmp);
       }
-      this.query[this.description.name] = { like:e.target.value };
+      if(e.target.value){
+        var tmp = {};
+        tmp[this.description.name]={ like:e.target.value };
+        this.query.or.push(tmp);
+      }
+      if(this.query.or.length === 0){
+        this.query = null;
+      }
       var obj = {
         'attr':this.description.name,
         'query':this.query,
         'model':this.model
       };
       this.fire('filter',obj);
+    },
+    _handleNumberChanged: function(e){
+      if(e.target.validate()){
+        if(!this.query) {
+          this.query = {'or':[]};
+        }
+        else{
+          this.query.or = [];
+          var tmp = {};
+          tmp[this.description.name]=null;
+          this.query.or.push(tmp);
+        }
+        if(e.target.value){
+          var tmp = {};
+          tmp[this.description.name]=Number(e.target.value);
+          this.query.or.push(tmp);
+        }
+
+        if(this.query.or.length === 0){
+          this.query = null;
+        }
+        var obj = {
+          'attr':this.description.name,
+          'query':this.query,
+          'model':this.model
+        };
+        this.fire('filter',obj);
+      }
     },
     _propertyToString: function(obj) {
       return obj.name+' ('+obj.value.type+')';
