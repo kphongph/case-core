@@ -283,7 +283,7 @@
       }
       if(e.target.value){
         var tmp = {};
-        tmp[this.description.name]={ like:e.target.value };
+        tmp[this.description.name]={ like:'%' + e.target.value + '%'};
         this.query.or.push(tmp);
       }
       if(this.query.or.length === 0){

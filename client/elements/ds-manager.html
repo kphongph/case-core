@@ -68,7 +68,7 @@
       return desc.basePath+desc.resourcePath;
     },
     _computeReturnRecords: function(where) {
-      this.$.countAjax.url = this.resourcePath+'/count?where='+JSON.stringify(where);
+      this.$.countAjax.url = this.resourcePath+'/count?where='+encodeURI(JSON.stringify(where));
       this.$.countAjax.generateRequest();
     },
     _handleDescription : function() {
