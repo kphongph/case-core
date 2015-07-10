@@ -1,0 +1,45 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+
+<dom-module id="field-filter">
+  <style>
+    .container{
+      display:block;
+    }
+  </style>
+  <template>
+    <div class="container">
+      <h3>Fields</h3>
+      <template is="dom-repeat" items="{{fields}}">
+        <paper-checkbox on-change="_handleChecked" checked>{{item}}</paper-checkbox>
+      </template>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'field-filter',
+    properties: {
+      fields : {
+        type: Array
+      }
+    },
+    ready: function() {
+    },
+    _handleChecked: function(e){
+      var selected = e.target.innerText.substr(1);
+      var index = this.fields.indexOf(selected);
+      if(e.target.checked){
+        if(index == -1){
+          this.fields.push(selected);
+        }
+      } else {
+        if(index != -1){
+          this.fields.splice(index, 1);
+        }
+      }
+      this.fire('filter', this.fields);
+    }
+  });
+</script>

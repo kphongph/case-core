@@ -116,7 +116,7 @@
         "nullable": "YES"
       }
     },
-    "number ": {
+    "number": {
       "type": "Number",
       "required": false,
       "length": null,

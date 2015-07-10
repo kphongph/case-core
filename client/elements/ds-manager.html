@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="./attr-filter.html">
+<link rel="import" href="./field-filter.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="ds-manager">
@@ -20,7 +21,7 @@
       handle-as="json"
       on-response="_handleRequest">
     </iron-ajax>
-
+    
     <template is="dom-repeat" as="model"
       items="{{_toArray(model_description.models)}}">
       <h2>Model: <span>{{model.name}}</span></h2>
@@ -37,6 +38,10 @@
         </p>
       </template>
     </template>
+    
+    <div>
+      <field-filter on-filter="_handleFieldsFilter" fields="{{_getFields(model_description)}}"></field-filter>
+    </div>
 
   </template>
 </dom-module>
@@ -59,7 +64,14 @@
       },
       records : {
         type: String,
-      //  computed: '_computeReturnRecords(where)'
+      },
+      fields : {
+        type: Array
+        
+      },
+      exampleResult : {
+        type: String,
+        computed: '_computeExampleResult(fields,where)'
       }
     },
     ready: function() {
@@ -92,7 +104,7 @@
           attr_and.push(model.properties[key].query);
         }
       }
-      this.where['and']=attr_and;
+      this.where = new Object({'and':attr_and});
       this._computeReturnRecords(this.where);
     },
     _toArray: function(obj) {
@@ -105,6 +117,37 @@
     },
     _handleCount : function() {
       this.records = this.$.countAjax.lastResponse.count;
+    },
+    getResultUrl: function(limit){
+      if(limit){
+        return this.resourcePath 
+        + '?filter={"fields":' + JSON.stringify(this.fields) 
+        + ',"limit":' + limit 
+        + ',"where":' + encodeURI(JSON.stringify(this.where)) + '}';
+      } else {
+        return this.resourcePath 
+        + '?filter={"fields":' + JSON.stringify(this.fields)
+        + ',"where":' + encodeURI(JSON.stringify(this.where)) + '}';
+      }
+    },
+    _computeExampleResult: function(where,fields){
+      var limit = 20;
+      console.log(this.getResultUrl(limit));
+    },
+    _getFields: function(model_description){
+      var properties = this._toArray(model_description.models)[0].value.properties;
+      if(properties){
+        var tmp = [];
+        for(var key in properties) {
+          tmp.push(key);
+        }
+        return tmp;
+      } else {
+        return [];
+      }
+    },
+    _handleFieldsFilter: function(e){
+      this.fields = e.detail.slice(0);
     }
   });
 </script>
