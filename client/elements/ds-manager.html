@@ -80,8 +80,13 @@
       return desc.basePath+desc.resourcePath;
     },
     _computeReturnRecords: function(where) {
-      this.$.countAjax.url = this.resourcePath+'/count?where='+encodeURI(JSON.stringify(where));
-      this.$.countAjax.generateRequest();
+      if(where.and.length > 0){
+        this.$.countAjax.url = this.resourcePath+'/count?where='+encodeURI(JSON.stringify(where));
+        this.$.countAjax.generateRequest();
+      } else {
+        this.$.countAjax.url = this.resourcePath+'/count';
+        this.$.countAjax.generateRequest();
+      }
     },
     _handleDescription : function() {
       this.model_description = this.$.getDescription.lastResponse;

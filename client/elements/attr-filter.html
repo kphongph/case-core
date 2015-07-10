@@ -35,9 +35,8 @@
         <template is="dom-repeat" items="{{content}}">
          <p>
          &nbsp;&nbsp;&nbsp;
-         <paper-checkbox on-change="_handleCategorySelect">
-          <span>{{item.name}}</span> &nbsp;
-          (<span>{{item.value.count}}</span>)
+         <paper-checkbox on-change="_handleCategorySelect" value$="{{item.name}}">
+          <span>{{item.name}}</span>&nbsp;(<span>{{item.value.count}}</span>)
          </paper-checkbox>
          </p>
         </template>
@@ -216,9 +215,9 @@
       
     },
     _handleCategorySelect: function(e) {
-      var attr_values = e.target.innerText.split(' ');
+      var attr_values = e.target.getAttribute('value');
       var tmp = {};
-      tmp[this.description.name]=attr_values[1];
+      tmp[this.description.name]=attr_values;
       if(e.srcElement.checked) {
         if(!this.query || !this.query.or) {
           this.query = {'or':[]};
