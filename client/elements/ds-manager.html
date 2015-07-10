@@ -65,13 +65,17 @@
       records : {
         type: String,
       },
-      fields : {
+      selectedFields : {
         type: Array
-        
+      },
+      fields : {
+        type : Array,
+        notify: true,
+        computed: '_getFields(model_description)'
       },
       exampleResult : {
         type: String,
-        computed: '_computeExampleResult(fields,where)'
+        computed: '_computeExampleResult(selectedFields,where)'
       }
     },
     ready: function() {
@@ -126,16 +130,16 @@
     getResultUrl: function(limit){
       if(limit){
         return this.resourcePath 
-        + '?filter={"fields":' + JSON.stringify(this.fields) 
+        + '?filter={"fields":' + JSON.stringify(this.selectedFields) 
         + ',"limit":' + limit 
         + ',"where":' + encodeURI(JSON.stringify(this.where)) + '}';
       } else {
         return this.resourcePath 
-        + '?filter={"fields":' + JSON.stringify(this.fields)
+        + '?filter={"fields":' + JSON.stringify(this.selectedFields)
         + ',"where":' + encodeURI(JSON.stringify(this.where)) + '}';
       }
     },
-    _computeExampleResult: function(where,fields){
+    _computeExampleResult: function(where,selectedFields){
       var limit = 20;
       console.log(this.getResultUrl(limit));
     },
@@ -152,7 +156,7 @@
       }
     },
     _handleFieldsFilter: function(e){
-      this.fields = e.detail.slice(0);
+      this.selectedFields = e.detail.slice(0);
     }
   });
 </script>

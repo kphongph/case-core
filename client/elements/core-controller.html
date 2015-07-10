@@ -1,0 +1,73 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="./ds-manager.html">
+<link rel="import" href="./relation-manager.html">
+
+<dom-module id="core-controller">
+  <style>
+    .container{
+      display:inline;
+    }
+  </style>
+  <template>
+    <div class="container">
+      <template is="dom-repeat" items="{{urls}}">
+        <ds-manager id="{{_getModelName(item)}}" url="{{item}}"></ds-manager><br /><hr />
+      </template>
+    </div>
+    <h3>Create relations</h3>
+    <paper-fab id="menu" mini icon="assessment" on-click="_handleRelationPanel"></paper-fab>
+    <div hidden$="{{!showRPanel}}">
+      <relation-manager models="{{models}}"></relation-manager>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'core-controller',
+    properties: {
+      urls : {
+        type: Array
+      },
+      models : {
+        type: Array,
+        computed: '_getModels(urls)'
+      },
+      showRPanel: {
+        type : Boolean
+      }
+    },
+    ready: function() {
+      this.showRPanel = false;
+      this.urls = [
+        "/explorer/resources/educationchildren", 
+        "/explorer/resources/Educationclasses"
+      ];
+    },
+    _getModelName: function(url){
+      return url.split('/').pop();
+    },
+    _getModels: function(urls){
+      var tmp = [];
+      for(var i = 0; i < urls.length; i++){
+        tmp.push({'name':this._getModelName(urls[i])});
+      }
+      return tmp;
+    },
+    _handleFields: function(e){
+      if(!this.modelProperties){
+        this.modelProperties = [];
+      }
+      this.modelProperties.push(e.detail);
+    },
+    _handleRelationPanel: function(){
+      this.showRPanel = !this.showRPanel;
+      for(var i = 0; i < this.models.length; i++){
+        this.models[i]['fields'] = document.getElementById(this.models[i].name).fields;
+      }
+    }
+  });
+</script>
