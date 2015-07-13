@@ -4,12 +4,18 @@
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="./ds-manager.html">
 <link rel="import" href="./relation-filter.html">
+<link rel="import" href="./chart-core.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="core-controller">
   <style>
     .container{
       display:inline;
+    }
+    .ichart{
+      width:80%;
+      padding: 20px;
+      overflow:hidden;
     }
   </style>
   <template>
@@ -32,6 +38,11 @@
     <paper-fab id="menu" mini icon="assessment" on-click="_handleRelationPanel"></paper-fab>
     <div hidden$="{{!showRPanel}}">
       <relation-filter on-filter="_handleRelationFilter" models="{{models}}"></relation-filter>
+      <br />
+      
+      <div class="ichart">
+        <chart-core id="iChart"></chart-core>
+      </div>
     </div>
   </template>
 </dom-module>
@@ -58,7 +69,7 @@
     ready: function() {
       this.showRPanel = false;
       this.urls = [
-        "/explorer/resources/educationchildren", 
+        "/explorer/resources/educationchildren",
         "/explorer/resources/Educationclasses"
       ];
     },
@@ -144,12 +155,16 @@
         }
         this.fullTable.push(this.mergeObject(this.leftTable[i], mapRight));
       }
-      console.log(this.fullTable)
+      this.$.iChart.dataArray = this.fullTable;
     },
     mergeObject : function(obj1, obj2){
       var obj3 = {};
       for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
-      for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
+      for (var attrname in obj2) {
+        if(obj2[attrname]){
+          obj3[attrname] = obj2[attrname];
+        }
+      }
       return obj3;
     }
   });
