@@ -3,7 +3,8 @@
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="./ds-manager.html">
-<link rel="import" href="./relation-manager.html">
+<link rel="import" href="./relation-filter.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="core-controller">
   <style>
@@ -12,6 +13,16 @@
     }
   </style>
   <template>
+    <iron-ajax id="leftAjax" 
+      handle-as="json"
+      on-response="_handleLeftAjax">
+    </iron-ajax>
+    
+     <iron-ajax id="rightAjax" 
+      handle-as="json"
+      on-response="_handleRightAjax">
+    </iron-ajax>
+    
     <div class="container">
       <template is="dom-repeat" items="{{urls}}">
         <ds-manager id="{{_getModelName(item)}}" url="{{item}}"></ds-manager><br /><hr />
@@ -20,7 +31,7 @@
     <h3>Create relations</h3>
     <paper-fab id="menu" mini icon="assessment" on-click="_handleRelationPanel"></paper-fab>
     <div hidden$="{{!showRPanel}}">
-      <relation-manager models="{{models}}"></relation-manager>
+      <relation-filter on-filter="_handleRelationFilter" models="{{models}}"></relation-filter>
     </div>
   </template>
 </dom-module>
@@ -38,7 +49,11 @@
       },
       showRPanel: {
         type : Boolean
-      }
+      },
+      relation : Object,
+      leftTable : Array,
+      rightTable : Array,
+      fullTable : Array
     },
     ready: function() {
       this.showRPanel = false;
@@ -68,6 +83,74 @@
       for(var i = 0; i < this.models.length; i++){
         this.models[i]['fields'] = document.getElementById(this.models[i].name).fields;
       }
+    },
+    _handleRelationFilter : function(e){
+      var data = e.detail;
+      /*
+      for( var i = 0; i < data.length; i++){
+        if(data[i].relation == 'leftJoin'){
+          this.relation = data[i];
+          this._leftJoin(data[i]);
+        }
+      }
+      */
+      if(data[0].relation == 'leftJoin'){
+        this.relation = data[0];
+        this._leftJoin(data[0]);
+      }
+    },
+    _leftJoin : function(data){
+      var url = document.getElementById(data.left.model).exampleResultUrl;
+      this.$.leftAjax.url = url;
+      this.$.leftAjax.generateRequest();
+    },
+    _handleLeftAjax : function(){
+      var or = [];
+      this.leftTable = this.$.leftAjax.lastResponse;
+      var distinct = [];
+      for( var i = 0; i < this.leftTable.length; i++){
+        var value = this.leftTable[i][this.relation.left.property];
+        if(distinct.indexOf(value) == -1){
+          distinct.push(value);
+        }
+      }
+      for( var i = 0; i < distinct.length; i++){
+        var obj = {};
+        obj[this.relation.right.property] = distinct[i];
+        or.push(obj);
+      }
+      
+      var url = '/api/' + this.relation.right.model + '?where=';
+      url += encodeURI(JSON.stringify({'or':or}));
+      this.$.rightAjax.url = url;
+      this.$.rightAjax.generateRequest();
+    },
+    _handleRightAjax : function(){
+      this.rightTable = this.$.rightAjax.lastResponse;
+      this.mergeTable();
+    },
+    mergeTable : function(){
+      for( var i = 0; i < this.leftTable.length; i++){
+        var leftValue = this.leftTable[i][this.relation.left.property];
+        var mapRight = Array.apply(null, Array(this.rightTable[0].length));
+        for( var j = 0; j < this.rightTable.length; j++){
+          if(leftValue == this.rightTable[j][this.relation.right.property]){
+            mapRight = this.rightTable[j];
+            break;
+          }
+        }
+        if(!this.fullTable){
+          this.fullTable = [];
+        }
+        this.fullTable.push(this.mergeObject(this.leftTable[i], mapRight));
+      }
+      console.log(this.fullTable)
+    },
+    mergeObject : function(obj1, obj2){
+      var obj3 = {};
+      for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
+      for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
+      return obj3;
     }
   });
 </script>

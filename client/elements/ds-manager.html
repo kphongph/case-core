@@ -73,11 +73,15 @@
         notify: true,
         computed: '_getFields(model_description)'
       },
-      exampleResult : {
+      exampleResultUrl : {
         type: String,
-        computed: '_computeExampleResult(selectedFields,where)'
+        notify: true
       }
     },
+    observers : [
+      '_computeExampleResult(selectedFields)',
+      '_computeExampleResult(where)'
+    ],
     ready: function() {
     },
     _computeResourcePath: function(desc) {
@@ -128,20 +132,28 @@
       this.records = this.$.countAjax.lastResponse.count;
     },
     getResultUrl: function(limit){
+      var fields = this.selectedFields;
+      if(!fields){
+        fields = [];
+      }
+      var where = this.where;
+      if(!where){
+        where = {};
+      }
       if(limit){
         return this.resourcePath 
-        + '?filter={"fields":' + JSON.stringify(this.selectedFields) 
+        + '?filter={"fields":' + JSON.stringify(fields) 
         + ',"limit":' + limit 
-        + ',"where":' + encodeURI(JSON.stringify(this.where)) + '}';
+        + ',"where":' + encodeURI(JSON.stringify(where)) + '}';
       } else {
         return this.resourcePath 
-        + '?filter={"fields":' + JSON.stringify(this.selectedFields)
-        + ',"where":' + encodeURI(JSON.stringify(this.where)) + '}';
+        + '?filter={"fields":' + JSON.stringify(fields)
+        + ',"where":' + encodeURI(JSON.stringify(where)) + '}';
       }
     },
     _computeExampleResult: function(where,selectedFields){
-      var limit = 20;
-      console.log(this.getResultUrl(limit));
+      var limit = 50;
+      this.exampleResultUrl = this.getResultUrl(limit);
     },
     _getFields: function(model_description){
       var properties = this._toArray(model_description.models)[0].value.properties;

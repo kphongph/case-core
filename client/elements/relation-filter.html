@@ -3,8 +3,10 @@
 <link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 
-<dom-module id="relation-manager">
+<dom-module id="relation-filter">
   <style>
     .container{
       @apply(--layout-horizontal);
@@ -48,6 +50,11 @@
       border-radius: 2px;
       box-shadow: 0px 0px 8px #BDBDBD;
     }
+    .add{
+      @apply(--layout-horizontal);
+      @apply(--layout-end-justified);
+      padding: 20px 10px 0 0;
+    }
   </style>
   <template>
     <div class="container">
@@ -55,7 +62,7 @@
         <div class="model">
           <div class="model-header">Models(Left)</div>
           <div class="item-body">
-            <paper-radio-group>
+            <paper-radio-group id="lModel">
               <template is="dom-repeat" items="{{models}}">
                 <paper-radio-button on-change="_handleModel" 
                 side="left"
@@ -66,7 +73,7 @@
         </div>
         <div class="properties">
           <div class="properties-body">
-            <paper-radio-group>
+            <paper-radio-group id="lProperties">
               <template is="dom-repeat" items="{{propertiesLeft}}">
                 <paper-radio-button name="{{item}}">{{item}}</paper-radio-button>
               </template>
@@ -78,18 +85,21 @@
       
       <div flex class="item-center">
         <div class="model-header">Relation</div>
-        <paper-radio-group selected="j">
-          <paper-radio-button name="j">Join(full join)</paper-radio-button>
-          <paper-radio-button name="lj">Left join</paper-radio-button>
-          <paper-radio-button name="rj">Right join</paper-radio-button>
+        <paper-radio-group id="relation" selected="leftJoin">
+          <paper-radio-button name="join" disabled>Join(full join)</paper-radio-button>
+          <paper-radio-button name="leftJoin">Left join</paper-radio-button>
+          <paper-radio-button name="rightJoin" disabled>Right join</paper-radio-button>
         </paper-radio-group>
+        <div class="add">
+          <paper-fab mini icon="add" on-click="_handleRelationAdd"></paper-fab>
+        </div>
       </div>
       <!-- center -->
       
       <div class="group">
         <div class="properties">
           <div class="properties-body">
-            <paper-radio-group>
+            <paper-radio-group id="rProperties">
               <template is="dom-repeat" items="{{propertiesRight}}">
                 <paper-radio-button name="{{item}}">{{item}}</paper-radio-button>
               </template>
@@ -99,7 +109,7 @@
         <div class="model">
           <div class="model-header">Models(Right)</div>
           <div class="item-body">
-            <paper-radio-group>
+            <paper-radio-group id="rModel">
               <template is="dom-repeat" items="{{models}}">
                 <paper-radio-button on-change="_handleModel" 
                 side="right"
@@ -116,7 +126,7 @@
 
 <script>
   Polymer({
-    is: 'relation-manager',
+    is: 'relation-filter',
     properties: {
       urls : {
         type: Array
@@ -124,6 +134,9 @@
       models : {
         type : Array,
         notify : true
+      },
+      relations : {
+        type : Array
       }
     },
     ready: function() {
@@ -143,6 +156,48 @@
           }
         }
       }
+    },
+    _handleSelected: function(e){
+      var type = e.target.getAttribute('type');
+      var value = e.target.getAttribute('name');
+      
+      console.log(e.target.getAttribute('type'))
+    },
+    _handleRelationAdd : function(){
+      var obj = {'left':{},'right':{}, 'relation':''};
+      obj.left.model = this.$.lModel.selected;
+      obj.left.property = this.$.lProperties.selected;
+      
+      obj.right.model = this.$.rModel.selected;
+      obj.right.property = this.$.rProperties.selected;
+      
+      obj.relation = this.$.relation.selected;
+      
+      if(obj.left.model && obj.left.property && obj.right.model 
+      && obj.right.property && obj.relation){
+        if(!this.containsObject(this.relations, obj)){
+          if(!this.relations){
+            this.relations = [];
+          }
+          this.relations.push(obj);
+          this.fire('filter', this.relations);
+        }
+      }
+    },
+    containsObject : function(array, object){
+      if(!array){
+        return;
+      }
+      for(var i = 0; i < array.length; i++){
+        if (array[i].left.model === object.left.model
+        && array[i].left.property === object.left.property
+        && array[i].right.model === object.right.model
+        && array[i].right.property === object.right.property
+        && array[i].relation === object.relation) {
+          return true;
+        }
+      }
+      return false;
     }
   });
 </script>
