@@ -241,10 +241,6 @@
     "dataSource": "caseMongoDs",
     "public": true
   },
-  "Educationclass": {
-    "dataSource": "caseMongoDs",
-    "public": true
-  },
   "Educationlevel": {
     "dataSource": "caseMongoDs",
     "public": true
@@ -671,6 +667,10 @@
   },
   "FamilyRelation_Main": {
     "dataSource": "caseAzureDs",
+    "public": true
+  },
+  "EducationClass": {
+    "dataSource": "eduDs",
     "public": true
   }
 }
