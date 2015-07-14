@@ -1,0 +1,167 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+
+<dom-module id="relation-manager">
+  <style>
+    .container{
+      width: 350px;
+      height: 300px;
+      @apply(--layout-fullbleed-vertical);
+      border-style: solid;
+      border-width: 1px;
+      border-color: #E0E0E0;
+      font-family: 'Roboto Regular', sans-serif;
+    }
+    .content{
+      padding: 5px;
+      height: 300px;
+      overflow-y: auto;
+    }
+    .add {
+      width: 50px;
+      position: absolute;
+      top: 20%;
+      right: 10px;
+    }
+    .remove {
+      width: 50px;
+      position: absolute;
+      right: 0;
+      color: #F44336;
+    }
+    paper-toolbar.header {
+      --paper-toolbar-background: #4CAF50;
+    }
+    paper-toolbar.header .header-text {
+      font-size: 150%;
+    }
+    paper-material{
+      padding: 5px;
+      height: 40px;
+      @apply(--layout-horizontal);
+    }
+    paper-material .blue {
+      width: 40px;
+	    height: 40px;
+	    border-radius: 20px;
+	    -webkit-border-radius: 20px;
+	    -moz-border-radius: 20px;
+	    background-color: var(--paper-light-blue-500);
+    }
+    paper-material .red {
+      width: 40px;
+	    height: 40px;
+	    border-radius: 20px;
+	    -webkit-border-radius: 20px;
+	    -moz-border-radius: 20px;
+	    background-color: var(--paper-red-500);
+    }
+    paper-material .orange {
+      width: 40px;
+	    height: 40px;
+	    border-radius: 20px;
+	    -webkit-border-radius: 20px;
+	    -moz-border-radius: 20px;
+	    background-color: var(--paper-orange-500);
+    }
+    paper-material .body {
+      padding: 5px 0 0 10px;
+      font-size: 80%;
+    }
+    .relation-icon {
+      text-align: center;
+      margin-top: 25%;
+      cursor: pointer;
+    }
+  </style>
+  <template>
+    <div class="container">
+      <paper-header-panel mode="seamed">
+        <paper-toolbar class="header">
+          <div class="header-text">Relationships</div>
+          <div class="add">
+            <paper-icon-button icon="add"></paper-icon-button>
+          </div>
+        </paper-toolbar>
+        <div class="content">
+          
+          <template is="dom-repeat" items="{{relations}}">
+            <paper-material elevation="1">
+              <div class$="{{_getRelationColor(item.relation)}}">
+                <p class="relation-icon" 
+                  title="{{_getTitle(item.relation)}}">{{_getRelationShort(item.relation)}}
+                </p>
+              </div>
+              <div class="body">
+                <div class="first"><span>{{item.left.model}}</span>.<span>{{item.left.property}}</span></div>
+                <div class="last"><span>{{item.right.model}}</span>.<span>{{item.right.property}}</span></div>
+              </div>
+              <div class="remove">
+                <paper-icon-button icon="clear"></paper-icon-button>
+              </div>
+            </paper-material>
+          </template>
+          
+        </div>
+      </paper-header-panel>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'relation-manager',
+    properties: {
+      relations : {
+        type: Object
+      }
+    },
+    ready: function() {
+      this.relations = [
+        {'relation':'leftJoin',
+          'left':{'model':'educationchildren','property':'educationclassid'},
+          'right':{'model':'Educationclasses','property':'educationclassid'}
+        },
+        {'relation':'rightJoin',
+          'left':{'model':'educationchildren','property':'educationclassid'},
+          'right':{'model':'Educationclasses','property':'educationclassid'}
+        }
+      ]
+    },
+    _getRelationShort: function(text){
+      if(text == 'join'){
+        return 'J';
+      }
+      else if(text == 'leftJoin'){
+        return 'LJ';
+      }
+      else if(text == 'rightJoin'){
+        return 'RJ';
+      }
+    },
+    _getRelationColor: function(text){
+      if(text == 'join'){
+        return 'blue';
+      }
+      else if(text == 'leftJoin'){
+        return 'red';
+      }
+      else if(text == 'rightJoin'){
+        return 'orange';
+      }
+    },
+    _getTitle: function(text){
+      var splited = text.toLocaleLowerCase().split('join');
+      splited.push('join')
+      splited = splited.map(function(x) { return x.toUpperCase(); });
+      return splited.join(' ');
+    }
+  });
+</script>
