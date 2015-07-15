@@ -130,6 +130,7 @@
     },
     _handleCount : function() {
       this.records = this.$.countAjax.lastResponse.count;
+      this.fire('done');
     },
     getResultUrl: function(limit){
       var fields = this.selectedFields;

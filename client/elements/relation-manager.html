@@ -7,6 +7,9 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="./relation-filter.html">
 
 <dom-module id="relation-manager">
   <style>
@@ -35,6 +38,7 @@
       position: absolute;
       right: 0;
       color: #F44336;
+      cursor: none;
     }
     paper-toolbar.header {
       --paper-toolbar-background: #4CAF50;
@@ -80,6 +84,10 @@
       margin-top: 25%;
       cursor: pointer;
     }
+    .dialog-panel {
+      width: 80%;
+      min-height: 450px;
+    }
   </style>
   <template>
     <div class="container">
@@ -87,13 +95,13 @@
         <paper-toolbar class="header">
           <div class="header-text">Relationships</div>
           <div class="add">
-            <paper-icon-button icon="add"></paper-icon-button>
+            <paper-icon-button icon="add" on-click="_handleAddClicked"></paper-icon-button>
           </div>
         </paper-toolbar>
-        <div class="content">
+        <div class="content" id="panel">
           
           <template is="dom-repeat" items="{{relations}}">
-            <paper-material elevation="1">
+            <paper-material elevation="1" id="{{index}}">
               <div class$="{{_getRelationColor(item.relation)}}">
                 <p class="relation-icon" 
                   title="{{_getTitle(item.relation)}}">{{_getRelationShort(item.relation)}}
@@ -104,13 +112,26 @@
                 <div class="last"><span>{{item.right.model}}</span>.<span>{{item.right.property}}</span></div>
               </div>
               <div class="remove">
-                <paper-icon-button icon="clear"></paper-icon-button>
+                <paper-icon-button icon="clear" value$="{{index}}" on-tap="_handleRemoveClicked"></paper-icon-button>
               </div>
             </paper-material>
           </template>
           
         </div>
       </paper-header-panel>
+    </div>
+    
+    <div>
+      <paper-dialog class="dialog-panel" id="dialog">
+        <h2>Relationship Editor</h2>
+        <div class="dialog-body">
+          <relation-filter id="rFilter" models="{{models}}"></relation-filter>
+        </div>
+        <div class="buttons">
+          <paper-button dialog-dismiss>Cancel</paper-button>
+          <paper-button dialog-confirm autofocus on-click="_handleDialogConfirm">OK</paper-button>
+        </div>
+      </paper-dialog>
     </div>
   </template>
 </dom-module>
@@ -124,6 +145,7 @@
       }
     },
     ready: function() {
+      /*
       this.relations = [
         {'relation':'leftJoin',
           'left':{'model':'educationchildren','property':'educationclassid'},
@@ -134,34 +156,69 @@
           'right':{'model':'Educationclasses','property':'educationclassid'}
         }
       ]
+      */
     },
     _getRelationShort: function(text){
-      if(text == 'join'){
-        return 'J';
-      }
-      else if(text == 'leftJoin'){
-        return 'LJ';
-      }
-      else if(text == 'rightJoin'){
-        return 'RJ';
+      if(text){
+        if(text == 'join'){
+          return 'J';
+        }
+        else if(text == 'leftJoin'){
+          return 'LJ';
+        }
+        else if(text == 'rightJoin'){
+          return 'RJ';
+        }
       }
     },
     _getRelationColor: function(text){
-      if(text == 'join'){
-        return 'blue';
-      }
-      else if(text == 'leftJoin'){
-        return 'red';
-      }
-      else if(text == 'rightJoin'){
-        return 'orange';
+      if(text){
+        if(text == 'join'){
+          return 'blue';
+        }
+        else if(text == 'leftJoin'){
+          return 'red';
+        }
+        else if(text == 'rightJoin'){
+          return 'orange';
+        }
       }
     },
     _getTitle: function(text){
-      var splited = text.toLocaleLowerCase().split('join');
-      splited.push('join')
-      splited = splited.map(function(x) { return x.toUpperCase(); });
-      return splited.join(' ');
+      if(text){
+        var splited = text.toLowerCase().split('join');
+        splited.push('join')
+        splited = splited.map(function(x) { return x.toUpperCase(); });
+        return splited.join(' ');
+      }
+    },
+    _handleAddClicked: function(){
+      this.$.dialog.open();
+    },
+    _handleRemoveClicked: function(e){
+      var list = Polymer.dom(this.$.panel).querySelectorAll('paper-material');
+      var el = e.target;
+      for(var i = 0; i < 3; i++){
+        if(el.tagName.toLowerCase() == 'paper-icon-button'){
+          break;
+        }
+        else{
+          el = el.parentElement;
+        }
+      }
+      var id = el.getAttribute('value');
+      this.relations.splice(Number(id), 1);
+      this.relations = this.relations.slice(0);
+      this.fire('select', this.relations);
+    },
+    _handleDialogConfirm: function(){
+      var value = this.$.rFilter.relation;
+      if(!this.relations){
+        this.relations = [];
+      }
+      this.relations.push(value);
+      this.relations = this.relations.slice(0);
+      this.fire('select', this.relations);
     }
   });
 </script>
