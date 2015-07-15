@@ -95,7 +95,12 @@
     },
     _handleRelationChange : function(e){
       var relations = e.detail;
-      console.log(relations)
+      console.log(relations);
+      // test at index 0
+      if(relations[0].relation == 'leftJoin'){
+        this.relation = relations[0];
+        this._leftJoin(relations[0]);
+      }
     },
     _leftJoin : function(data){
       var url = document.getElementById(data.left.model).exampleResultUrl;
