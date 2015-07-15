@@ -9,6 +9,7 @@
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/font-roboto/roboto.html">
 <link rel="import" href="./relation-filter.html">
 
 <dom-module id="relation-manager">
@@ -141,7 +142,7 @@
     is: 'relation-manager',
     properties: {
       relations : {
-        type: Object
+        type: Array
       }
     },
     ready: function() {
@@ -212,13 +213,28 @@
       this.fire('select', this.relations);
     },
     _handleDialogConfirm: function(){
-      var value = this.$.rFilter.relation;
+      var value = JSON.parse(JSON.stringify(this.$.rFilter.relation)); // force new object
       if(!this.relations){
         this.relations = [];
       }
-      this.relations.push(value);
-      this.relations = this.relations.slice(0);
-      this.fire('select', this.relations);
+      
+      if(!this.contains(this.relations, value)){
+        this.relations.push(value);
+        this.relations = this.relations.slice();
+        this.fire('select', this.relations);
+      }
+    },
+    contains: function(array, obj){
+      for(var i = 0; i < array.length; i++){
+        if(array[i].relation === obj.relation
+        && array[i].left.model === obj.left.model
+        && array[i].left.property === obj.left.property
+        && array[i].right.model === obj.right.model
+        && array[i].right.property === obj.right.property){
+          return true;
+        }
+      }
+      return false;
     }
   });
 </script>
