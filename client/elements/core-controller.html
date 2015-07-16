@@ -123,8 +123,8 @@
         or.push(obj);
       }
       
-      var url = '/api/' + this.relation.right.model + '?where=';
-      url += encodeURI(JSON.stringify({'or':or}));
+      var url = '/api/' + this.relation.right.model + '?filter={"where":';
+      url += encodeURI(JSON.stringify({'or':or})) + '}';
       this.$.rightAjax.url = url;
       this.$.rightAjax.generateRequest();
     },
@@ -133,30 +133,32 @@
       this.mergeTable();
     },
     mergeTable : function(){
+      if(this.leftTable && this.rightTable){
+        this.fullTable = [];
+      }
+      else{
+        return;
+      }
       for( var i = 0; i < this.leftTable.length; i++){
-        var leftValue = this.leftTable[i][this.relation.left.property];
-        var mapRight = Array.apply(null, Array(this.rightTable[0].length));
-        for( var j = 0; j < this.rightTable.length; j++){
-          if(leftValue == this.rightTable[j][this.relation.right.property]){
-            mapRight = this.rightTable[j];
-            break;
+        if(this.rightTable.length > 0){
+          var leftValue = this.leftTable[i][this.relation.left.property];
+          for( var j = 0; j < this.rightTable.length; j++){
+            if(leftValue == this.rightTable[j][this.relation.right.property]){
+              this.fullTable.push(
+                this.mergeObject(this.leftTable[i], this.rightTable[j]));
+            }
           }
         }
-        if(!this.fullTable){
-          this.fullTable = [];
+        else{
+          this.fullTable.push(this.leftTable[i]);
         }
-        this.fullTable.push(this.mergeObject(this.leftTable[i], mapRight));
       }
       this.$.iChart.dataArray = this.fullTable;
     },
     mergeObject : function(obj1, obj2){
       var obj3 = {};
       for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
-      for (var attrname in obj2) {
-        if(obj2[attrname]){
-          obj3[attrname] = obj2[attrname];
-        }
-      }
+      for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
       return obj3;
     }
   });
