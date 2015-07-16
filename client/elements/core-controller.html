@@ -73,8 +73,8 @@
     ready: function() {
       this.showRPanel = false;
       this.urls = [
-        "/explorer/resources/educationchildren",
-        "/explorer/resources/Educationclasses"
+        "/explorer/resources/DropOutStudents",
+        "/explorer/resources/educationchildren"
       ];
     },
     _getModelName: function(url){
@@ -108,23 +108,27 @@
       this.$.leftAjax.generateRequest();
     },
     _handleLeftAjax : function(){
-      var or = [];
       this.leftTable = this.$.leftAjax.lastResponse;
-      var distinct = [];
-      for( var i = 0; i < this.leftTable.length; i++){
-        var value = this.leftTable[i][this.relation.left.property];
-        if(distinct.indexOf(value) == -1){
-          distinct.push(value);
+      var properties = this.relation.left.property;
+      var and = [];
+      for( var i = 0; i < properties.length; i++){
+        var or = [];
+        var distinct = [];
+        for( var j = 0; j < this.leftTable.length; j++){
+          var value = this.leftTable[j][properties[i]];
+          if(distinct.indexOf(value) == -1){
+            distinct.push(value);
+          }
         }
+        for( var j = 0; j < distinct.length; j++){
+          var obj = {};
+          obj[this.relation.right.property[i]] = distinct[j];
+          or.push(obj);
+        }
+        and.push({'or':or});
       }
-      for( var i = 0; i < distinct.length; i++){
-        var obj = {};
-        obj[this.relation.right.property] = distinct[i];
-        or.push(obj);
-      }
-      
       var url = '/api/' + this.relation.right.model + '?filter={"where":';
-      url += encodeURI(JSON.stringify({'or':or})) + '}';
+      url += encodeURI(JSON.stringify({'and':and})) + '}';
       this.$.rightAjax.url = url;
       this.$.rightAjax.generateRequest();
     },
@@ -141,12 +145,25 @@
       }
       for( var i = 0; i < this.leftTable.length; i++){
         if(this.rightTable.length > 0){
-          var leftValue = this.leftTable[i][this.relation.left.property];
+          var isAdd = false; // is leftTable.row added
           for( var j = 0; j < this.rightTable.length; j++){
-            if(leftValue == this.rightTable[j][this.relation.right.property]){
+            var isJoin = true; // is all properties value map to right
+            for( var k = 0; k < this.relation.left.property.length; k++){
+              if(this.leftTable[i][this.relation.left.property[k]] 
+              != this.rightTable[j][this.relation.right.property[k]]){
+                isJoin = false;
+                break;
+              }
+            }
+            if(isJoin){
+              isAdd = true;
               this.fullTable.push(
                 this.mergeObject(this.leftTable[i], this.rightTable[j]));
             }
+          }
+          if(!isAdd){
+            this.fullTable.push(this.mergeObject(this.leftTable[i], 
+            this.cloneProperties(this.rightTable[0])));
           }
         }
         else{
@@ -155,10 +172,15 @@
       }
       this.$.iChart.dataArray = this.fullTable;
     },
+    cloneProperties: function(obj){
+      var tmp = {};
+      for(var attrname in obj) tmp[attrname]=null;
+      return tmp;
+    },
     mergeObject : function(obj1, obj2){
       var obj3 = {};
       for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
-      for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
+      for (var attrname in obj2) { obj3['r.'+attrname] = obj2[attrname]; }
       return obj3;
     }
   });
