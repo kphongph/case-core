@@ -2,8 +2,27 @@
 <link rel="import" href="./attr-filter.html">
 <link rel="import" href="./field-filter.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/font-roboto/roboto.html">
 
 <dom-module id="ds-manager">
+  <style>
+    .content{
+      font-family: 'Roboto Regular', sans-serif;
+    }
+    .title{
+      @apply(--layout-horizontal);
+      padding-top: 20px;
+    }
+    .model{
+      font-weight: bold;
+      font-size: 150%;
+    }
+    .record{
+      padding: 8px 0 0 10px;
+    }
+  </style>
+  
   <template>
     <iron-ajax id="getDescription" 
       auto
@@ -24,25 +43,28 @@
     
     <template is="dom-repeat" as="model"
       items="{{_toArray(model_description.models)}}">
-      <h2>Model: <span>{{model.name}}</span></h2>
-      <h3>#Records: <span>{{records}}</span></h3>
-      <h3>Properties</h3>
-      <template is="dom-repeat" items="{{_toArray(model.value.properties)}}">
-        <p>
-        <attr-filter 
-          model="{{model}}"
-          description="{{item}}"
-          on-filter="_handleAttrFilter"
-          resource="{{resourcePath}}">
-        </attr-filter>
-        </p>
-      </template>
+      <div class="content">
+        <div class="title">
+          <div class="model">Model:<span>{{model.name}}</span></div>
+          <div class="record">(<span>{{records}}</span> records)</div>
+        </div>
+        <div>
+          <field-filter on-filter="_handleFieldsFilter" fields="{{_getFields(model_description)}}"></field-filter>
+        </div>
+        <h3>Properties</h3>
+        <template is="dom-repeat" items="{{_toArray(model.value.properties)}}">
+          <p>
+          <attr-filter 
+            model="{{model}}"
+            description="{{item}}"
+            on-filter="_handleAttrFilter"
+            resource="{{resourcePath}}">
+          </attr-filter>
+          </p>
+        </template>
+      </div>
     </template>
     
-    <div>
-      <field-filter on-filter="_handleFieldsFilter" fields="{{_getFields(model_description)}}"></field-filter>
-    </div>
-
   </template>
 </dom-module>
 

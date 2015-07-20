@@ -1,18 +1,31 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/font-roboto/roboto.html">
 
 <dom-module id="field-filter">
   <style>
     .container{
-      display:block;
+      font-family: 'Roboto Regular', sans-serif;
+      @apply(--layout-horizontal);
+      padding-top: 20px;
+    }
+    .title{
+      font-weight: bold;
+      font-size: 100%;
+    }
+    .list{
+      margin-left: 15px;
     }
   </style>
   <template>
     <div class="container">
-      <h3>Fields</h3>
-      <template is="dom-repeat" items="{{fields}}">
-        <paper-checkbox on-change="_handleChecked" checked>{{item}}</paper-checkbox>
-      </template>
+      <div class="title">Fields</div>
+      <div class="list">
+        <template is="dom-repeat" items="{{fields}}">
+          <paper-checkbox on-change="_handleChecked" checked>{{item}}</paper-checkbox>
+        </template>
+      </div>
     </div>
   </template>
 </dom-module>

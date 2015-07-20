@@ -1,0 +1,96 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+
+<dom-module id="model-list">
+  <style>
+    .container{
+      width: 300px;
+    }
+    .container h2{
+      padding-left: 15px;
+    }
+    paper-checkbox{
+      padding: 15px 0 10px 15px;
+    }
+    .list{
+      height: 300px;
+      overflow-y:auto;
+    }
+  </style>
+  <template>
+    <iron-ajax id="modelsAjax" 
+      handle-as="json"
+      url="{{url}}"
+      auto
+      on-response="_handleModels">
+    </iron-ajax>
+    
+    <div class="container">
+      <h2>All models</h2>
+      <div class="list">
+        <template is="dom-repeat" items="{{models}}">
+          <paper-checkbox on-change="handleCheckbox" url="{{item.url}}">{{item.name}}</paper-checkbox><br>
+        </template>
+      </div>
+    </div>
+    
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'model-list',
+    properties: {
+      models: {
+        type: Array
+      },
+      urls: {
+        type: Array,
+        notify: true
+      }
+    },
+    ready: function() {
+    },
+    _handleModels: function(){
+      var models = this.$.modelsAjax.lastResponse;
+      if(models){
+        var apis = models.apis;
+        if(apis){
+          var tmp = [];
+          for(var i = 0; i < apis.length; i++){
+            var obj = {"name":apis[i].path.split('/')[1],
+            "url":"/explorer/resources" + apis[i].path}
+            tmp.push(obj);
+          }
+          this.models = tmp;
+        }
+      }
+    },
+    handleCheckbox: function(e){
+      var url = e.target.url;
+      if(!this.urls){
+        this.urls = [];
+      }
+      if(e.target.checked){
+        var isExist = false;
+        for(var i = 0; i < this.urls.length; i++){
+          if(this.urls[i] == url){
+            isExist = true;
+            break;
+          }
+        }
+        if(!isExist){
+          this.urls.push(url);
+        }
+      }
+      else{
+        var index = this.urls.indexOf(url);
+        if(index != -1){
+          this.urls.splice(index, 1)
+        }
+      }
+    }
+  });
+</script>

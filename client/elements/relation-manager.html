@@ -16,7 +16,7 @@
   <style>
     .container{
       width: 350px;
-      height: 300px;
+      height: 450px;
       @apply(--layout-fullbleed-vertical);
       border-style: solid;
       border-width: 1px;
@@ -86,7 +86,7 @@
       cursor: pointer;
     }
     .dialog-panel {
-      width: 80%;
+      min-width: 900px;
       min-height: 450px;
     }
   </style>
@@ -199,7 +199,7 @@
     _handleRemoveClicked: function(e){
       var list = Polymer.dom(this.$.panel).querySelectorAll('paper-material');
       var el = e.target;
-      for(var i = 0; i < 3; i++){
+      for(var i = 0; i < 5; i++){
         if(el.tagName.toLowerCase() == 'paper-icon-button'){
           break;
         }
