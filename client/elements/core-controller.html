@@ -21,12 +21,6 @@
       height: 600px;
       background-color:#FFFFFF;
     }
-    .ichart{
-      width:70%;
-    }
-    .relation{
-      width:30%;
-    }
     .add {
       width: 50px;
       position: absolute;
@@ -51,6 +45,13 @@
     }
     .view{
       @apply(--layout-horizontal);
+      overflow-x: auto;
+    }
+    .ichart{
+      width:60%;
+    }
+    .relation{
+      width:25%;
     }
   </style>
   <template>
@@ -89,13 +90,13 @@
             </div>
           </template>
         </div>
-        
+        <br><hr><br>
         <div class="view">
           <div class="ichart">
             <chart-core id="iChart"></chart-core>
           </div>
           <div class="relation">
-            <relation-manager on-select="_handleRelationChange" models="{{models}}"></relation-manager>
+            <relation-manager id="relationManger" on-select="_handleRelationChange" models="{{models}}"></relation-manager>
           </div>
         </div>
           
@@ -133,9 +134,11 @@
       relation : Object,
       leftTable : Array,
       rightTable : Array,
-      fullTable : Array
+      fullTable : Array,
+      currentModel: String
     },
     ready: function() {
+      this.isFieldsExist = false;
       this.urls = [
         "/explorer/resources/DropOutStudents",
         "/explorer/resources/educationchildren"
@@ -155,9 +158,9 @@
     },
     _handleTabSelect: function(e){
       var id = e.target.innerText;
+      this.currentModel = id;
       var models = Polymer.dom(this.$.contents).querySelectorAll('div');
       for(var i = 0; i < models.length; i++){
-        console.log(models[i].tagName)
        if(models[i].getAttribute('node') == id){
         models[i].hidden = false;
        }
@@ -167,9 +170,24 @@
       }
     },
     _handleDsDone: function(e){
+      this.getFields(e);
+      var rData = this.$.relationManger.data;
+      if(rData){
+        if(rData.length > 0){
+          this._doJoin(rData);
+        }
+        else{ // no relation
+          this._noRelation();
+        }
+      }
+      else{ // no relation
+        this._noRelation();
+      }
+    },
+    getFields: function(e){
       var id = e.target.id;
       for(var i = 0; i < this.models.length; i++){
-        if(this.models[i].name == id){
+        if(this.models[i].name == id && !this.models[i]['fields']){
           this.models[i]['fields'] = e.target.fields;
         }
       }
@@ -190,17 +208,41 @@
       }
       this.modelProperties.push(e.detail);
     },
-    _handleRelationChange : function(e){
-      var relations = e.detail;
-      //console.log(relations);
+    _handleRelationChange : function(){
+      var relations = this.$.relationManger.data;
+      if(relations.length > 0){
+        this._doJoin(relations);
+      }
+      else{ // no relation
+        this._noRelation();
+      }
+    },
+    _noRelation: function(){
+      if(!this.currentModel){
+        var index = this.$.tabs.selected;
+        this.currentModel = (Polymer.dom(this.$.tabs)
+        .querySelectorAll('paper-tab')[index]).innerText.trim();
+      }
+      if(this.currentModel){
+        this.relation = {
+          "relation":null,
+          "left":{"model":this.currentModel,"property":[]},
+          "right":{"model":null,"property":[]}
+        };
+        this._leftJoin();
+      }
+    },
+    _doJoin: function(relations){
       // test at index 0
       if(relations[0].relation == 'leftJoin'){
         this.relation = relations[0];
-        this._leftJoin(relations[0]);
+        this._leftJoin();
       }
     },
     _leftJoin : function(data){
-      var url = document.getElementById(data.left.model).exampleResultUrl;
+      this.leftTable = [];
+      this.rightTable = [];
+      var url = document.getElementById(this.relation.left.model).exampleResultUrl;
       this.$.leftAjax.url = url;
       this.$.leftAjax.generateRequest();
     },
@@ -224,24 +266,24 @@
         }
         and.push({'or':or});
       }
-      var url = '/api/' + this.relation.right.model + '?filter={"where":';
-      url += encodeURI(JSON.stringify({'and':and})) + '}';
-      this.$.rightAjax.url = url;
-      this.$.rightAjax.generateRequest();
+      if(this.relation.right.model){
+        var url = '/api/' + this.relation.right.model + '?filter={"where":';
+        url += encodeURI(JSON.stringify({'and':and})) + '}';
+        this.$.rightAjax.url = url;
+        this.$.rightAjax.generateRequest();
+      }
+      else{
+        this.mergeTable();
+      }
     },
     _handleRightAjax : function(){
       this.rightTable = this.$.rightAjax.lastResponse;
       this.mergeTable();
     },
     mergeTable : function(){
-      if(this.leftTable && this.rightTable){
-        this.fullTable = [];
-      }
-      else{
-        return;
-      }
+      this.fullTable = [];
       for( var i = 0; i < this.leftTable.length; i++){
-        if(this.rightTable.length > 0){
+        if(this.rightTable){
           var isAdd = false; // is leftTable.row added
           for( var j = 0; j < this.rightTable.length; j++){
             var isJoin = true; // is all properties value map to right

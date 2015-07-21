@@ -143,21 +143,13 @@
     properties: {
       relations : {
         type: Array
+      },
+      data: {
+        type: Array,
+        notify: true
       }
     },
     ready: function() {
-      /*
-      this.relations = [
-        {'relation':'leftJoin',
-          'left':{'model':'educationchildren','property':'educationclassid'},
-          'right':{'model':'Educationclasses','property':'educationclassid'}
-        },
-        {'relation':'rightJoin',
-          'left':{'model':'educationchildren','property':'educationclassid'},
-          'right':{'model':'Educationclasses','property':'educationclassid'}
-        }
-      ]
-      */
     },
     _getRelationShort: function(text){
       if(text){
@@ -245,8 +237,12 @@
             tmp.push(relation);
           }
         }
-        this.fire('select', tmp);
+        this.data = tmp.slice();
       }
+      else{
+        this.data = [];
+      }
+      this.fire('select');
     },
     contains: function(array, obj){
       for(var i = 0; i < array.length; i++){
