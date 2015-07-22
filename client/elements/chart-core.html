@@ -147,7 +147,11 @@
       }
     },
     _dataArrayChanged: function(){
-      this.generateChartData(this.dataArray);
+      if(this.dataArray){
+        if(this.dataArray.length > 0){
+          this.generateChartData(this.dataArray);
+        }
+      }
     },
     generateChartData: function(data){
       var cols = [];

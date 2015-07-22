@@ -98,11 +98,16 @@
       exampleResultUrl : {
         type: String,
         notify: true
+      },
+      json: {
+        type: Object,
+        notify: true
       }
     },
     observers : [
       '_computeExampleResult(selectedFields)',
-      '_computeExampleResult(where)'
+      '_computeExampleResult(where)',
+      '_computeJSON(exampleResultUrl)'
     ],
     ready: function() {
     },
@@ -178,6 +183,44 @@
       var limit = 50;
       this.exampleResultUrl = this.getResultUrl(limit);
     },
+    _computeJSON: function(){
+      var properties = [];
+      if(this.where){
+        for( var i = 0; i < this.where.and.length; i++){
+          var property = null;
+          var values = [];
+          var andKey = Object.keys(this.where.and[i])[0];
+          if(andKey == 'or'){
+            for( var j = 0; j < this.where.and[i].or.length; j++){
+              var obj = this.where.and[i].or[j];
+              var key = Object.keys(obj)[0];
+              if(!property){
+                property = key;
+              }
+              values.push(obj[key]);
+            }
+          }
+          else if(andKey.indexOf('date') != -1){
+            if(!property){
+              property = andKey;
+            }
+            var dateType = Object.keys(this.where.and[i][andKey])[0];
+            var inValue = this.where.and[i][andKey][dateType];
+            if(inValue.length){ // date between
+              values.push(inValue[0]);
+              values.push(inValue[1]);
+            }
+            else{ // date gt
+              values.push(inValue);
+            }
+          }
+          var tmp = {};
+          tmp[property] = values;
+          properties.push(tmp);
+        }
+      }
+      this.json = {'fields':this.selectedFields,'properties':properties};
+    },
     _getFields: function(model_description){
       var properties = this._toArray(model_description.models)[0].value.properties;
       if(properties){
@@ -185,8 +228,10 @@
         for(var key in properties) {
           tmp.push(key);
         }
+        this.selectedFields = tmp.slice();
         return tmp;
       } else {
+        this.selectedFields = [];
         return [];
       }
     },

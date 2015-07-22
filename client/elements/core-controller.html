@@ -69,7 +69,7 @@
       <paper-header-panel mode="seamed">
         <paper-toolbar class="medium-tall">
           <paper-button on-click="_handleModelButton">Model</paper-button>
-          <paper-button>Save</paper-button>
+          <paper-button on-click="_handleSaveButton">Save</paper-button>
           <paper-button>Load</paper-button>
           <div class="add">
             <paper-icon-button icon="more-vert"></paper-icon-button>
@@ -140,8 +140,8 @@
     ready: function() {
       this.isFieldsExist = false;
       this.urls = [
-        "/explorer/resources/DropOutStudents",
-        "/explorer/resources/educationchildren"
+        "/explorer/resources/educationchildren",
+        "/explorer/resources/DropOutStudents"
       ];
     },
     _handleModelButton: function(){
@@ -168,21 +168,11 @@
         models[i].hidden = true;
        }
       }
+      this._checkRelation();
     },
     _handleDsDone: function(e){
       this.getFields(e);
-      var rData = this.$.relationManger.data;
-      if(rData){
-        if(rData.length > 0){
-          this._doJoin(rData);
-        }
-        else{ // no relation
-          this._noRelation();
-        }
-      }
-      else{ // no relation
-        this._noRelation();
-      }
+      this._checkRelation();
     },
     getFields: function(e){
       var id = e.target.id;
@@ -209,9 +199,17 @@
       this.modelProperties.push(e.detail);
     },
     _handleRelationChange : function(){
-      var relations = this.$.relationManger.data;
-      if(relations.length > 0){
-        this._doJoin(relations);
+      this._checkRelation();
+    },
+    _checkRelation: function(){
+      var rData = this.$.relationManger.data;
+      if(rData){
+        if(rData.length > 0){
+          this._doJoin(rData);
+        }
+        else{ // no relation
+          this._noRelation();
+        }
       }
       else{ // no relation
         this._noRelation();
@@ -321,6 +319,21 @@
       for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
       for (var attrname in obj2) { obj3['r.'+attrname] = obj2[attrname]; }
       return obj3;
+    },
+    _handleSaveButton: function(){
+      var userData = [];
+      for( var i = 0; i < this.models.length; i++){
+        var model = this.models[i].name;
+        var json = document.getElementById(model).json;
+        var obj = {
+          'model': model,
+          'fields': json.fields,
+          'properties': json.properties
+        };
+        userData.push(obj);
+      }
+      console.log(JSON.stringify(userData));
+      // save to server...
     }
   });
 </script>

@@ -31,13 +31,13 @@
   <template>
     <div class="container">
       <div class="row">
-        <paper-checkbox checked={{isStart}}></paper-checkbox>
+        <paper-checkbox checked={{isStart}} on-click="_handleDateEnable"></paper-checkbox>
         <span class="dateLeft">{{toDateString(start)}}</span>
         <paper-slider on-track="_handleSliderTap" pin disabled={{!isStart}} min="0" max="{{diff}}" value="{{startValue}}"></paper-slider>
         <span class="dateRight">{{toDateString(end)}}</span>
       </div>
       <div class="row">
-        <paper-checkbox checked={{isEnd}}></paper-checkbox>
+        <paper-checkbox checked={{isEnd}} on-click="_handleDateEnable"></paper-checkbox>
         <span class="dateLeft">{{toDateString(start)}}</span>
         <paper-slider on-track="_handleSliderTap" pin disabled={{!isEnd}} min="0" max="{{diff}}" value="{{endValue}}"></paper-slider>
         <span class="dateRight">{{toDateString(end)}}</span>
@@ -113,6 +113,9 @@
         end:this.endDate
       }
       this.fire('date-change',this.selected);
+    },
+    _handleDateEnable: function(){
+      this.selectedDate(this.startValue, this.endValue);
     }
   });
 </script>

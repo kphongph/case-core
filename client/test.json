@@ -1,0 +1,12 @@
+[
+  {
+    "model":"educationchildren",
+    "fields":["cid","educationclassid","room","major","studentid","startdate","enddate","number","hostid"],
+    "properties":[]
+  },
+  {
+    "model":"DropOutStudents",
+    "fields":["cid","dropoutid","hostid","recdate"],
+    "properties":[]
+  }
+]
