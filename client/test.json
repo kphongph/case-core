@@ -1,8 +1,8 @@
 [
   {
     "model":"educationchildren",
-    "fields":["cid","educationclassid","room","major","studentid","startdate","enddate","number","hostid"],
-    "properties":[]
+    "fields":["cid","educationclassid","room","major","studentid","startdate","enddate","number"],
+    "properties":[{"educationclassid":["2","3"]}]
   },
   {
     "model":"DropOutStudents",

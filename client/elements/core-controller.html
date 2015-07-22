@@ -5,7 +5,7 @@
 <link rel="import" href="./ds-manager.html">
 <link rel="import" href="./relation-manager.html">
 <link rel="import" href="./chart-core.html">
-<link rel="import" href="./model-list.html">
+<link rel="import" href="./model-filter.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
@@ -104,15 +104,7 @@
     </div>
     
     <div>
-      <paper-dialog class="dialog-panel" id="dialogModels">
-        <div class="dialog-body">
-          <model-list id="modelList" url="/explorer/resources"></model-list>
-        </div>
-        <div class="buttons">
-          <paper-button dialog-dismiss>Cancel</paper-button>
-          <paper-button dialog-confirm autofocus on-click="_handleDialogModelsConfirm">OK</paper-button>
-        </div>
-      </paper-dialog>
+      <model-filter show="{{showModel}}" on-confirm="_handleDialogModelsConfirm" url="/explorer/resources"></model-filter>
     </div>
   </template>
 </dom-module>
@@ -135,7 +127,8 @@
       leftTable : Array,
       rightTable : Array,
       fullTable : Array,
-      currentModel: String
+      currentModel: String,
+      showModel: Boolean
     },
     ready: function() {
       this.isFieldsExist = false;
@@ -145,10 +138,11 @@
       ];
     },
     _handleModelButton: function(){
-      this.$.dialogModels.open();
+      this.showModel = true;
     },
-    _handleDialogModelsConfirm: function(){
-      this.urls = this.$.modelList.urls.slice(0);
+    _handleDialogModelsConfirm: function(e){
+      this.showModel = false;
+      this.urls = e.detail.slice(0);
     },
     _handleHidden: function(index){
       if(index == 0){
@@ -172,6 +166,7 @@
     },
     _handleDsDone: function(e){
       this.getFields(e);
+      this.currentModel = null;
       this._checkRelation();
     },
     getFields: function(e){
@@ -240,9 +235,11 @@
     _leftJoin : function(data){
       this.leftTable = [];
       this.rightTable = [];
-      var url = document.getElementById(this.relation.left.model).exampleResultUrl;
-      this.$.leftAjax.url = url;
-      this.$.leftAjax.generateRequest();
+      var ds = document.getElementById(this.relation.left.model);
+      if(ds){
+        this.$.leftAjax.url = ds.exampleResultUrl;
+        this.$.leftAjax.generateRequest();
+      }
     },
     _handleLeftAjax : function(){
       this.leftTable = this.$.leftAjax.lastResponse;
