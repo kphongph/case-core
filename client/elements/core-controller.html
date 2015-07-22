@@ -65,6 +65,8 @@
       on-response="_handleRightAjax">
     </iron-ajax>
     
+    <model-filter id="modelFilter" on-confirm="_handleModelsConfirm" url="/explorer/resources"></model-filter>
+    
     <div class="container">
       <paper-header-panel mode="seamed">
         <paper-toolbar class="medium-tall">
@@ -102,10 +104,6 @@
           
       </paper-header-panel>
     </div>
-    
-    <div>
-      <model-filter show="{{showModel}}" on-confirm="_handleDialogModelsConfirm" url="/explorer/resources"></model-filter>
-    </div>
   </template>
 </dom-module>
 
@@ -127,8 +125,7 @@
       leftTable : Array,
       rightTable : Array,
       fullTable : Array,
-      currentModel: String,
-      showModel: Boolean
+      currentModel: String
     },
     ready: function() {
       this.isFieldsExist = false;
@@ -138,10 +135,9 @@
       ];
     },
     _handleModelButton: function(){
-      this.showModel = true;
+      this.$.modelFilter.show();
     },
-    _handleDialogModelsConfirm: function(e){
-      this.showModel = false;
+    _handleModelsConfirm: function(e){
       this.urls = e.detail.slice(0);
     },
     _handleHidden: function(index){
