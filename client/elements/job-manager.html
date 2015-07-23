@@ -1,0 +1,90 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="job-manager">
+  <style>
+    
+  </style>
+  <template>
+    <iron-ajax id="leftAjax" 
+      handle-as="json"
+      on-response="_handleLeftAjax">
+    </iron-ajax>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'job-manager',
+    properties: {
+      data : {
+        type: Object,
+        observer: '_dataChange'
+      },
+      jobs: {
+        type: Array
+        /* array of job
+        job = {
+          target: _elementTargetToDoJob
+          action: _addRemoveEtc
+          id: _optionTargetElementID
+          value: _targetValue
+        }
+        */
+      }
+    },
+    ready: function() {
+    },
+    _dataChange: function(){
+      this._generateJobs(this.data);
+    },
+    _newJob: function(target, id, value){
+      var job = {};
+      job['target'] = target;
+      job['id'] = id;
+      job['value'] = value;
+      return job;
+    },
+    _generateJobs: function(data){
+      this.jobs = [];
+      
+      // load model
+      for( var i = 0; i < data.models.length; i++){
+        this.jobs.push(
+          this._newJob('model-filter', null, data.models[i].model)
+        );
+      }
+      // fields filter
+      for( var i = 0; i < data.models.length; i++){
+        for( var j = 0; j < data.models[i].fieldsExclude.length; j++){
+          this.jobs.push(
+            this._newJob(
+              'ds-manager', 
+              data.models[i].model,
+              {
+                'field': data.models[i].fieldsExclude[j]
+              }
+            )
+          );
+        }
+      }
+      this._doJob();
+    },
+    _doJob: function(){
+      if(this.jobs.length > 0){
+        var job = this.jobs[0];
+        this.jobs.splice(0, 1);
+        if(!job.id){
+          job.id = document.getElementsByTagName(job.target)[0].getAttribute('id');
+        }
+        var target = document.getElementById(job.id.trim());
+        if(target){
+          target.doJob(job);
+        }
+      }
+    },
+    finishJob: function(){
+      this._doJob();
+    }
+  });
+</script>

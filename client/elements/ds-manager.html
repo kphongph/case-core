@@ -49,7 +49,7 @@
           <div class="record">(<span>{{records}}</span> records)</div>
         </div>
         <div>
-          <field-filter on-filter="_handleFieldsFilter" fields="{{_getFields(model_description)}}"></field-filter>
+          <field-filter on-finish="_handleFinishJob" on-filter="_handleFieldsFilter" fields="{{_getFields(model_description)}}"></field-filter>
         </div>
         <h3>Properties</h3>
         <template is="dom-repeat" items="{{_toArray(model.value.properties)}}">
@@ -237,6 +237,21 @@
     },
     _handleFieldsFilter: function(e){
       this.selectedFields = e.detail.slice(0);
+    },
+    doJob: function(job){
+      // do work
+      var key = Object.keys(job.value)[0];
+      if(key == 'field'){
+        var target = document.getElementById(job.id).getElementsByTagName('field-filter')[0];
+        target.doJob(job);
+      }
+      else if(key == 'properties'){
+        
+      }
+    },
+    _handleFinishJob: function(){
+      //this.selectedFields = Polymer.dom(this.$.model).node.querySelector('field-filter').fields;
+      this.fire('finish');
     }
   });
 </script>

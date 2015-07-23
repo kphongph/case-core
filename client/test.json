@@ -1,12 +1,16 @@
-[
-  {
-    "model":"educationchildren",
-    "fields":["cid","educationclassid","room","major","studentid","startdate","enddate","number"],
-    "properties":[{"educationclassid":["2","3"]}]
-  },
-  {
-    "model":"DropOutStudents",
-    "fields":["cid","dropoutid","hostid","recdate"],
-    "properties":[]
-  }
-]
+{
+  "name":"ทดสอบ",
+  "models":[
+    {
+      "model":"EducationChildren",
+      "fieldsExclude":["number","hostid","major"],
+      "properties":[]
+    },
+    {
+      "model":"DropOutStudents",
+      "fieldsExclude":["cid"],
+      "properties":[]
+    }
+  ],
+  "relations":[]
+}

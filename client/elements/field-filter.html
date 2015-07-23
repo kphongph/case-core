@@ -21,7 +21,7 @@
   <template>
     <div class="container">
       <div class="title">Fields</div>
-      <div class="list">
+      <div class="list" id="checkboxList">
         <template is="dom-repeat" items="{{fields}}">
           <paper-checkbox on-change="_handleChecked" checked>{{item}}</paper-checkbox>
         </template>
@@ -53,6 +53,17 @@
         }
       }
       this.fire('filter', this.fields);
+    },
+    doJob: function(job){
+      var cbList = Polymer.dom(this.$.checkboxList).querySelectorAll('paper-checkbox');
+      for(var i = 0; i < cbList.length; i++){
+        if(cbList[i].innerText.trim().toLowerCase() == job.value.field.toLowerCase()){
+          cbList[i].checked = false;
+          cbList[i].fire('change');
+          break;
+        }
+      }
+      this.fire('finish');
     }
   });
 </script>

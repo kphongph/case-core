@@ -6,6 +6,7 @@
 <link rel="import" href="./relation-manager.html">
 <link rel="import" href="./chart-core.html">
 <link rel="import" href="./model-filter.html">
+<link rel="import" href="./job-manager.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
@@ -60,19 +61,27 @@
       on-response="_handleLeftAjax">
     </iron-ajax>
     
-     <iron-ajax id="rightAjax" 
+    <iron-ajax id="rightAjax" 
       handle-as="json"
       on-response="_handleRightAjax">
     </iron-ajax>
     
-    <model-filter id="modelFilter" on-confirm="_handleModelsConfirm" url="/explorer/resources"></model-filter>
+    <iron-ajax id="loadModelAjax" 
+      handle-as="json"
+      on-response="_handleLoadModelAjax">
+    </iron-ajax>
+    
+    <model-filter id="modelFilter" 
+      on-confirm="_handleModelsConfirm"
+      url="/explorer/resources">
+    </model-filter>
     
     <div class="container">
       <paper-header-panel mode="seamed">
         <paper-toolbar class="medium-tall">
           <paper-button on-click="_handleModelButton">Model</paper-button>
           <paper-button on-click="_handleSaveButton">Save</paper-button>
-          <paper-button>Load</paper-button>
+          <paper-button on-click="_handleLoadButton">Load</paper-button>
           <div class="add">
             <paper-icon-button icon="more-vert"></paper-icon-button>
           </div>
@@ -88,7 +97,12 @@
         <div class="content" id="contents">
           <template is="dom-repeat" items="{{urls}}" style="height:500px">
             <div node$="{{_getModelName(item)}}" hidden="{{_handleHidden(index)}}">
-              <ds-manager on-done="_handleDsDone" id="{{_getModelName(item)}}" url="{{item}}"></ds-manager>
+              <ds-manager 
+                on-done="_handleDsDone"
+                on-finish="_handleFinishJob"
+                id="{{_getModelName(item)}}" 
+                url="{{item}}">
+              </ds-manager>
             </div>
           </template>
         </div>
@@ -98,12 +112,14 @@
             <chart-core id="iChart"></chart-core>
           </div>
           <div class="relation">
-            <relation-manager id="relationManger" on-select="_handleRelationChange" models="{{models}}"></relation-manager>
+            <relation-manager id="relationManager" on-select="_handleRelationChange" models="{{models}}"></relation-manager>
           </div>
         </div>
           
       </paper-header-panel>
     </div>
+    
+    <job-manager id="jobM"></job-manager>
   </template>
 </dom-module>
 
@@ -129,16 +145,9 @@
     },
     ready: function() {
       this.isFieldsExist = false;
-      this.urls = [
-        "/explorer/resources/educationchildren",
-        "/explorer/resources/DropOutStudents"
-      ];
-    },
-    _handleModelButton: function(){
-      this.$.modelFilter.show();
     },
     _handleModelsConfirm: function(e){
-      this.urls = e.detail.slice(0);
+      this.urls = e.detail.slice();
     },
     _handleHidden: function(index){
       if(index == 0){
@@ -164,6 +173,7 @@
       this.getFields(e);
       this.currentModel = null;
       this._checkRelation();
+      this._handleFinishJob();
     },
     getFields: function(e){
       var id = e.target.id;
@@ -193,7 +203,7 @@
       this._checkRelation();
     },
     _checkRelation: function(){
-      var rData = this.$.relationManger.data;
+      var rData = this.$.relationManager.data;
       if(rData){
         if(rData.length > 0){
           this._doJoin(rData);
@@ -313,20 +323,52 @@
       for (var attrname in obj2) { obj3['r.'+attrname] = obj2[attrname]; }
       return obj3;
     },
+    _handleModelButton: function(){
+      this.$.modelFilter.show();
+    },
     _handleSaveButton: function(){
-      var userData = [];
+      var userData = {};
+      userData['name'] = 'ทดสอบ';
+      var models = [];
       for( var i = 0; i < this.models.length; i++){
         var model = this.models[i].name;
         var json = document.getElementById(model).json;
+        console.log(json)
+        var fieldsExclude = [];
+        var fields = document.getElementById(model).fields;
+        var selectedFields = json.fields.slice();
+        console.log(document.getElementById(model).json)
+        fieldsExclude = fields.filter(function(item) {
+                        return selectedFields.indexOf(item) === -1;
+                      });
         var obj = {
           'model': model,
-          'fields': json.fields,
+          'fieldsExclude': fieldsExclude,
           'properties': json.properties
         };
-        userData.push(obj);
+        models.push(obj);
+      }
+      userData['models'] = [];
+      if(models){
+        userData['models'] = models;
+      }
+      userData['relations'] = [];
+      if(this.$.relationManager.data){
+        userData['relations'] = this.$.relationManager.data;
       }
       console.log(JSON.stringify(userData));
       // save to server...
+    },
+    _handleLoadButton: function(){
+      this.urls = [];
+      this.$.loadModelAjax.url = '../test.json';
+      this.$.loadModelAjax.generateRequest();
+    },
+    _handleLoadModelAjax: function(){
+      this.$.jobM.data = this.$.loadModelAjax.lastResponse;
+    },
+    _handleFinishJob: function(){
+      this.$.jobM.finishJob();
     }
   });
 </script>

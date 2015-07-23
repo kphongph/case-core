@@ -31,7 +31,7 @@
       <paper-dialog class="dialog-panel" id="dialogModels">
         <div class="dialog-body">
           <h2>All models</h2>
-          <div class="list">
+          <div class="list" id="checkboxList">
             <template is="dom-repeat" items="{{models}}">
               <paper-checkbox on-change="handleCheckbox" url="{{item.url}}">{{item.name}}</paper-checkbox><br>
             </template>
@@ -57,7 +57,8 @@
       urls: {
         type: Array,
         notify: true
-      }
+      },
+      isJob: Boolean
     },
     ready: function() {
     },
@@ -105,6 +106,18 @@
           this.urls.splice(index, 1)
         }
       }
+    },
+    doJob: function(job){
+      // do work
+      var cbList = Polymer.dom(this.$.checkboxList).querySelectorAll('paper-checkbox');
+      for(var i = 0; i < cbList.length; i++){
+        if(cbList[i].innerText.trim().toLowerCase() == job.value.toLowerCase()){
+          cbList[i].checked = true;
+          cbList[i].fire('change');
+          break;
+        }
+      }
+      this.fire('confirm', this.urls);
     }
   });
 </script>
