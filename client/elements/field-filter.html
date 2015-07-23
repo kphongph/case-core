@@ -41,7 +41,7 @@
     ready: function() {
     },
     _handleChecked: function(e){
-      var selected = e.target.innerText.substr(1);
+      var selected = e.target.innerText.substr(1).trim();
       var index = this.fields.indexOf(selected);
       if(e.target.checked){
         if(index == -1){
@@ -63,7 +63,6 @@
           break;
         }
       }
-      this.fire('finish');
     }
   });
 </script>
