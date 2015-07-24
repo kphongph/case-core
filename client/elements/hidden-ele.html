@@ -1,0 +1,17 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="hidden-ele">
+  <template>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'hidden-ele',
+    properties: {
+    },
+    ready: function() {
+      this.fire('hidden-done');
+    },
+  });
+</script>

@@ -58,7 +58,8 @@
             model="{{model}}"
             description="{{item}}"
             on-filter="_handleAttrFilter"
-            resource="{{resourcePath}}">
+            resource="{{resourcePath}}"
+            on-attr-done="_handleAttrDone">
           </attr-filter>
           </p>
         </template>
@@ -197,7 +198,14 @@
               if(!property){
                 property = key;
               }
-              values.push(obj[key]);
+              if(obj[key]){
+                if(obj[key].like){
+                  values.push(obj[key].like.split('%')[1]);
+                }
+                else{
+                  values.push(obj[key]);
+                }
+              }
             }
           }
           else if(andKey.indexOf('date') != -1){
@@ -246,9 +254,20 @@
         var target = document.getElementById(job.id).getElementsByTagName('field-filter')[0];
         target.doJob(job);
       }
-      else if(key == 'properties'){
-        
+      else if(key == 'property'){
+        var data = job.value.property;
+        var targets = document.getElementById(job.id).getElementsByTagName('attr-filter');
+        for( var i = 0; i < targets.length; i++){
+          var text = (targets[i].innerText.split('(')[0]).trim();
+          if(text == data.key){
+            targets[i].doJob(job);
+            break;
+          }
+        }
       }
+    },
+    _handleAttrDone: function(){
+      this.fire('finish');
     }
   });
 </script>

@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="date-filter.html">
+<link rel="import" href="hidden-ele.html">
 
 <dom-module id="attr-filter">
   <template>
@@ -17,47 +18,47 @@
       on-response="_handleNullRequest">
     </iron-ajax>
 
-    <paper-checkbox id="checkbox" on-change="_handleSelect">
+    <paper-checkbox id="checkboxRoot" on-change="_handleSelect">
       <span>{{_propertyToString(description)}}</span>
     </paper-checkbox>
 
     <div id="valuePanel">
       <template is="dom-if" if="{{attr.nullExist}}">
         <h4>Type: isNULL</h4>
-        <p>
-         &nbsp;&nbsp;&nbsp;
-         <paper-checkbox on-change="_handleNullSelect">Null?</paper-checkbox>
-        </p>
+         <paper-checkbox style="padding-left:20px" id="isNull" 
+         on-change="_handleNullSelect">Null?</paper-checkbox>
       </template>
-         
-      <template is="dom-if" if="{{attr.isCategory}}">
-        <h4>Type: Category</h4>
-        <template is="dom-repeat" items="{{content}}">
-         <p>
-         &nbsp;&nbsp;&nbsp;
-         <paper-checkbox on-change="_handleCategorySelect" value$="{{item.name}}">
-          <span>{{item.name}}</span>&nbsp;(<span>{{item.value.count}}</span>)
-         </paper-checkbox>
-         </p>
+        
+      <div style="padding-left:20px" id="categoryPanel">
+        <template is="dom-if" if="{{attr.isCategory}}">
+          <h4>Type: Category</h4>
+          <template is="dom-repeat" items="{{content}}">
+             <paper-checkbox on-change="_handleCategorySelect" value$="{{item.name}}">
+              <span>{{item.name}}</span>&nbsp;(<span>{{item.value.count}}</span>)
+             </paper-checkbox>
+             <hidden-ele on-hidden-done="_hiddenReady"></hidden-ele>
+          </template>
         </template>
-      </template>
+      </div>
       
-      <template is="dom-if" if="{{attr.isDate}}">
-        <div style="padding-left:10px">
-          <date-filter 
-            end="{{attr.end_date}}"
-            on-date-change="_handleDateSelect"
-            start="{{attr.start_date}}">
-          </date-filter>
-        </div>
-      </template>
+      <div id="datePanel" style="padding-left:20px">
+        <template is="dom-if" if="{{attr.isDate}}">
+          <div style="padding-left:10px">
+            <date-filter
+              end="{{attr.end_date}}"
+              on-date-change="_handleDateSelect"
+              start="{{attr.start_date}}">
+            </date-filter>
+          </div>
+        </template>
+      </div>
       
       <template is="dom-if" if="{{attr.isText}}">
         <div style="padding-left:15px">
           <paper-input label="Text to find" on-input="_handleTextChanged"></paper-input>
         </div>
       </template>
-      
+        
       <template is="dom-if" if="{{attr.isNumber}}">
         <div style="padding-left:15px">
           <paper-input label="Number to find" 
@@ -66,6 +67,7 @@
           error-message="Number only!"></paper-input>
         </div>
       </template>
+      
     </div>
 
   </template>
@@ -92,12 +94,13 @@
       content: {
         type: Object,
         notify: true
-      }
+      },
+      jobValue: Object
     },
     ready: function() {
     },
     _handleSelect : function(e) {
-      if(!this.$.checkbox.checked) {
+      if(!this.$.checkboxRoot.checked) {
         var allCheckbox = this.$.valuePanel.querySelectorAll('paper-checkbox');
         for(var i=0; i<allCheckbox.length; i++){
           if(allCheckbox[i].checked){
@@ -116,8 +119,7 @@
         this.$.valuePanel.style.display = 'block';
       }
 
-      if(this.$.checkbox.checked && !this.content) {
-
+      if(this.$.checkboxRoot.checked && !this.content) {
         this.content = [];
         this.set('attr',{});
 
@@ -178,6 +180,7 @@
           this.set('attr.isNumber',true);
         }
       }
+      this.fire('attr-done');
     },
     _handleNullRequest: function() {
       if(this.$.nullWorker.lastResponse.count > 0) {
@@ -212,10 +215,9 @@
         'model':this.model
       };
       this.fire('filter',obj);
-      
     },
     _handleCategorySelect: function(e) {
-      var attr_values = e.target.getAttribute('value');
+      var attr_values = e.target.value;
       var tmp = {};
       tmp[this.description.name]=attr_values;
       if(e.srcElement.checked) {
@@ -325,6 +327,74 @@
     },
     _propertyToString: function(obj) {
       return obj.name+' ('+obj.value.type+')';
+    },
+    doJob: function(job){
+      var property = job.value.property;
+      if(!property.skip){
+        if(!property.value){
+          this.$.isNull.selected = true;
+          this.$.isNull.fire('change');
+        }
+        else{
+          if(this.attr.isCategory){
+            this.jobValue = JSON.parse(JSON.stringify(property));
+            var all = this.$.categoryPanel.getElementsByTagName('paper-checkbox');
+            if(all.length > 0){
+              for( var i = 0; i < all.length; i++){
+                if(all[i].value == this.jobValue.value){
+                  all[i].checked = true;
+                  all[i].fire('change');
+                  break;
+                }
+              }
+            }
+          }
+          else if(this.attr.isText || this.attr.isNumber){
+            console.log('text')
+          }
+          else if(this.attr.isDate){
+            
+          }
+        }
+      }
+      else{
+        this.$.checkboxRoot.checked = true;
+        this.$.checkboxRoot.fire('change');
+      }
+    },
+    _hiddenReady: function(e){
+      if(this.jobValue){
+        var cb = Polymer.dom(e.target).parentNode.querySelector('paper-checkbox');
+        if(cb.value == this.jobValue.value){
+          cb.checked = true;
+          cb.fire('change');
+        }
+      }
+      /*
+      else{
+        var all = this.$.categoryPanel.getElementsByTagName('paper-checkbox');
+        for( var i = 0; i < all.length; i++){
+          if(all[i].value == value){
+            all[i].fire('change');
+            break;
+          }
+        }
+      }
+      
+      if(this.checkBoxes){
+        console.log(this.checkBoxes.length)
+        if(this.checkBoxes.length > 0){
+          console.log(this.checkBoxes.length)
+        var eles = this.checkBoxes;
+          for( var i = 0; i < eles.length; i++){
+            console.log(eles[i].tagName)
+              if(eles[i].tagName == 'PAPER-CHECKBOX'){
+                console.log(eles[i])
+              }
+          }
+        }
+      }
+      */
     }
   });
 </script>

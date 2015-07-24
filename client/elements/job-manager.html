@@ -68,6 +68,35 @@
           );
         }
       }
+      // properties
+      for( var i = 0; i < data.models.length; i++){
+        var properties = data.models[i].properties;
+        for( var j = 0; j < properties.length; j++){
+          var key = Object.keys(properties[j])[0];
+          var values = properties[j][key];
+          this.jobs.push(
+            this._newJob(
+              'ds-manager', 
+              data.models[i].model,
+              {
+                'property': {'key':key, 'value':null, 'skip':true}
+              }
+            )
+          );
+          for( var k = 0; k < values.length; k++){
+            this.jobs.push(
+              this._newJob(
+                'ds-manager', 
+                data.models[i].model,
+                {
+                  'property': {'key':key, 'value':values[k], 'skip':false}
+                }
+              )
+            );
+          }
+        }
+      }
+      //console.log(this.jobs)
       this._doJob();
     },
     _doJob: function(){

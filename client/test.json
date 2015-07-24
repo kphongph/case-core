@@ -4,7 +4,10 @@
     {
       "model":"EducationChildren",
       "fieldsExclude":["number","hostid","major"],
-      "properties":[]
+      "properties":[
+        {"cid":["001"]},
+        {"room":["1","2"]}
+      ]
     },
     {
       "model":"DropOutStudents",
