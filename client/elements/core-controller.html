@@ -100,7 +100,8 @@
               <ds-manager 
                 on-done="_handleDsDone"
                 on-finish="_handleFinishJob"
-                id="{{_getModelName(item)}}" 
+                id="{{_getModelName(item)}}"
+                records="{{records}}"
                 url="{{item}}">
               </ds-manager>
             </div>
@@ -109,7 +110,7 @@
         <br><hr><br>
         <div class="view">
           <div class="ichart">
-            <chart-core id="iChart"></chart-core>
+            <chart-core id="iChart" count="{{records}}"></chart-core>
           </div>
           <div class="relation">
             <relation-manager id="relationManager" on-select="_handleRelationChange" models="{{models}}"></relation-manager>
@@ -136,6 +137,9 @@
       },
       showRPanel: {
         type : Boolean
+      },
+      records : {
+        type: String
       },
       relation : Object,
       leftTable : Array,

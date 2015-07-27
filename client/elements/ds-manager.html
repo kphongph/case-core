@@ -46,7 +46,6 @@
       <div class="content">
         <div class="title">
           <div class="model">Model:<span>{{model.name}}</span></div>
-          <div class="record">(<span>{{records}}</span> records)</div>
         </div>
         <div>
           <field-filter on-filter="_handleFieldsFilter" fields="{{_getFields(model_description)}}"></field-filter>
@@ -87,6 +86,7 @@
       },
       records : {
         type: String,
+        notify: true
       },
       selectedFields : {
         type: Array
