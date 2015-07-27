@@ -33,13 +33,15 @@
       <div class="row">
         <paper-checkbox checked={{isStart}} on-click="_handleDateEnable"></paper-checkbox>
         <span class="dateLeft">{{toDateString(start)}}</span>
-        <paper-slider on-track="_handleSliderTap" pin disabled={{!isStart}} min="0" max="{{diff}}" value="{{startValue}}"></paper-slider>
+        <paper-slider id="sliderStart" on-track="_handleSliderTap" pin disabled={{!isStart}} 
+          min="0" max="{{diff}}" value="{{startValue}}"></paper-slider>
         <span class="dateRight">{{toDateString(end)}}</span>
       </div>
       <div class="row">
         <paper-checkbox checked={{isEnd}} on-click="_handleDateEnable"></paper-checkbox>
         <span class="dateLeft">{{toDateString(start)}}</span>
-        <paper-slider on-track="_handleSliderTap" pin disabled={{!isEnd}} min="0" max="{{diff}}" value="{{endValue}}"></paper-slider>
+        <paper-slider id="sliderEnd" on-track="_handleSliderTap" pin disabled={{!isEnd}} 
+          min="0" max="{{diff}}" value="{{endValue}}"></paper-slider>
         <span class="dateRight">{{toDateString(end)}}</span>
       </div>
     </div>
@@ -116,6 +118,26 @@
     },
     _handleDateEnable: function(){
       this.selectedDate(this.startValue, this.endValue);
+    },
+    doJob: function(job){
+      if(job){
+        if(!this.isStart){
+          this.isStart = true;
+          this._handleDateEnable();
+          var value = (new Date(job.value)).getTime() - this.start.getTime();
+          this.startValue = value/(60*1000*60*24);
+          this.selectedDate(this.startValue, this.endValue);
+          this.$.sliderStart.fire('track');
+        }
+        else{
+          this.isEnd = true;
+          this._handleDateEnable();
+          var value = (new Date(job.value)).getTime() - this.start.getTime();
+          this.endValue = value/(60*1000*60*24);
+          this.selectedDate(this.startValue, this.endValue);
+          this.$.sliderEnd.fire('track');
+        }
+      }
     }
   });
 </script>

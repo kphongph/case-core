@@ -49,24 +49,25 @@
               on-date-change="_handleDateSelect"
               start="{{attr.start_date}}">
             </date-filter>
+            <hidden-ele on-hidden-done="_hiddenReady"></hidden-ele>
           </div>
         </template>
       </div>
       
-      <template is="dom-if" if="{{attr.isText}}">
-        <div style="padding-left:15px">
+      <div id="inputPanel" style="padding-left:20px">
+        <template is="dom-if" if="{{attr.isText}}">
           <paper-input label="Text to find" on-input="_handleTextChanged"></paper-input>
-        </div>
-      </template>
-        
-      <template is="dom-if" if="{{attr.isNumber}}">
-        <div style="padding-left:15px">
-          <paper-input label="Number to find" 
-          on-input="_handleNumberChanged" 
-          auto-validate pattern="[0-9]*" 
-          error-message="Number only!"></paper-input>
-        </div>
-      </template>
+          <hidden-ele on-hidden-done="_hiddenReady"></hidden-ele>
+        </template>
+          
+        <template is="dom-if" if="{{attr.isNumber}}">
+          <paper-input label="Number to find"
+            on-input="_handleNumberChanged" 
+            auto-validate pattern="[0-9]*" 
+            error-message="Number only!"></paper-input>
+            <hidden-ele on-hidden-done="_hiddenReady"></hidden-ele>
+        </template>
+      </div>
       
     </div>
 
@@ -336,8 +337,8 @@
           this.$.isNull.fire('change');
         }
         else{
+          this.jobValue = JSON.parse(JSON.stringify(property));
           if(this.attr.isCategory){
-            this.jobValue = JSON.parse(JSON.stringify(property));
             var all = this.$.categoryPanel.getElementsByTagName('paper-checkbox');
             if(all.length > 0){
               for( var i = 0; i < all.length; i++){
@@ -350,10 +351,17 @@
             }
           }
           else if(this.attr.isText || this.attr.isNumber){
-            console.log('text')
+            var input = this.$.inputPanel.getElementsByTagName('paper-input');
+            if(input.length == 1){
+              input[0].value = property.value;
+              input[0].fire('input');
+            }
           }
           else if(this.attr.isDate){
-            
+            var input = this.$.datePanel.getElementsByTagName('date-filter');
+            if(input.length == 1){
+              input[0].doJob(property);
+            }
           }
         }
       }
@@ -364,37 +372,23 @@
     },
     _hiddenReady: function(e){
       if(this.jobValue){
-        var cb = Polymer.dom(e.target).parentNode.querySelector('paper-checkbox');
-        if(cb.value == this.jobValue.value){
-          cb.checked = true;
-          cb.fire('change');
-        }
-      }
-      /*
-      else{
-        var all = this.$.categoryPanel.getElementsByTagName('paper-checkbox');
-        for( var i = 0; i < all.length; i++){
-          if(all[i].value == value){
-            all[i].fire('change');
-            break;
+        if(this.attr.isCategory){
+          var cb = Polymer.dom(e.target).parentNode.querySelector('paper-checkbox');
+          if(cb.value == this.jobValue.value){
+            cb.checked = true;
+            cb.fire('change');
           }
         }
-      }
-      
-      if(this.checkBoxes){
-        console.log(this.checkBoxes.length)
-        if(this.checkBoxes.length > 0){
-          console.log(this.checkBoxes.length)
-        var eles = this.checkBoxes;
-          for( var i = 0; i < eles.length; i++){
-            console.log(eles[i].tagName)
-              if(eles[i].tagName == 'PAPER-CHECKBOX'){
-                console.log(eles[i])
-              }
-          }
+        else if(this.attr.isText || this.attr.isNumber){
+          var input = Polymer.dom(e.target).parentNode.querySelector('paper-input');
+          input.value = this.jobValue.value;
+          input.fire('input');
+        }
+        else if(this.attr.isDate){
+          var input = Polymer.dom(e.target).parentNode.querySelector('date-filter');
+          input.doJob(this.jobValue);
         }
       }
-      */
     }
   });
 </script>

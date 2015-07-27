@@ -100,6 +100,9 @@
       this._doJob();
     },
     _doJob: function(){
+      if(!this.jobs){
+        return;
+      }
       if(this.jobs.length > 0){
         var job = this.jobs[0];
         this.jobs.splice(0, 1);

@@ -6,7 +6,8 @@
       "fieldsExclude":["number","hostid","major"],
       "properties":[
         {"cid":["001"]},
-        {"room":["1","2"]}
+        {"room":["1","2"]},
+        {"startdate":["2012-11-17T00:00:00.000Z","2013-09-15T00:00:00.000Z"]}
       ]
     },
     {
@@ -15,5 +16,11 @@
       "properties":[]
     }
   ],
-  "relations":[]
+  "relations":[
+    {
+      "left":{"model":"EducationChildren","property":["cid"]},
+      "right":{"model":"DropOutStudents","property":["cid"]},
+      "relation":"leftJoin"
+    }
+  ]
 }
