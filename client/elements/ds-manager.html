@@ -160,14 +160,18 @@
       this.records = this.$.countAjax.lastResponse.count;
       this.fire('done');
     },
-    getResultUrl: function(limit){
-      var fields = this.selectedFields;
+    getResultUrl: function(limit, fields){
       if(!fields){
         fields = [];
       }
       var where = this.where;
       if(!where){
         where = {};
+      }
+      if(where.and){
+        if(where.and.length == 0){
+          where = {};
+        }
       }
       if(limit){
         return this.resourcePath 
@@ -182,7 +186,7 @@
     },
     _computeExampleResult: function(where,selectedFields){
       var limit = 50;
-      this.exampleResultUrl = this.getResultUrl(limit);
+      this.exampleResultUrl = this.getResultUrl(limit, this.fields);
     },
     _computeJSON: function(){
       var properties = [];

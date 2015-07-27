@@ -178,8 +178,8 @@
     getFields: function(e){
       var id = e.target.id;
       for(var i = 0; i < this.models.length; i++){
-        if(this.models[i].name == id && !this.models[i]['fields']){
-          this.models[i]['fields'] = e.target.fields;
+        if(this.models[i].name == id){
+          this.models[i].fields = e.target.fields;
         }
       }
     },
@@ -189,7 +189,20 @@
     _getModels: function(urls){
       var tmp = [];
       for(var i = 0; i < urls.length; i++){
-        tmp.push({'name':this._getModelName(urls[i])});
+        var modelName = this._getModelName(urls[i]);
+        var isExist = false;
+        if(this.models){
+          for(var j = 0; j < this.models.length; j++){
+            if(this.models[j].name == modelName){
+              tmp.push(this.models[j]);
+              isExist = true;
+              break;
+            }
+          }
+        }
+        if(!isExist){
+          tmp.push({'name':this._getModelName(urls[i]),'fields':[]});
+        }
       }
       return tmp;
     },

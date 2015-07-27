@@ -265,6 +265,10 @@
         }
       }
       return false;
+    },
+    doJob: function(job){
+      this.$.rFilter.relation = JSON.parse(JSON.stringify(job.value));
+      this._handleDialogConfirm();
     }
   });
 </script>

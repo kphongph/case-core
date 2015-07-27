@@ -96,6 +96,18 @@
           }
         }
       }
+      
+      // relations
+      for( var i = 0; i < data.relations.length; i++){
+        this.jobs.push(
+          this._newJob(
+            'core-controller', 
+            'relationManager',
+            data.relations[i]
+          )
+        );
+      }
+      
       //console.log(this.jobs)
       this._doJob();
     },
