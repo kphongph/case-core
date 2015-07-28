@@ -118,7 +118,10 @@
         type: String,
         observer:'_actionChanged'
       },
-      count: String,
+      count: {
+        type: String,
+        observer:'_countChanged'
+      },
       cols: Array,
       rows: Array,
       oldData: Array,
@@ -176,19 +179,21 @@
       }
     },
     _dataArrayChanged: function(){
-      if(!this.$.switchChart.checked){
+      if(!this.$.switchChart.checked){ //Table
         if(this.dataArray){
           if(this.dataArray.length > 0){
-            this.generateChartData(this.dataArray);
+            this.data = this._generateChartData(this.dataArray);
+            this.$.chart.style.width = this.$.panel.parentNode.clientWidth + 'px';
           }
         }
       }
-      else{
+      else{ //Count
+        this.oldData = this._generateChartData(this.dataArray);
         this.data = this._countTable('current query', this.count);
         this.$.chart.style.width = this.$.panel.parentNode.clientWidth + 'px';
       }
     },
-    generateChartData: function(data){
+    _generateChartData: function(data){
       var cols = [];
       var dataChart = [];
       var keys = Object.keys(data[0]);
@@ -204,9 +209,9 @@
           }
           dataChart.push(tmp);
         }
-        this.data = dataChart;
-        this.$.chart.style.width = this.$.panel.parentNode.clientWidth + 'px';
+        return dataChart;
       }
+      return [];
     },
     _countTable: function(name, value){
       return [["query", "count"], [name, value]]
@@ -226,6 +231,9 @@
         this.data = this.oldData;
         this.$.chart.style.width = this.$.panel.parentNode.clientWidth + 'px';
       }
+    },
+    _countChanged: function(){
+      this._dataArrayChanged();
     }
   });
 </script>
