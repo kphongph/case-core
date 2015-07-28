@@ -3,10 +3,27 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="date-filter.html">
 <link rel="import" href="hidden-ele.html">
+<link rel="import" href="view-property.html">
 
 <dom-module id="attr-filter">
+  <style>
+    .browse{
+      padding-left: 20px;
+    }
+    paper-button{
+      font-size: 90%;
+    }
+    paper-button.blue {
+      color: var(--paper-light-blue-500);
+      --paper-button-flat-focus-color: var(--paper-light-blue-50);
+    }
+    paper-button.blue:hover {
+      background: var(--paper-light-blue-50);
+    }
+  </style>
   <template>
     <iron-ajax id="worker" 
       handle-as="json"
@@ -17,14 +34,21 @@
       handle-as="json"
       on-response="_handleNullRequest">
     </iron-ajax>
+    
+    <view-property id="viewProperty"></view-property>
 
     <paper-checkbox id="checkboxRoot" on-change="_handleSelect">
       <span>{{_propertyToString(description)}}</span>
     </paper-checkbox>
-
+    <paper-button 
+      name$="{{description.name}}"
+      type="{{description.value.type}}"
+      tabindex="0" class="blue ripple"
+      on-click="_handleViewProperty">View</paper-button>
+    
     <div id="valuePanel">
       <template is="dom-if" if="{{attr.nullExist}}">
-        <h4>Type: isNULL</h4>
+        <h4 style="padding-left:20px">Type: isNULL</h4>
          <paper-checkbox style="padding-left:20px" id="isNull" 
          on-change="_handleNullSelect">Null?</paper-checkbox>
       </template>
@@ -71,6 +95,8 @@
       
     </div>
 
+    
+    
   </template>
 </dom-module>
 
@@ -389,6 +415,12 @@
           input.doJob(this.jobValue);
         }
       }
+    },
+    _handleViewProperty: function(e){
+      this.$.viewProperty.property = e.target.parentNode.name;
+      this.$.viewProperty.type = e.target.parentNode.type;
+      this.$.viewProperty.resource = this.resource;
+      this.$.viewProperty.open();
     }
   });
 </script>

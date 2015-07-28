@@ -190,7 +190,7 @@
       else{ //Count
         this.oldData = this._generateChartData(this.dataArray);
         this.data = this._countTable('current query', this.count);
-        this.$.chart.style.width = this.$.panel.parentNode.clientWidth + 'px';
+        //this.$.chart.style.width = this.$.panel.parentNode.clientWidth + 'px';
       }
     },
     _generateChartData: function(data){
@@ -223,7 +223,7 @@
         this.$.swTextLeft.style.removeProperty('color');
         this.oldData = this.data.slice();
         this.data = this._countTable('current query', this.count);
-        this.$.chart.style.width = this.$.panel.parentNode.clientWidth + 'px';
+        //this.$.chart.style.width = this.$.panel.parentNode.clientWidth + 'px';
       }
       else{
         this.$.swTextLeft.style.color = '#1565C0';

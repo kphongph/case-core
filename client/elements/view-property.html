@@ -1,0 +1,196 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+
+<dom-module id="view-property">
+  <style>
+    .viewProperty{
+      width: 100%;
+    }
+    .dialog-panel{
+      min-width: 450px;
+      min-height: 500px;
+    }
+    paper-progress.green {
+      --paper-progress-active-color: var(--paper-light-green-500);
+      --paper-progress-secondary-color: var(--paper-light-green-100);
+      width: 100%;
+    }
+    .load p{
+      margin-bottom: -10px;
+    }
+    .dialog-body{
+      min-height: 400px;
+      overflow-y: auto;
+    }
+    .content{
+      @apply(--layout-vertical);
+    }
+    .content paper-header-panel{
+      width: 100%;
+    }
+    paper-toolbar{
+      width: 100%;
+    }
+    paper-toolbar .title{
+      text-align: center;
+    }
+    .list{
+      @apply(--layout-vertical);
+      max-height: 250px;
+      padding: 15px;
+      overflow-y:auto;
+    }
+    .list paper-checkbox{
+      padding-bottom: 15px;
+    }
+  </style>
+  <template>
+    <iron-ajax id="loadProperty"
+      handle-as="json"
+      on-response="_handleProperty">
+    </iron-ajax>
+    
+    <div class="viewProperty">
+      <paper-dialog class="dialog-panel" id="dialogView">
+        <div class="dialog-body">
+          <h2>Property : <span>{{property}}</span></h2>
+          <div class="load">
+            <p>{{text}}</p>
+            <paper-progress value="{{value}}" max="{{max}}" class="green"></paper-progress>
+          </div>
+          <div class="content">
+            <paper-toolbar justify="center">
+              <paper-icon-button icon="arrow-back" on-click="_handleBack"></paper-icon-button>
+              <span class="title">Page <span>{{_pageToString(currentPage,allPage)}}</span></span>
+              <paper-icon-button icon="arrow-forward"on-click="_handleNext"></paper-icon-button>
+            </paper-toolbar>
+            <div class="list">
+              <template is="dom-repeat" items="{{result}}">
+                <paper-checkbox>{{item}}</paper-checkbox>
+              </template>
+            </div>
+          </div>
+        </div>
+        <div class="buttons">
+          <paper-button dialog-dismiss>Cancel</paper-button>
+          <paper-button dialog-confirm autofocus>OK</paper-button>
+        </div>
+      </paper-dialog>
+    </div>
+    
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'view-property',
+    properties: {
+      resource: {
+        type: String,
+        notify: true
+      },
+      property: {
+        type: String,
+        notify: true
+      },
+      type: {
+        type: String,
+        notify: true
+      },
+      value: {
+        type: Number,
+        observer: '_valueChanged'
+      },
+      max: Number,
+      text: String,
+      currentPage: Number,
+      allPage: Number,
+      distinctValues: Array,
+      maxValue: {
+        type: Number,
+        value: 20
+      },
+      result: Array
+    },
+    ready: function() {
+    },
+    open: function(){
+      this.$.dialogView.open();
+      this._loadProperty();
+    },
+    _pageToString: function(currentPage, allPage){
+      return '(' + currentPage + '/' + allPage + ')';
+    },
+    _valueChanged: function(){
+      if(this.value == this.max){
+        this.text = 'loading...done';
+        console.log(this.max)
+        this.currentPage = 1;
+        this.allPage = Math.ceil(this.distinctValues.length/this.maxValue);
+        this._showResult();
+      }
+      else{
+        if(!this.max){
+          this.text = 'loading...';
+        }
+        else{
+          this.text = 'loading...(' + this.value + '/' + this.max + ')';
+        }
+      }
+    },
+    _loadProperty: function(){
+      var query = {fields:{}};
+      query.fields[this.property] = true;
+      this.$.loadProperty.url = this.resource+'?filter='+JSON.stringify(query);
+      this.$.loadProperty.generateRequest();
+    },
+    _handleProperty: function(){
+      var values = this.$.loadProperty.lastResponse;
+      this.max = values.length;
+      if(!this.distinctValues){
+        this.distinctValues = [];
+      }
+      for(var i = 0; i < values.length; i++){
+        var value = values[i][this.property];
+        if(this.distinctValues.indexOf(value) == -1){
+          this.distinctValues.push(value);
+        }
+        this.async(this._updateProgress, true);
+      }
+    },
+    _updateProgress: function(){
+      this.value += 1;
+    },
+    _handleBack: function(){
+      if(this.currentPage > 1){
+        this.currentPage -= 1;
+        this._showResult();
+      }
+    },
+    _handleNext: function(){
+      if(this.currentPage + 1 <= this.allPage){
+        this.currentPage += 1;
+        this._showResult();
+      }
+    },
+    _showResult: function(){
+      var tmp = [];
+      var start = (this.currentPage-1) * this.maxValue;
+      var end = start + this.maxValue;
+      if(end > this.distinctValues.length){
+        end = this.distinctValues.length;
+      }
+      for(var i = start; i < end; i++){
+        tmp.push(this.distinctValues[i]);
+      }
+      this.result = tmp;
+    }
+  });
+</script>
