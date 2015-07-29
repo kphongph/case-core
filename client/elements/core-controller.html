@@ -13,6 +13,7 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
 
 <dom-module id="core-controller">
   <style>
@@ -29,8 +30,9 @@
       right: 10px;
     }
     .content{
-      margin: 0 0 0 15px;
-      overflow-y: auto;
+      padding: 10px;
+      height: 500px;
+      overflow-y: scroll;
     }
     paper-toolbar.header {
       --paper-toolbar-background: #E0F7FA;
@@ -44,15 +46,26 @@
       color: #fff;
       box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
     }
-    .view{
-      @apply(--layout-horizontal);
-      overflow-x: auto;
-    }
     .ichart{
-      width:60%;
+      width:100%;
     }
     .relation{
-      width:25%;
+      @apply(--layout-horizontal);
+      @apply(--layout-center-justified);
+      padding: 10px;
+    }
+    .flipMenu{
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 10px;
+    }
+    #paperDrawerPanel [main] {
+
+    }
+    #paperDrawerPanel [drawer] {
+      background-color: var(--google-grey-100);
+      height: 100%;
     }
   </style>
   <template>
@@ -78,42 +91,60 @@
     
     <div class="container">
       <paper-header-panel mode="seamed">
-        <paper-toolbar class="medium-tall">
+        <paper-toolbar>
           <paper-button on-click="_handleModelButton">Model</paper-button>
           <paper-button on-click="_handleSaveButton">Save</paper-button>
           <paper-button on-click="_handleLoadButton">Load</paper-button>
           <div class="add">
             <paper-icon-button icon="more-vert"></paper-icon-button>
           </div>
-          <paper-tabs selected="0" on-tap="_handleTabSelect" id="tabs"
-          class="bottom self-end" scrollable style="width: 100%;">
-
-          <template is="dom-repeat" items="{{urls}}">
-            <paper-tab>{{_getModelName(item)}}</paper-tab>
-          </template>
-
-          </paper-tabs>
         </paper-toolbar>
-        <div class="content" id="contents">
-          <template is="dom-repeat" items="{{urls}}" style="height:500px">
-            <div node$="{{_getModelName(item)}}" hidden="{{_handleHidden(index)}}">
-              <ds-manager 
-                on-done="_handleDsDone"
-                on-finish="_handleFinishJob"
-                id="{{_getModelName(item)}}"
-                url="{{item}}">
-              </ds-manager>
+        
+        <div>
+          <paper-drawer-panel id="paperDrawerPanel" right-drawer>
+            <div drawer>
+              <paper-tabs selected="{{drawerTabSelected}}">
+                <paper-tab>Models</paper-tab>
+                <paper-tab>Relation</paper-tab>
+              </paper-tabs>
+              
+              <div class="content" id="contents" hidden$="{{!isModelPanel}}">
+                
+                <paper-tabs selected="0" on-tap="_handleTabSelect" id="tabs"
+                  class="bottom self-end" scrollable style="width: 100%;">
+      
+                  <template is="dom-repeat" items="{{urls}}">
+                    <paper-tab>{{_getModelName(item)}}</paper-tab>
+                  </template>
+      
+                </paper-tabs>
+          
+                <template is="dom-repeat" items="{{urls}}" style="height:500px">
+                  <div node$="{{_getModelName(item)}}" hidden="{{_handleHidden(index)}}">
+                    <ds-manager 
+                      on-done="_handleDsDone"
+                      on-finish="_handleFinishJob"
+                      id="{{_getModelName(item)}}"
+                      url="{{item}}">
+                    </ds-manager>
+                  </div>
+                </template>
+              </div>
+        
+              <div class="relation" hidden$="{{isModelPanel}}">
+                <relation-manager id="relationManager" on-select="_handleRelationChange" models="{{models}}"></relation-manager>
+              </div>
+              
             </div>
-          </template>
-        </div>
-        <br><hr><br>
-        <div class="view">
-          <div class="ichart">
-            <chart-core id="iChart" count="{{records}}"></chart-core>
-          </div>
-          <div class="relation">
-            <relation-manager id="relationManager" on-select="_handleRelationChange" models="{{models}}"></relation-manager>
-          </div>
+            <div main>
+              <div class="ichart">
+                <chart-core id="iChart" count="{{records}}"></chart-core>
+              </div>
+              <div class="flipMenu">
+                <paper-fab mini icon="settings" on-click="_handleToggleDrawer"></paper-fab>
+              </div>
+            </div>
+          </paper-drawer-panel>
         </div>
           
       </paper-header-panel>
@@ -144,10 +175,18 @@
       leftTable : Array,
       rightTable : Array,
       fullTable : Array,
-      currentModel: String
+      currentModel: String,
+      isModelPanel: Boolean,
+      drawerTabSelected: {
+        type: Number,
+        value: 0,
+        observer: '_drawerTabSelectedChanged'
+      }
     },
     ready: function() {
       this.isFieldsExist = false;
+      this.isModelPanel = true;
+      this.$.paperDrawerPanel.drawerWidth = "500px";
     },
     _handleModelsConfirm: function(e){
       this.urls = e.detail.slice();
@@ -386,6 +425,22 @@
     },
     _handleFinishJob: function(){
       this.$.jobM.finishJob();
+    },
+    _handleToggleDrawer: function(){
+      if(this.$.paperDrawerPanel.hasAttribute('force-narrow')){
+        this.$.paperDrawerPanel.removeAttribute('force-narrow')
+      }
+      else{
+        this.$.paperDrawerPanel.setAttribute('force-narrow','')
+      }
+    },
+    _drawerTabSelectedChanged: function(){
+      if(this.drawerTabSelected == 0){
+        this.isModelPanel = true;
+      }
+      else{
+        this.isModelPanel = false;
+      }
     }
   });
 </script>

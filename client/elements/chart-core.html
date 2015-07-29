@@ -22,19 +22,6 @@
     .container{
       @apply(--layout-horizontal);
       @apply(--layout-center-justified);
-      height: 400px;
-    }
-    .right{
-      top: 5px;
-      position: absolute;
-      right: 15px;
-    }
-    .list{
-      position: absolute;
-      right: 15px;
-      width: 150px;
-      height: 250px;
-      overflow-y: scroll;
     }
     paper-item{
       cursor: pointer;
@@ -44,7 +31,7 @@
     }
     google-chart{
       height: 400px;
-      overflow-y: scroll;
+      overflow: auto;
     }
     .toolbar{
       @apply(--layout-horizontal);
@@ -65,6 +52,15 @@
       --paper-toggle-button-unchecked-button-color:  var(--paper-light-blue-900);
       --paper-toggle-button-unchecked-ink-color: var(--paper-light-blue-900);
     }
+    .chartType{
+      padding: 5px 0 0 10px;
+    }
+    .list{
+      position: absolute;
+      width: 150px;
+      height: 250px;
+      overflow-y: scroll;
+    }
   </style>
 
   <template>
@@ -75,7 +71,18 @@
           <paper-toggle-button id="switchChart" on-change="_handleSwitch" class="blue"></paper-toggle-button>
           <span id="swTextRight">Count</span>
         </paper-material>
+        <div class="chartType">
+          <paper-fab id="menu" mini icon="assessment" on-click="_menuClicked"></paper-fab>
+          <div hidden$="{{!showMenu}}">
+            <paper-material elevation="1" class="list">
+              <template is="dom-repeat" items="{{chartTypes}}">
+                <paper-item on-click="_typeChanged" value$="{{item}}">{{item}}</paper-item>
+              </template>
+            </paper-material>
+          </div>
+        </div>
       </div>
+      
       <div class="container">
         <div>
           <google-chart
@@ -86,16 +93,6 @@
              data='{{data}}'
             rows='{{rows}}'>
           </google-chart>
-          <div class="right">
-            <paper-fab id="menu" mini icon="assessment" on-click="_menuClicked"></paper-fab>
-            <div hidden$="{{!showMenu}}">
-              <paper-material elevation="1" class="list">
-                <template is="dom-repeat" items="{{chartTypes}}">
-                  <paper-item on-click="_typeChanged" value$="{{item}}">{{item}}</paper-item>
-                </template>
-              </paper-material>
-            </div>
-          </div>
         </div>
       </div>
     </paper-material>
@@ -137,18 +134,25 @@
     _menuClicked: function(){
       this.showMenu = !this.showMenu;
     },
+    _forceScroll: function(){
+      var node = this.$.chart.querySelector('table').parentNode;
+      node.style.overflow = null;
+      node.style.overflowX = 'initial';
+    },
     _typeChanged: function(e){
       var type = e.target.getAttribute('value');
       var dom = Polymer.dom(this.$.chart).node;
       this.$.chart.type = type;
       this.$.chart._readyForAction();
       this._menuClicked();
+      this._forceScroll();
       this.$.chart.style.width = this.$.panel.parentNode.clientWidth + 'px';
     },
     clear: function(){
       this.rows = [[null, null]];
       this.$.chart.rows = this.rows;
       this.$.chart._loadData();
+      this._forceScroll();
     },
     _actionChanged: function() {
       var data = JSON.parse(this.action);
@@ -177,6 +181,7 @@
           }
         }
       }
+      this._forceScroll();
     },
     _dataArrayChanged: function(){
       if(!this.$.switchChart.checked){ //Table
@@ -192,6 +197,7 @@
         this.data = this._countTable('current query', this.count);
         //this.$.chart.style.width = this.$.panel.parentNode.clientWidth + 'px';
       }
+      this._forceScroll();
     },
     _generateChartData: function(data){
       var cols = [];
@@ -223,7 +229,6 @@
         this.$.swTextLeft.style.removeProperty('color');
         this.oldData = this.data.slice();
         this.data = this._countTable('current query', this.count);
-        //this.$.chart.style.width = this.$.panel.parentNode.clientWidth + 'px';
       }
       else{
         this.$.swTextLeft.style.color = '#1565C0';
@@ -231,6 +236,7 @@
         this.data = this.oldData;
         this.$.chart.style.width = this.$.panel.parentNode.clientWidth + 'px';
       }
+      this._forceScroll();
     },
     _countChanged: function(){
       this._dataArrayChanged();
