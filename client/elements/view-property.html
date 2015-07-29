@@ -68,12 +68,14 @@
           <div class="content">
             <paper-toolbar justify="center">
               <paper-icon-button icon="arrow-back" on-click="_handleBack"></paper-icon-button>
-              <span class="title">Page <span>{{_pageToString(currentPage,allPage)}}</span></span>
+              <span class="title">Page <span>{{_pageToString(currentPage,pageCount)}}</span></span>
               <paper-icon-button icon="arrow-forward"on-click="_handleNext"></paper-icon-button>
             </paper-toolbar>
             <div class="list">
               <template is="dom-repeat" items="{{result}}">
-                <paper-checkbox>{{item}}</paper-checkbox>
+                <paper-checkbox 
+                on-change="_handleSelect"
+                value$="{{item}}">{{item}}</paper-checkbox>
               </template>
             </div>
           </div>
@@ -111,13 +113,17 @@
       max: Number,
       text: String,
       currentPage: Number,
-      allPage: Number,
+      pageCount: Number,
       distinctValues: Array,
       maxValue: {
         type: Number,
         value: 20
       },
-      result: Array
+      result: Array,
+      selectedProperties: {
+        type: Array,
+        notify: true
+      }
     },
     ready: function() {
     },
@@ -125,15 +131,14 @@
       this.$.dialogView.open();
       this._loadProperty();
     },
-    _pageToString: function(currentPage, allPage){
-      return '(' + currentPage + '/' + allPage + ')';
+    _pageToString: function(currentPage, pageCount){
+      return '(' + currentPage + '/' + pageCount + ')';
     },
     _valueChanged: function(){
       if(this.value == this.max){
         this.text = 'loading...done';
-        console.log(this.max)
         this.currentPage = 1;
-        this.allPage = Math.ceil(this.distinctValues.length/this.maxValue);
+        this.pageCount = Math.ceil(this.distinctValues.length/this.maxValue);
         this._showResult();
       }
       else{
@@ -175,7 +180,7 @@
       }
     },
     _handleNext: function(){
-      if(this.currentPage + 1 <= this.allPage){
+      if(this.currentPage + 1 <= this.pageCount){
         this.currentPage += 1;
         this._showResult();
       }
@@ -191,6 +196,23 @@
         tmp.push(this.distinctValues[i]);
       }
       this.result = tmp;
+    },
+    _handleSelect: function(e){
+      console.log(e.target.checked)
+      if(!this.selectedProperties){
+        this.selectedProperties = [];
+      }
+      if(e.target.checked){
+        if(this.selectedProperties.indexOf(e.target.value) == -1){
+          this.selectedProperties.push(e.target.value);
+        }
+      }
+      else{
+        var index = this.selectedProperties.indexOf(e.target.value);
+        if(index != -1){
+          this.selectedProperties.splice(index, 1);
+        }
+      }
     }
   });
 </script>
