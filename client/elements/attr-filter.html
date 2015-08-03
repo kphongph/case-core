@@ -35,67 +35,17 @@
       on-response="_handleNullRequest">
     </iron-ajax>
     
-    <view-property id="viewProperty"></view-property>
+    <view-property 
+    on-view-done="_handleViewPropertyDone"
+    on-view-filter="_handleViewPropertyFilter"
+    id="viewProperty"></view-property>
 
-    <paper-checkbox id="checkboxRoot" on-change="_handleSelect">
-      <span>{{_propertyToString(description)}}</span>
-    </paper-checkbox>
+    <span>{{_propertyToString(description)}}</span>
     <paper-button 
       name$="{{description.name}}"
       type="{{description.value.type}}"
       tabindex="0" class="blue ripple"
-      on-click="_handleViewProperty">View</paper-button>
-    
-    <div id="valuePanel">
-      <template is="dom-if" if="{{attr.nullExist}}">
-        <h4 style="padding-left:20px">Type: isNULL</h4>
-         <paper-checkbox style="padding-left:20px" id="isNull" 
-         on-change="_handleNullSelect">Null?</paper-checkbox>
-      </template>
-        
-      <div style="padding-left:20px" id="categoryPanel">
-        <template is="dom-if" if="{{attr.isCategory}}">
-          <h4>Type: Category</h4>
-          <template is="dom-repeat" items="{{content}}">
-             <paper-checkbox on-change="_handleCategorySelect" value$="{{item.name}}">
-              <span>{{item.name}}</span>&nbsp;(<span>{{item.value.count}}</span>)
-             </paper-checkbox>
-             <hidden-ele on-hidden-done="_hiddenReady"></hidden-ele>
-          </template>
-        </template>
-      </div>
-      
-      <div id="datePanel" style="padding-left:20px">
-        <template is="dom-if" if="{{attr.isDate}}">
-          <div style="padding-left:10px">
-            <date-filter
-              end="{{attr.end_date}}"
-              on-date-change="_handleDateSelect"
-              start="{{attr.start_date}}">
-            </date-filter>
-            <hidden-ele on-hidden-done="_hiddenReady"></hidden-ele>
-          </div>
-        </template>
-      </div>
-      
-      <div id="inputPanel" style="padding-left:20px">
-        <template is="dom-if" if="{{attr.isText}}">
-          <paper-input label="Text to find" on-input="_handleTextChanged"></paper-input>
-          <hidden-ele on-hidden-done="_hiddenReady"></hidden-ele>
-        </template>
-          
-        <template is="dom-if" if="{{attr.isNumber}}">
-          <paper-input label="Number to find"
-            on-input="_handleNumberChanged" 
-            auto-validate pattern="[0-9]*" 
-            error-message="Number only!"></paper-input>
-            <hidden-ele on-hidden-done="_hiddenReady"></hidden-ele>
-        </template>
-      </div>
-      
-    </div>
-
-    
+      on-click="_handleView">View</paper-button>
     
   </template>
 </dom-module>
@@ -118,35 +68,15 @@
         type: Object,
         notify:true,
       },
-      content: {
-        type: Object,
-        notify: true
-      },
       jobValue: Object
     },
     ready: function() {
     },
-    _handleSelect : function(e) {
-      if(!this.$.checkboxRoot.checked) {
-        var allCheckbox = this.$.valuePanel.querySelectorAll('paper-checkbox');
-        for(var i=0; i<allCheckbox.length; i++){
-          if(allCheckbox[i].checked){
-            allCheckbox[i].checked = !allCheckbox[i].checked;
-          }
-        }
-        this.query = null;
-        var obj = {
-          'attr':this.description.name,
-          'query':this.query,
-          'model':this.model
-        };
-        this.fire('filter',obj);
-        this.$.valuePanel.style.display = 'none';
-      } else {
-        this.$.valuePanel.style.display = 'block';
-      }
-
-      if(this.$.checkboxRoot.checked && !this.content) {
+    _handleView : function(e) {
+      this.$.viewProperty.name = e.target.parentNode.name;
+      this.$.viewProperty.open();
+      
+      if(!this.content) {
         this.content = [];
         this.set('attr',{});
 
@@ -164,54 +94,26 @@
         this.$.worker.generateRequest();
       }
     },
+    _handleViewPropertyDone: function(e){
+      this.attr = e.target.attr;
+      this.fire('attr-done');
+    },
+    _handleViewPropertyFilter: function(e){
+      this.fire('filter', e.detail);
+    },
     _handleRequest : function() {
       var response = this.$.worker.lastResponse;
-      var tmp = {};
-      var max_categories = 50;
-      var j=0;
-      for(var i=0;i<response.length&&j<max_categories;i++) {
-        if(!tmp[response[i][this.description.name]]) {
-          tmp[response[i][this.description.name]] = {count:0};
-          j++;
-        }
-        tmp[response[i][this.description.name]].count++;
+      if(response){
+        this.$.viewProperty.updateProgress(response, this.description, this.model);
       }
-
-      this.content = Object.keys(tmp).map(function(key) {
-        return {name:key,value:tmp[key]};
-      });
-
-      if(j<max_categories) {
-        // categories data
-        this.set('attr.isCategory',true);
-      } else {
-        if(this.description.value.type == "string" && 
-           this.description.value.format == "date") {
-          this.set('attr.isDate',true);
-          var min_date = new Date();
-          var max_date = new Date(1970,1,1);
-          for(var i=0;i<response.length;i++) {
-            var tmp_date = new Date(response[i][this.description.name]);
-            if(tmp_date.getTime() >= max_date.getTime()) {
-              max_date = tmp_date;
-            }
-            if(tmp_date.getTime() <= min_date.getTime()) {
-              min_date = tmp_date;
-            }
-          }
-          this.set('attr.start_date',min_date);
-          this.set('attr.end_date',max_date);
-        } else if(this.description.value.type == "string"){
-          this.set('attr.isText',true);
-        } else if(this.description.value.type == "number"){
-          this.set('attr.isNumber',true);
-        }
-      }
-      this.fire('attr-done');
     },
     _handleNullRequest: function() {
       if(this.$.nullWorker.lastResponse.count > 0) {
+        this.$.viewProperty.isNull = true;
         this.set('attr.nullExist',true);
+      }
+      else{
+        this.$.viewProperty.isNull = false;
       }
     },
     _handleNullSelect: function(e) {
@@ -242,115 +144,6 @@
         'model':this.model
       };
       this.fire('filter',obj);
-    },
-    _handleCategorySelect: function(e) {
-      var attr_values = e.target.value;
-      var tmp = {};
-      tmp[this.description.name]=attr_values;
-      if(e.srcElement.checked) {
-        if(!this.query || !this.query.or) {
-          this.query = {'or':[]};
-        }
-        this.query.or.push(tmp);
-      } else {
-        var remove_idx = -1;
-        for(var i=0;i<this.query.or.length;i++) {
-          if(this.query.or[i][this.description.name] == tmp[this.description.name]) {
-             remove_idx = i;
-          }
-        }
-        if(remove_idx!=-1) {
-          this.query.or.splice(remove_idx,1);
-        }
-      }
-      if(this.query.or.length == 0){
-        this.query = null;
-      }
-      var obj = {
-        'attr':this.description.name,
-        'query':this.query,
-        'model':this.model
-      };
-      this.fire('filter',obj);
-    },
-    _handleDateSelect: function(e){
-      var s_date = e.detail.start;
-      var e_date = e.detail.end;
-      if(!this.query) {
-        this.query = {};
-      }
-      if(s_date && e_date){
-        this.query[this.description.name] = {'between':[]}
-        this.query[this.description.name].between.push(s_date);
-        this.query[this.description.name].between.push(e_date);
-      }
-      else if(s_date){
-        this.query[this.description.name] = {'gt': s_date}
-      }
-      else if(e_date){
-        this.query[this.description.name] = {'lt':e_date}
-      }
-      else{
-        return;
-      }
-      var obj = {
-        'attr':this.description.name,
-        'query':this.query,
-        'model':this.model
-      };
-      this.fire('filter',obj);
-    },
-    _handleTextChanged: function(e){
-      if(!this.query) {
-        this.query = {'or':[]};
-      } else{
-        this.query.or = [];
-        var tmp = {};
-        tmp[this.description.name]=null;
-        this.query.or.push(tmp);
-      }
-      if(e.target.value){
-        var tmp = {};
-        tmp[this.description.name]={ like:'%' + e.target.value + '%'};
-        this.query.or.push(tmp);
-      }
-      if(this.query.or.length === 0){
-        this.query = null;
-      }
-      var obj = {
-        'attr':this.description.name,
-        'query':this.query,
-        'model':this.model
-      };
-      this.fire('filter',obj);
-    },
-    _handleNumberChanged: function(e){
-      if(e.target.validate()){
-        if(!this.query) {
-          this.query = {'or':[]};
-        }
-        else{
-          this.query.or = [];
-          var tmp = {};
-          tmp[this.description.name]=null;
-          this.query.or.push(tmp);
-        }
-        if(e.target.value){
-          var tmp = {};
-          tmp[this.description.name]=Number(e.target.value);
-          this.query.or.push(tmp);
-        }
-
-        if(this.query.or.length === 0){
-          this.query = null;
-        }
-        var obj = {
-          'attr':this.description.name,
-          'query':this.query,
-          'model':this.model
-        };
-        this.fire('filter',obj);
-      }
     },
     _propertyToString: function(obj) {
       return obj.name+' ('+obj.value.type+')';
@@ -417,9 +210,8 @@
       }
     },
     _handleViewProperty: function(e){
-      this.$.viewProperty.property = e.target.parentNode.name;
-      this.$.viewProperty.type = e.target.parentNode.type;
-      this.$.viewProperty.resource = this.resource;
+      console.log(e.target.name)
+      this.$.viewProperty.name = e.target.name;
       this.$.viewProperty.open();
     }
   });

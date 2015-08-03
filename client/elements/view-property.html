@@ -15,7 +15,7 @@
     }
     .dialog-panel{
       min-width: 450px;
-      min-height: 500px;
+      height: 600px;
     }
     paper-progress.green {
       --paper-progress-active-color: var(--paper-light-green-500);
@@ -26,11 +26,17 @@
       margin-bottom: -10px;
     }
     .dialog-body{
+      min-height: 350px;
+    }
+    .dialog-body-tall{
       min-height: 400px;
-      overflow-y: auto;
+    }
+    .dialog-body-none{
+      height: 50px;
     }
     .content{
       @apply(--layout-vertical);
+      padding-top: 5px;
     }
     .content paper-header-panel{
       width: 100%;
@@ -43,12 +49,27 @@
     }
     .list{
       @apply(--layout-vertical);
-      max-height: 250px;
-      padding: 15px;
+      max-height: 200px;
+      padding: 0 15px 0 15px;
       overflow-y:auto;
     }
-    .list paper-checkbox{
-      padding-bottom: 15px;
+    .list-tall{
+      @apply(--layout-vertical);
+      max-height: 250px;
+      padding: 0 15px 0 15px;
+      overflow-y:auto;
+    }
+    .list paper-checkbox, .list-tall paper-checkbox{
+      padding-top: 15px;
+    }
+    .header-right {
+      position: absolute;
+      padding: 10px;
+      right: 20px;
+      top: 20px;
+    }
+    .footer{
+      margin-top: -40px;
     }
   </style>
   <template>
@@ -59,25 +80,61 @@
     
     <div class="viewProperty">
       <paper-dialog class="dialog-panel" id="dialogView">
-        <div class="dialog-body">
-          <h2>Property : <span>{{property}}</span></h2>
-          <div class="load">
+        <div class$="{{bodyClass}}">
+          <h2>Property : <span>{{name}}</span> (#<span>{{itemCount}}</span>)</h2>
+          <div class="header-right" hidden$="{{!isNull}}"><paper-checkbox>Null</paper-checkbox></div>
+          <div class="load" id="loadPanel">
             <p>{{text}}</p>
-            <paper-progress value="{{value}}" max="{{max}}" class="green"></paper-progress>
+            <paper-progress value="{{value}}" max="{{itemCount}}" class="green"></paper-progress>
           </div>
-          <div class="content">
+          <div class="content" hidden$="{{!isLoaded}}">
             <paper-toolbar justify="center">
               <paper-icon-button icon="arrow-back" on-click="_handleBack"></paper-icon-button>
               <span class="title">Page <span>{{_pageToString(currentPage,pageCount)}}</span></span>
               <paper-icon-button icon="arrow-forward"on-click="_handleNext"></paper-icon-button>
             </paper-toolbar>
-            <div class="list">
+            <div class$="{{listClass}}">
               <template is="dom-repeat" items="{{result}}">
                 <paper-checkbox 
-                on-change="_handleSelect"
-                value$="{{item}}">{{item}}</paper-checkbox>
+                on-change="_handleCategorySelect"
+                value$="{{item.value}}">{{item.text}}</paper-checkbox>
               </template>
             </div>
+          </div>
+        </div>
+        <div class="footer" hidden$="{{!isLoaded}}">
+          <div id="categoryPanel">
+            <template is="dom-if" if="{{attr.isCategory}}">
+              <h4>Type: Category</h4>
+            </template>
+          </div>
+          
+          <div id="datePanel">
+            <template is="dom-if" if="{{attr.isDate}}">
+              <div>
+                <h4>Type: Date</h4>
+                <date-filter
+                  end="{{attr.end_date}}"
+                  on-date-change="_handleDateSelect"
+                  start="{{attr.start_date}}">
+                </date-filter>
+              </div>
+            </template>
+          </div>
+      
+          <div id="inputPanel">
+            <template is="dom-if" if="{{attr.isText}}">
+              <h4>Type: Text</h4>
+              <paper-input label="Text to find" on-input="_handleTextChanged"></paper-input>
+            </template>
+              
+            <template is="dom-if" if="{{attr.isNumber}}">
+              <h4>Type: Number</h4>
+              <paper-input label="Number to find"
+                on-input="_handleNumberChanged"
+                auto-validate pattern="[0-9]*" 
+                error-message="Number only!"></paper-input>
+            </template>
           </div>
         </div>
         <div class="buttons">
@@ -94,81 +151,143 @@
   Polymer({
     is: 'view-property',
     properties: {
-      resource: {
-        type: String,
-        notify: true
-      },
-      property: {
-        type: String,
-        notify: true
-      },
-      type: {
-        type: String,
-        notify: true
-      },
+      name: String,
       value: {
         type: Number,
         observer: '_valueChanged'
       },
-      max: Number,
+      isNull: {
+        type: Boolean,
+        notify: true
+      },
       text: String,
+      itemCount: Number,
       currentPage: Number,
       pageCount: Number,
-      distinctValues: Array,
       maxValue: {
         type: Number,
         value: 20
       },
       result: Array,
-      selectedProperties: {
-        type: Array,
+      attr : {
+        type: Object,
+        notify:true
+      },
+      content: {
+        type: Object,
         notify: true
-      }
+      },
+      bodyClass: {
+        type: String,
+        value: 'dialog-body-none'
+      },
+      listClass: {
+        type: String,
+        value: 'list'
+      },
+      isLoaded: Boolean,
+      description: Object,
+      model: String
     },
     ready: function() {
+      this.itemCount = null;
+      this.isLoaded = false;
+      this.$.dialogView.style.minHeight = '150px';
+      this.$.dialogView.style.height = '150px';
     },
     open: function(){
       this.$.dialogView.open();
-      this._loadProperty();
     },
     _pageToString: function(currentPage, pageCount){
       return '(' + currentPage + '/' + pageCount + ')';
     },
+    _dynamicLayout: function(){
+      if(this.attr){
+        if(this.attr.isDate){
+          this.bodyClass = 'dialog-body';
+          this.listClass = 'list';
+        }
+        else{
+          this.bodyClass = 'dialog-body-tall';
+          this.listClass = 'list-tall';
+        }
+      }
+    },
     _valueChanged: function(){
-      if(this.value == this.max){
+      if(!this.content){
+        return;
+      }
+      if(this.value == this.itemCount){
+        this.$.dialogView.style.top = '0';
+        this.$.dialogView.style.minHeight = '600px';
         this.text = 'loading...done';
         this.currentPage = 1;
-        this.pageCount = Math.ceil(this.distinctValues.length/this.maxValue);
+        this.itemCount = this.content.length;
+        this.pageCount = Math.ceil(this.content.length/this.maxValue);
         this._showResult();
+        this._dynamicLayout();
+        this.$.loadPanel.hidden = true;
+        this.isLoaded = true;
       }
       else{
-        if(!this.max){
+        if(this.content.length == 0){
           this.text = 'loading...';
         }
         else{
-          this.text = 'loading...(' + this.value + '/' + this.max + ')';
+          this.text = 'loading...(' + this.value + '/' + this.itemCount + ')';
         }
       }
     },
-    _loadProperty: function(){
-      var query = {fields:{}};
-      query.fields[this.property] = true;
-      this.$.loadProperty.url = this.resource+'?filter='+JSON.stringify(query);
-      this.$.loadProperty.generateRequest();
-    },
-    _handleProperty: function(){
-      var values = this.$.loadProperty.lastResponse;
-      this.max = values.length;
-      if(!this.distinctValues){
-        this.distinctValues = [];
-      }
-      for(var i = 0; i < values.length; i++){
-        var value = values[i][this.property];
-        if(this.distinctValues.indexOf(value) == -1){
-          this.distinctValues.push(value);
-        }
+    updateProgress: function(values, description, model){
+      this.model = model;
+      this.description = description;
+      this.itemCount = values.length;
+      this.content = [];
+      this.currentPage = 1;
+      this.value = 0;
+      this.maxValue = 50;
+      
+      var tmp = {};
+      var max_categories = 50;
+      var j=0;
+      for(var i=0;i<values.length;i++) {
         this.async(this._updateProgress, true);
+        if(!tmp[values[i][description.name]]) {
+          tmp[values[i][description.name]] = {count:0};
+          j++;
+        }
+        tmp[values[i][description.name]].count++;
       }
+      this.content = Object.keys(tmp).map(function(key) {
+        return {name:key,value:tmp[key]};
+      });
+      this.set('attr',{});
+      if(j<max_categories) {
+        this.set('attr.isCategory',true);
+      } else {
+        if(description.value.type == "string" && 
+           description.value.format == "date") {
+          this.set('attr.isDate',true);
+          var min_date = new Date();
+          var max_date = new Date(1970,1,1);
+          for(var i=0;i<values.length;i++) {
+            var tmp_date = new Date(values[i][description.name]);
+            if(tmp_date.getTime() >= max_date.getTime()) {
+              max_date = tmp_date;
+            }
+            if(tmp_date.getTime() <= min_date.getTime()) {
+              min_date = tmp_date;
+            }
+          }
+          this.set('attr.start_date',min_date);
+          this.set('attr.end_date',max_date);
+        } else if(description.value.type == "string"){
+          this.set('attr.isText',true);
+        } else if(description.value.type == "number"){
+          this.set('attr.isNumber',true);
+        }
+      }
+      this.fire('view-done');
     },
     _updateProgress: function(){
       this.value += 1;
@@ -186,33 +305,131 @@
       }
     },
     _showResult: function(){
+      if(!this.content){
+        return;
+      }
       var tmp = [];
       var start = (this.currentPage-1) * this.maxValue;
       var end = start + this.maxValue;
-      if(end > this.distinctValues.length){
-        end = this.distinctValues.length;
+      if(end > this.content.length){
+        end = this.content.length;
       }
       for(var i = start; i < end; i++){
-        tmp.push(this.distinctValues[i]);
+        tmp.push({
+          'value':this.content[i].name,
+          'text':this.content[i].name + ' (' + this.content[i].value.count + ')'
+          });
       }
       this.result = tmp;
     },
-    _handleSelect: function(e){
-      console.log(e.target.checked)
-      if(!this.selectedProperties){
-        this.selectedProperties = [];
+    _handleDateSelect: function(e){
+      var s_date = e.detail.start;
+      var e_date = e.detail.end;
+      if(!this.query) {
+        this.query = {};
       }
-      if(e.target.checked){
-        if(this.selectedProperties.indexOf(e.target.value) == -1){
-          this.selectedProperties.push(e.target.value);
-        }
+      if(s_date && e_date){
+        this.query[this.description.name] = {'between':[]}
+        this.query[this.description.name].between.push(s_date);
+        this.query[this.description.name].between.push(e_date);
+      }
+      else if(s_date){
+        this.query[this.description.name] = {'gt': s_date}
+      }
+      else if(e_date){
+        this.query[this.description.name] = {'lt':e_date}
       }
       else{
-        var index = this.selectedProperties.indexOf(e.target.value);
-        if(index != -1){
-          this.selectedProperties.splice(index, 1);
+        return;
+      }
+      var obj = {
+        'attr':this.description.name,
+        'query':this.query,
+        'model':this.model
+      };
+      this.fire('view-filter',obj);
+    },
+    _handleTextChanged: function(e){
+      if(!this.query) {
+        this.query = {'or':[]};
+      } else{
+        this.query.or = [];
+        var tmp = {};
+        tmp[this.description.name]=null;
+        this.query.or.push(tmp);
+      }
+      if(e.target.value){
+        var tmp = {};
+        tmp[this.description.name]={ like:'%' + e.target.value + '%'};
+        this.query.or.push(tmp);
+      }
+      if(this.query.or.length === 0){
+        this.query = null;
+      }
+      var obj = {
+        'attr':this.description.name,
+        'query':this.query,
+        'model':this.model
+      };
+      this.fire('view-filter', obj);
+    },
+    _handleNumberChanged: function(e){
+      if(e.target.validate()){
+        if(!this.query) {
+          this.query = {'or':[]};
+        }
+        else{
+          this.query.or = [];
+          var tmp = {};
+          tmp[this.description.name]=null;
+          this.query.or.push(tmp);
+        }
+        if(e.target.value){
+          var tmp = {};
+          tmp[this.description.name]=Number(e.target.value);
+          this.query.or.push(tmp);
+        }
+
+        if(this.query.or.length === 0){
+          this.query = null;
+        }
+        var obj = {
+          'attr':this.description.name,
+          'query':this.query,
+          'model':this.model
+        };
+        this.fire('view-filter',obj);
+      }
+    },
+    _handleCategorySelect: function(e) {
+      var attr_values = e.target.value;
+      var tmp = {};
+      tmp[this.description.name]=attr_values;
+      if(e.srcElement.checked) {
+        if(!this.query || !this.query.or) {
+          this.query = {'or':[]};
+        }
+        this.query.or.push(tmp);
+      } else {
+        var remove_idx = -1;
+        for(var i=0;i<this.query.or.length;i++) {
+          if(this.query.or[i][this.description.name] == tmp[this.description.name]) {
+             remove_idx = i;
+          }
+        }
+        if(remove_idx!=-1) {
+          this.query.or.splice(remove_idx,1);
         }
       }
+      if(this.query.or.length == 0){
+        this.query = null;
+      }
+      var obj = {
+        'attr':this.description.name,
+        'query':this.query,
+        'model':this.model
+      };
+      this.fire('view-filter',obj);
     }
   });
 </script>
