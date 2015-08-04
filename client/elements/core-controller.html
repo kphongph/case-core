@@ -7,6 +7,7 @@
 <link rel="import" href="./chart-core.html">
 <link rel="import" href="./model-filter.html">
 <link rel="import" href="./job-manager.html">
+<link rel="import" href="./join-table.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
@@ -53,6 +54,7 @@
       @apply(--layout-horizontal);
       @apply(--layout-center-justified);
       padding: 10px;
+      right: 0;
     }
     .flipMenu{
       position: absolute;
@@ -88,6 +90,8 @@
       on-confirm="_handleModelsConfirm"
       url="/explorer/resources">
     </model-filter>
+    
+    <join-table id="joinTable" on-join-done="_handleJoinDone"></join-table>
     
     <div class="container">
       <paper-header-panel mode="seamed">
@@ -171,10 +175,6 @@
       records : {
         type: String
       },
-      relation : Object,
-      leftTable : Array,
-      rightTable : Array,
-      fullTable : Array,
       currentModel: String,
       isModelPanel: Boolean,
       drawerTabSelected: {
@@ -265,11 +265,11 @@
         if(rData.length > 0){
           this._doJoin(rData);
         }
-        else{ // no relation
+        else{
           this._noRelation();
         }
       }
-      else{ // no relation
+      else{
         this._noRelation();
       }
     },
@@ -280,105 +280,31 @@
         .querySelectorAll('paper-tab')[index]).innerText.trim();
       }
       if(this.currentModel){
-        this.relation = {
+        var relation = {
           "relation":null,
           "left":{"model":this.currentModel,"property":[]},
           "right":{"model":null,"property":[]}
         };
-        this._leftJoin();
+        var relations = [];
+        relations.push(relation);
+        this._doJoin(relations);
       }
     },
     _doJoin: function(relations){
-      // test at index 0
-      if(relations[0].relation == 'leftJoin'){
-        this.relation = relations[0];
-        this._leftJoin();
-      }
-    },
-    _leftJoin : function(data){
-      this.leftTable = [];
-      this.rightTable = [];
-      var ds = document.getElementById(this.relation.left.model);
-      if(ds){
-        this.$.leftAjax.url = ds.exampleResultUrl;
-        this.$.leftAjax.generateRequest();
-      }
-    },
-    _handleLeftAjax : function(){
-      this.leftTable = this.$.leftAjax.lastResponse;
-      var properties = this.relation.left.property;
-      var and = [];
-      for( var i = 0; i < properties.length; i++){
-        var or = [];
-        var distinct = [];
-        for( var j = 0; j < this.leftTable.length; j++){
-          var value = this.leftTable[j][properties[i]];
-          if(distinct.indexOf(value) == -1){
-            distinct.push(value);
-          }
+      for( var i = 0; i < relations.length; i++){
+        var ds = document.getElementById(relations[i].left.model);
+        if(ds){
+          relations[i].left['url'] = ds.exampleResultUrl;
         }
-        for( var j = 0; j < distinct.length; j++){
-          var obj = {};
-          obj[this.relation.right.property[i]] = distinct[j];
-          or.push(obj);
-        }
-        and.push({'or':or});
-      }
-      if(this.relation.right.model){
-        var url = '/api/' + this.relation.right.model + '?filter={"where":';
-        url += encodeURI(JSON.stringify({'and':and})) + '}';
-        this.$.rightAjax.url = url;
-        this.$.rightAjax.generateRequest();
-      }
-      else{
-        this.mergeTable();
-      }
-    },
-    _handleRightAjax : function(){
-      this.rightTable = this.$.rightAjax.lastResponse;
-      this.mergeTable();
-    },
-    mergeTable : function(){
-      this.fullTable = [];
-      for( var i = 0; i < this.leftTable.length; i++){
-        if(this.rightTable){
-          var isAdd = false; // is leftTable.row added
-          for( var j = 0; j < this.rightTable.length; j++){
-            var isJoin = true; // is all properties value map to right
-            for( var k = 0; k < this.relation.left.property.length; k++){
-              if(this.leftTable[i][this.relation.left.property[k]] 
-              != this.rightTable[j][this.relation.right.property[k]]){
-                isJoin = false;
-                break;
-              }
-            }
-            if(isJoin){
-              isAdd = true;
-              this.fullTable.push(
-                this.mergeObject(this.leftTable[i], this.rightTable[j]));
-            }
-          }
-          if(!isAdd){
-            this.fullTable.push(this.mergeObject(this.leftTable[i], 
-            this.cloneProperties(this.rightTable[0])));
-          }
-        }
-        else{
-          this.fullTable.push(this.leftTable[i]);
+        ds = document.getElementById(relations[i].right.model);
+        if(ds){
+          relations[i].right['url'] = ds.exampleResultUrl;
         }
       }
-      this.$.iChart.dataArray = this.fullTable;
+      this.$.joinTable.join(relations);
     },
-    cloneProperties: function(obj){
-      var tmp = {};
-      for(var attrname in obj) tmp[attrname]=null;
-      return tmp;
-    },
-    mergeObject : function(obj1, obj2){
-      var obj3 = {};
-      for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
-      for (var attrname in obj2) { obj3['r.'+attrname] = obj2[attrname]; }
-      return obj3;
+    _handleJoinDone: function(e){
+      this.$.iChart.dataArray = e.detail;
     },
     _handleModelButton: function(){
       this.$.modelFilter.show();
@@ -428,10 +354,10 @@
     },
     _handleToggleDrawer: function(){
       if(this.$.paperDrawerPanel.hasAttribute('force-narrow')){
-        this.$.paperDrawerPanel.removeAttribute('force-narrow')
+        this.$.paperDrawerPanel.removeAttribute('force-narrow');
       }
       else{
-        this.$.paperDrawerPanel.setAttribute('force-narrow','')
+        this.$.paperDrawerPanel.setAttribute('force-narrow','');
       }
     },
     _drawerTabSelectedChanged: function(){

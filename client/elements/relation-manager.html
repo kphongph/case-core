@@ -17,7 +17,6 @@
     .container{
       width: 450px;
       height: 450px;
-      @apply(--layout-fullbleed-vertical);
       border-style: solid;
       border-width: 1px;
       border-color: #E0E0E0;
@@ -25,6 +24,7 @@
       background-color: #FFFFFF;
     }
     .content{
+      @apply(--layout-vertical);
       padding: 5px;
       height: 300px;
       overflow-y: auto;
@@ -92,7 +92,7 @@
     }
   </style>
   <template>
-    <div class="container">
+    <div class="container" id="relationPanel">
       <paper-header-panel mode="seamed">
         <paper-toolbar class="header">
           <div class="header-text">Relationships</div>
@@ -187,6 +187,7 @@
       }
     },
     _handleAddClicked: function(){
+      this.$.relationPanel.parentNode.style.width = '450px';
       this.$.dialog.open();
     },
     _handleRemoveClicked: function(e){
