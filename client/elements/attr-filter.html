@@ -116,35 +116,6 @@
         this.$.viewProperty.isNull = false;
       }
     },
-    _handleNullSelect: function(e) {
-      var tmp = {};
-      tmp[this.description.name]=null;
-      if(e.srcElement.checked) {
-        if(!this.query) {
-          this.query = {'or':[]};
-        }
-        this.query.or.push(tmp);
-      } else {
-        var remove_idx = -1;
-        for(var i=0;i<this.query.or.length;i++) {
-          if(this.query.or[i][this.description.name] == null) {
-             remove_idx = i;
-          }
-        }
-        if(remove_idx!=-1) {
-          this.query.or.splice(remove_idx,1);
-        }
-      }
-      if(this.query.or.length == 0){
-        this.query = null;
-      }
-      var obj = {
-        'attr':this.description.name,
-        'query':this.query,
-        'model':this.model
-      };
-      this.fire('filter',obj);
-    },
     _propertyToString: function(obj) {
       return obj.name+' ('+obj.value.type+')';
     },

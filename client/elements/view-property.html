@@ -82,7 +82,9 @@
       <paper-dialog class="dialog-panel" id="dialogView">
         <div class$="{{bodyClass}}">
           <h2>Property : <span>{{name}}</span> (#<span>{{itemCount}}</span>)</h2>
-          <div class="header-right" hidden$="{{!isNull}}"><paper-checkbox>Null</paper-checkbox></div>
+          <div class="header-right" hidden$="{{!isNull}}">
+            <paper-checkbox on-change="_handleNullSelect">Null</paper-checkbox>
+          </div>
           <div class="load" id="loadPanel">
             <p>{{text}}</p>
             <paper-progress value="{{value}}" max="{{itemCount}}" class="green"></paper-progress>
@@ -353,15 +355,35 @@
       if(!this.query) {
         this.query = {'or':[]};
       } else{
-        this.query.or = [];
-        var tmp = {};
-        tmp[this.description.name]=null;
-        this.query.or.push(tmp);
+        var nullExist = false;
+        for(var i = 0; i < this.query.or.length; i++){
+          if(this.query.or[i][this.description.name] == null){
+            nullExist = true;
+            break;
+          }
+        }
+        if(!nullExist){
+          var tmp = {};
+          tmp[this.description.name]=null;
+          this.query.or.push(tmp);
+        }
       }
       if(e.target.value){
-        var tmp = {};
-        tmp[this.description.name]={ like:'%' + e.target.value + '%'};
-        this.query.or.push(tmp);
+        var likeExist = false;
+        for(var i = 0; i < this.query.or.length; i++){
+          if(this.query.or[i][this.description.name]){
+            if(this.query.or[i][this.description.name].like){
+              this.query.or[i][this.description.name] = { like:'%' + e.target.value + '%'};
+              likeExist = true;
+              break;
+            }
+          }
+        }
+        if(!likeExist){
+          var tmp = {};
+          tmp[this.description.name]={ like:'%' + e.target.value + '%'};
+          this.query.or.push(tmp);
+        }
       }
       if(this.query.or.length === 0){
         this.query = null;
@@ -430,6 +452,35 @@
         'model':this.model
       };
       this.fire('view-filter',obj);
+    },
+    _handleNullSelect: function(e) {
+      var tmp = {};
+      tmp[this.description.name]=null;
+      if(e.srcElement.checked) {
+        if(!this.query) {
+          this.query = {'or':[]};
+        }
+        this.query.or.push(tmp);
+      } else {
+        var remove_idx = -1;
+        for(var i=0;i<this.query.or.length;i++) {
+          if(this.query.or[i][this.description.name] == null) {
+             remove_idx = i;
+          }
+        }
+        if(remove_idx!=-1) {
+          this.query.or.splice(remove_idx,1);
+        }
+      }
+      if(this.query.or.length == 0){
+        this.query = null;
+      }
+      var obj = {
+        'attr':this.description.name,
+        'query':this.query,
+        'model':this.model
+      };
+      this.fire('view-filter', obj);
     }
   });
 </script>
