@@ -27,10 +27,29 @@
     },
     ready: function(){
     },
+    _test_joinFullTable: function(){
+      var relation = JSON.parse(JSON.stringify(this.currentRelation));
+      //change url limit=0 -> all rows
+      var url = relation.left.url;
+      var start = url.indexOf('limit'); 
+      var  end;
+      for(var i = 156; i < url.length; i++){
+        if(url[i] == ':'){
+            start = i+1;
+        }
+        if(url[i] == ',' || url[i] == '}'){
+            end = i;break;
+        }
+      }
+      console.log(start + ' : ' + end)
+      url = url.substring(0, start) + '0' + url.substring(end);
+      console.log(url)
+    },
     join: function(relations){
       this.relations = relations;
       // test index 0
       this.currentRelation = relations[0];
+      this._test_joinFullTable();
       this._leftJoin();
     },
     _leftJoin : function(data){
