@@ -1,0 +1,166 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/font-roboto/roboto.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="property-filter.html">
+
+<dom-module id="model-config">
+  <style>
+    .container{
+      font-family: 'Roboto Regular', sans-serif;
+      height: 100%;
+      background-color: var(--google-grey-100);
+    }
+    .header-text {
+      --paper-toolbar-background: #4CAF50;
+      font-size: 150%;
+    }
+    .content{
+      width: 100%;
+      height: 100%;
+      @apply(--layout-vertical);
+      overflow-y: auto;
+    }
+    .item{
+      @apply(--layout-vertical);
+      background-color: #FFFFFF;
+      border-collapse: collapse;
+      border: 1px solid #e5e5e5;
+    }
+    .item .item-header{
+      @apply(--layout-horizontal);
+      @apply(--layout-justified);
+      padding: 10px;
+    }
+    .item paper-checkbox{
+      padding: 10px;
+    }
+    .item .item-header:hover{
+      color: #4CAF50;
+      background-color: var(--google-grey-100);
+    }
+    .detail{
+      display: none;
+      margin-left: 50px;
+      margin-right: 50px;
+    }
+  </style>
+  <template>
+    <iron-ajax id="getDescription"
+      handle-as="json"
+      on-response="_handleDescription">
+    </iron-ajax>
+    
+    <iron-ajax id="countAjax" 
+      handle-as="json"
+      on-response="_handleCount">
+    </iron-ajax>
+    
+    <div class="container">
+      <paper-header-panel mode="seamed">
+        <paper-toolbar class="header-text">
+          <div>Model configuration</div>
+        </paper-toolbar>
+        <div id="content">
+          <div class="item">
+            <div class="item-header">
+              <div>
+                <paper-checkbox></paper-checkbox>
+                <span>{{model}}</span>
+              </div>
+              <paper-icon-button
+                icon="expand-more"
+                on-click="_handleExpand">
+              </paper-icon-button>
+            </div>
+            <div class="detail">
+              <template is="dom-repeat" items="{{model_properties}}">
+                <property-filter 
+                  model="{{model}}" 
+                  property="{{item}}"></property-filter>
+              </template>
+            </div>
+          </div>
+        </div>
+      </paper-header-panel>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'model-config',
+    properties: {
+      model: {
+        type: String,
+        observer: '_modelChange'
+      },
+      model_properties: Array,
+      where : {
+        type: Object,
+        notify: true
+      },
+      records : {
+        type: String,
+        notify: true
+      }
+    },
+    ready: function() {
+    },
+    _modelChange: function(){
+      this.$.getDescription.url = 'explorer/resources/' + this.model;
+      this.$.getDescription.generateRequest();
+    },
+    _handleDescription : function() {
+      var model_description = this.$.getDescription.lastResponse;
+      var key = Object.keys(model_description.models)[0];
+      var obj = model_description.models[key].properties;
+      this.model_properties = Object.keys(obj).map(function(key) {
+        return {name:key,value:obj[key]};
+      });
+      this.where = {'and':[]};
+      this._computeReturnRecords(this.where);
+    },
+    _computeReturnRecords: function(where) {
+      if(where.and.length > 0){
+        this.$.countAjax.url = '/api/' + this.model + '/count?where='+encodeURI(JSON.stringify(where));
+        this.$.countAjax.generateRequest();
+      } else {
+        this.$.countAjax.url = '/api/' + this.model +'/count';
+        this.$.countAjax.generateRequest();
+      }
+    },
+    _handleCount : function() {
+      this.records = this.$.countAjax.lastResponse.count;
+      console.log(this.records)
+      //this.fire('done');
+    },
+    _handleExpand: function(e){
+      var target = this._findUntil(e.target, 'paper-icon-button', 5);
+      var detail = target.parentNode.nextElementSibling;
+      if(target.icon == 'expand-more'){
+        target.icon = 'expand-less';
+        detail.style.display = 'block';
+      }
+      else{
+        target.icon = 'expand-more';
+        detail.style.display = 'none';
+      }
+    },
+    _findUntil: function(element, expectTag, limitLoop){
+      for(var i = 0; i < limitLoop; i++){
+        if(element.localName == expectTag){
+          return element;
+        }
+        else{
+          element = element.parentNode;
+        }
+      }
+      return null;
+    }
+  });
+</script>

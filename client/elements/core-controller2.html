@@ -1,0 +1,105 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="./model-config.html">
+
+<dom-module id="core-controller2">
+  <style>
+    .container{
+      @apply(--layout-fullbleed-vertical);
+      font-family: 'Roboto Regular', sans-serif;
+      height: 100%;
+      background-color:#FFFFFF;
+    }
+    .add {
+      width: 50px;
+      position: absolute;
+      top: 20%;
+      right: 10px;
+    }
+    .content{
+      padding: 10px;
+      height: 500px;
+      overflow-y: scroll;
+    }
+    .ichart{
+      width:100%;
+    }
+    #paperDrawerPanel [main] {
+
+    }
+    #paperDrawerPanel [drawer] {
+      background-color: var(--google-grey-100);
+      height: 100%;
+    }
+  </style>
+  <template>
+    <div class="container">
+      <paper-drawer-panel id="paperDrawerPanel" right-drawer>
+        
+        <div drawer>
+          <model-config model="EducationChildren"></model-config>
+        </div>
+        
+        <div main>
+          <paper-header-panel mode="seamed">
+            <paper-toolbar>
+              <paper-button on-click="_handleModelButton">Model</paper-button>
+              <paper-button on-click="_handleSaveButton">Save</paper-button>
+              <paper-button on-click="_handleLoadButton">Load</paper-button>
+              <div class="add">
+                <paper-icon-button
+                  id="toggleDrawer"
+                  icon="chevron-right" 
+                  on-click="_handleToggleDrawer"></paper-icon-button>
+              </div>
+            </paper-toolbar>
+          </paper-header-panel>
+        </div>
+        
+        </paper-drawer-panel>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'core-controller2',
+    properties: {
+      urls : {
+        type: Array
+      },
+      models : {
+        type: Array,
+        computed: '_getModels(urls)'
+      },
+      showRPanel: {
+        type : Boolean
+      },
+      records : {
+        type: String
+      },
+      currentModel: String
+    },
+    ready: function() {
+      this.isFieldsExist = false;
+      this.$.paperDrawerPanel.drawerWidth = "500px";
+    },
+    _handleToggleDrawer: function(){
+      if(this.$.paperDrawerPanel.hasAttribute('force-narrow')){ // hide
+        this.$.paperDrawerPanel.removeAttribute('force-narrow');
+        this.$.toggleDrawer.icon = 'chevron-right';
+      }
+      else{
+        this.$.paperDrawerPanel.setAttribute('force-narrow',''); // show
+        this.$.toggleDrawer.icon = 'chevron-left'
+      }
+    }
+  });
+</script>
