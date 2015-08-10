@@ -10,21 +10,6 @@
 
 <dom-module id="model-config">
   <style>
-    .container{
-      font-family: 'Roboto Regular', sans-serif;
-      height: 100%;
-      background-color: var(--google-grey-100);
-    }
-    .header-text {
-      --paper-toolbar-background: #4CAF50;
-      font-size: 150%;
-    }
-    .content{
-      width: 100%;
-      height: 100%;
-      @apply(--layout-vertical);
-      overflow-y: auto;
-    }
     .item{
       @apply(--layout-vertical);
       background-color: #FFFFFF;
@@ -46,7 +31,7 @@
     .detail{
       display: none;
       margin-left: 50px;
-      margin-right: 50px;
+      margin-right: 20px;
     }
   </style>
   <template>
@@ -61,32 +46,23 @@
     </iron-ajax>
     
     <div class="container">
-      <paper-header-panel mode="seamed">
-        <paper-toolbar class="header-text">
-          <div>Model configuration</div>
-        </paper-toolbar>
-        <div id="content">
-          <div class="item">
-            <div class="item-header">
-              <div>
-                <paper-checkbox></paper-checkbox>
-                <span>{{model}}</span>
-              </div>
-              <paper-icon-button
-                icon="expand-more"
-                on-click="_handleExpand">
-              </paper-icon-button>
-            </div>
-            <div class="detail">
-              <template is="dom-repeat" items="{{model_properties}}">
-                <property-filter 
-                  model="{{model}}" 
-                  property="{{item}}"></property-filter>
-              </template>
-            </div>
+      <div class="item">
+        <div class="item-header">
+          <div>
+            <paper-checkbox></paper-checkbox>
+            <span>{{_modelsToString(models)}}</span>
           </div>
+          <paper-icon-button
+            icon="expand-more"
+            on-click="_handleExpand">
+          </paper-icon-button>
         </div>
-      </paper-header-panel>
+        <div class="detail">
+          <template is="dom-repeat" items="{{model_properties}}">
+            <property-filter property_description="{{item}}"></property-filter>
+          </template>
+        </div>
+      </div>
     </div>
   </template>
 </dom-module>
@@ -95,7 +71,7 @@
   Polymer({
     is: 'model-config',
     properties: {
-      model: {
+      models: {
         type: String,
         observer: '_modelChange'
       },
@@ -111,31 +87,55 @@
     },
     ready: function() {
     },
+    _modelsToString: function(models){
+      if(models.length > 1){
+        return models.join(' AND ');
+      }
+      else{
+        return models;
+      }
+    },
     _modelChange: function(){
-      this.$.getDescription.url = 'explorer/resources/' + this.model;
-      this.$.getDescription.generateRequest();
+      for(var i = 0; i < this.models.length; i++){
+        this.$.getDescription.url = 'explorer/resources/' + this.models[i];
+        this.$.getDescription.generateRequest();
+      }
     },
     _handleDescription : function() {
       var model_description = this.$.getDescription.lastResponse;
       var key = Object.keys(model_description.models)[0];
       var obj = model_description.models[key].properties;
-      this.model_properties = Object.keys(obj).map(function(key) {
-        return {name:key,value:obj[key]};
-      });
+      var modelName = model_description.resourcePath.slice(1);
+      if(!this.model_properties){
+        this.model_properties = Object.keys(obj).map(function(key) {
+          return {model:modelName,property:key,value:obj[key]};
+        });
+      }
+      else{
+        var tmp = Object.keys(obj).map(function(key) {
+          return {model:modelName,property:key,value:obj[key]};
+        });
+        this.model_properties = this.model_properties.concat(tmp);
+      }
       this.where = {'and':[]};
-      this._computeReturnRecords(this.where);
+      this._computeReturnRecords(model_description.resourcePath, this.where);
     },
-    _computeReturnRecords: function(where) {
+    _computeReturnRecords: function(modelName, where) {
       if(where.and.length > 0){
-        this.$.countAjax.url = '/api/' + this.model + '/count?where='+encodeURI(JSON.stringify(where));
+        this.$.countAjax.url = '/api' + modelName + '/count?where='+encodeURI(JSON.stringify(where));
         this.$.countAjax.generateRequest();
       } else {
-        this.$.countAjax.url = '/api/' + this.model +'/count';
+        this.$.countAjax.url = '/api' + modelName +'/count';
         this.$.countAjax.generateRequest();
       }
     },
     _handleCount : function() {
-      this.records = this.$.countAjax.lastResponse.count;
+      if(!this.records){
+        this.records = this.$.countAjax.lastResponse.count;
+      }
+      else{
+        this.records += this.$.countAjax.lastResponse.count;
+      }
       console.log(this.records)
       //this.fire('done');
     },

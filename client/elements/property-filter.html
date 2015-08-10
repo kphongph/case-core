@@ -9,18 +9,36 @@
 
 <dom-module id="property-filter">
   <style>
+    paper-material{
+      width: 100%;
+      margin-bottom: 5px;
+    }
     .detailItem{
       @apply(--layout-horizontal);
       @apply(--layout-justified);
-      padding: 10px;
     }
-    .detailItem span{
-      padding: 10px;
+    .detailItem:hover{
+      color: #4CAF50;
+      background-color: var(--google-grey-80);
     }
     .detailItem paper-button{
       width: 50px;
     }
+    .detailItem .desc-name{
+      margin-top: 12px;
+      @apply(--layout-horizontal);
+    }
+    .detailItem .desc-name .desc-model{
+      padding-left: 10px;
+      margin-top: 4px;
+      font-size: 70%;
+    }
+    .detailItem .desc-name .desc-property{
+      margin-top: -2px;
+      font-size: 110%;
+    }
     paper-button{
+      min-width: 100px;
       font-size: 90%;
     }
     paper-button.blue {
@@ -87,10 +105,13 @@
     
     <paper-material elevation="1">
       <div class="detailItem">
-        <span>{{property.name}}</span>
+        <div class="desc-name">
+          <div class="desc-model">{{_getDescriptionModel(property_description)}}</div>.
+          <div class="desc-property">{{_getDescriptionProperty(property_description)}}</div>
+        </div>
         <paper-button
           tabindex="0" class="blue ripple"
-          on-click="_handleFilter">Filter</paper-button>
+          on-click="_handleFilter">Filter<iron-icon icon$="{{expandIcon}}"></iron-icon></paper-button>
       </div>
       <paper-progress 
         hidden$="{{!isLoading}}" value="{{value}}" 
@@ -122,7 +143,7 @@
   Polymer({
     is: 'property-filter',
     properties: {
-      model: String,
+      property_description: String,
       property: Object,
       isExpand: Boolean,
       isLoading: Boolean,
@@ -142,31 +163,56 @@
       maxValuePerPage: {
         type: Number,
         value: 5
+      },
+      expandIcon: {
+        type: String,
+        value: 'expand-more'
       }
     },
     ready: function(){
       this.isExpand = false;
       this.isLoading = false;
     },
+    _getDescriptionModel: function(property_description){
+      return property_description.model;
+    },
+    _getDescriptionProperty: function(property_description){
+      return property_description.property;
+    },
+    _swapExpandIcon: function(){
+      if(this.expandIcon == 'expand-more'){
+        this.expandIcon = 'expand-less';
+      }
+      else{
+        this.expandIcon = 'expand-more';
+      }
+    },
     _handleFilter: function(e){
       if(!this.isExpand){
-        this.isLoading = true;
-
-        // check null
-        var query_null = {};
-        query_null[this.property.name] = null;
-        this.$.nullWorker.url = '/api/' + this.model + '/count?where=' + JSON.stringify(query_null);
-        this.$.nullWorker.generateRequest();
-      
-        // query all without null
-        var query = {fields:{},where:{}};
-        query.fields[this.property.name] = true;
-        query.where[this.property.name] = {'neq':null};
-        this.$.loadProperty.url = '/api/' + this.model + '?filter='+JSON.stringify(query);
-        this.$.loadProperty.generateRequest();
+        if(!this.content){
+          this.isLoading = true;
+  
+          // check null
+          var query_null = {};
+          query_null[this.property_description.property] = null;
+          this.$.nullWorker.url = '/api/' + this.property_description.model + '/count?where=' + JSON.stringify(query_null);
+          this.$.nullWorker.generateRequest();
+        
+          // query all without null
+          var query = {fields:{},where:{}};
+          query.fields[this.property_description.property] = true;
+          query.where[this.property_description.property] = {'neq':null};
+          this.$.loadProperty.url = '/api/' + this.property_description.model + '?filter='+JSON.stringify(query);
+          this.$.loadProperty.generateRequest();
+        }
+        else{
+          this.isExpand = !this.isExpand;
+          this._swapExpandIcon();
+        }
       }
       else{
         this.isExpand = !this.isExpand;
+        this._swapExpandIcon();
       }
     },
     _handleNullRequest: function() {
@@ -197,11 +243,11 @@
       this.taskList = [];
       for(var i=0;i<values.length;i++) {
         this.taskList.push(this.async(this._updateProgress, true));
-        if(!tmp[values[i][this.property.name]]) {
-          tmp[values[i][this.property.name]] = {count:0};
+        if(!tmp[values[i][this.property_description.property]]) {
+          tmp[values[i][this.property_description.property]] = {count:0};
           j++;
         }
-        tmp[values[i][this.property.name]].count++;
+        tmp[values[i][this.property_description.property]].count++;
       }
       this.content = Object.keys(tmp).map(function(key) {
         return {name:key,value:tmp[key]};
@@ -213,13 +259,13 @@
       if(j<max_categories) {
         this.set('attr.isCategory',true);
       } else {
-        if(this.property.value.type == "string" && 
-           this.property.value.format == "date") {
+        if(this.property_description.value.type == "string" && 
+           this.property_description.value.format == "date") {
           this.set('attr.isDate',true);
           var min_date = new Date();
           var max_date = new Date(1970,1,1);
           for(var i=0;i<values.length;i++) {
-            var tmp_date = new Date(values[i][this.property.name]);
+            var tmp_date = new Date(values[i][this.property_description.name]);
             if(tmp_date.getTime() >= max_date.getTime()) {
               max_date = tmp_date;
             }
@@ -229,14 +275,15 @@
           }
           this.set('attr.start_date',min_date);
           this.set('attr.end_date',max_date);
-        } else if(this.property.value.type == "string"){
+        } else if(this.property_description.value.type == "string"){
           this.set('attr.isText',true);
-        } else if(this.property.value.type == "number"){
+        } else if(this.property_description.value.type == "number"){
           this.set('attr.isNumber',true);
         }
       }
       this.isLoading = false;
       this.isExpand = true;
+      this._swapExpandIcon();
       this._showResult();
     },
     _showResult: function(){
