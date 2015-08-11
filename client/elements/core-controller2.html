@@ -8,6 +8,7 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="./model-config.html">
+<link rel="import" href="./model-filter.html">
 
 <dom-module id="core-controller2">
   <style>
@@ -55,6 +56,11 @@
     }
   </style>
   <template>
+    <model-filter id="modelFilter" 
+      on-confirm="_handleModelsConfirm"
+      url="/explorer/resources">
+    </model-filter>
+      
     <div class="container">
       <paper-drawer-panel id="paperDrawerPanel" right-drawer>
         
@@ -65,8 +71,11 @@
                 <div>Model configuration</div>
               </paper-toolbar>
               <div id="model-content">
-                <model-config models="{{models}}"></model-config>
-                <model-config models="{{models1}}"></model-config>
+                    <template is="dom-repeat" items="{{models}}">
+                        <model-config models="{{item}}"></model-config>
+                    </template>
+                
+                    <model-config models="{{models1}}"></model-config>
               </div>
             </paper-header-panel>
           </div>
@@ -98,21 +107,21 @@
   Polymer({
     is: 'core-controller2',
     properties: {
-      urls : {
-        type: Array
-      },
-      showRPanel: {
-        type : Boolean
-      },
-      records : {
-        type: String
-      },
-      currentModel: String
+        urls : {
+            type: Array
+        },
+        showRPanel: {
+            type : Boolean
+        },
+        records : {
+            type: String
+        },
+        currentModel: String,
+        models: Array
     },
     ready: function() {
       this.isFieldsExist = false;
       this.$.paperDrawerPanel.drawerWidth = "500px";
-      this.models = ["EducationChildren"];
       this.models1 = ["EducationChildren", "DisabilityPeople"];
     },
     _handleToggleDrawer: function(){
@@ -124,6 +133,18 @@
         this.$.paperDrawerPanel.setAttribute('force-narrow',''); // show
         this.$.toggleDrawer.icon = 'chevron-left'
       }
+    },
+    _handleModelButton: function(){
+      this.$.modelFilter.show();
+    },
+    _handleModelsConfirm: function(e){
+        this.models = [];
+        for(var i = 0; i < e.detail.length; i++){
+            var tmp = [];
+            tmp.push(e.detail[i].split('/').pop());
+            this.models.push(tmp);
+        }
+        this.models = this.models.slice();
     }
   });
 </script>
