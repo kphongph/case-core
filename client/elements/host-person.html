@@ -1,0 +1,177 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
+
+<dom-module id="host-person">
+    <style>
+        .container{
+            @apply(--layout-vertical);
+            @apply(--layout-center-justified);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: : center;
+        }
+        paper-card {
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        .blue {
+            --paper-card-header-color: #03A9F4;
+        }
+        .title{
+            font-size: 26px;
+        }
+        .body{            
+            height: 300px;
+            @apply(--layout-vertical);
+            overflow-y: auto;
+        }
+		.card-actions .action{
+            @apply(--layout-horizontal);
+			@apply(--layout-justified);
+        }
+        .item{
+            padding: 10px;
+        }
+    </style>
+    <template>
+        <div class="container">
+            <paper-card class="blue" animated-shadow>
+                <div class="card-content">
+                    <div class="title" id="titleText">เลือกโรงเรียน <span>{{_hostToString(selectedHost)}}</span></div>
+                </div>  
+                <div class="card-actions body" id="list">
+                    <template is="dom-if" if="{{!multiple}}">                        
+                        <template is="dom-repeat" items="{{data}}">
+                            <paper-material class="item" elevation="1">
+                                <paper-radio-button name="{{_getID(item)}}" on-change="_handleRadio">{{_getText(item)}}</paper-radio-button>
+                            </paper-material>
+                        </template>
+                    </template>
+                    <template is="dom-if" if="{{multiple}}">
+                        <template is="dom-repeat" items="{{data}}">
+							<paper-material class="item" elevation="1">
+								<paper-checkbox name="{{_getID(item)}}" on-change="_handleCheckbox">{{item.value}}</paper-checkbox>
+							</paper-material>
+                        </template>
+                    </template>
+                </div>
+                <div class="card-actions">
+                    <div class="action">
+						<paper-button on-click="_handleLeftButton">{{leftText}}</paper-button>
+						<paper-button on-click="_handleRightButton">{{rightText}}</paper-button>						
+                    </div>
+                </div>
+            </paper-card>
+        </div>
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'host-person',
+    properties: {
+        data: Array,
+		selectedHost: Object,
+		selectedPerson: Array,
+        multiple: {
+            type: Boolean,
+            value: false
+        },
+		state: String,
+		leftText: {
+			type: String,
+			value: 'ยกเลิก'
+		},
+		rightText: {
+			type: String,
+			value: 'ตกลง'
+		}
+    },
+    ready: function() {
+        this.data = [
+            {"key":"01","value":"โรงเรียน A"}, 
+            {"key":"02","value":"โรงเรียน B"},
+            {"key":"03","value":"โรงเรียน C"}];
+		this.state = "select_host";
+    },
+	_hostToString: function(host){
+		if(host.text){
+			return "(" + host.text + ")";
+		}
+		else{
+			return "";
+		}
+	},
+	_getID: function(obj){
+		var key = Object.keys(obj)[0];
+		return obj[key];
+	},
+	_getText: function(obj){
+		var key = Object.keys(obj)[1];
+		return obj[key];
+	},
+	_handleRadio: function(e){
+		this.selectedHost = {'id':e.target.name,'text':e.target.innerText.trim()};		
+		var radioGroup = this.$.list.querySelectorAll('paper-radio-button');
+		for(var i = 0; i < radioGroup.length; i++){
+			if(radioGroup[i].checked && radioGroup[i] != e.target){
+				radioGroup[i].checked = !radioGroup[i].checked;
+			}
+		}
+	},
+	_handleCheckbox: function(e){
+		if(!this.selectedPerson){
+			this.selectedPerson = [];
+		}
+		if(e.target.checked){
+			if(this.selectedPerson.indexOf(e.target.name) == -1){
+				this.selectedPerson.push(e.target.name);
+			}
+		}
+		else{
+			var index = this.selectedPerson.indexOf(e.target.name);
+			if(index != -1){
+				this.selectedPerson.splice(index, 1);
+			}
+		}
+	},
+	_handleRightButton: function(e){
+		if(this.state == 'select_host'){			
+			this.multiple = true;
+			this._state_select_person();
+		}
+		else{
+			// save
+			console.log(this.selectedHost)
+			console.log(this.selectedPerson)
+		}
+	},
+	_handleLeftButton: function(){
+		if(this.state == 'select_person'){			
+			this.multiple = false;
+			this._state_select_host();
+		}
+		else{
+			// cancel
+		}
+	},
+	_state_select_host: function(){
+		this.leftText = "ยกเลิก";
+		this.rightText = "ตกลง";
+		this.state = 'select_host';
+		this.$.titleText.innerText = "เลือกโรงเรียน" + this._hostToString(this.selectedHost);
+	},
+	_state_select_person: function(){
+		this.leftText = "ย้อนกลับ";
+		this.rightText = "บันทึก";
+		this.state = 'select_person';
+		this.$.titleText.innerText = "เลือกนักเรียน" + this._hostToString(this.selectedHost);
+	}
+  });
+</script>
