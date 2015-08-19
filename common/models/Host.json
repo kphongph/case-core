@@ -1,0 +1,86 @@
+{
+  "name": "Host",
+  "mongodb": {
+    "collection":"host"
+  },
+  "options": {
+    "idInjection": true
+  },
+  "properties": {
+    "Name": {
+		"type": "String",
+		"required": true,
+		"generated": false,
+		"length": -1
+    },
+    "StreetAddress" : {
+		"type": "String",
+		"required": true,
+		"generated": false,
+		"length": -1
+	},
+	"StreetName" : {
+		"type": "String",
+		"required": true,
+		"generated": false
+	},
+	"City" : {
+		"type": "String",
+		"required": true,
+		"generated": false,
+		"length": -1
+	},
+	"Province" : {
+		"type": "String",
+		"required": true,
+		"generated": false,
+		"length": -1
+	},
+	"PostCode" : {
+		"type": "String",
+		"required": true,
+		"generated": false,
+		"length": -1
+	},
+	"Tumbon" : {
+		"type": "String",
+		"required": true,
+		"generated": false,
+		"length": -1
+	},
+	"Latitude" : {
+		"type": "String",
+		"required": true,
+		"generated": false,
+		"length": -1
+	},
+	"Longtitude" : {
+		"type": "String",
+		"required": true,
+		"generated": false,
+		"length": -1
+	},
+	"Type" : {
+		"type": "String",
+		"required": true,
+		"generated": false,
+		"length": -1
+	},
+	"Provider" : {
+		"type": "String",
+		"required": true,
+		"generated": false,
+		"length": -1
+	},
+	"ShortName" : {
+		"type": "String",
+		"required": true,
+		"generated": false,
+		"length": -1
+	}
+  },
+  "relations":{
+  },
+  "acls":[
+  ]
+}

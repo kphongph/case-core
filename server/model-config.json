@@ -1,14 +1,18 @@
 {
-  "_meta": {
-    "sources": [
-      "loopback/common/models",
-      "loopback/server/models",
-      "../common/models",
-      "./models"
-    ]
-  },
-  "Person": {
-    "dataSource": "labMongoDS",
-    "public": true
-}
+	  "_meta": {
+		"sources": [
+		  "loopback/common/models",
+		  "loopback/server/models",
+		  "../common/models",
+		  "./models"
+		]
+	  },
+	"Person": {
+		"dataSource": "labMongoDS",
+		"public": true
+	},
+	"Host" : {
+		"dataSource" : "labMongoDS",
+		"public" : true
+	}
 }

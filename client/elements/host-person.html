@@ -43,7 +43,7 @@
         }
     </style>
     <template>
-		<host-ajax id="hostAjax" on-success="_onHostSuccess"></host-ajax>
+		<host-ajax id="hostAjax" on-host-ajax-success="_onHostSuccess"></host-ajax>
         <div class="container">
             <paper-card class="blue" animated-shadow>
                 <div class="card-content">
@@ -160,8 +160,8 @@
 		}
 		else{
 			// save
-			console.log(this.selectedHost)
-			console.log(this.selectedPerson)
+			// console.log(this.selectedHost)
+			// console.log(this.selectedPerson)
 		}
 	},
 	_handleLeftButton: function(){
@@ -191,7 +191,6 @@
 	_handleSearch: function(e){
 		this.pageIndex = 0;
 		this.$.hostAjax.search(e.target.value, this.pageIndex, this.pageLimit);
-		console.log(e.target.value);
 	}
   });
 </script>
