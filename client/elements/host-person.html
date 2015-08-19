@@ -5,6 +5,9 @@
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+
+<link rel="import" href="../bower_components/host-ajax/host-ajax.html">
 
 <dom-module id="host-person">
     <style>
@@ -40,11 +43,15 @@
         }
     </style>
     <template>
+		<host-ajax id="hostAjax" on-success="_onHostSuccess"></host-ajax>
         <div class="container">
             <paper-card class="blue" animated-shadow>
                 <div class="card-content">
                     <div class="title" id="titleText">เลือกโรงเรียน <span>{{_hostToString(selectedHost)}}</span></div>
-                </div>  
+                </div>
+				<div class="card-actions">
+					<paper-input label="ชื่อโรงเรียน..." on-input="_handleSearch"></paper-input>
+				</div>
                 <div class="card-actions body" id="list">
                     <template is="dom-if" if="{{!multiple}}">                        
                         <template is="dom-repeat" items="{{data}}">
@@ -91,6 +98,11 @@
 		rightText: {
 			type: String,
 			value: 'ตกลง'
+		},
+		pageIndex: Number,
+		pageLimit: {
+			type: Number,
+			value: 10
 		}
     },
     ready: function() {
@@ -153,7 +165,7 @@
 		}
 	},
 	_handleLeftButton: function(){
-		if(this.state == 'select_person'){			
+		if(this.state == 'select_person'){
 			this.multiple = false;
 			this._state_select_host();
 		}
@@ -172,6 +184,14 @@
 		this.rightText = "บันทึก";
 		this.state = 'select_person';
 		this.$.titleText.innerText = "เลือกนักเรียน" + this._hostToString(this.selectedHost);
+	},
+	_onHostSuccess: function(e){
+		console.log(e.detail)
+	},
+	_handleSearch: function(e){
+		this.pageIndex = 0;
+		this.$.hostAjax.search(e.target.value, this.pageIndex, this.pageLimit);
+		console.log(e.target.value);
 	}
   });
 </script>
