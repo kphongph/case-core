@@ -14,5 +14,9 @@
 	"Host" : {
 		"dataSource" : "labMongoDS",
 		"public" : true
+	},
+	"HostPerson":{
+		"dataSource" : "labMongoDS",
+		"public" : true
 	}
 }

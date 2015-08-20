@@ -6,191 +6,310 @@
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 
 <link rel="import" href="../bower_components/host-ajax/host-ajax.html">
 
 <dom-module id="host-person">
-    <style>
-        .container{
-            @apply(--layout-vertical);
-            @apply(--layout-center-justified);
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: : center;
-        }
-        paper-card {
-            width: 100%;
-            margin-bottom: 16px;
-        }
-        .blue {
-            --paper-card-header-color: #03A9F4;
-        }
-        .title{
-            font-size: 26px;
-        }
-        .body{            
-            height: 300px;
-            @apply(--layout-vertical);
-            overflow-y: auto;
-        }
+  <style>
+    .container{
+      @apply(--layout-vertical);
+      @apply(--layout-center-justified);
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: : center;
+    }
+    paper-card {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+    .blue {
+      --paper-card-header-color: #03A9F4;
+    }
+    .title{
+      font-size: 26px;
+    }
+    .body{            
+      height: 300px;
+      @apply(--layout-vertical);
+      overflow-y: auto;
+    }
 		.card-actions .action{
-            @apply(--layout-horizontal);
+      @apply(--layout-horizontal);
 			@apply(--layout-justified);
-        }
-        .item{
-            padding: 10px;
-        }
+    }
+    .item{
+      height: 50px;
+    }
+    .item-body{
+      @apply(--layout-horizontal);
+			@apply(--layout-justified);
+			padding: 15px;
+    }
+    .grean{
+      color: #4CAF50;
+      position: absolute;
+      top: 25%;
+      right: 10px;
+    }
+    paper-fab{
+      position: absolute;
+      top: 5px;
+      right: 10px;
+    }
+    paper-spinner{
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
     </style>
     <template>
-		<host-ajax id="hostAjax" on-host-ajax-success="_onHostSuccess"></host-ajax>
-        <div class="container">
-            <paper-card class="blue" animated-shadow>
-                <div class="card-content">
-                    <div class="title" id="titleText">เลือกโรงเรียน <span>{{_hostToString(selectedHost)}}</span></div>
-                </div>
-				<div class="card-actions">
-					<paper-input label="ชื่อโรงเรียน..." on-input="_handleSearch"></paper-input>
-				</div>
-                <div class="card-actions body" id="list">
-                    <template is="dom-if" if="{{!multiple}}">                        
-                        <template is="dom-repeat" items="{{data}}">
-                            <paper-material class="item" elevation="1">
-                                <paper-radio-button name="{{_getID(item)}}" on-change="_handleRadio">{{_getText(item)}}</paper-radio-button>
-                            </paper-material>
-                        </template>
-                    </template>
-                    <template is="dom-if" if="{{multiple}}">
-                        <template is="dom-repeat" items="{{data}}">
-							<paper-material class="item" elevation="1">
-								<paper-checkbox name="{{_getID(item)}}" on-change="_handleCheckbox">{{item.value}}</paper-checkbox>
-							</paper-material>
-                        </template>
-                    </template>
-                </div>
-                <div class="card-actions">
-                    <div class="action">
-						<paper-button on-click="_handleLeftButton">{{leftText}}</paper-button>
-						<paper-button on-click="_handleRightButton">{{rightText}}</paper-button>						
-                    </div>
-                </div>
-            </paper-card>
-        </div>
+      <iron-ajax id="checkExist" 
+        handle-as="json"
+        on-response="_handleCheckExist">
+      </iron-ajax>
+      <iron-ajax id="saveAjax" 
+        handle-as="json"
+        method="POST"
+        content-type="application/json"
+        on-response="_handleAjaxSave">
+      </iron-ajax>
+		  <host-ajax id="hostAjax" on-host-ajax-success="_onHostSuccess"></host-ajax>
+      <div class="container">
+        <paper-card class="blue" animated-shadow>
+          <div class="card-content">
+            <div class="title" id="titleText">เลือกโรงเรียน <span>{{_hostToString(selectedHost)}}</span></div>
+          </div>
+				  <div class="card-actions">
+					  <paper-input label="ชื่อโรงเรียน..." on-input="_handleSearch"></paper-input>
+				  </div>
+          <div class="card-actions body" id="list">
+            <template is="dom-if" if="{{!multiple}}">                        
+              <template is="dom-repeat" items="{{hostList}}">
+                <paper-material class="item" elevation="1">
+                  <div class="item-body">
+                    <paper-radio-button name="{{_getID(item)}}" on-change="_handleRadio">{{_getText(item)}}</paper-radio-button>
+                  </div>
+                </paper-material>
+              </template>
+            </template>
+            <div id="itemDetails">
+              <template is="dom-if" if="{{multiple}}">
+                <template is="dom-repeat" items="{{personList}}">
+  					  		<paper-material class="item" elevation="1">
+  					  		  <div class="item-body">
+  					  		    <div>{{item.value}}</div>
+  					  		    <div>
+  					  		      <paper-spinner name="{{_getID(item)}}" active></paper-spinner>
+  					  		      <span hidden name="{{_getID(item)}}" class="grean">อยู่ในโรงเรียนแล้ว</span>
+  					  		      <paper-fab hidden mini icon="add" name="{{_getID(item)}}" on-click="_handleSave"></paper-fab>
+  					  		    </div>
+  					  		  </div>
+  							  </paper-material>
+                </template>
+                <span>{{_generateRequest()}}</span>
+              </template>
+            </div>
+          </div>
+          <div class="card-actions">
+            <div class="action">
+					  	<paper-button on-click="_handleLeftButton">{{leftText}}</paper-button>
+						  <paper-button id="rightButton" on-click="_handleRightButton">เลือก</paper-button>						
+            </div>
+          </div>
+        </paper-card>
+      </div>
     </template>
 </dom-module>
 
 <script>
-    Polymer({
-        is: 'host-person',
+  Polymer({
+    is: 'host-person',
     properties: {
-        data: Array,
-		selectedHost: Object,
-		selectedPerson: Array,
-        multiple: {
-            type: Boolean,
-            value: false
-        },
-		state: String,
-		leftText: {
-			type: String,
-			value: 'ยกเลิก'
-		},
-		rightText: {
-			type: String,
-			value: 'ตกลง'
-		},
-		pageIndex: Number,
-		pageLimit: {
-			type: Number,
-			value: 10
-		}
+      hostList: Array,
+      personList: Array,
+  	  selectedHost: Object,
+      multiple: {
+        type: Boolean,
+        value: false
+      },
+  	  state: String,
+  	  leftText: {
+  		  type: String,
+  		  value: 'ยกเลิก'
+  	  },
+  	  pageIndex: Number,
+  	  pageLimit: {
+  		  type: Number,
+  		  value: 10
+  	  },
+  	  requestQueue: Array,
+  	  currentModel: String
     },
     ready: function() {
-        this.data = [
-            {"key":"01","value":"โรงเรียน A"}, 
-            {"key":"02","value":"โรงเรียน B"},
-            {"key":"03","value":"โรงเรียน C"}];
-		this.state = "select_host";
+      this.personList = [
+            {"key":"55cbfae9955856f8174ddd93","value":"จำผา ราคี"}, 
+            {"key":"55d123873ead001814535dce","value":"คนดี ที่โลกรอคอย"},
+            {"key":"55d4be31002abdd81c72d706","value":"จิงโจ้ แมวน้ำ"}];
+      var tmp = this.personList.map(function(obj){
+  		  return obj.key;
+  		});
+  		this.requestQueue = tmp.slice();
+  	  this.state = "select_host";
+  	  this.$.hostAjax.search('', this.pageIndex, this.pageLimit);
     },
-	_hostToString: function(host){
-		if(host.text){
-			return "(" + host.text + ")";
-		}
-		else{
-			return "";
-		}
-	},
-	_getID: function(obj){
-		var key = Object.keys(obj)[0];
-		return obj[key];
-	},
-	_getText: function(obj){
-		var key = Object.keys(obj)[1];
-		return obj[key];
-	},
-	_handleRadio: function(e){
-		this.selectedHost = {'id':e.target.name,'text':e.target.innerText.trim()};		
-		var radioGroup = this.$.list.querySelectorAll('paper-radio-button');
-		for(var i = 0; i < radioGroup.length; i++){
-			if(radioGroup[i].checked && radioGroup[i] != e.target){
-				radioGroup[i].checked = !radioGroup[i].checked;
-			}
-		}
-	},
-	_handleCheckbox: function(e){
-		if(!this.selectedPerson){
-			this.selectedPerson = [];
-		}
-		if(e.target.checked){
-			if(this.selectedPerson.indexOf(e.target.name) == -1){
-				this.selectedPerson.push(e.target.name);
-			}
-		}
-		else{
-			var index = this.selectedPerson.indexOf(e.target.name);
-			if(index != -1){
-				this.selectedPerson.splice(index, 1);
-			}
-		}
-	},
-	_handleRightButton: function(e){
-		if(this.state == 'select_host'){			
-			this.multiple = true;
-			this._state_select_person();
-		}
-		else{
-			// save
-			// console.log(this.selectedHost)
-			// console.log(this.selectedPerson)
-		}
-	},
-	_handleLeftButton: function(){
-		if(this.state == 'select_person'){
-			this.multiple = false;
-			this._state_select_host();
-		}
-		else{
-			// cancel
-		}
-	},
-	_state_select_host: function(){
-		this.leftText = "ยกเลิก";
-		this.rightText = "ตกลง";
-		this.state = 'select_host';
-		this.$.titleText.innerText = "เลือกโรงเรียน" + this._hostToString(this.selectedHost);
-	},
-	_state_select_person: function(){
-		this.leftText = "ย้อนกลับ";
-		this.rightText = "บันทึก";
-		this.state = 'select_person';
-		this.$.titleText.innerText = "เลือกนักเรียน" + this._hostToString(this.selectedHost);
-	},
-	_onHostSuccess: function(e){
-		console.log(e.detail)
-	},
-	_handleSearch: function(e){
-		this.pageIndex = 0;
-		this.$.hostAjax.search(e.target.value, this.pageIndex, this.pageLimit);
-	}
+    _hostToString: function(host){
+  	  if(host.text){
+  			return "(" + host.text + ")";
+  		}
+  		else{
+  			return "";
+  		}
+  	},
+  	_getID: function(obj){
+  		var key = Object.keys(obj)[0];
+  		return obj[key];
+  	},
+  	_getText: function(obj){
+  		var key = Object.keys(obj)[1];
+  		return obj[key];
+  	},
+  	_handleRadio: function(e){
+  		this.selectedHost = {'id':e.target.name,'text':e.target.innerText.trim()};		
+  		var radioGroup = this.$.list.querySelectorAll('paper-radio-button');
+  		for(var i = 0; i < radioGroup.length; i++){
+  			if(radioGroup[i].checked && radioGroup[i] != e.target){
+  				radioGroup[i].checked = !radioGroup[i].checked;
+  			}
+  		}
+  	},
+  	_handleRightButton: function(e){
+  		if(this.state == 'select_host'){			
+  			this.multiple = true;
+  			this._state_select_person();
+  		}
+  	},
+  	_handleLeftButton: function(){
+  		if(this.state == 'select_person'){
+  			this.multiple = false;
+  			this._state_select_host();
+  		}
+  		else{
+  			// cancel
+  		}
+  	},
+  	_state_select_host: function(){
+  		this.leftText = "ยกเลิก";
+  		this.$.rightButton.hidden = false;
+  		this.state = 'select_host';
+  		this.$.titleText.innerText = "เลือกโรงเรียน" + this._hostToString(this.selectedHost);
+  	},
+  	_state_select_person: function(){
+  		this.leftText = "ย้อนกลับ";
+  		this.$.rightButton.hidden = true;
+  		this.state = 'select_person';
+  		this.$.titleText.innerText = "เลือกนักเรียน" + this._hostToString(this.selectedHost);
+  	},
+  	_onHostSuccess: function(e){
+  		if(e.detail){
+  		  if(e.detail.data){
+  		    var tmp = e.detail.data.map(function(obj){
+  		      return {id:obj.id,text:obj.Name};
+  		    });
+  		    this.hostList = tmp.slice();
+  		  }
+  		}
+  	},
+  	_handleSearch: function(e){
+  		this.pageIndex = 0;
+  		this.$.hostAjax.search(e.target.value, this.pageIndex, this.pageLimit);
+  	},
+  	_handleCheckExist: function(){
+  	  var url = decodeURI(this.$.checkExist.url);
+  	  var where = JSON.parse(url.split('where=')[1]);
+  	  var personID = where.and.filter(function(a){ return a.PersonID })[0].PersonID;
+  	  this._updateStatus(personID, this.$.checkExist.lastResponse.count);
+  	  this._generateRequest();
+  	},
+  	_updateStatus: function(id, count){
+  	  var spinners = this.$.itemDetails.querySelectorAll('paper-spinner');
+  	  for(var i = 0; i < spinners.length; i++){
+    		if(spinners[i].name == id){
+    			spinners[i].active = false;
+    			break;
+    		}
+  		}
+  		
+  		var fabs = this.$.itemDetails.querySelectorAll('paper-fab');
+  	  for(var i = 0; i < fabs.length; i++){
+    		if(fabs[i].name == id){
+    		  if(count == 0){
+    		    setTimeout(function(){ fabs[i].hidden = false; }, 500);
+    		  }
+    		  else{
+    		    setTimeout(function(){ fabs[i].hidden = true; }, 500);
+    		  }
+    		  break;
+    		}
+  		}
+  		  
+  	  var spans = this.$.itemDetails.querySelectorAll('span');
+  	  if(count > 0){
+    	  this._hideShow(spans, id, false);
+    	}
+    	else{
+    	  this._hideShow(spans, id, true);
+    	}
+  		this._hideShow(spans, false);
+  	},
+  	_hideShow: function(elements, compare, isShow){
+  	  for(var i = 0; i < elements.length; i++){
+    		if(elements[i].name == compare){
+    		  setTimeout(function(){ elements[i].hidden = isShow; }, 500);
+    			break;
+    		}
+  		}
+  	},
+  	_generateRequest: function(){
+  	  if(this.requestQueue){
+  	    if(this.requestQueue.length > 0){
+  	      var where = {"and":[{"HostID":this.selectedHost.id},{"PersonID":this.requestQueue.shift()}]};
+      		this.$.checkExist.url = "/api/HostPeople/count?where=" + encodeURI(JSON.stringify(where));
+      		this.$.checkExist.generateRequest();
+  	    }
+  	  }
+  	},
+  	_handleSave: function(e){
+  	  var target = this._findUntil(e.target, 'paper-fab', 5);
+  	  
+  	  this.$.saveAjax.url = "/api/HostPeople";
+      this.$.saveAjax.body = JSON.stringify({
+        "HostID": this.selectedHost.id,
+        "PersonID": target.name,
+        "StartDate": new Date()
+      });
+  	  this.$.saveAjax.generateRequest();
+  	},
+  	_handleAjaxSave: function(){
+  	  if(this.$.saveAjax.lastResponse){
+  	    var body = JSON.parse(this.$.saveAjax.body);
+  	    this._updateStatus(body.PersonID, 1);
+  	  }
+  	},
+  	_findUntil: function(element, expectTag, limitLoop){
+      for(var i = 0; i < limitLoop; i++){
+        if(element.localName == expectTag){
+          return element;
+        }
+        else{
+          element = element.parentNode;
+        }
+      }
+      return null;
+    }
   });
 </script>

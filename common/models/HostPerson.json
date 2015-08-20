@@ -1,0 +1,41 @@
+{
+  "name": "HostPerson",
+  "mongodb": {
+    "collection":"hostperson"
+  },
+  "options": {
+    "idInjection": true
+  },
+  "properties": {
+    "HostID": {
+      "type": "String",
+      "required": true,
+      "generated": false,
+      "length": -1
+    },
+    "PersonID": {
+      "type": "String",
+      "required": true,
+      "generated": false,
+      "length": -1
+    },
+	"StartDate": {
+      "type": "Date",
+      "required": true,
+      "length": null,
+      "precision": null,
+      "scale": null
+    },
+	"EndDate": {
+      "type": "Date",
+      "required": false,
+      "length": null,
+      "precision": null,
+      "scale": null
+    }
+  },
+  "relations":{
+  },
+  "acls":[
+  ]
+}
