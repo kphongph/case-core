@@ -236,40 +236,32 @@
   	  this._generateRequest();
   	},
   	_updateStatus: function(id, count){
-  	  var spinners = this.$.itemDetails.querySelectorAll('paper-spinner');
-  	  for(var i = 0; i < spinners.length; i++){
-    		if(spinners[i].name == id){
-    			spinners[i].active = false;
-    			break;
-    		}
-  		}
+  	  this._hideShow('paper-spinner', id, false, 500);
   		
-  		var fabs = this.$.itemDetails.querySelectorAll('paper-fab');
-  	  for(var i = 0; i < fabs.length; i++){
-    		if(fabs[i].name == id){
-    		  if(count == 0){
-    		    setTimeout(function(){ fabs[i].hidden = false; }, 500);
-    		  }
-    		  else{
-    		    setTimeout(function(){ fabs[i].hidden = true; }, 500);
-    		  }
-    		  break;
-    		}
-  		}
-  		  
-  	  var spans = this.$.itemDetails.querySelectorAll('span');
-  	  if(count > 0){
-    	  this._hideShow(spans, id, false);
+  	  if(count == 0){
+    	  this._hideShow('paper-fab', id, false, 500);
     	}
     	else{
-    	  this._hideShow(spans, id, true);
+    	  this._hideShow('paper-fab', id, true, 500);
     	}
-  		this._hideShow(spans, false);
+  	  
+  	  if(count > 0){
+    	  this._hideShow('span', id, false, 500);
+    	}
+    	else{
+    	  this._hideShow('span', id, true, 500);
+    	}
   	},
-  	_hideShow: function(elements, compare, isShow){
+  	_hideShow: function(selector, compare, isShow, timeout){
+  	  var elements = this.$.itemDetails.querySelectorAll(selector);
   	  for(var i = 0; i < elements.length; i++){
     		if(elements[i].name == compare){
-    		  setTimeout(function(){ elements[i].hidden = isShow; }, 500);
+    		  if(selector == 'paper-spinner'){
+    		    setTimeout(function(){ elements[i].active = isShow; }, timeout);
+    		  }
+    		  else{
+    		    setTimeout(function(){ elements[i].hidden = isShow; }, timeout);
+    		  }
     			break;
     		}
   		}
@@ -285,7 +277,9 @@
   	},
   	_handleSave: function(e){
   	  var target = this._findUntil(e.target, 'paper-fab', 5);
-  	  
+  	  this._hideShow('paper-fab', target.name, true, 1);
+  	  this._hideShow('paper-spinner', target.name, true, 1);
+      
   	  this.$.saveAjax.url = "/api/HostPeople";
       this.$.saveAjax.body = JSON.stringify({
         "HostID": this.selectedHost.id,
