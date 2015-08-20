@@ -12,13 +12,14 @@
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 
 <link rel="import" href="../bower_components/host-ajax/host-ajax.html">
+<link rel="import" href="../bower_components/personui-element/personui-element.html">
 
 <dom-module id="host-person">
   <style>
     .container{
       @apply(--layout-vertical);
       @apply(--layout-center-justified);
-      max-width: 500px;
+      max-width: 600px;
       margin-left: auto;
       margin-right: auto;
       text-align: : center;
@@ -85,7 +86,14 @@
             <div class="title" id="titleText">เลือกโรงเรียน <span>{{_hostToString(selectedHost)}}</span></div>
           </div>
 				  <div class="card-actions">
-					  <paper-input label="ชื่อโรงเรียน..." on-input="_handleSearch"></paper-input>
+				    <template is="dom-if" if="{{!multiple}}">
+					    <paper-input label="ชื่อโรงเรียน..." on-input="_handleSearch"></paper-input>
+					  </template>
+					   
+					  <template is="dom-if" if="{{multiple}}">
+					    <personui-element on-datafromui='_personuiSuccess'></personui-element>
+					  </template>
+					  
 				  </div>
           <div class="card-actions body" id="list">
             <template is="dom-if" if="{{!multiple}}">                        
@@ -102,7 +110,7 @@
                 <template is="dom-repeat" items="{{personList}}">
   					  		<paper-material class="item" elevation="1">
   					  		  <div class="item-body">
-  					  		    <div>{{item.value}}</div>
+  					  		    <div>{{item.text}}</div>
   					  		    <div>
   					  		      <paper-spinner name="{{_getID(item)}}" active></paper-spinner>
   					  		      <span hidden name="{{_getID(item)}}" class="grean">อยู่ในโรงเรียนแล้ว</span>
@@ -111,7 +119,6 @@
   					  		  </div>
   							  </paper-material>
                 </template>
-                <span>{{_generateRequest()}}</span>
               </template>
             </div>
           </div>
@@ -151,14 +158,6 @@
   	  currentModel: String
     },
     ready: function() {
-      this.personList = [
-            {"key":"55cbfae9955856f8174ddd93","value":"จำผา ราคี"}, 
-            {"key":"55d123873ead001814535dce","value":"คนดี ที่โลกรอคอย"},
-            {"key":"55d4be31002abdd81c72d706","value":"จิงโจ้ แมวน้ำ"}];
-      var tmp = this.personList.map(function(obj){
-  		  return obj.key;
-  		});
-  		this.requestQueue = tmp.slice();
   	  this.state = "select_host";
   	  this.$.hostAjax.search('', this.pageIndex, this.pageLimit);
     },
@@ -237,7 +236,6 @@
   	},
   	_updateStatus: function(id, count){
   	  this._hideShow('paper-spinner', id, false, 500);
-  		
   	  if(count == 0){
     	  this._hideShow('paper-fab', id, false, 500);
     	}
@@ -269,7 +267,8 @@
   	_generateRequest: function(){
   	  if(this.requestQueue){
   	    if(this.requestQueue.length > 0){
-  	      var where = {"and":[{"HostID":this.selectedHost.id},{"PersonID":this.requestQueue.shift()}]};
+  	      var id = this.requestQueue.shift();
+  	      var where = {"and":[{"HostID":this.selectedHost.id},{"PersonID":id}]};
       		this.$.checkExist.url = "/api/HostPeople/count?where=" + encodeURI(JSON.stringify(where));
       		this.$.checkExist.generateRequest();
   	    }
@@ -304,6 +303,20 @@
         }
       }
       return null;
+    },
+    _personuiSuccess: function(e){
+      var tmp = e.detail.map(function(obj){
+  		  return {
+  		    key:obj.id,
+  		    text:obj.CID + ' ' + obj.Title + ' ' + obj.FirstName + ' ' + obj.LastName
+  		  };
+  		});
+  		this.personList = tmp.slice();
+      tmp = this.personList.map(function(obj){
+  		  return obj.key;
+  		});
+  		this.requestQueue = tmp.slice();
+  		this._generateRequest();
     }
   });
 </script>

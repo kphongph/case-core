@@ -20,6 +20,7 @@
     "paper-radio-button": "PolymerElements/paper-radio-button#~1.0.6",
     "paper-radio-group": "PolymerElements/paper-radio-group#~1.0.4",
     "host-ajax": "chadpong/host-ajax#master",
+	"personui-element": "Juckky00/personui-element",
     "iron-ajax": "PolymerElements/iron-ajax#~1.0.4",
     "paper-input": "PolymerElements/paper-input#~1.0.11",
     "paper-spinner": "PolymerElements/paper-spinner#~1.0.2",
