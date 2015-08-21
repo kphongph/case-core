@@ -51,11 +51,10 @@
 			@apply(--layout-justified);
 			padding: 15px;
     }
-    .grean{
-      color: #4CAF50;
+    .text{
       position: absolute;
       top: 25%;
-      right: 10px;
+      right: 55px;
     }
     paper-fab{
       position: absolute;
@@ -66,6 +65,14 @@
       position: absolute;
       top: 10px;
       right: 10px;
+    }
+    paper-fab.red {
+      --paper-fab-background: var(--paper-red-500);
+      --paper-fab-keyboard-focus-background: var(--paper-red-900);
+    }
+    paper-fab.green {
+      --paper-fab-background: var(--paper-green-500);
+      --paper-fab-keyboard-focus-background: var(--paper-green-900);
     }
     </style>
     <template>
@@ -78,6 +85,12 @@
         method="POST"
         content-type="application/json"
         on-response="_handleAjaxSave">
+      </iron-ajax>
+      <iron-ajax id="removeAjax" 
+        handle-as="json"
+        method="DELETE"
+        content-type="application/json"
+        on-response="_handleAjaxRemove">
       </iron-ajax>
 		  <host-ajax id="hostAjax" on-host-ajax-success="_onHostSuccess"></host-ajax>
       <div class="container">
@@ -113,8 +126,11 @@
   					  		    <div>{{item.text}}</div>
   					  		    <div>
   					  		      <paper-spinner name="{{_getID(item)}}" active></paper-spinner>
-  					  		      <span hidden name="{{_getID(item)}}" class="grean">อยู่ในโรงเรียนแล้ว</span>
-  					  		      <paper-fab hidden mini icon="add" name="{{_getID(item)}}" on-click="_handleSave"></paper-fab>
+  					  		      <!-- <span name="{{_getID(item)}}" class="text">ตรวจสอบ...</span>  -->
+  					  		      <paper-fab class="green" hidden mini icon="add" 
+  					  		        name="{{_getID(item)}}" on-click="_handleSave"></paper-fab>
+  					  		      <paper-fab class="red" hidden mini icon="remove" value="" 
+  					  		        name="{{_getID(item)}}" on-click="_handleRemove"></paper-fab>
   					  		    </div>
   					  		  </div>
   							  </paper-material>
@@ -154,8 +170,7 @@
   		  type: Number,
   		  value: 10
   	  },
-  	  requestQueue: Array,
-  	  currentModel: String
+  	  requestQueue: Array
     },
     ready: function() {
   	  this.state = "select_host";
@@ -229,68 +244,116 @@
   	},
   	_handleCheckExist: function(){
   	  var url = decodeURI(this.$.checkExist.url);
-  	  var where = JSON.parse(url.split('where=')[1]);
-  	  var personID = where.and.filter(function(a){ return a.PersonID })[0].PersonID;
-  	  this._updateStatus(personID, this.$.checkExist.lastResponse.count);
+  	  var filter = JSON.parse(url.split('filter=')[1]);
+  	  var personID = filter.where.and.filter(function(a){ return a.PersonID })[0].PersonID;
+  	  this._updateStatus(personID, this.$.checkExist.lastResponse);
+  	  this._setFabValue(personID, this.$.checkExist.lastResponse);
   	  this._generateRequest();
   	},
-  	_updateStatus: function(id, count){
-  	  this._hideShow('paper-spinner', id, false, 500);
-  	  if(count == 0){
-    	  this._hideShow('paper-fab', id, false, 500);
+  	_updateStatus: function(id, response){
+  	  this._hideShow('paper-spinner', id, false, 0);
+  	  if(response.length == 0){
+    	  this._hideShow('paper-fab.green', id, true, 500);
+    	  this._hideShow('paper-fab.red', id, false, 500);
     	}
     	else{
-    	  this._hideShow('paper-fab', id, true, 500);
+    	  this._hideShow('paper-fab.green', id, false, 500);
+    	  this._hideShow('paper-fab.red', id, true, 500);
     	}
   	  
-  	  if(count > 0){
-    	  this._hideShow('span', id, false, 500);
+  	  if(response.length > 0){
+    	  this._setSpanText(id, 'มีอยู่');
     	}
     	else{
-    	  this._hideShow('span', id, true, 500);
+    	  this._setSpanText(id, 'นำเข้า');
     	}
   	},
-  	_hideShow: function(selector, compare, isShow, timeout){
+  	_findElement: function(selector, compare){
   	  var elements = this.$.itemDetails.querySelectorAll(selector);
   	  for(var i = 0; i < elements.length; i++){
     		if(elements[i].name == compare){
-    		  if(selector == 'paper-spinner'){
-    		    setTimeout(function(){ elements[i].active = isShow; }, timeout);
-    		  }
-    		  else{
-    		    setTimeout(function(){ elements[i].hidden = isShow; }, timeout);
-    		  }
-    			break;
+    		  return elements[i];
     		}
   		}
+  		return null;
+  	},
+  	_setSpanText: function(compare, text){
+  	  var element = this._findElement('span', compare);
+  	  if(element){
+  	    element.innerText = text;
+  	  }
+  	},
+  	_setFabValue: function(compare, value){
+  	  var element = this._findElement('paper-fab.red', compare);
+  	  if(element){
+  	    if(value.length != 0){
+  	      element.setAttribute('value', value[0].id);
+  	    }
+  	  }
+  	},
+  	_getFabName: function(compare, value){
+  	  var elements = this.$.itemDetails.querySelectorAll('paper-fab.red');
+  	  for(var i = 0; i < elements.length; i++){
+    		if(elements[i].getAttribute('value') == compare){
+    		  return elements[i].name;
+    		}
+  		}
+  		return null;
+  	},
+  	_hideShow: function(selector, compare, isShow, timeout){
+  	  var element = this._findElement(selector, compare);
+  	  if(element){
+    	  if(selector == 'paper-spinner'){
+      	  setTimeout(function(){ element.active = isShow; }, timeout);
+      	}
+      	else{
+      	  setTimeout(function(){ element.hidden = !isShow; }, timeout);
+      	}
+  	  }
   	},
   	_generateRequest: function(){
   	  if(this.requestQueue){
   	    if(this.requestQueue.length > 0){
   	      var id = this.requestQueue.shift();
-  	      var where = {"and":[{"HostID":this.selectedHost.id},{"PersonID":id}]};
-      		this.$.checkExist.url = "/api/HostPeople/count?where=" + encodeURI(JSON.stringify(where));
+  	      var where = {"where":{"and":[{"HostID":this.selectedHost.id},{"PersonID":id},{"EndDate":null}]}};
+      		this.$.checkExist.url = "/api/HostPeople/?filter=" + encodeURI(JSON.stringify(where));
       		this.$.checkExist.generateRequest();
   	    }
   	  }
   	},
   	_handleSave: function(e){
   	  var target = this._findUntil(e.target, 'paper-fab', 5);
-  	  this._hideShow('paper-fab', target.name, true, 1);
-  	  this._hideShow('paper-spinner', target.name, true, 1);
+  	  this._hideShow('paper-fab.green', target.name, false, 0);
+  	  this._hideShow('paper-spinner', target.name, true, 0);
       
   	  this.$.saveAjax.url = "/api/HostPeople";
       this.$.saveAjax.body = JSON.stringify({
         "HostID": this.selectedHost.id,
         "PersonID": target.name,
-        "StartDate": new Date()
+        "StartDate": new Date(),
+        "EndDate": null
       });
   	  this.$.saveAjax.generateRequest();
   	},
   	_handleAjaxSave: function(){
   	  if(this.$.saveAjax.lastResponse){
   	    var body = JSON.parse(this.$.saveAjax.body);
-  	    this._updateStatus(body.PersonID, 1);
+  	    this._setFabValue(body.PersonID, this.$.saveAjax.lastResponse.id);
+  	    this._updateStatus(body.PersonID, [null]);
+  	  }
+  	},
+  	_handleRemove: function(e){
+  	  var target = this._findUntil(e.target, 'paper-fab', 5);
+  	  this._hideShow('paper-fab.red', target.name, false, 0);
+  	  this._hideShow('paper-spinner', target.name, true, 0);
+  	  this.$.removeAjax.url = "/api/HostPeople/" + target.getAttribute('value');
+  	  this.$.removeAjax.generateRequest();
+  	},
+  	_handleAjaxRemove: function(){
+  	  var url = this.$.removeAjax.url;
+  	  if(url){
+  	    var id = url.split('HostPeople/').pop();
+  	    this._updateStatus(this._getFabName(id), []);
   	  }
   	},
   	_findUntil: function(element, expectTag, limitLoop){
@@ -298,13 +361,21 @@
         if(element.localName == expectTag){
           return element;
         }
-        else{
+        else{ 
           element = element.parentNode;
         }
       }
       return null;
     },
     _personuiSuccess: function(e){
+      if(this.personList){
+        for(var i = 0; i < this.personList.length; i++){
+          this._setSpanText(this.personList[i].key.trim(), 'ตรวจสอบ...');
+          this._hideShow('paper-fab.green', this.personList[i].key, false, 0);
+          this._hideShow('paper-fab.red', this.personList[i].key, false, 0);
+    	    this._hideShow('paper-spinner', this.personList[i].key, true, 0);
+        }
+      }
       var tmp = e.detail.map(function(obj){
   		  return {
   		    key:obj.id,
