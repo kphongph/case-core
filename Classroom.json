@@ -1,0 +1,51 @@
+{
+  "name": "Classroom",
+  "mongodb": {
+        "collection":"classroom"
+  },
+  "options": {
+        "idInjection": true
+  },
+  "properties": {
+    "ClassroomID": {
+        "type": "String",
+        "required": true,
+        "generated": false,
+        "length": -1
+    },
+    "ClassNumber" : {
+        "type": "Number",
+        "required" : true,
+        "generated" : false,
+        "length" : -1
+    },
+    "ClassLevel" : {
+        "type" : "Number",
+        "required" : true,
+        "generated" : false,
+        "length" : -1
+    },
+    "PersonID" : {
+        "type" : "String",
+        "required" : true,
+        "generated" : false,
+        "length" : -1
+    },
+    "HostID" : {
+        "type" : "String",
+        "required" : true,
+        "generated" : false,
+        "length" : -1
+    },
+    "Type" : {
+        "type" : "String",
+        "required" : true,
+        "generated" : false,
+        "length" : -1
+    }
+  },
+  "relations":{
+  },
+  "acls":[
+  ]
+}

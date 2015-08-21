@@ -18,5 +18,9 @@
 	"HostPerson":{
 		"dataSource" : "labMongoDS",
 		"public" : true
-	}
+	},
+    "Classroom" : {
+        "dataSource" : "labMongoDS",
+        "public" : true
+    }
 }
