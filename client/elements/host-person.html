@@ -88,7 +88,7 @@
       </iron-ajax>
       <iron-ajax id="removeAjax" 
         handle-as="json"
-        method="DELETE"
+        method="PUT"
         content-type="application/json"
         on-response="_handleAjaxRemove">
       </iron-ajax>
@@ -247,7 +247,7 @@
   	  var filter = JSON.parse(url.split('filter=')[1]);
   	  var personID = filter.where.and.filter(function(a){ return a.PersonID })[0].PersonID;
   	  this._updateStatus(personID, this.$.checkExist.lastResponse);
-  	  this._setFabValue(personID, this.$.checkExist.lastResponse);
+  	  this._setFabValue(personID, this.$.checkExist.lastResponse.id);
   	  this._generateRequest();
   	},
   	_updateStatus: function(id, response){
@@ -286,8 +286,8 @@
   	_setFabValue: function(compare, value){
   	  var element = this._findElement('paper-fab.red', compare);
   	  if(element){
-  	    if(value.length != 0){
-  	      element.setAttribute('value', value[0].id);
+  	    if(value){
+  	      element.setAttribute('value', value);
   	    }
   	  }
   	},
@@ -347,6 +347,9 @@
   	  this._hideShow('paper-fab.red', target.name, false, 0);
   	  this._hideShow('paper-spinner', target.name, true, 0);
   	  this.$.removeAjax.url = "/api/HostPeople/" + target.getAttribute('value');
+  	  this.$.removeAjax.body = JSON.stringify({
+        "EndDate": new Date()
+      });
   	  this.$.removeAjax.generateRequest();
   	},
   	_handleAjaxRemove: function(){
