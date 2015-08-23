@@ -13,6 +13,7 @@
 
 <link rel="import" href="../bower_components/host-ajax/host-ajax.html">
 <link rel="import" href="../bower_components/personui-element/personui-element.html">
+<link rel="import" href="../bower_components/hostperson-element/hostperson-element.html">
 
 <dom-module id="host-person">
   <style>
@@ -76,22 +77,7 @@
     }
     </style>
     <template>
-      <iron-ajax id="checkExist" 
-        handle-as="json"
-        on-response="_handleCheckExist">
-      </iron-ajax>
-      <iron-ajax id="saveAjax" 
-        handle-as="json"
-        method="POST"
-        content-type="application/json"
-        on-response="_handleAjaxSave">
-      </iron-ajax>
-      <iron-ajax id="removeAjax" 
-        handle-as="json"
-        method="PUT"
-        content-type="application/json"
-        on-response="_handleAjaxRemove">
-      </iron-ajax>
+      <hostperson-element id="hostperson" on-hostperson-success="_handleHostPerson"></hostperson-element>
 		  <host-ajax id="hostAjax" on-host-ajax-success="_onHostSuccess"></host-ajax>
       <div class="container">
         <paper-card class="blue" animated-shadow>
@@ -128,7 +114,7 @@
   					  		      <paper-spinner name="{{_getID(item)}}" active></paper-spinner>
   					  		      <!-- <span name="{{_getID(item)}}" class="text">ตรวจสอบ...</span>  -->
   					  		      <paper-fab class="green" hidden mini icon="add" 
-  					  		        name="{{_getID(item)}}" on-click="_handleSave"></paper-fab>
+  					  		        name="{{_getID(item)}}" on-click="_handleSaveClick"></paper-fab>
   					  		      <paper-fab class="red" hidden mini icon="remove" value="" 
   					  		        name="{{_getID(item)}}" on-click="_handleRemove"></paper-fab>
   					  		    </div>
@@ -170,11 +156,26 @@
   		  type: Number,
   		  value: 10
   	  },
-  	  requestQueue: Array
+  	  requestQueue: Array,
+  	  personType: {
+  	    type: String,
+  	    value: "student"
+  	  }
     },
     ready: function() {
   	  this.state = "select_host";
   	  this.$.hostAjax.search('', this.pageIndex, this.pageLimit);
+    },
+    _handleHostPerson: function(e){
+      if(e.detail.event == 'checkExist'){
+        this._handleCheckExist(e.detail);
+      }
+      else if(e.detail.event == 'insert'){
+        this._handleAjaxSave(e.detail);
+      }
+      else if(e.detail.event == 'update'){
+        this._handleAjaxRemove(e.detail);
+      }
     },
     _hostToString: function(host){
   	  if(host.text){
@@ -242,17 +243,9 @@
   		this.pageIndex = 0;
   		this.$.hostAjax.search(e.target.value, this.pageIndex, this.pageLimit);
   	},
-  	_handleCheckExist: function(){
-  	  var url = decodeURI(this.$.checkExist.url);
-  	  var filter = JSON.parse(url.split('filter=')[1]);
-  	  var personID = filter.where.and.filter(function(a){ return a.PersonID })[0].PersonID;
-  	  this._updateStatus(personID, this.$.checkExist.lastResponse);
-  	  this._setFabValue(personID, this.$.checkExist.lastResponse.id);
-  	  this._generateRequest();
-  	},
-  	_updateStatus: function(id, response){
+  	_updateStatus: function(id, count){
   	  this._hideShow('paper-spinner', id, false, 0);
-  	  if(response.length == 0){
+  	  if(count == 0){
     	  this._hideShow('paper-fab.green', id, true, 500);
     	  this._hideShow('paper-fab.red', id, false, 500);
     	}
@@ -261,7 +254,7 @@
     	  this._hideShow('paper-fab.red', id, true, 500);
     	}
   	  
-  	  if(response.length > 0){
+  	  if(count > 0){
     	  this._setSpanText(id, 'มีอยู่');
     	}
     	else{
@@ -311,52 +304,44 @@
       	}
   	  }
   	},
-  	_generateRequest: function(){
+  	_checkExist: function(){
   	  if(this.requestQueue){
   	    if(this.requestQueue.length > 0){
-  	      var id = this.requestQueue.shift();
-  	      var where = {"where":{"and":[{"HostID":this.selectedHost.id},{"PersonID":id},{"EndDate":null}]}};
-      		this.$.checkExist.url = "/api/HostPeople/?filter=" + encodeURI(JSON.stringify(where));
-      		this.$.checkExist.generateRequest();
+  	      var personID = this.requestQueue.shift();
+  	      this.$.hostperson.checkExist(this.selectedHost.id, personID);
   	    }
   	  }
   	},
-  	_handleSave: function(e){
+  	_handleCheckExist: function(response){
+  	  var count = 0;
+  	  if(response.id){
+  	    count = 1;
+  	  }
+  	  this._updateStatus(response.PersonID, count);
+  	  this._setFabValue(response.PersonID);
+  	  this._checkExist();
+  	},
+  	_handleSaveClick: function(e){
   	  var target = this._findUntil(e.target, 'paper-fab', 5);
   	  this._hideShow('paper-fab.green', target.name, false, 0);
   	  this._hideShow('paper-spinner', target.name, true, 0);
-      
-  	  this.$.saveAjax.url = "/api/HostPeople";
-      this.$.saveAjax.body = JSON.stringify({
-        "HostID": this.selectedHost.id,
-        "PersonID": target.name,
-        "StartDate": new Date(),
-        "EndDate": null
-      });
-  	  this.$.saveAjax.generateRequest();
+  	  this.$.hostperson.insert(this.selectedHost.id, target.name, this.personType, new Date());
   	},
-  	_handleAjaxSave: function(){
-  	  if(this.$.saveAjax.lastResponse){
-  	    var body = JSON.parse(this.$.saveAjax.body);
-  	    this._setFabValue(body.PersonID, this.$.saveAjax.lastResponse.id);
-  	    this._updateStatus(body.PersonID, [null]);
+  	_handleAjaxSave: function(response){
+  	  if(response){
+  	    this._setFabValue(response.PersonID, response.id);
+  	    this._updateStatus(response.PersonID, 1);
   	  }
   	},
   	_handleRemove: function(e){
   	  var target = this._findUntil(e.target, 'paper-fab', 5);
   	  this._hideShow('paper-fab.red', target.name, false, 0);
   	  this._hideShow('paper-spinner', target.name, true, 0);
-  	  this.$.removeAjax.url = "/api/HostPeople/" + target.getAttribute('value');
-  	  this.$.removeAjax.body = JSON.stringify({
-        "EndDate": new Date()
-      });
-  	  this.$.removeAjax.generateRequest();
+  	  this.$.hostperson.update(target.getAttribute('value'), null);
   	},
-  	_handleAjaxRemove: function(){
-  	  var url = this.$.removeAjax.url;
-  	  if(url){
-  	    var id = url.split('HostPeople/').pop();
-  	    this._updateStatus(this._getFabName(id), []);
+  	_handleAjaxRemove: function(response){
+  	  if(response){
+  	    this._updateStatus(this._getFabName(response.id), 0);
   	  }
   	},
   	_findUntil: function(element, expectTag, limitLoop){
@@ -390,7 +375,7 @@
   		  return obj.key;
   		});
   		this.requestQueue = tmp.slice();
-  		this._generateRequest();
+  		this._checkExist();
     }
   });
 </script>

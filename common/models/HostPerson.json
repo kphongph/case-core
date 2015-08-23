@@ -19,6 +19,12 @@
       "generated": false,
       "length": -1
     },
+	"PersonType": {
+      "type": "String",
+      "required": true,
+      "generated": false,
+      "length": -1
+    },
 	"StartDate": {
       "type": "Date",
       "required": true,
