@@ -307,8 +307,7 @@
   	_checkExist: function(){
   	  if(this.requestQueue){
   	    if(this.requestQueue.length > 0){
-  	      var personID = this.requestQueue.shift();
-  	      this.$.hostperson.checkExist(this.selectedHost.id, personID);
+  	      this.$.hostperson.checkExist(this.requestQueue.shift());
   	    }
   	  }
   	},
@@ -318,14 +317,14 @@
   	    count = 1;
   	  }
   	  this._updateStatus(response.PersonID, count);
-  	  this._setFabValue(response.PersonID);
+  	  this._setFabValue(response.PersonID, response.id);
   	  this._checkExist();
   	},
   	_handleSaveClick: function(e){
   	  var target = this._findUntil(e.target, 'paper-fab', 5);
   	  this._hideShow('paper-fab.green', target.name, false, 0);
   	  this._hideShow('paper-spinner', target.name, true, 0);
-  	  this.$.hostperson.insert(this.selectedHost.id, target.name, this.personType, new Date());
+  	  this.$.hostperson.insert(target.name, this.personType, new Date());
   	},
   	_handleAjaxSave: function(response){
   	  if(response){
