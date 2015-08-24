@@ -1,0 +1,31 @@
+{
+  "name": "Group",
+  "mongodb": {
+    "collection":"group"
+  },
+  "options": {
+    "idInjection": true
+  },
+  "properties": {
+    "relationType": {
+      "type": "String",
+      "required": true,
+      "generated": false,
+      "length": -1,
+      "precision": null,
+      "scale": null
+    },
+    "relationDesc": {
+      "type": "String",
+      "required": false,
+      "generated": false,
+      "length": -1,
+      "precision": null,
+      "scale": null
+    }
+  },
+  "relations":{
+  },
+  "acls":[
+  ]
+}

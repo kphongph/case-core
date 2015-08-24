@@ -22,5 +22,13 @@
     "Classroom" : {
         "dataSource" : "labMongoDS",
         "public" : true
+    },
+	"Group" : {
+        "dataSource" : "labMongoDS",
+        "public" : true
+    },
+	"GroupDetail" : {
+        "dataSource" : "labMongoDS",
+        "public" : true
     }
 }
