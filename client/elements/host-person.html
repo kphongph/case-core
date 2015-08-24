@@ -82,7 +82,7 @@
       <div class="container">
         <paper-card class="blue" animated-shadow>
           <div class="card-content">
-            <div class="title" id="titleText">เลือกโรงเรียน <span>{{_hostToString(selectedHost)}}</span></div>
+            <div class="title" id="titleText">เลือก Host <span>{{_hostToString(selectedHost)}}</span></div>
           </div>
 				  <div class="card-actions">
 				    <template is="dom-if" if="{{!multiple}}">
@@ -221,13 +221,13 @@
   		this.leftText = "ยกเลิก";
   		this.$.rightButton.hidden = false;
   		this.state = 'select_host';
-  		this.$.titleText.innerText = "เลือกโรงเรียน" + this._hostToString(this.selectedHost);
+  		this.$.titleText.innerText = "เลือก Host" + this._hostToString(this.selectedHost);
   	},
   	_state_select_person: function(){
   		this.leftText = "ย้อนกลับ";
   		this.$.rightButton.hidden = true;
   		this.state = 'select_person';
-  		this.$.titleText.innerText = "เลือกนักเรียน" + this._hostToString(this.selectedHost);
+  		this.$.titleText.innerText = "เลือกคน" + this._hostToString(this.selectedHost);
   	},
   	_onHostSuccess: function(e){
   		if(e.detail){
