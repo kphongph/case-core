@@ -1,0 +1,64 @@
+{
+  "name": "Course",
+  "mongodb": {
+    "collection":"course"
+  },
+  "options": {
+    "idInjection": true
+  },
+  "properties": {
+    "Name": {
+      "type": "String",
+      "required": false,
+      "length": 255,
+      "precision": null,
+      "scale": null
+    },
+    "Type": {
+      "type": "String",
+      "required": false,
+      "length": 250,
+      "precision": null,
+      "scale": null
+    },
+    "KnowledgeCat": {
+      "type": "String",
+      "required": false,
+      "length": -1,
+      "precision": null,
+      "scale": null
+    },
+    "Curriculum": {
+      "type": "String",
+      "required": false,
+      "length": -1,
+      "precision": null,
+      "scale": null
+    },
+    "Code": {
+      "type": "String",
+      "required": false,
+      "length": -1,
+      "precision": null,
+      "scale": null
+    },
+    "Hour": {
+      "type": "String",
+      "required": false,
+      "length": -1,
+      "precision": null,
+      "scale": null
+    },
+    "Weight": {
+      "type": "String",
+      "required": false,
+      "length": -1,
+      "precision": null,
+      "scale": null
+    }
+  },
+  "relations":{
+  },
+  "acls":[
+  ]
+}
