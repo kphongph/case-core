@@ -77,7 +77,7 @@
     }
     </style>
     <template>
-      <hostperson-element id="hostperson" on-hostperson-success="_handleHostPerson"></hostperson-element>
+      <hostperson-element id="hostperson" hostID="{{selectedHost.id}}" on-hostperson-success="_handleHostPerson"></hostperson-element>
 		  <host-ajax id="hostAjax" on-host-ajax-success="_onHostSuccess"></host-ajax>
       <div class="container">
         <paper-card class="blue" animated-shadow>
