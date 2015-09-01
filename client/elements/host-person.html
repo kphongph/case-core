@@ -148,8 +148,7 @@
         value: false
       },
   	  state: {
-  		  type: String,
-  		  observer: '_handleStateChanged'
+  		  type: String
   	  },
   	  leftText: {
   		  type: String,
@@ -208,24 +207,6 @@
   				radioGroup[i].checked = !radioGroup[i].checked;
   			}
   		}
-  	},
-  	_handleStateChanged: function(){
-  	  if(this.state == 'select_person'){
-  	    if(this.personList){
-  	      for(var i = 0; i < this.personList.length; i++){
-            this._setSpanText(this.personList[i].key.trim(), 'ตรวจสอบ...');
-            this._hideShow('paper-fab.green', this.personList[i].key, false, 0);
-            this._hideShow('paper-fab.red', this.personList[i].key, false, 0);
-      	    this._hideShow('paper-spinner', this.personList[i].key, true, 0);
-          }
-        
-          var tmp = this.personList.map(function(obj){
-      		  return obj.key;
-      		});
-      		this.requestQueue = tmp.slice();
-      		this._checkExist();
-  	    }
-  	  }
   	},
   	_handleRightButton: function(e){
   		if(this.state == 'select_host'){			
