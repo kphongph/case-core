@@ -31,7 +31,7 @@
         "dataSource" : "labMongoDS",
         "public" : true
     },
-	"Course" : {
+	"Subject" : {
         "dataSource" : "labMongoDS",
         "public" : true
     }
