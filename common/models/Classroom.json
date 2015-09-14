@@ -7,37 +7,25 @@
         "idInjection": true
   },
   "properties": {
-    "ClassroomID": {
-        "type": "String",
-        "required": true,
-        "generated": false,
-        "length": -1
-    },
-    "ClassNumber" : {
+    "RoomNumber" : {
         "type": "Number",
         "required" : true,
         "generated" : false,
         "length" : -1
     },
-    "ClassLevel" : {
-        "type" : "Number",
+    "Class" : {
+        "type" : "String",
         "required" : true,
         "generated" : false,
         "length" : -1
     },
-    "PersonID" : {
+	"Year" : {
         "type" : "String",
         "required" : true,
         "generated" : false,
         "length" : -1
     },
     "HostID" : {
-        "type" : "String",
-        "required" : true,
-        "generated" : false,
-        "length" : -1
-    },
-    "Type" : {
         "type" : "String",
         "required" : true,
         "generated" : false,

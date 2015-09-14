@@ -20,11 +20,16 @@
     "paper-radio-button": "PolymerElements/paper-radio-button#~1.0.6",
     "paper-radio-group": "PolymerElements/paper-radio-group#~1.0.4",
     "host-ajax": "chadpong/host-ajax#master",
-	"personui-element": "Juckky00/personui-element#master",
-	"hostperson-element": "chaowarat/hostperson-element#master",
+    "personui-element": "Juckky00/personui-element#master",
+    "hostperson-element": "chaowarat/hostperson-element#master",
     "iron-ajax": "PolymerElements/iron-ajax#~1.0.4",
     "paper-input": "PolymerElements/paper-input#~1.0.11",
     "paper-spinner": "PolymerElements/paper-spinner#~1.0.2",
-    "paper-fab": "PolymerElements/paper-fab#~1.0.3"
+    "paper-fab": "PolymerElements/paper-fab#~1.0.3",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#~1.0.2",
+    "paper-menu": "PolymerElements/paper-menu#~1.1.0",
+    "paper-item": "PolymerElements/paper-item#~1.0.2",
+	"education-class": "chaowarat/education-class#master",
+	"classroom-manager": "chaowarat/classroom-manager#master"
   }
 }

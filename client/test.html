@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>group-manager Demo</title>
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="elements/classroom-manager.html">
+  </head>
+  <body>
+      <style>
+        body{
+          background-color: #E0E0E0;
+        }
+        .container{
+        }
+      </style>
+      <div class="container">
+        <button>OK</button>
+        <template is="dom-bind">
+          <div id="progress">Progress. 0</div>
+          <classroom-manager id="gm" Class="อนุบาล 1" Year="2015" HostID="001"></classroom-manager>
+        </template>
+      </div>
+    </body>
+	<script>
+      (function() {
+        window.addEventListener('WebComponentsReady', function () {
+          var insertedGroupID = '';
+          var insertedGroupDetail = '';
+          var gm = document.querySelector("classroom-manager");
+          
+          // test echo
+          console.log('__test_echo :: ' + gm.echo('ME'));
+          
+          // handle all success event
+          gm.addEventListener('classroom-manager-success', function (e) {
+            console.log('__test_' + e.detail.event + ' :: ');
+            console.log(e.detail);
+          });
+          
+          // test checkGroupExist
+          //gm.insert(4,"อนุบาล 1", "2015","001");
+          
+          // test checkGroupDetailExist
+          //gm.checkGroupDetailExist('55dae181945b015813e1d56f', '654961265', [{'PersonType':'student'}]);
+          
+        });
+        document.querySelector('button').addEventListener('click', function() {
+          //document.querySelector("classroom-manager").insert(4,"อนุบาล 1", "2015","001");
+          //document.querySelector("classroom-manager").update("55ee745a3eeaae6c0f676241",{"Year":"2016"});
+          //document.querySelector("classroom-manager").delete("55ee74603eeaae6c0f676242");
+          document.querySelector("classroom-manager").checkExist(8,"อนุบาล 1", "2015","001");
+        });
+      })();
+    </script>
+</html>
