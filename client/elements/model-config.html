@@ -49,13 +49,12 @@
       <div class="item">
         <div class="item-header">
           <div>
-            <paper-checkbox></paper-checkbox>
+            <paper-icon-button
+              icon="chevron-right"
+              on-click="_handleExpand">
+            </paper-icon-button>
             <span>{{_modelsToString(models)}}</span>
           </div>
-          <paper-icon-button
-            icon="expand-more"
-            on-click="_handleExpand">
-          </paper-icon-button>
         </div>
         <div class="detail">
           <template is="dom-repeat" items="{{model_properties}}">
@@ -103,6 +102,7 @@
     },
     _handleDescription : function() {
       var model_description = this.$.getDescription.lastResponse;
+      if(!model_description) return;
       var key = Object.keys(model_description.models)[0];
       var obj = model_description.models[key].properties;
       var modelName = model_description.resourcePath.slice(1);
@@ -141,13 +141,13 @@
     },
     _handleExpand: function(e){
       var target = this._findUntil(e.target, 'paper-icon-button', 5);
-      var detail = target.parentNode.nextElementSibling;
-      if(target.icon == 'expand-more'){
-        target.icon = 'expand-less';
+      var detail = target.parentNode.parentNode.nextElementSibling;
+      if(target.icon == 'chevron-right'){
+        target.icon = 'expand-more';
         detail.style.display = 'block';
       }
       else{
-        target.icon = 'expand-more';
+        target.icon = 'chevron-right';
         detail.style.display = 'none';
       }
     },

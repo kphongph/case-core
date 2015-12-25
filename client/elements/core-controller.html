@@ -1,27 +1,21 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
-<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="./ds-manager.html">
-<link rel="import" href="./relation-manager.html">
-<link rel="import" href="./chart-core.html">
-<link rel="import" href="./model-filter.html">
-<link rel="import" href="./job-manager.html">
-<link rel="import" href="./join-table.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="./model-config.html">
+<link rel="import" href="./model-filter.html">
 
 <dom-module id="core-controller">
   <style>
     .container{
       @apply(--layout-fullbleed-vertical);
       font-family: 'Roboto Regular', sans-serif;
-      height: 600px;
+      height: 100%;
       background-color:#FFFFFF;
     }
     .add {
@@ -35,32 +29,8 @@
       height: 500px;
       overflow-y: scroll;
     }
-    paper-toolbar.header {
-      --paper-toolbar-background: #E0F7FA;
-    }
-    paper-toolbar.header .header-text {
-      font-size: 150%;
-      padding: 0 30px 0 10px;
-    }
-    paper-tabs {
-      background-color: #00bcd4;
-      color: #fff;
-      box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
-    }
     .ichart{
       width:100%;
-    }
-    .relation{
-      @apply(--layout-horizontal);
-      @apply(--layout-center-justified);
-      padding: 10px;
-      right: 0;
-    }
-    .flipMenu{
-      position: absolute;
-      top: 0;
-      right: 0;
-      padding: 10px;
     }
     #paperDrawerPanel [main] {
 
@@ -69,92 +39,67 @@
       background-color: var(--google-grey-100);
       height: 100%;
     }
+    .model-config{
+      font-family: 'Roboto Regular', sans-serif;
+      height: 100%;
+      background-color: var(--google-grey-100);
+    }
+    .header-text {
+      --paper-toolbar-background: #4CAF50;
+      font-size: 150%;
+    }
+    .model-content{
+      width: 100%;
+      height: 100%;
+      @apply(--layout-vertical);
+      overflow-y: auto;
+    }
   </style>
   <template>
-    <iron-ajax id="leftAjax" 
-      handle-as="json"
-      on-response="_handleLeftAjax">
-    </iron-ajax>
-    
-    <iron-ajax id="rightAjax" 
-      handle-as="json"
-      on-response="_handleRightAjax">
-    </iron-ajax>
-    
-    <iron-ajax id="loadModelAjax" 
-      handle-as="json"
-      on-response="_handleLoadModelAjax">
-    </iron-ajax>
-    
     <model-filter id="modelFilter" 
       on-confirm="_handleModelsConfirm"
       url="/explorer/resources">
     </model-filter>
-    
-    <join-table id="joinTable" on-join-done="_handleJoinDone"></join-table>
-    
+      
     <div class="container">
-      <paper-header-panel mode="seamed">
-        <paper-toolbar>
-          <paper-button on-click="_handleModelButton">Model</paper-button>
-          <paper-button on-click="_handleSaveButton">Save</paper-button>
-          <paper-button on-click="_handleLoadButton">Load</paper-button>
-          <div class="add">
-            <paper-icon-button icon="more-vert"></paper-icon-button>
-          </div>
-        </paper-toolbar>
+      <paper-drawer-panel id="paperDrawerPanel" right-drawer>
         
-        <div>
-          <paper-drawer-panel id="paperDrawerPanel" right-drawer>
-            <div drawer>
-              <paper-tabs selected="{{drawerTabSelected}}">
-                <paper-tab>Models</paper-tab>
-                <paper-tab>Relation</paper-tab>
-              </paper-tabs>
-              
-              <div class="content" id="contents" hidden$="{{!isModelPanel}}">
+        <div drawer>
+          <div class="model-config">
+            <paper-header-panel mode="seamed">
+              <paper-toolbar class="header-text">
+                <div>Model configuration</div>
+              </paper-toolbar>
+              <div id="model-content">
+                    <template is="dom-repeat" items="{{models}}">
+                        <model-config models="{{item}}"></model-config>
+                    </template>
                 
-                <paper-tabs selected="0" on-tap="_handleTabSelect" id="tabs"
-                  class="bottom self-end" scrollable style="width: 100%;">
-      
-                  <template is="dom-repeat" items="{{urls}}">
-                    <paper-tab>{{_getModelName(item)}}</paper-tab>
-                  </template>
-      
-                </paper-tabs>
-          
-                <template is="dom-repeat" items="{{urls}}" style="height:500px">
-                  <div node$="{{_getModelName(item)}}" hidden="{{_handleHidden(index)}}">
-                    <ds-manager 
-                      on-done="_handleDsDone"
-                      on-finish="_handleFinishJob"
-                      id="{{_getModelName(item)}}"
-                      url="{{item}}">
-                    </ds-manager>
-                  </div>
-                </template>
+                    <model-config models="{{models1}}"></model-config>
               </div>
-        
-              <div class="relation" hidden$="{{isModelPanel}}">
-                <relation-manager id="relationManager" on-select="_handleRelationChange" models="{{models}}"></relation-manager>
-              </div>
-              
-            </div>
-            <div main>
-              <div class="ichart">
-                <chart-core id="iChart" count="{{records}}"></chart-core>
-              </div>
-              <div class="flipMenu">
-                <paper-fab mini icon="settings" on-click="_handleToggleDrawer"></paper-fab>
-              </div>
-            </div>
-          </paper-drawer-panel>
-        </div>
-          
-      </paper-header-panel>
-    </div>
+            </paper-header-panel>
+          </div>
     
-    <job-manager id="jobM"></job-manager>
+        </div>
+        
+        <div main>
+          <paper-header-panel mode="seamed">
+            <paper-toolbar>
+              <paper-button on-click="_handleModelButton">Model</paper-button>
+              <paper-button on-click="_handleSaveButton">Save</paper-button>
+              <paper-button on-click="_handleLoadButton">Load</paper-button>
+              <div class="add">
+                <paper-icon-button
+                  id="toggleDrawer"
+                  icon="chevron-right" 
+                  on-click="_handleToggleDrawer"></paper-icon-button>
+              </div>
+            </paper-toolbar>
+          </paper-header-panel>
+        </div>
+        
+        </paper-drawer-panel>
+    </div>
   </template>
 </dom-module>
 
@@ -162,211 +107,44 @@
   Polymer({
     is: 'core-controller',
     properties: {
-      urls : {
-        type: Array
-      },
-      models : {
-        type: Array,
-        computed: '_getModels(urls)'
-      },
-      showRPanel: {
-        type : Boolean
-      },
-      records : {
-        type: String
-      },
-      currentModel: String,
-      isModelPanel: Boolean,
-      drawerTabSelected: {
-        type: Number,
-        value: 0,
-        observer: '_drawerTabSelectedChanged'
-      }
+        urls : {
+            type: Array
+        },
+        showRPanel: {
+            type : Boolean
+        },
+        records : {
+            type: String
+        },
+        currentModel: String,
+        models: Array
     },
     ready: function() {
       this.isFieldsExist = false;
-      this.isModelPanel = true;
       this.$.paperDrawerPanel.drawerWidth = "500px";
+      this.models1 = ["EducationChildren", "DisabilityPeople"];
     },
-    _handleModelsConfirm: function(e){
-      this.urls = e.detail.slice();
-    },
-    _handleHidden: function(index){
-      if(index == 0){
-        return false;
-      }
-      return true;
-    },
-    _handleTabSelect: function(e){
-      var id = e.target.innerText;
-      this.currentModel = id;
-      var models = Polymer.dom(this.$.contents).querySelectorAll('div');
-      for(var i = 0; i < models.length; i++){
-       if(models[i].getAttribute('node') == id){
-        this.records = models[i].querySelector('ds-manager').records;
-        models[i].hidden = false;
-       }
-       else{
-        models[i].hidden = true;
-       }
-      }
-      this._checkRelation();
-    },
-    _handleDsDone: function(e){
-      this.records = e.target.records;
-      this.getFields(e);
-      this.currentModel = null;
-      this._checkRelation();
-      this._handleFinishJob();
-    },
-    getFields: function(e){
-      var id = e.target.id;
-      for(var i = 0; i < this.models.length; i++){
-        if(this.models[i].name == id){
-          this.models[i].fields = e.target.fields;
-        }
-      }
-    },
-    _getModelName: function(url){
-      return url.split('/').pop();
-    },
-    _getModels: function(urls){
-      var tmp = [];
-      for(var i = 0; i < urls.length; i++){
-        var modelName = this._getModelName(urls[i]);
-        var isExist = false;
-        if(this.models){
-          for(var j = 0; j < this.models.length; j++){
-            if(this.models[j].name == modelName){
-              tmp.push(this.models[j]);
-              isExist = true;
-              break;
-            }
-          }
-        }
-        if(!isExist){
-          tmp.push({'name':this._getModelName(urls[i]),'fields':[]});
-        }
-      }
-      return tmp;
-    },
-    _handleFields: function(e){
-      if(!this.modelProperties){
-        this.modelProperties = [];
-      }
-      this.modelProperties.push(e.detail);
-    },
-    _handleRelationChange : function(){
-      this._checkRelation();
-    },
-    _checkRelation: function(){
-      var rData = this.$.relationManager.data;
-      if(rData){
-        if(rData.length > 0){
-          this._doJoin(rData);
-        }
-        else{
-          this._noRelation();
-        }
+    _handleToggleDrawer: function(){
+      if(this.$.paperDrawerPanel.hasAttribute('force-narrow')){ // hide
+        this.$.paperDrawerPanel.removeAttribute('force-narrow');
+        this.$.toggleDrawer.icon = 'chevron-right';
       }
       else{
-        this._noRelation();
+        this.$.paperDrawerPanel.setAttribute('force-narrow',''); // show
+        this.$.toggleDrawer.icon = 'chevron-left'
       }
-    },
-    _noRelation: function(){
-      if(!this.currentModel){
-        var index = this.$.tabs.selected;
-        this.currentModel = (Polymer.dom(this.$.tabs)
-        .querySelectorAll('paper-tab')[index]).innerText.trim();
-      }
-      if(this.currentModel){
-        var relation = {
-          "relation":null,
-          "left":{"model":this.currentModel,"property":[]},
-          "right":{"model":null,"property":[]}
-        };
-        var relations = [];
-        relations.push(relation);
-        this._doJoin(relations);
-      }
-    },
-    _doJoin: function(relations){
-      for( var i = 0; i < relations.length; i++){
-        var ds = document.getElementById(relations[i].left.model);
-        if(ds){
-          relations[i].left['url'] = ds.exampleResultUrl;
-        }
-        ds = document.getElementById(relations[i].right.model);
-        if(ds){
-          relations[i].right['url'] = ds.exampleResultUrl;
-        }
-      }
-      this.$.joinTable.join(relations);
-    },
-    _handleJoinDone: function(e){
-      this.$.iChart.dataArray = e.detail;
     },
     _handleModelButton: function(){
       this.$.modelFilter.show();
     },
-    _handleSaveButton: function(){
-      var userData = {};
-      userData['name'] = 'ทดสอบ';
-      var models = [];
-      for( var i = 0; i < this.models.length; i++){
-        var model = this.models[i].name;
-        var json = document.getElementById(model).json;
-        var fieldsExclude = [];
-        var fields = document.getElementById(model).fields;
-        var selectedFields = json.fields.slice();
-        console.log(document.getElementById(model).json)
-        fieldsExclude = fields.filter(function(item) {
-                        return selectedFields.indexOf(item) === -1;
-                      });
-        var obj = {
-          'model': model,
-          'fieldsExclude': fieldsExclude,
-          'properties': json.properties
-        };
-        models.push(obj);
-      }
-      userData['models'] = [];
-      if(models){
-        userData['models'] = models;
-      }
-      userData['relations'] = [];
-      if(this.$.relationManager.data){
-        userData['relations'] = this.$.relationManager.data;
-      }
-      console.log(JSON.stringify(userData));
-      // save to server...
-    },
-    _handleLoadButton: function(){
-      this.urls = [];
-      this.$.loadModelAjax.url = '../test.json';
-      this.$.loadModelAjax.generateRequest();
-    },
-    _handleLoadModelAjax: function(){
-      this.$.jobM.data = this.$.loadModelAjax.lastResponse;
-    },
-    _handleFinishJob: function(){
-      this.$.jobM.finishJob();
-    },
-    _handleToggleDrawer: function(){
-      if(this.$.paperDrawerPanel.hasAttribute('force-narrow')){
-        this.$.paperDrawerPanel.removeAttribute('force-narrow');
-      }
-      else{
-        this.$.paperDrawerPanel.setAttribute('force-narrow','');
-      }
-    },
-    _drawerTabSelectedChanged: function(){
-      if(this.drawerTabSelected == 0){
-        this.isModelPanel = true;
-      }
-      else{
-        this.isModelPanel = false;
-      }
+    _handleModelsConfirm: function(e){
+        this.models = [];
+        for(var i = 0; i < e.detail.length; i++){
+            var tmp = [];
+            tmp.push(e.detail[i].split('/').pop());
+            this.models.push(tmp);
+        }
+        this.models = this.models.slice();
     }
   });
 </script>
