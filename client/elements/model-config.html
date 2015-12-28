@@ -6,32 +6,45 @@
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="property-filter.html">
 
 <dom-module id="model-config">
   <style>
-    .item{
-      @apply(--layout-vertical);
+    .container{
       background-color: #FFFFFF;
       border-collapse: collapse;
       border: 1px solid #e5e5e5;
     }
-    .item .item-header{
+    .item-header{
       @apply(--layout-horizontal);
       @apply(--layout-justified);
-      padding: 10px;
     }
-    .item paper-checkbox{
-      padding: 10px;
+    .item-header span{
+      padding-top: 15px;
     }
-    .item .item-header:hover{
+    .item-header:hover{
       color: #4CAF50;
       background-color: var(--google-grey-100);
+    }
+    .expand-button {
+      padding: 5px 10px 5px 10px;
     }
     .detail{
       display: none;
       margin-left: 50px;
       margin-right: 20px;
+    }
+    paper-menu {
+      display: block;
+    }
+    paper-menu-button {
+      padding: 5px 10px 5px 10px;
+    }
+    .item {
+      max-width: 100px;
     }
   </style>
   <template>
@@ -46,22 +59,28 @@
     </iron-ajax>
     
     <div class="container">
-      <div class="item">
-        <div class="item-header">
-          <div>
-            <paper-icon-button
-              icon="chevron-right"
-              on-click="_handleExpand">
-            </paper-icon-button>
-            <span>{{_modelsToString(models)}}</span>
-          </div>
+      <div class="item-header">
+        <div class="expand-button">
+          <paper-icon-button
+            icon="chevron-right"
+            on-click="_handleExpand">
+          </paper-icon-button>
         </div>
+        <span>{{_modelsToString(currentModels)}}</span>
+        <paper-menu-button horizontal-offset="-150" vertical-offset="20">
+          <paper-icon-button icon="add" class="dropdown-trigger"></paper-icon-button>
+          <paper-menu class="dropdown-content" selected="{{addModel}}">
+            <template is="dom-repeat" items="[[otherModels]]">
+              <paper-item>[[item]]</paper-item>
+            </template>
+          </paper-menu>
+        </paper-menu-button>
+      </div>
         <div class="detail">
           <template is="dom-repeat" items="{{model_properties}}">
             <property-filter property_description="{{item}}"></property-filter>
           </template>
         </div>
-      </div>
     </div>
   </template>
 </dom-module>
@@ -70,38 +89,47 @@
   Polymer({
     is: 'model-config',
     properties: {
-      models: {
-        type: String,
+      currentModels: {
+        type: Array,
         observer: '_modelChange'
       },
       model_properties: Array,
-      where : {
+      where: {
         type: Object,
         notify: true
       },
-      records : {
+      records: {
         type: String,
         notify: true
+      },
+      addModel: {
+        type: Number,
+        observer: '_addModelChange'
+      },
+      otherModels: {
+        type: Array
       }
     },
     ready: function() {
+      
     },
-    _modelsToString: function(models){
-      if(models.length > 1){
-        return models.join(' AND ');
+    _modelsToString: function(currentModels){
+      if(currentModels.length > 1){
+        return currentModels.join(' AND ');
       }
       else{
-        return models;
+        return currentModels;
       }
     },
     _modelChange: function(){
-      for(var i = 0; i < this.models.length; i++){
-        this.$.getDescription.url = 'explorer/resources/' + this.models[i];
+      this.model_properties = [];
+      for(var i = 0; i < this.currentModels.length; i++){
+        this.$.getDescription.url = 'explorer/resources/' + this.currentModels[i];
         this.$.getDescription.generateRequest();
       }
     },
-    _handleDescription : function() {
-      var model_description = this.$.getDescription.lastResponse;
+    _handleDescription : function(e) {
+      var model_description = e.detail.__data__.response;
       if(!model_description) return;
       var key = Object.keys(model_description.models)[0];
       var obj = model_description.models[key].properties;
@@ -129,14 +157,14 @@
         this.$.countAjax.generateRequest();
       }
     },
-    _handleCount : function() {
+    _handleCount : function(e) {
       if(!this.records){
-        this.records = this.$.countAjax.lastResponse.count;
+        this.records = e.detail.__data__.response.count;
       }
       else{
-        this.records += this.$.countAjax.lastResponse.count;
+        this.records += e.detail.__data__.response.count;
       }
-      console.log(this.records)
+      //console.log(this.records)
       //this.fire('done');
     },
     _handleExpand: function(e){
@@ -161,6 +189,11 @@
         }
       }
       return null;
+    },
+    _addModelChange: function(e){
+      var tmp = this.currentModels.slice();
+      tmp.push(this.otherModels[e]);
+      this.fire('new-model', tmp);
     }
   });
 </script>

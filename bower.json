@@ -29,6 +29,7 @@
     "paper-toggle-button": "PolymerElements/paper-toggle-button#~1.0.5",
     "paper-progress": "PolymerElements/paper-progress#~1.0.2",
     "paper-drawer-panel": "PolymerElements/paper-drawer-panel#~1.0.3",
-    "paper-behaviors": "PolymerElements/paper-behaviors#~1.0.10"
+    "paper-behaviors": "PolymerElements/paper-behaviors#~1.0.10",
+    "paper-menu-button": "PolymerElements/paper-menu-button#~1.0.4"
   }
 }

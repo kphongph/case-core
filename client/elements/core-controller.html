@@ -71,11 +71,12 @@
                 <div>Model configuration</div>
               </paper-toolbar>
               <div id="model-content">
-                    <template is="dom-repeat" items="{{models}}">
-                        <model-config models="{{item}}"></model-config>
-                    </template>
-                
-                    <model-config models="{{models1}}"></model-config>
+                  <template is="dom-repeat" items="{{models}}">
+                    <model-config 
+                      current-models="{{_itemToArray(item)}}" 
+                      other-models="{{selectedModels}}"
+                      on-new-model="_handleModelAdd"></model-config>
+                  </template>
               </div>
             </paper-header-panel>
           </div>
@@ -117,12 +118,18 @@
             type: String
         },
         currentModel: String,
-        models: Array
+        models: {
+          type: Array,
+          observer: '_modelChange'
+        },
+        selectedModels: {
+          type: Array
+        }
     },
     ready: function() {
       this.isFieldsExist = false;
       this.$.paperDrawerPanel.drawerWidth = "500px";
-      this.models1 = ["EducationChildren", "DisabilityPeople"];
+      //this.models1 = ["EducationChildren", "DisabilityPeople"];
     },
     _handleToggleDrawer: function(){
       if(this.$.paperDrawerPanel.hasAttribute('force-narrow')){ // hide
@@ -138,13 +145,56 @@
       this.$.modelFilter.show();
     },
     _handleModelsConfirm: function(e){
-        this.models = [];
-        for(var i = 0; i < e.detail.length; i++){
-            var tmp = [];
-            tmp.push(e.detail[i].split('/').pop());
-            this.models.push(tmp);
+      this.selectedModels = [];
+      var tmp = [];
+      if(this.models){
+        for(var i = 0; i < this.models.length; i++){
+          if(typeof(this.models[i]) != 'string'){
+            tmp.push(this.models[i]);
+          }
         }
-        this.models = this.models.slice();
+      }
+      this.models = [];
+      this.models = tmp.slice();
+      for(var i = 0; i < e.detail.length; i++){
+        var item = e.detail[i].split('/').pop();
+        this.models.push(item);
+        this.selectedModels.push(item);
+      }
+      this.selectedModels = this.selectedModels.slice();
+      this.models = this.models.slice();
+    },
+    _itemToArray: function(item){
+      if(typeof(item) == 'string'){
+        var array = [];
+        array.push(item);
+        return array;
+      }
+      else{
+        return item.slice();
+      }
+    },
+    _handleModelAdd: function(e){
+      var newModels = e.detail;
+      this.models.push(newModels);
+      this.models = this.models.slice();
+    },
+    _sort: function(a, b) {
+      var _a = a;
+      var _b = b;
+      if(typeof(a) != 'string' && a){
+        _a = a.join();
+      }
+      if(typeof(b) != 'string' && b){
+        _b = b.join();
+      }
+      if(_a == _b){
+        return 0;
+      }
+      return _a < _b ? -1 : 1;
+    },
+    _modelChange: function(){
+      this.models.sort(this._sort);
     }
   });
 </script>
