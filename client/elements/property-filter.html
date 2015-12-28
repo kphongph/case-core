@@ -9,8 +9,12 @@
 
 <dom-module id="property-filter">
   <style>
-    paper-material{
+    .container{
       width: 100%;
+      color: black;
+      background-color: #FFFFFF;
+    }
+    paper-material{
       margin-bottom: 5px;
     }
     .detailItem{
@@ -102,39 +106,40 @@
       handle-as="json"
       on-response="_handleProperty">
     </iron-ajax>
-    
-    <paper-material elevation="1">
-      <div class="detailItem">
-        <div class="desc-name">
-          <div class="desc-model">{{_getDescriptionModel(property_description)}}</div>.
-          <div class="desc-property">{{_getDescriptionProperty(property_description)}}</div>
+    <div class="container">
+      <paper-material elevation="1">
+        <div class="detailItem">
+          <div class="desc-name">
+            <div class="desc-model">{{_getDescriptionModel(property_description)}}</div>.
+            <div class="desc-property">{{_getDescriptionProperty(property_description)}}</div>
+          </div>
+          <paper-button
+            tabindex="0" class="blue ripple"
+            on-click="_handleFilter">Filter<iron-icon icon$="{{expandIcon}}"></iron-icon></paper-button>
         </div>
-        <paper-button
-          tabindex="0" class="blue ripple"
-          on-click="_handleFilter">Filter<iron-icon icon$="{{expandIcon}}"></iron-icon></paper-button>
-      </div>
-      <paper-progress 
-        hidden$="{{!isLoading}}" value="{{value}}" 
-        indeterminate="true" max="{{maxValue}}" class="green">
-      </paper-progress>
-    </paper-material>
-    <div class="detail" hidden$="{{!isExpand}}">
-      
-      <div hidden$="{{!isNull}}" class="null">
-        <paper-checkbox>Null</paper-checkbox>
-      </div>
-      
-      <div class="content">
-        <paper-fab mini icon="chevron-left" on-click="_handleBack"></paper-fab>
-        <div class="center" flex>
-          <hr>
-          <template is="dom-repeat" items="{{result}}">
-            <paper-checkbox>{{item.name}}</paper-checkbox>
-          </template>
+        <paper-progress 
+          hidden$="{{!isLoading}}" value="{{value}}" 
+          indeterminate="true" max="{{maxValue}}" class="green">
+        </paper-progress>
+      </paper-material>
+      <div class="detail" hidden$="{{!isExpand}}">
+        
+        <div hidden$="{{!isNull}}" class="null">
+          <paper-checkbox>Null</paper-checkbox>
         </div>
-        <paper-fab mini icon="chevron-right" on-click="_handleNext"></paper-fab>
+        
+        <div class="content">
+          <paper-fab mini icon="chevron-left" on-click="_handleBack"></paper-fab>
+          <div class="center" flex>
+            <hr>
+            <template is="dom-repeat" items="{{result}}">
+              <paper-checkbox>{{item.name}}</paper-checkbox>
+            </template>
+          </div>
+          <paper-fab mini icon="chevron-right" on-click="_handleNext"></paper-fab>
+        </div>
+        
       </div>
-      
     </div>
   </template>
 </dom-module>

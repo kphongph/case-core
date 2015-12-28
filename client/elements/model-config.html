@@ -18,30 +18,33 @@
       border-collapse: collapse;
       border: 1px solid #e5e5e5;
     }
+    .container:hover{
+      color: #4CAF50;
+      background-color: var(--google-grey-100);
+    }
     .item-header{
       @apply(--layout-horizontal);
       @apply(--layout-justified);
     }
     .item-header span{
-      padding-top: 15px;
-    }
-    .item-header:hover{
-      color: #4CAF50;
-      background-color: var(--google-grey-100);
+      padding: 15px 0 15px 0;
     }
     .expand-button {
-      padding: 5px 10px 5px 10px;
+      @apply(--layout-horizontal);
+      @apply(--layout-center);
     }
     .detail{
       display: none;
       margin-left: 50px;
       margin-right: 20px;
+      padding-bottom: 10px;
     }
     paper-menu {
       display: block;
     }
     paper-menu-button {
-      padding: 5px 10px 5px 10px;
+      @apply(--layout-horizontal);
+      @apply(--layout-center);
     }
     .item {
       max-width: 100px;
