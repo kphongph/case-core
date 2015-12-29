@@ -25,9 +25,10 @@
     .item-header{
       @apply(--layout-horizontal);
       @apply(--layout-justified);
+      cursor: pointer;
     }
     .item-header span{
-      padding: 15px 0 15px 0;
+      padding: 18px 0 15px 0;
     }
     .expand-button {
       @apply(--layout-horizontal);
@@ -94,7 +95,8 @@
     properties: {
       currentModels: {
         type: Array,
-        observer: '_modelChange'
+        observer: '_modelChange',
+        notify: true
       },
       model_properties: Array,
       where: {
@@ -125,6 +127,7 @@
       }
     },
     _modelChange: function(){
+      this.records = 0;
       this.model_properties = [];
       for(var i = 0; i < this.currentModels.length; i++){
         this.$.getDescription.url = 'explorer/resources/' + this.currentModels[i];

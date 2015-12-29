@@ -7,8 +7,12 @@
 <link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/ctable-element/ctable-element.html">
 <link rel="import" href="./model-config.html">
 <link rel="import" href="./model-filter.html">
+
+<script src="./js/requestor.js"></script>
+<script src="./js/join.js"></script>
 
 <dom-module id="core-controller">
   <style>
@@ -73,6 +77,7 @@
               <div id="model-content">
                   <template is="dom-repeat" items="{{models}}">
                     <model-config 
+                      on-click="_handleModelClick"
                       current-models="{{_itemToArray(item)}}" 
                       other-models="{{selectedModels}}"
                       on-new-model="_handleModelAdd"></model-config>
@@ -96,6 +101,14 @@
                   on-click="_handleToggleDrawer"></paper-icon-button>
               </div>
             </paper-toolbar>
+            
+            <div>
+              <ctable-element data="{{result}}" 
+                 selected="{{list}}"
+                 columns="{{columns}}">
+              </ctable-element>
+            </div>
+            
           </paper-header-panel>
         </div>
         
@@ -108,28 +121,44 @@
   Polymer({
     is: 'core-controller',
     properties: {
-        urls : {
-            type: Array
-        },
-        showRPanel: {
-            type : Boolean
-        },
-        records : {
-            type: String
-        },
-        currentModel: String,
-        models: {
-          type: Array,
-          observer: '_modelChange'
-        },
-        selectedModels: {
+      result: {
+        type: Array,
+        value: [
+          {'CID':12345566,'Name':'P. Kijsanayothin','Sign':'#','Age':'20'}, 
+          {'CID':12345567,'Name':'S. Kijsanayothin','Sign':'@','Age':'21'}, 
+          {'CID':12345560,'Name':'A. Kijsanayothin','Sign':'!','Age':'22'}
+        ]
+      },
+      columns:{
+        type: Array,
+        value: [  // property : label
+          {'label':'cid #1','property':'CID','type':'string'}, 
+          {'label':'name #2','property':'Name','type':'string'},
+          {'label':'sign #3','property':'Sign','type':'string'},
+          {'label':'age #4','property':'Age','type':'number'}
+        ]
+      },
+      urls : {
           type: Array
-        }
+      },
+      showRPanel: {
+          type : Boolean
+      },
+      records : {
+          type: String
+      },
+      currentModel: String,
+      models: {
+        type: Array,
+        observer: '_modelChange'
+      },
+      selectedModels: {
+        type: Array
+      }
     },
     ready: function() {
       this.isFieldsExist = false;
       this.$.paperDrawerPanel.drawerWidth = "500px";
-      //this.models1 = ["EducationChildren", "DisabilityPeople"];
     },
     _handleToggleDrawer: function(){
       if(this.$.paperDrawerPanel.hasAttribute('force-narrow')){ // hide
@@ -193,8 +222,63 @@
       }
       return _a < _b ? -1 : 1;
     },
+    _findUntil: function(element, expectTag, limitLoop){
+      for(var i = 0; i < limitLoop; i++){
+        if(element.localName == expectTag){
+          return element;
+        }
+        else{
+          element = element.parentNode;
+        }
+      }
+      return null;
+    },
     _modelChange: function(){
       this.models.sort(this._sort);
+    },
+    _handleModelClick: function(e){
+      var target = this._findUntil(e.target, 'model-config', 5);
+      if(target){
+        var models = target.currentModels;
+        var arrayModel = [];
+        for(var i = 0; i < models.length; i++){
+          var obj = {};
+          obj['modelName'] = models[i];
+          obj['query'] = {};
+          arrayModel.push(obj);
+        }
+        console.log(arrayModel)
+        js_joinExample(this, arrayModel, this._joinExampleCallback);
+      }
+    },
+    _getColumn: function(obj){
+      var keys = Object.keys(obj);
+      var array = [];
+      for(var i = 0; i < keys.length; i++){
+        var tmp = {'label': keys[i],'property': keys[i],'type': typeof(keys[i])};
+        array.push(tmp);
+      }
+      return array;
+    },
+    _getValue: function(column, data){
+      var array = [];
+      for(var i = 0; i < data.length; i++){
+        var tmp = {};
+        for(var j = 0; j < column.length; j++){
+            tmp[column[j].property] = data[i][column[j].property];
+        }
+        array.push(tmp);
+      }
+      return array;
+    },
+    _joinExampleCallback: function(ref, result){
+      if(result){
+        if(result.length > 0){
+          var response = JSON.parse(result);
+          ref.columns = ref._getColumn(response[0]);
+          ref.result = ref._getValue(ref.columns, response);
+        }
+      }
     }
   });
 </script>
