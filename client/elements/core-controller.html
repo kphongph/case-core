@@ -58,6 +58,10 @@
       @apply(--layout-vertical);
       overflow-y: auto;
     }
+    .result-panel{
+      width:100%;
+      overflow:auto
+    }
   </style>
   <template>
     <model-filter id="modelFilter" 
@@ -102,10 +106,12 @@
               </div>
             </paper-toolbar>
             
-            <div>
+            <div class="result-panel">
               <ctable-element data="{{result}}" 
-                 selected="{{list}}"
-                 columns="{{columns}}">
+                max-row="{{maxRow}}"
+                checkbox="{{showCheckbox}}"
+                selected="{{list}}"
+                columns="{{columns}}">
               </ctable-element>
             </div>
             
@@ -121,6 +127,14 @@
   Polymer({
     is: 'core-controller',
     properties: {
+      showCheckbox:{
+        type: Boolean,
+        value: false
+      },
+      maxRow: {
+        type: Number,
+        value: 10
+      },
       result: {
         type: Array,
         value: [
