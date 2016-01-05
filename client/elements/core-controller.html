@@ -247,7 +247,6 @@
           obj['query'] = {};
           arrayModel.push(obj);
         }
-        console.log(arrayModel)
         js_joinExample(this, arrayModel, this._joinExampleCallback);
       }
     },
@@ -273,11 +272,15 @@
     },
     _joinExampleCallback: function(ref, result){
       if(result){
-        if(result.length > 0){
-          var response = JSON.parse(result);
-          ref.columns = ref._getColumn(response[0]);
-          ref.result = ref._getValue(ref.columns, response);
+        var response = [];
+        if(typeof(result) == 'string'){
+          response = JSON.parse(result);
         }
+        else{
+          response = result;
+        }
+        ref.columns = ref._getColumn(response[0]);
+        ref.result = ref._getValue(ref.columns, response);
       }
     }
   });
