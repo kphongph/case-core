@@ -18,6 +18,11 @@
       border-collapse: collapse;
       border: 1px solid #e5e5e5;
     }
+    .container-selected{
+      background-color: var(--google-grey-100);
+      border-collapse: collapse;
+      border: 1px solid #e5e5e5;
+    }
     .container:hover{
       color: #4CAF50;
       background-color: var(--google-grey-100);
@@ -62,7 +67,7 @@
       on-response="_handleCount">
     </iron-ajax>
     
-    <div class="container">
+    <div class$="{{modelColor}}">
       <div class="item-header">
         <div class="expand-button">
           <paper-icon-button
@@ -113,10 +118,22 @@
       },
       otherModels: {
         type: Array
+      },
+      modelColor:{
+        type: String,
+        value: 'container'
       }
     },
     ready: function() {
       
+    },
+    setSelected: function(isSelected){
+      if(isSelected){
+        this.modelColor = 'container-selected';
+      }
+      else{
+        this.modelColor = 'container';
+      }
     },
     _modelsToString: function(currentModels){
       if(currentModels.length > 1){

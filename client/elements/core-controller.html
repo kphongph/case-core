@@ -52,12 +52,6 @@
       --paper-toolbar-background: #4CAF50;
       font-size: 150%;
     }
-    .model-content{
-      width: 100%;
-      height: 100%;
-      @apply(--layout-vertical);
-      overflow-y: auto;
-    }
     .result-panel{
       width:100%;
       overflow:auto
@@ -78,7 +72,7 @@
               <paper-toolbar class="header-text">
                 <div>Model configuration</div>
               </paper-toolbar>
-              <div id="model-content">
+              <div id="modelContent">
                   <template is="dom-repeat" items="{{models}}">
                     <model-config 
                       on-click="_handleModelClick"
@@ -89,7 +83,6 @@
               </div>
             </paper-header-panel>
           </div>
-    
         </div>
         
         <div main>
@@ -135,40 +128,17 @@
         type: Number,
         value: 10
       },
-      result: {
-        type: Array,
-        value: [
-          {'CID':12345566,'Name':'P. Kijsanayothin','Sign':'#','Age':'20'}, 
-          {'CID':12345567,'Name':'S. Kijsanayothin','Sign':'@','Age':'21'}, 
-          {'CID':12345560,'Name':'A. Kijsanayothin','Sign':'!','Age':'22'}
-        ]
-      },
-      columns:{
-        type: Array,
-        value: [  // property : label
-          {'label':'cid #1','property':'CID','type':'string'}, 
-          {'label':'name #2','property':'Name','type':'string'},
-          {'label':'sign #3','property':'Sign','type':'string'},
-          {'label':'age #4','property':'Age','type':'number'}
-        ]
-      },
-      urls : {
-          type: Array
-      },
-      showRPanel: {
-          type : Boolean
-      },
-      records : {
-          type: String
-      },
+      result: Array,
+      columns: Array,
+      urls : Array,
+      showRPanel: Boolean,
+      records : String,
       currentModel: String,
       models: {
         type: Array,
         observer: '_modelChange'
       },
-      selectedModels: {
-        type: Array
-      }
+      selectedModels: Array
     },
     ready: function() {
       this.isFieldsExist = false;
@@ -253,6 +223,11 @@
     _handleModelClick: function(e){
       var target = this._findUntil(e.target, 'model-config', 5);
       if(target){
+        var allModel = this.$.modelContent.querySelectorAll('model-config');
+        for(var i = 0; i< allModel.length; i++){
+          allModel[i].setSelected(false);
+        }
+        target.setSelected(true);
         var models = target.currentModels;
         var arrayModel = [];
         for(var i = 0; i < models.length; i++){
