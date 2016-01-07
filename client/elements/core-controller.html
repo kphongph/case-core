@@ -11,6 +11,7 @@
 <link rel="import" href="./model-config.html">
 <link rel="import" href="./model-filter.html">
 
+<script src="../bower_components/async/lib/async.js"></script>
 <script src="./js/requestor.js"></script>
 <script src="./js/join.js"></script>
 
@@ -145,7 +146,7 @@
       this.$.paperDrawerPanel.drawerWidth = "500px";
       
       var test = [{"modelName":"DropOutStudents","query":{}},{"modelName":"EducationChildren","query":{}}];
-      js_fullWork(this, test, 250, 280, this.testCallback);
+      js_fullWork(this, test, 250, 279, this.testCallback);
       
     },
     testCallback: function(ref, result){

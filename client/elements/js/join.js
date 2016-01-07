@@ -14,6 +14,7 @@ function js_fullWork(ref, arrayModel, startIndex, endIndex, callback){
     arrayModel[i]['range'] = findRange(arrayModel[i]['beginStart'], arrayModel[i]['beginEnd'], endIndex-startIndex, _count);
     devide += _count;
   }
+  //generateRequest(arrayModel);
   callback(ref, generateRequest(arrayModel));
 }
 
@@ -46,18 +47,40 @@ function generateRequestExample(arrayModel){
 
 function generateRequest(arrayModel){
   var result = [];
+  var index = [];
   for(var i = 0; i < arrayModel.length; i++){
+    index.push(i);
     var range = arrayModel[i].range;
-    var merge = [];
+    var task = [], urls = [];
+    // collect url
     for(var j = 0; j < range.length; j++){
       var start = range[j].start;
       var end = range[j].end;
       var url = baseUrl + arrayModel[i].modelName + '?where=' 
             + JSON.stringify(arrayModel[i].query) 
-            + '&filter[limit]=' + (end-start+1)+ '&filter[skip]=' + start;
-      merge = mergeArray(merge, JSON.parse(httpGet(url)));
+            + '&filter[limit]=' + (end-(start-1))+ '&filter[skip]=' + (start-1);
+      urls.push(url);
     }
-    result = cartesian(result, merge, i);
+    
+    // generate task each url
+    for(var k = 0; k < urls.length; k++){
+      task.push(
+        function(callback){
+          callback(null, JSON.parse(httpGet(urls.pop())));
+        }
+      );
+    }
+
+    // call as parall
+    async.parallel(task,
+      function(err, results){
+        var merge = [];
+        for(var i = 0; i < results.length; i++){
+          merge = mergeArray(merge, results[i]);
+        }
+        result = cartesian(result, merge, index.pop());
+      }
+    );
   }
   return result;
 }
@@ -92,16 +115,6 @@ function cartesian(baseArray, newArray, postFix){
   }
   newArray = []; newArray = []; // alloc
   return tmp;
-}
-
-function findActualIndex(findValue, count, devide, isStartIndex, defaultValue){
-  if(devide === 0) devide = 1;
-  var value = Math.floor(findValue/devide);
-  if(value >= count){
-    if(isStartIndex) return 1;
-    return count;
-  }
-  return defaultValue;
 }
 
 function findRequestIndex(findValue, count, devide){

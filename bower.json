@@ -31,6 +31,7 @@
     "paper-drawer-panel": "PolymerElements/paper-drawer-panel#~1.0.3",
     "paper-behaviors": "PolymerElements/paper-behaviors#~1.0.10",
     "paper-menu-button": "PolymerElements/paper-menu-button#~1.0.4",
-    "ctable-element": "chaowarat/ctable-element#master"
+    "ctable-element": "chaowarat/ctable-element#master",
+    "async": "~1.5.1"
   }
 }
