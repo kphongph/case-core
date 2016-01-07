@@ -144,9 +144,13 @@
       this.isFieldsExist = false;
       this.$.paperDrawerPanel.drawerWidth = "500px";
       
-      var test = [{"modelName":"DropOutStudents","query":{}},{"modelName":"EducationChildren","query":{}},{"modelName":"DropOutStudents","query":{}}];
-      js_fullWork(test, 250, 280);
+      var test = [{"modelName":"DropOutStudents","query":{}},{"modelName":"EducationChildren","query":{}}];
+      js_fullWork(this, test, 250, 280, this.testCallback);
       
+    },
+    testCallback: function(ref, result){
+      ref.columns = ref._getColumn(result[0]);
+      ref.result = ref._getValue(ref.columns, result);
     },
     _handleToggleDrawer: function(){
       if(this.$.paperDrawerPanel.hasAttribute('force-narrow')){ // hide

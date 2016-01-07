@@ -2,23 +2,19 @@
 var baseUrl = '/api/';
 var limitRecord = 10;
 
-function js_fullWork(arrayModel, startIndex, endIndex){
-  // get records, calculate start-end request index
+function js_fullWork(ref, arrayModel, startIndex, endIndex, callback){
   var devide = 0;
   for(var i = 0; i < arrayModel.length; i++){
     var url = baseUrl + arrayModel[i].modelName + '/count';
     var _count = (JSON.parse(httpGet(url))).count;
-    
     arrayModel[i]['order'] = i;
     arrayModel[i]['count'] = _count;
-    arrayModel[i]['start'] = findRequestIndex(startIndex, _count, devide);
-    arrayModel[i]['end'] = findRequestIndex(endIndex, _count, devide);
-    arrayModel[i]['actualStart'] = findActualIndex(startIndex, _count, devide, true, arrayModel[i]['start']);
-    arrayModel[i]['actualEnd'] = findActualIndex(endIndex, _count, devide, false, arrayModel[i]['end']);
+    arrayModel[i]['beginStart'] = findRequestIndex(startIndex, _count, devide);
+    arrayModel[i]['beginEnd'] = findRequestIndex(endIndex, _count, devide);
+    arrayModel[i]['range'] = findRange(arrayModel[i]['beginStart'], arrayModel[i]['beginEnd'], endIndex-startIndex, _count);
     devide += _count;
   }
-  console.log(arrayModel);
-  console.log(generateRequest(arrayModel));
+  callback(ref, generateRequest(arrayModel));
 }
 
 function js_joinExample(ref, arrayModel, callback){
@@ -51,14 +47,27 @@ function generateRequestExample(arrayModel){
 function generateRequest(arrayModel){
   var result = [];
   for(var i = 0; i < arrayModel.length; i++){
-    var range = arrayModel[i].actualEnd - arrayModel[i].actualStart + 1;
-    var url = baseUrl + arrayModel[i].modelName + '?where=' 
+    var range = arrayModel[i].range;
+    var merge = [];
+    for(var j = 0; j < range.length; j++){
+      var start = range[j].start;
+      var end = range[j].end;
+      var url = baseUrl + arrayModel[i].modelName + '?where=' 
             + JSON.stringify(arrayModel[i].query) 
-            + '&filter[limit]=' + range+ '&filter[skip]=' + (arrayModel[i].actualStart - 1);
-    var response = JSON.parse(httpGet(url));
-    result = cartesian(result, response, i);
+            + '&filter[limit]=' + (end-start+1)+ '&filter[skip]=' + start;
+      merge = mergeArray(merge, JSON.parse(httpGet(url)));
+    }
+    result = cartesian(result, merge, i);
   }
   return result;
+}
+
+function mergeArray(array1, array2){
+  var tmp = array1.slice();
+  for(var i = 0; i < array2.length; i++){
+    tmp.push(array2[i]);
+  }
+  return tmp;
 }
 
 function cartesian(baseArray, newArray, postFix){
@@ -104,6 +113,22 @@ function findRequestIndex(findValue, count, devide){
   var result = Math.floor((findValue - (devideWithCount*Math.floor(findValue/devideWithCount)))/devide);
   if(result === 0) result = 1;
   return result;
+}
+
+function findRange(startIndex, endIndex, range, count){
+  if(count <= range) return [{'start':1,'end':count}];
+  if(startIndex > endIndex){
+    return [
+        {'start':1,'end':endIndex},
+        {'start':startIndex,'end':count}
+      ];
+  }
+  else if(startIndex < endIndex){
+    return [{'start':startIndex,'end':endIndex}];
+  }
+  else{
+    return [{'start':1,'end':1}];
+  }
 }
 
 
