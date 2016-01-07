@@ -92,6 +92,7 @@
               <paper-button on-click="_handleModelButton">Model</paper-button>
               <paper-button on-click="_handleSaveButton">Save</paper-button>
               <paper-button on-click="_handleLoadButton">Load</paper-button>
+              <paper-button on-click="_handleRunButton">Run</paper-button>
               <div class="add">
                 <paper-icon-button
                   id="toggleDrawer"
@@ -139,15 +140,12 @@
         type: Array,
         observer: '_modelChange'
       },
-      selectedModels: Array
+      selectedModels: Array,
+      selectedModelConfig: Array
     },
     ready: function() {
       this.isFieldsExist = false;
       this.$.paperDrawerPanel.drawerWidth = "500px";
-      
-      var test = [{"modelName":"DropOutStudents","query":{}},{"modelName":"EducationChildren","query":{}}];
-      js_fullWork(this, test, 250, 279, this.testCallback);
-      
     },
     testCallback: function(ref, result){
       ref.columns = ref._getColumn(result[0]);
@@ -162,6 +160,11 @@
         this.$.paperDrawerPanel.setAttribute('force-narrow',''); // show
         this.$.toggleDrawer.icon = 'chevron-left'
       }
+    },
+    _handleRunButton: function(){
+      if(!this.selectedModelConfig) return;
+      if(this.selectedModelConfig.length === 0) return;
+      js_fullWork(this, this.selectedModelConfig, 250, 279, this.testCallback);
     },
     _handleModelButton: function(){
       this.$.modelFilter.show();
@@ -238,14 +241,14 @@
         }
         target.setSelected(true);
         var models = target.currentModels;
-        var arrayModel = [];
+        this.selectedModelConfig = [];
         for(var i = 0; i < models.length; i++){
           var obj = {};
           obj['modelName'] = models[i];
           obj['query'] = {};
-          arrayModel.push(obj);
+          this.selectedModelConfig.push(obj);
         }
-        js_joinExample(this, arrayModel, this._joinExampleCallback);
+        js_joinExample(this, this.selectedModelConfig, this._joinExampleCallback);
       }
     },
     _getColumn: function(obj){
