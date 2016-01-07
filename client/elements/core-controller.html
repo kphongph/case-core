@@ -103,10 +103,14 @@
             
             <div class="result-panel">
               <ctable-element data="{{result}}" 
+                id="ctable"
                 max-row="{{maxRow}}"
                 checkbox="{{showCheckbox}}"
                 selected="{{list}}"
-                columns="{{columns}}">
+                columns="{{columns}}"
+                count="{{countRecord}}"
+                on-next="_handleTableNext"
+                on-prev="_handleTablePrev">
               </ctable-element>
             </div>
             
@@ -130,6 +134,11 @@
         type: Number,
         value: 10
       },
+      currentPage: {
+        type: Number,
+        value: 1
+      },
+      countRecord: Number,
       result: Array,
       columns: Array,
       urls : Array,
@@ -146,10 +155,6 @@
     ready: function() {
       this.isFieldsExist = false;
       this.$.paperDrawerPanel.drawerWidth = "500px";
-    },
-    testCallback: function(ref, result){
-      ref.columns = ref._getColumn(result[0]);
-      ref.result = ref._getValue(ref.columns, result);
     },
     _handleToggleDrawer: function(){
       if(this.$.paperDrawerPanel.hasAttribute('force-narrow')){ // hide
@@ -248,10 +253,12 @@
           obj['query'] = {};
           this.selectedModelConfig.push(obj);
         }
-        js_joinExample(this, this.selectedModelConfig, this._joinExampleCallback);
+        this.$.ctable.setStartPage();
+        js_fullWork(this, this.selectedModelConfig, ((this.currentPage-1)*this.maxRow)+1, this.currentPage*this.maxRow, this._joinCallback);
       }
     },
     _getColumn: function(obj){
+      if(!obj) return [];
       var keys = Object.keys(obj);
       var array = [];
       for(var i = 0; i < keys.length; i++){
@@ -271,7 +278,8 @@
       }
       return array;
     },
-    _joinExampleCallback: function(ref, result){
+    _joinCallback: function(ref, result, countRecord){
+      ref.countRecord = countRecord;
       if(result){
         var response = [];
         if(typeof(result) == 'string'){
@@ -282,6 +290,16 @@
         }
         ref.columns = ref._getColumn(response[0]);
         ref.result = ref._getValue(ref.columns, response);
+      }
+    },
+    _handleTableNext: function(){
+      this.currentPage++;
+      js_fullWork(this, this.selectedModelConfig, ((this.currentPage-1)*this.maxRow)+1, this.currentPage*this.maxRow, this._joinCallback);
+    },
+    _handleTablePrev: function(){
+      this.currentPage--;
+      if(this.currentPage > 1){
+        js_fullWork(this, this.selectedModelConfig, ((this.currentPage-1)*this.maxRow)+1, this.currentPage*this.maxRow, this._joinCallback);
       }
     }
   });

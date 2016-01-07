@@ -3,10 +3,13 @@ var baseUrl = '/api/';
 var limitRecord = 10;
 
 function js_fullWork(ref, arrayModel, startIndex, endIndex, callback){
-  var devide = 0;
+  var devide = 0, countRecord = 1;
   for(var i = 0; i < arrayModel.length; i++){
     var url = baseUrl + arrayModel[i].modelName + '/count';
     var _count = (JSON.parse(httpGet(url))).count;
+    if(_count !== 0){
+      countRecord *= _count;
+    }
     arrayModel[i]['order'] = i;
     arrayModel[i]['count'] = _count;
     arrayModel[i]['beginStart'] = findRequestIndex(startIndex, _count, devide);
@@ -15,7 +18,7 @@ function js_fullWork(ref, arrayModel, startIndex, endIndex, callback){
     devide += _count;
   }
   //generateRequest(arrayModel);
-  callback(ref, generateRequest(arrayModel));
+  callback(ref, generateRequest(arrayModel), countRecord);
 }
 
 function js_joinExample(ref, arrayModel, callback){
@@ -120,11 +123,12 @@ function cartesian(baseArray, newArray, postFix){
 function findRequestIndex(findValue, count, devide){
   var devideWithCount = devide * count;
   if(devide === 0) {
+    if(findValue >= count) return findValue; //one model and lastest value
     devide = 1;
     devideWithCount = count;
   }
   var result = Math.floor((findValue - (devideWithCount*Math.floor(findValue/devideWithCount)))/devide);
-  if(result === 0) result = 1;
+  if(result === 0) result = findValue; // findValue = count
   return result;
 }
 
