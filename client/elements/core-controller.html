@@ -240,6 +240,7 @@
     _handleModelClick: function(e){
       var target = this._findUntil(e.target, 'model-config', 5);
       if(target){
+        this.currentPage = 1;
         var allModel = this.$.modelContent.querySelectorAll('model-config');
         for(var i = 0; i< allModel.length; i++){
           allModel[i].setSelected(false);
@@ -298,7 +299,7 @@
     },
     _handleTablePrev: function(){
       this.currentPage--;
-      if(this.currentPage > 1){
+      if(this.currentPage >= 1){
         js_fullWork(this, this.selectedModelConfig, ((this.currentPage-1)*this.maxRow)+1, this.currentPage*this.maxRow, this._joinCallback);
       }
     }
