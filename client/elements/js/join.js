@@ -1,6 +1,7 @@
 
 var baseUrl = '/api/';
 var limitRecord = 10;
+var limitRecordPerRequest = 10;
 
 function js_fullWork(ref, arrayModel, startIndex, endIndex, callback){
   var devide = 0, countRecord = 1;
@@ -17,8 +18,7 @@ function js_fullWork(ref, arrayModel, startIndex, endIndex, callback){
     arrayModel[i]['range'] = findRange(arrayModel[i]['beginStart'], arrayModel[i]['beginEnd'], endIndex-startIndex, _count);
     devide += _count;
   }
-  //generateRequest(arrayModel);
-  callback(ref, generateRequest(arrayModel), countRecord);
+  callback(ref, generateRequest(arrayModel, startIndex, endIndex), countRecord);
 }
 
 function js_joinExample(ref, arrayModel, callback){
@@ -48,13 +48,55 @@ function generateRequestExample(arrayModel){
   return result;
 }
 
-function generateRequest(arrayModel){
+function generateRequest(arrayModel, startIndex, endIndex){
+  var result = [];
+  var skipRecord = 0;
+  var resultRange = (endIndex - startIndex) + 1;
+  for(var i = 0; i < arrayModel.length; i++){
+    var range = arrayModel[i].range;
+    var merge = [];
+    for(var j = 0; j < range.length; j++){
+      var start = range[j].start;
+      var end = range[j].end;
+      var url = baseUrl + arrayModel[i].modelName + '?where=' 
+            + JSON.stringify(arrayModel[i].query) 
+            + '&filter[limit]=' + (end-(start-1))+ '&filter[skip]=' + (start-1);
+      merge = mergeArray(merge, JSON.parse(httpGet(url)));
+    }
+    if(i === 1){
+      var oldStart = arrayModel[i-1].range[0].start;
+      skipRecord = arrayModel[i-1].range[0].end;
+      if(oldStart < skipRecord){
+        skipRecord = oldStart;
+      }
+    }
+    result = cartesian(result, merge, i);
+    if(result.length > resultRange){
+      result = result.slice(skipRecord-1, resultRange);
+    }
+  }
+  return result;
+}
+ 
+function generateRequestParallel(arrayModel, startIndex, endIndex){
   var result = [];
   var index = [];
+  var skipRecord = 0;
+  var resultRange = (endIndex - startIndex) + 1;
   for(var i = 0; i < arrayModel.length; i++){
     index.push(i);
     var range = arrayModel[i].range;
     var task = [], urls = [];
+    
+    // get first index of record
+    if(i === 1){
+      var oldStart = arrayModel[i-1].range[0].start;
+      skipRecord = arrayModel[i-1].range[0].end;
+      if(oldStart < skipRecord){
+        skipRecord = oldStart;
+      }
+    }
+    
     // collect url
     for(var j = 0; j < range.length; j++){
       var start = range[j].start;
@@ -64,7 +106,6 @@ function generateRequest(arrayModel){
             + '&filter[limit]=' + (end-(start-1))+ '&filter[skip]=' + (start-1);
       urls.push(url);
     }
-    
     // generate task each url
     for(var k = 0; k < urls.length; k++){
       task.push(
@@ -82,6 +123,9 @@ function generateRequest(arrayModel){
           merge = mergeArray(merge, results[i]);
         }
         result = cartesian(result, merge, index.pop());
+        if(result.length > resultRange){
+          result = result.slice(skipRecord-1, resultRange);
+        }
       }
     );
   }
@@ -123,12 +167,16 @@ function cartesian(baseArray, newArray, postFix){
 function findRequestIndex(findValue, count, devide){
   var devideWithCount = devide * count;
   if(devide === 0) {
-    if(findValue >= count) return findValue; //one model and lastest value
     devide = 1;
     devideWithCount = count;
   }
-  var result = Math.floor((findValue - (devideWithCount*Math.floor(findValue/devideWithCount)))/devide);
-  if(result === 0) result = findValue; // findValue = count
+  var result = Math.ceil((findValue - (devideWithCount*Math.floor(findValue/devideWithCount)))/devide);
+  if(result === 0 && devide === 1) {
+    result = findValue; // findValue = count
+  }
+  else if(result === 0) {
+    result = 1;
+  }
   return result;
 }
 
@@ -145,6 +193,16 @@ function findRange(startIndex, endIndex, range, count){
   }
   else{
     return [{'start':1,'end':1}];
+  }
+}
+
+function splitRange(ranges){ // not finish
+  var newRange = [];
+  for(var i = 0; i < ranges.length; i++){
+    var tmp = ranges[i];
+    if((tmp.end-tmp.start) >= limitRecordPerRequest){
+      
+    }
   }
 }
 
