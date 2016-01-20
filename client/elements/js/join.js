@@ -2,8 +2,16 @@
 var baseUrl = '/api/';
 var limitRecord = 10;
 var limitRecordPerRequest = 10;
+var forceStop = false;
+
+function js_stopWork(){
+  forceStop = true;
+}
 
 function js_fullWork(ref, arrayModel, startIndex, endIndex, callback){
+  if(forceStop) {
+    forceStop = false; return;
+  }
   var devide = 0, countRecord = 1;
   for(var i = 0; i < arrayModel.length; i++){
     var url = baseUrl + arrayModel[i].modelName + '/count';
@@ -188,11 +196,8 @@ function findRange(startIndex, endIndex, range, count){
         {'start':startIndex,'end':count}
       ];
   }
-  else if(startIndex < endIndex){
+  else if(startIndex <= endIndex){
     return [{'start':startIndex,'end':endIndex}];
-  }
-  else{
-    return [{'start':1,'end':1}];
   }
 }
 

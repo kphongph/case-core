@@ -32,6 +32,7 @@
     "paper-behaviors": "PolymerElements/paper-behaviors#~1.0.10",
     "paper-menu-button": "PolymerElements/paper-menu-button#~1.0.4",
     "ctable-element": "chaowarat/ctable-element#master",
-    "async": "~1.5.1"
+    "async": "~1.5.1",
+    "paper-spinner": "PolymerElements/paper-spinner#~1.1.0"
   }
 }

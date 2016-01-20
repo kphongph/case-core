@@ -1,0 +1,150 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-slider/paper-slider.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+
+<dom-module id="result-controller">
+  <style>
+    paper-dialog{
+      width: 50%;
+      min-width: 300px;
+    }
+    .container{
+      width: 100%;
+    }
+    .slider-container{
+       @apply(--layout-horizontal);
+    }
+    paper-slider{
+      width: 100%;
+    }
+    .slider-text{
+      width: 40px;
+      padding: 10px;
+    }
+    .splinner-text{
+      padding: 5px 5px 5px 20px;
+    }
+    .loading {
+      @apply(--layout-horizontal);
+      @apply(--layout-center-justified);
+    }
+  </style>
+  <template>
+    <iron-ajax id="modelsAjax" 
+      handle-as="json"
+      url="{{url}}"
+      auto
+      on-response="_handleModels">
+    </iron-ajax>
+    
+    <div class="container">
+      <paper-dialog id="dialogModels">
+        <div class="dialog-body">
+          <h2>Generate result</h2><br>
+          <div class="slider-container">
+            <span class="slider-text">Start</span><paper-slider id="sliderStart" pin 
+              min="0" max="{{maxValue}}" value="{{startValue}}"></paper-slider>
+            <span class="dateRight">{{toDateString(end)}}</span>
+            <span class="slider-text">{{startValue}}</span>
+          </div>
+          <div class="slider-container">
+            <span class="slider-text">End</span><paper-slider id="sliderEnd" pin 
+              min="0" max="{{maxValue}}" value="{{endValue}}"></paper-slider>
+            <span class="dateRight">{{toDateString(end)}}</span>
+            <span class="slider-text">{{endValue}}</span>
+          </div>
+          <div class="loading" hidden$="{{hideSplinner}}">
+            <paper-spinner active></paper-spinner>
+            <span class="splinner-text">{{progressText}}{{timeString}}</span>
+          </div>
+        </div>
+        <div class="buttons">
+          <paper-button dialog-dismiss>Close</paper-button>
+          <paper-button autofocus on-click="_handleRun">RUN</paper-button>
+        </div>
+      </paper-dialog>
+    </div>
+    
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'result-controller',
+    properties: {
+      maxValue: {
+        type: Number,
+        value: 100
+      },
+      startValue: {
+        type: Number,
+        value: 0
+      },
+      endValue: {
+        type: Number,
+        value: 100
+      },
+      progress: {
+        type: Number,
+        value: 0,
+        observer: '_handleProgressChanged'
+      },
+      progressText: {
+        type: Number,
+        value: '0 %'
+      },
+      hideSplinner: {
+        type: Boolean,
+        value: false
+      },
+      startTime: Date,
+      endTime: Date,
+      estimateTime: String,
+      remainingTime: String,
+      timeString: String
+    },
+    ready: function() {
+
+    },
+    show: function(){
+      this.$.sliderEnd.value = this.maxValue;
+      if(!this.progress){
+        this.progress = 0;
+      }
+      this.$.dialogModels.open();
+    },
+    hide: function(){
+        this.$.dialogModels.close();
+    },
+    _handleProgressChanged: function(){
+      if(!this.startTime){
+        this.startTime = new Date();
+      }
+      else{
+        if(!this.endTime) {
+          this.endTime = new Date();
+          var diff = (this.endTime-this.startTime)/1000;
+          this.remainingTime = ((100/this.progress)*diff).toFixed(2);
+          if(!this.estimateTime) this.estimateTime = this.remainingTime;
+          this.timeString = '  Estimate: ' + this.estimateTime + 's  remaining: ' + this.remainingTime + 's';
+          this.startTime = null;
+          this.endTime = null;
+        }
+      }
+      if(this.progress < 100){
+        this.progressText = this.progress + ' %';
+      }
+      else{ // finish task
+        this.hideSplinner = true;
+      }
+    },
+    _handleRun: function(){
+      this.hideSplinner = false;
+      this.startTime = new Date();
+      this.fire('run', {'start': this.startValue, 'end': this.endValue});
+    }
+  });
+</script>

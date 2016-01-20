@@ -10,6 +10,7 @@
 <link rel="import" href="../bower_components/ctable-element/ctable-element.html">
 <link rel="import" href="./model-config.html">
 <link rel="import" href="./model-filter.html">
+<link rel="import" href="./result-controller.html">
 
 <script src="../bower_components/async/lib/async.js"></script>
 <script src="./js/requestor.js"></script>
@@ -63,6 +64,8 @@
       on-confirm="_handleModelsConfirm"
       url="/explorer/resources">
     </model-filter>
+    
+    <result-controller id="runResult" max-value="{{countRecord}}" progress="{{resultProgress}}" on-run="_handleGenerateResult"></result-controller>
       
     <div class="container">
       <paper-drawer-panel id="paperDrawerPanel" right-drawer>
@@ -150,13 +153,19 @@
         observer: '_modelChange'
       },
       selectedModels: Array,
-      selectedModelConfig: Array
+      selectedModelConfig: Array,
+      resultProgress: Number,
+      genResultIndex: Number,
+      recordPerRequest: {
+        type: Number,
+        value: 1000
+      }
     },
     ready: function() {
       this.isFieldsExist = false;
       this.$.paperDrawerPanel.drawerWidth = "500px";
       //var test = [{"modelName":"DropOutStudents","query":{}},{"modelName":"EducationChildren","query":{}}];
--     //js_fullWork(this, test, 91, 100, this._joinCallback);
+      //js_fullWork(this, test, 91, 100, this._joinCallback);
     },
     _handleToggleDrawer: function(){
       if(this.$.paperDrawerPanel.hasAttribute('force-narrow')){ // hide
@@ -169,9 +178,10 @@
       }
     },
     _handleRunButton: function(){
-      if(!this.selectedModelConfig) return;
-      if(this.selectedModelConfig.length === 0) return;
-      js_fullWork(this, this.selectedModelConfig, 250, 279, this.testCallback);
+      //if(!this.selectedModelConfig) return;
+      //if(this.selectedModelConfig.length === 0) return;
+      this.resultProgress = 0;
+      this.$.runResult.show();
     },
     _handleModelButton: function(){
       this.$.modelFilter.show();
@@ -240,6 +250,7 @@
       this.models.sort(this._sort);
     },
     _handleModelClick: function(e){
+      this.maxRow = 10;
       var target = this._findUntil(e.target, 'model-config', 5);
       if(target){
         this.currentPage = 1;
@@ -297,12 +308,51 @@
     },
     _handleTableNext: function(){
       this.currentPage++;
-      js_fullWork(this, this.selectedModelConfig, ((this.currentPage-1)*this.maxRow)+1, this.currentPage*this.maxRow, this._joinCallback);
+      var endIndex = this.currentPage*this.maxRow;
+      if(endIndex > this.countRecord) endIndex=this.countRecord;
+      js_fullWork(this, this.selectedModelConfig, ((this.currentPage-1)*this.maxRow)+1, endIndex, this._joinCallback);
     },
     _handleTablePrev: function(){
       this.currentPage--;
       if(this.currentPage >= 1){
         js_fullWork(this, this.selectedModelConfig, ((this.currentPage-1)*this.maxRow)+1, this.currentPage*this.maxRow, this._joinCallback);
+      }
+    },
+    _handleGenerateResult: function(e){
+      var result = e.detail;
+      this.resultProgress = 0;
+      this.currentPage = 1;
+      this.genResultIndex = result;
+      if(this.genResultIndex.start === 0) this.genResultIndex.start = 1;
+      var length = (result.end - result.start) + 1;
+      if(length <= this.recordPerRequest){
+        js_fullWork(this, this.selectedModelConfig, this.genResultIndex.start, result.end, this._runOneCallback);
+      }
+      else{
+        js_fullWork(this, this.selectedModelConfig, this.genResultIndex.start, (this.genResultIndex.start+this.recordPerRequest)-1, this._runMultiCallback);
+      }
+    },
+    _runOneCallback: function(ref, result, countRecord){
+      ref.resultProgress = 100;
+      if(result.length > 0){
+        // do with result
+      }
+    },
+    _runMultiCallback: function(ref, result, countRecord){
+      if(result.length > 0){
+        // do with result
+        console.log(ref.genResultIndex, result);
+      }
+      
+      if(ref.genResultIndex.start < ref.genResultIndex.end){
+        ref.genResultIndex.start += ref.recordPerRequest;
+        ref.resultProgress = ((ref.genResultIndex.start*100)/ref.genResultIndex.end).toFixed(2);
+        var endIndex = (ref.genResultIndex.start+ref.recordPerRequest)-1;
+        if(endIndex > ref.genResultIndex.end) endIndex=ref.genResultIndex.end;
+        setTimeout(function(){
+          js_fullWork(ref, ref.selectedModelConfig, ref.genResultIndex.start, endIndex, ref._runMultiCallback);
+        }, 500);
+        
       }
     }
   });
