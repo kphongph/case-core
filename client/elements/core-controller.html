@@ -7,6 +7,7 @@
 <link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/ctable-element/ctable-element.html">
 <link rel="import" href="./model-config.html">
 <link rel="import" href="./model-filter.html">
@@ -67,6 +68,17 @@
     
     <result-controller id="runResult" max-value="{{countRecord}}" progress="{{resultProgress}}" on-run="_handleGenerateResult"></result-controller>
       
+    <paper-dialog id="sortDialog">
+      <h2>Sort<span>{{sortStatus}}</span></h2>
+      <paper-dialog-scrollable>
+        Sort <b>{{sortValue.value}}</b> by <b>{{sortValue.text}}</b>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button on-click="_handleSortConfirm">OK</paper-button>
+      </div>
+    </paper-dialog>
+
     <div class="container">
       <paper-drawer-panel id="paperDrawerPanel" right-drawer>
         
@@ -113,7 +125,8 @@
                 columns="{{columns}}"
                 count="{{countRecord}}"
                 on-next="_handleTableNext"
-                on-prev="_handleTablePrev">
+                on-prev="_handleTablePrev"
+                on-sort="_handleSortByColumn">
               </ctable-element>
             </div>
             
@@ -154,12 +167,17 @@
       },
       selectedModels: Array,
       selectedModelConfig: Array,
+      selectedModelAttr: Array,
       resultProgress: Number,
       genResultIndex: Number,
       recordPerRequest: {
         type: Number,
         value: 1000
-      }
+      },
+      sortValue: Object,
+      sortStartIndex: Number,
+      distinctValue: Array,
+      sortStatus: String
     },
     ready: function() {
       this.isFieldsExist = false;
@@ -178,8 +196,8 @@
       }
     },
     _handleRunButton: function(){
-      //if(!this.selectedModelConfig) return;
-      //if(this.selectedModelConfig.length === 0) return;
+      if(!this.selectedModelConfig) return;
+      if(this.selectedModelConfig.length === 0) return;
       this.resultProgress = 0;
       this.$.runResult.show();
     },
@@ -188,6 +206,7 @@
     },
     _handleModelsConfirm: function(e){
       this.selectedModels = [];
+      this.selectedModelAttr = e.detail;
       var tmp = [];
       if(this.models){
         for(var i = 0; i < this.models.length; i++){
@@ -199,7 +218,7 @@
       this.models = [];
       this.models = tmp.slice();
       for(var i = 0; i < e.detail.length; i++){
-        var item = e.detail[i].split('/').pop();
+        var item = e.detail[i].model;
         this.models.push(item);
         this.selectedModels.push(item);
       }
@@ -268,6 +287,11 @@
           this.selectedModelConfig.push(obj);
         }
         this.$.ctable.setStartPage();
+        this.countRecord = null;
+        this.columns = [];
+        this.result = [];
+        this.sortValue = null;
+        this.sortStartIndex = 1;
         js_fullWork(this, this.selectedModelConfig, ((this.currentPage-1)*this.maxRow)+1, this.currentPage*this.maxRow, this._joinCallback);
       }
     },
@@ -293,7 +317,9 @@
       return array;
     },
     _joinCallback: function(ref, result, countRecord){
-      ref.countRecord = countRecord;
+      if(!ref.countRecord){
+        ref.countRecord = countRecord;
+      }
       if(result){
         var response = [];
         if(typeof(result) == 'string'){
@@ -302,8 +328,34 @@
         else{
           response = result;
         }
-        ref.columns = ref._getColumn(response[0]);
-        ref.result = ref._getValue(ref.columns, response);
+        if(ref.columns.length === 0){
+          ref.columns = ref._getColumn(response[0]);
+        }
+        if(ref.result.length === 0){
+          ref.result = ref._getValue(ref.columns, response);
+        }
+        else{
+          // append result
+          ref.result = ref.result.concat(response);
+        }
+        if(ref.result.length < ref.maxRow && ref.sortStartIndex < ref.distinctValue.length){
+          // get more result
+          ref.sortStartIndex++;
+          for(var i = 0; i < ref.selectedModelConfig.length; i++){
+            if(ref.selectedModelConfig[i].modelName === ref.sortValue.model){
+              var query = ref.selectedModelConfig[i].query;
+              if(!query.where){
+                query['where'] = {};
+              }
+              query.where[ref.sortValue.value] = ref.distinctValue[ref.sortStartIndex-1];
+              ref.selectedModelConfig[i].query = query;
+            }
+          }
+          js_fullWork(ref, ref.selectedModelConfig, ((ref.sortStartIndex-1)*ref.maxRow)+1, ref.sortStartIndex*ref.maxRow, ref._joinCallback);
+        }
+        else{
+          ref.$.sortDialog.close();
+        }
       }
     },
     _handleTableNext: function(){
@@ -353,6 +405,79 @@
           js_fullWork(ref, ref.selectedModelConfig, ref.genResultIndex.start, endIndex, ref._runMultiCallback);
         }, 500);
         
+      }
+    },
+    _handleSortByColumn: function(e){
+      this.sortValue = e.detail;
+      this.sortStatus = '';
+      this.$.sortDialog.open();
+    },
+    _handleSortConfirm: function(){
+      this.result = [];
+      this.distinctValue = [];
+      var model = this._findModelByAttr(this.sortValue.value);
+      var sortBy = this.sortValue.text;
+      var attr = this.sortValue.value;
+      var n = attr.match(/\d+/g);
+      if(n){
+        attr = attr.substring(0, attr.length-n[0].length);
+      }
+      this.sortValue.value = attr;
+      this.sortValue.model = model;
+      this.sortStatus = '(processing...)';
+      js_distinct(this, model, attr, sortBy, this._handleSortCallback);
+      
+    },
+    _handleSortCallback: function(ref, result){ // result = sort and distinct
+      ref.distinctValue = result;
+      ref.sortStartIndex = 1;
+      for(var i = 0; i < ref.selectedModelConfig.length; i++){
+        if(ref.selectedModelConfig[i].modelName === ref.sortValue.model){
+          var query = ref.selectedModelConfig[i].query;
+          if(!query.where){
+            query['where'] = {};
+          }
+          query.where[ref.sortValue.value] = result[ref.sortStartIndex-1];
+          ref.selectedModelConfig[i].query = query;
+        }
+      }
+      js_fullWork(ref, ref.selectedModelConfig, ((ref.sortStartIndex-1)*ref.maxRow)+1, ref.sortStartIndex*ref.maxRow, ref._joinCallback);
+    },
+    _findModelByAttr: function(attr){
+      if(!this.selectedModelConfig) return null;
+      if(!this.selectedModelAttr) return null;
+      var tmp = [];
+      for(var i = 0; i < this.selectedModelConfig.length; i++){
+        for(var j = 0; j < this.selectedModelAttr.length; j++){
+          if(this.selectedModelConfig[i].modelName === this.selectedModelAttr[j].model){
+            tmp.push(this.selectedModelAttr[j]);
+          }
+        }
+      }
+      var n = attr.match(/\d+/g);
+      var number = 0;
+      if(n){
+        number = Number(n[0])
+      }
+      if(number > 0){
+        var attrs = tmp[number].attr;
+        var findString = attr.substring(0, attr.length-number.toString().length);
+        for(var j = 0; j < attrs.length; j++){
+          if(attrs[j] === findString){
+            return tmp[number].model;
+          }
+        }
+      }
+      else{
+        for(var i = 0; i < tmp.length; i++){
+          var model = tmp[i].model;
+          var attrs = tmp[i].attr;
+          for(var j = 0; j < attrs.length; j++){
+            if(attrs[j] === attr){
+              return model;
+            }
+          }
+        }
       }
     }
   });

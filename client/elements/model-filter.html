@@ -31,6 +31,11 @@
       on-response="_handleModels">
     </iron-ajax>
     
+    <iron-ajax id="attrAjax" 
+      handle-as="json"
+      on-response="_handleAttributes">
+    </iron-ajax>
+    
     <div class="container">
       <paper-dialog class="dialog-panel" id="dialogModels">
         <div class="dialog-body">
@@ -62,6 +67,7 @@
         type: Array,
         notify: true
       },
+      selectedModels: Array,
       isJob: Boolean
     },
     ready: function() {
@@ -71,7 +77,31 @@
         this.$.dialogModels.open();
     },
     _handleModelsConfirm: function(){
-      this.fire('confirm', this.urls);
+      for(var i = 0; i < this.urls.length; i++){
+        this.$.attrAjax.url = '' + this.urls[i];
+        this.$.attrAjax.generateRequest();
+      }
+    },
+    _handleAttributes: function(e){
+      var response = e.detail.__data__.response;
+      if(response){
+        var model = response.resourcePath.substr(1);
+        for(var i = 0; i < this.selectedModels.length; i++){
+          if(this.selectedModels[i].model == model && this.selectedModels[i].attr == null){
+            var key = Object.keys(response.models)[0];
+            this.selectedModels[i].attr = Object.keys(response.models[key].properties);
+          }
+        }
+      }
+      var complete = true;
+      for(var i = 0; i < this.selectedModels.length; i++){
+        if(this.selectedModels[i].attr == null){
+          complete = false; break;
+        }
+      }
+      if(complete){
+        this.fire('confirm', this.selectedModels);
+      }
     },
     _handleModels: function(){
       var models = this.$.modelsAjax.lastResponse;
@@ -80,8 +110,11 @@
         if(apis){
           var tmp = [];
           for(var i = 0; i < apis.length; i++){
-            var obj = {"name":apis[i].path.split('/')[1],
-            "url":"/explorer/resources" + apis[i].path}
+            var obj = {
+              "name":apis[i].path.split('/')[1],
+              "url":"/explorer/resources" + apis[i].path,
+              "attr":null
+            }
             tmp.push(obj);
           }
           this.models = tmp;
@@ -93,6 +126,9 @@
       if(!this.urls){
         this.urls = [];
       }
+      if(!this.selectedModels){
+        this.selectedModels = [];
+      }
       if(e.target.checked){
         var isExist = false;
         for(var i = 0; i < this.urls.length; i++){
@@ -103,12 +139,14 @@
         }
         if(!isExist){
           this.urls.push(url);
+          this.selectedModels.push({'model':url.split('/').pop(),'attr':null});
         }
       }
       else{
         var index = this.urls.indexOf(url);
         if(index != -1){
-          this.urls.splice(index, 1)
+          this.urls.splice(index, 1);
+          this.selectedModels.splice(index, 1);
         }
       }
       this.urls.slice();

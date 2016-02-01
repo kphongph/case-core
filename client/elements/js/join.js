@@ -8,6 +8,24 @@ function js_stopWork(){
   forceStop = true;
 }
 
+function js_distinct(ref, model, attribute, sortBy, callback){
+  var url = baseUrl + model + '?filter[fields][' + attribute + ']=true';
+  httpGetAsync(ref, url, function(ref, msg){
+    var data = JSON.parse(msg);
+    var result = [];
+    for(var i = 0; i < data.length; i++){
+      if(result.indexOf(data[i][attribute]) == -1){
+        result.push(data[i][attribute]);
+      }
+    }
+    result.sort(function(a,b){return a.localeCompare(b);});
+    if(sortBy === 'descendant'){
+      result.reverse();
+    }
+    callback(ref, result);
+  });
+}
+
 function js_fullWork(ref, arrayModel, startIndex, endIndex, callback){
   if(forceStop) {
     forceStop = false; return;
@@ -29,33 +47,6 @@ function js_fullWork(ref, arrayModel, startIndex, endIndex, callback){
   callback(ref, generateRequest(arrayModel, startIndex, endIndex), countRecord);
 }
 
-function js_joinExample(ref, arrayModel, callback){
-  if(arrayModel.length === 1){
-    var modelname = arrayModel[0].modelName;
-    var query = arrayModel[0].query;
-    var url = baseUrl + modelname + '?where=' 
-            + JSON.stringify(query) + '&filter[limit]=' + limitRecord;
-    httpGetAsync(ref, url, callback);
-  }
-  else if(arrayModel.length > 1){
-    callback(ref, generateRequestExample(arrayModel));
-  }
-  else{
-    return null; 
-  }
-}
-
-function generateRequestExample(arrayModel){
-  var result = [];
-  for(var i = 0; i < arrayModel.length; i++){
-    var url = baseUrl + arrayModel[i].modelName + '?where=' 
-            + JSON.stringify(arrayModel[i].query) + '&filter[limit]=' + limitRecord;
-    var response = JSON.parse(httpGet(url));
-    result = cartesian(result, response, i);
-  }
-  return result;
-}
-
 function generateRequest(arrayModel, startIndex, endIndex){
   var result = [];
   var skipRecord = 0;
@@ -66,9 +57,9 @@ function generateRequest(arrayModel, startIndex, endIndex){
     for(var j = 0; j < range.length; j++){
       var start = range[j].start;
       var end = range[j].end;
-      var url = baseUrl + arrayModel[i].modelName + '?where=' 
+      var url = baseUrl + arrayModel[i].modelName + '?filter=' 
             + JSON.stringify(arrayModel[i].query) 
-            + '&filter[limit]=' + (end-(start-1))+ '&filter[skip]=' + (start-1);
+            + '&[limit]=' + (end-(start-1))+ '&[skip]=' + (start-1);
       merge = mergeArray(merge, JSON.parse(httpGet(url)));
     }
     if(i === 1){
@@ -109,9 +100,9 @@ function generateRequestParallel(arrayModel, startIndex, endIndex){
     for(var j = 0; j < range.length; j++){
       var start = range[j].start;
       var end = range[j].end;
-      var url = baseUrl + arrayModel[i].modelName + '?where=' 
+      var url = baseUrl + arrayModel[i].modelName + '?filter=' 
             + JSON.stringify(arrayModel[i].query) 
-            + '&filter[limit]=' + (end-(start-1))+ '&filter[skip]=' + (start-1);
+            + '&[limit]=' + (end-(start-1))+ '&[skip]=' + (start-1);
       urls.push(url);
     }
     // generate task each url
