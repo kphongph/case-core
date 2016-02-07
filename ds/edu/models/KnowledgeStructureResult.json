@@ -1,0 +1,33 @@
+{
+  "name": "KnowledgeStructureResult",
+  "options": {
+    "idInjection": false,
+    "mssql": {
+      "schema": "dbo",
+      "table": "KnowledgeStructureResult"
+    }
+  },
+  "properties": {
+    "KnowledgeID": {
+      "type": "String",
+      "required": true,
+	  "id": 1
+    },
+    "CID": {
+      "type": "String",
+      "required": false
+    },
+    "NormalPoint": {
+      "type": "String",
+      "required": false
+    },
+    "FixedPoint": {
+      "type": "Number",
+      "required": true
+    },
+    "ResultID": {
+      "type": "Number",
+      "required": true
+    }
+  }
+}

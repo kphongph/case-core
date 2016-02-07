@@ -57,9 +57,10 @@ function generateRequest(arrayModel, startIndex, endIndex){
     for(var j = 0; j < range.length; j++){
       var start = range[j].start;
       var end = range[j].end;
+      arrayModel[i].query['limit'] = (end-(start-1));
+      arrayModel[i].query['skip'] =  (start-1);
       var url = baseUrl + arrayModel[i].modelName + '?filter=' 
-            + JSON.stringify(arrayModel[i].query) 
-            + '&[limit]=' + (end-(start-1))+ '&[skip]=' + (start-1);
+            + JSON.stringify(arrayModel[i].query);
       merge = mergeArray(merge, JSON.parse(httpGet(url)));
     }
     if(i === 1){

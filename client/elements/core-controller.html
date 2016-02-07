@@ -177,7 +177,9 @@
       sortValue: Object,
       sortStartIndex: Number,
       distinctValue: Array,
-      sortStatus: String
+      sortStatus: String,
+      startTime: Date,
+      endTime: Date
     },
     ready: function() {
       this.isFieldsExist = false;
@@ -269,6 +271,9 @@
       this.models.sort(this._sort);
     },
     _handleModelClick: function(e){
+      this.startTime = new Date();
+      // starting request time 
+      console.log('starting time ' + this.startTime);
       this.maxRow = 10;
       var target = this._findUntil(e.target, 'model-config', 5);
       if(target){
@@ -333,28 +338,36 @@
         }
         if(ref.result.length === 0){
           ref.result = ref._getValue(ref.columns, response);
+          // ending request time 
+          ref.endTime = new Date();
+          console.log('ending time ' + ref.endTime);
+          var diff = (ref.endTime-ref.startTime)/1000;
+          console.log('response ' + diff + 's. for ' + countRecord + ' records.');
+          console.log('------------------------------------------------------------.');
         }
         else{
           // append result
           ref.result = ref.result.concat(response);
         }
-        if(ref.result.length < ref.maxRow && ref.sortStartIndex < ref.distinctValue.length){
-          // get more result
-          ref.sortStartIndex++;
-          for(var i = 0; i < ref.selectedModelConfig.length; i++){
-            if(ref.selectedModelConfig[i].modelName === ref.sortValue.model){
-              var query = ref.selectedModelConfig[i].query;
-              if(!query.where){
-                query['where'] = {};
+        if(ref.distinctValue){
+          if(ref.result.length < ref.maxRow && ref.sortStartIndex < ref.distinctValue.length){
+            // get more result
+            ref.sortStartIndex++;
+            for(var i = 0; i < ref.selectedModelConfig.length; i++){
+              if(ref.selectedModelConfig[i].modelName === ref.sortValue.model){
+                var query = ref.selectedModelConfig[i].query;
+                if(!query.where){
+                  query['where'] = {};
+                }
+                query.where[ref.sortValue.value] = ref.distinctValue[ref.sortStartIndex-1];
+                ref.selectedModelConfig[i].query = query;
               }
-              query.where[ref.sortValue.value] = ref.distinctValue[ref.sortStartIndex-1];
-              ref.selectedModelConfig[i].query = query;
             }
+            js_fullWork(ref, ref.selectedModelConfig, ((ref.sortStartIndex-1)*ref.maxRow)+1, ref.sortStartIndex*ref.maxRow, ref._joinCallback);
           }
-          js_fullWork(ref, ref.selectedModelConfig, ((ref.sortStartIndex-1)*ref.maxRow)+1, ref.sortStartIndex*ref.maxRow, ref._joinCallback);
-        }
-        else{
-          ref.$.sortDialog.close();
+          else{
+            ref.$.sortDialog.close();
+          }
         }
       }
     },

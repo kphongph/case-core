@@ -241,10 +241,6 @@
     "dataSource": "caseMongoDs",
     "public": true
   },
-  "Educationclass": {
-    "dataSource": "caseMongoDs",
-    "public": true
-  },
   "Educationlevel": {
     "dataSource": "caseMongoDs",
     "public": true
@@ -505,6 +501,10 @@
     "dataSource": "caseMongoDs",
     "public": true
   },
+  "EDU_Relation": {
+    "dataSource": "caseAzureDs",
+    "public": true
+  },
   "Result": {
     "dataSource": "caseMongoDs",
     "public": true
@@ -587,6 +587,94 @@
   },
   "Weighheight": {
     "dataSource": "caseMongoDs",
+    "public": true
+  },
+  "WelfareCategory": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "HostComputer": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "DisabilityPerson": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "DisabilityType": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "Course": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "Subject": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "KnowledgeCategory": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "StudentGrade": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "StudentGradeDesc": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "Teacher": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "TeacherTeachingData": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "StaffPosition": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "StaffPositionDetail": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "Grant": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "GrantDesc": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "GrantTypeDesc": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "StaffHeader": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "AfterGradList": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "AfterGradStudent": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "KnowledgeStructureResult": {
+    "dataSource": "eduDs",
+    "public": true
+  },
+  "FamilyRelation_Main": {
+    "dataSource": "caseAzureDs",
+    "public": true
+  },
+  "EducationClass": {
+    "dataSource": "eduDs",
     "public": true
   }
 }
