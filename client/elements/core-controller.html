@@ -172,10 +172,15 @@
       genResultIndex: Number,
       recordPerRequest: {
         type: Number,
-        value: 1000
+        value: 100
       },
       sortValue: Object,
+      oldSortValue: Object,
       sortStartIndex: Number,
+      sortStartIndexTmp: Number,
+      distinctValueIndex: Number,
+      distinctValueIndexTmp: Number,
+      distinctValueIndexArray: Array,
       distinctValue: Array,
       sortStatus: String,
       startTime: Date,
@@ -271,10 +276,6 @@
       this.models.sort(this._sort);
     },
     _handleModelClick: function(e){
-      this.startTime = new Date();
-      // starting request time 
-      console.log('starting time ' + this.startTime);
-      this.maxRow = 10;
       var target = this._findUntil(e.target, 'model-config', 5);
       if(target){
         this.currentPage = 1;
@@ -322,6 +323,7 @@
       return array;
     },
     _joinCallback: function(ref, result, countRecord){
+      var isFirst = false; 
       if(!ref.countRecord){
         ref.countRecord = countRecord;
       }
@@ -338,12 +340,7 @@
         }
         if(ref.result.length === 0){
           ref.result = ref._getValue(ref.columns, response);
-          // ending request time 
-          ref.endTime = new Date();
-          console.log('ending time ' + ref.endTime);
-          var diff = (ref.endTime-ref.startTime)/1000;
-          console.log('response ' + diff + 's. for ' + countRecord + ' records.');
-          console.log('------------------------------------------------------------.');
+          isFirst = true;
         }
         else{
           // append result
@@ -359,14 +356,28 @@
                 if(!query.where){
                   query['where'] = {};
                 }
-                query.where[ref.sortValue.value] = ref.distinctValue[ref.sortStartIndex-1];
-                ref.selectedModelConfig[i].query = query;
+                if(ref.selectedModelConfig[i].countQuery <= ref.maxRow){ // call with another value
+                  ref.sortStartIndex = 1;
+                  ref.distinctValueIndex++;
+                  query.where[ref.sortValue.value] = ref.distinctValue[ref.distinctValueIndex-1];
+                  ref.selectedModelConfig[i].query = query;
+                }
+                else{
+                  ref.sortStartIndex++;
+                }
               }
             }
             js_fullWork(ref, ref.selectedModelConfig, ((ref.sortStartIndex-1)*ref.maxRow)+1, ref.sortStartIndex*ref.maxRow, ref._joinCallback);
           }
           else{
+            ref.distinctValueIndexArray.push(ref.distinctValueIndex + 1);
             ref.$.sortDialog.close();
+            // ending request time 
+            ref.endTime = new Date();
+            console.log('ending time ' + ref.endTime);
+            var diff = (ref.endTime-ref.startTime)/1000;
+            console.log('preview ' + diff + 's. for ' + countRecord + ' records.');
+            console.log('------------------------------------------------------------.');
           }
         }
       }
@@ -375,15 +386,47 @@
       this.currentPage++;
       var endIndex = this.currentPage*this.maxRow;
       if(endIndex > this.countRecord) endIndex=this.countRecord;
-      js_fullWork(this, this.selectedModelConfig, ((this.currentPage-1)*this.maxRow)+1, endIndex, this._joinCallback);
+      if(!this.distinctValue){
+        js_fullWork(this, this.selectedModelConfig, ((this.currentPage-1)*this.maxRow)+1, endIndex, this._joinCallback);
+      }
+      else{
+        this.sortStartIndex++;
+        this.result = [];
+        js_fullWork(this, this.selectedModelConfig, ((this.sortStartIndex-1)*this.maxRow)+1, this.sortStartIndex*this.maxRow, this._joinCallback);
+      }
     },
     _handleTablePrev: function(){
-      this.currentPage--;
-      if(this.currentPage >= 1){
-        js_fullWork(this, this.selectedModelConfig, ((this.currentPage-1)*this.maxRow)+1, this.currentPage*this.maxRow, this._joinCallback);
+      if(!this.distinctValue){
+        this.currentPage--;
+        if(this.currentPage >= 1){
+          js_fullWork(this, this.selectedModelConfig, ((this.currentPage-1)*this.maxRow)+1, this.currentPage*this.maxRow, this._joinCallback);
+        }
+      }
+      else{
+        this.distinctValueIndexArray.pop();
+        this.distinctValueIndexArray.pop();
+        this.distinctValueIndex = this.distinctValueIndexArray.pop();
+        this.sortStartIndex = 1; // skip 1 value
+        this.result = [];
+        for(var i = 0; i < this.selectedModelConfig.length; i++){
+          if(this.selectedModelConfig[i].modelName === this.sortValue.model){
+            var query = this.selectedModelConfig[i].query;
+            if(!query.where){
+              query['where'] = {};
+            }
+            delete query.where[this.oldSortValue];
+            this.oldSortValue = this.sortValue.value;
+            query.where[this.sortValue.value] = this.distinctValue[this.distinctValueIndex-1];
+            this.selectedModelConfig[i].query = query;
+          }
+        }
+        js_fullWork(this, this.selectedModelConfig, ((this.sortStartIndex-1)*this.maxRow)+1, this.sortStartIndex*this.maxRow, this._joinCallback);
       }
     },
     _handleGenerateResult: function(e){
+      this.startTime = new Date();
+      console.log('starting time ' + this.startTime);
+      
       var result = e.detail;
       this.resultProgress = 0;
       this.currentPage = 1;
@@ -394,7 +437,16 @@
         js_fullWork(this, this.selectedModelConfig, this.genResultIndex.start, result.end, this._runOneCallback);
       }
       else{
-        js_fullWork(this, this.selectedModelConfig, this.genResultIndex.start, (this.genResultIndex.start+this.recordPerRequest)-1, this._runMultiCallback);
+        if(!this.distinctValue){
+          js_fullWork(this, this.selectedModelConfig, this.genResultIndex.start, (this.genResultIndex.start+this.recordPerRequest)-1, this._runMultiCallback);
+        }
+        else{
+          this.sortStartIndexTmp = this.sortStartIndex;
+          this.sortStartIndex = 1;
+          this.distinctValueIndexTmp = this.distinctValueIndex;
+          this.distinctValueIndex = 1;
+          js_fullWork(this, this.selectedModelConfig, 1, this.recordPerRequest, this._runMultiCallback);
+        }
       }
     },
     _runOneCallback: function(ref, result, countRecord){
@@ -406,18 +458,50 @@
     _runMultiCallback: function(ref, result, countRecord){
       if(result.length > 0){
         // do with result
-        console.log(ref.genResultIndex, result);
+        //console.log(ref.genResultIndex.start + result.length);
       }
       
       if(ref.genResultIndex.start < ref.genResultIndex.end){
-        ref.genResultIndex.start += ref.recordPerRequest;
+        ref.genResultIndex.start += result.length;
         ref.resultProgress = ((ref.genResultIndex.start*100)/ref.genResultIndex.end).toFixed(2);
         var endIndex = (ref.genResultIndex.start+ref.recordPerRequest)-1;
         if(endIndex > ref.genResultIndex.end) endIndex=ref.genResultIndex.end;
         setTimeout(function(){
-          js_fullWork(ref, ref.selectedModelConfig, ref.genResultIndex.start, endIndex, ref._runMultiCallback);
+          if(!ref.distinctValue){
+            js_fullWork(ref, ref.selectedModelConfig, ref.genResultIndex.start, endIndex, ref._runMultiCallback);
+          }
+          else{
+            for(var i = 0; i < ref.selectedModelConfig.length; i++){
+              if(ref.selectedModelConfig[i].modelName === ref.sortValue.model){
+                var query = ref.selectedModelConfig[i].query;
+                if(!query.where){
+                  query['where'] = {};
+                }
+                if(ref.selectedModelConfig[i].countQuery <= ref.maxRow){ // call with another value
+                  ref.sortStartIndex = 1;
+                  ref.distinctValueIndex++;
+                  query.where[ref.sortValue.value] = ref.distinctValue[ref.distinctValueIndex-1];
+                  ref.selectedModelConfig[i].query = query;
+                }
+                else{
+                  ref.sortStartIndex++;
+                }
+              }
+            }
+             js_fullWork(ref, ref.selectedModelConfig, ((ref.sortStartIndex-1)*ref.maxRow)+1, ref.sortStartIndex*ref.recordPerRequest, ref._runMultiCallback);
+          }
         }, 500);
         
+      }
+      else{
+        ref.sortStartIndex  = ref.sortStartIndexTmp;
+        ref.distinctValueIndex  = ref.distinctValueIndexTmp;
+        // ending request time 
+        ref.endTime = new Date();
+        console.log('ending time ' + ref.endTime);
+        var diff = (ref.endTime-ref.startTime)/1000;
+        console.log('gen result ' + diff + 's. for ' + countRecord + ' records.');
+        console.log('------------------------------------------------------------.');
       }
     },
     _handleSortByColumn: function(e){
@@ -426,11 +510,19 @@
       this.$.sortDialog.open();
     },
     _handleSortConfirm: function(){
+      this.startTime = new Date();
+      console.log('starting time ' + this.startTime);
+      
       this.result = [];
       this.distinctValue = [];
       var model = this._findModelByAttr(this.sortValue.value);
       var sortBy = this.sortValue.text;
       var attr = this.sortValue.value;
+      
+      if(!this.oldSortValue){
+        this.set("oldSortValue", attr);
+      }
+      
       var n = attr.match(/\d+/g);
       if(n){
         attr = attr.substring(0, attr.length-n[0].length);
@@ -444,13 +536,18 @@
     _handleSortCallback: function(ref, result){ // result = sort and distinct
       ref.distinctValue = result;
       ref.sortStartIndex = 1;
+      ref.distinctValueIndex = 1;
+      if(!ref.distinctValueIndexArray) ref.distinctValueIndexArray = [];
+      ref.distinctValueIndexArray.push(ref.distinctValueIndex);
       for(var i = 0; i < ref.selectedModelConfig.length; i++){
         if(ref.selectedModelConfig[i].modelName === ref.sortValue.model){
           var query = ref.selectedModelConfig[i].query;
           if(!query.where){
             query['where'] = {};
           }
-          query.where[ref.sortValue.value] = result[ref.sortStartIndex-1];
+          delete query.where[ref.oldSortValue];
+          ref.oldSortValue = ref.sortValue.value;
+          query.where[ref.sortValue.value] = result[ref.distinctValueIndex-1];
           ref.selectedModelConfig[i].query = query;
         }
       }

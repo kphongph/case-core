@@ -39,6 +39,13 @@ function js_fullWork(ref, arrayModel, startIndex, endIndex, callback){
     }
     arrayModel[i]['order'] = i;
     arrayModel[i]['count'] = _count;
+    if(arrayModel[i].query.where){
+      url = baseUrl + arrayModel[i].modelName + '/count?where=' + JSON.stringify(arrayModel[i].query.where);
+      arrayModel[i]['countQuery'] = (JSON.parse(httpGet(url))).count;
+    }
+    else{
+      arrayModel[i]['countQuery'] = _count;
+    }
     arrayModel[i]['beginStart'] = findRequestIndex(startIndex, _count, devide);
     arrayModel[i]['beginEnd'] = findRequestIndex(endIndex, _count, devide);
     arrayModel[i]['range'] = findRange(arrayModel[i]['beginStart'], arrayModel[i]['beginEnd'], endIndex-startIndex, _count);

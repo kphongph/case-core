@@ -98,7 +98,7 @@
       },
       hideSplinner: {
         type: Boolean,
-        value: false
+        value: true
       },
       startTime: Date,
       endTime: Date,
@@ -127,14 +127,14 @@
         if(!this.endTime) {
           this.endTime = new Date();
           var diff = (this.endTime-this.startTime)/1000;
-          this.remainingTime = ((100/this.progress)*diff).toFixed(2);
-          if(!this.estimateTime) this.estimateTime = this.remainingTime;
+          this.remainingTime = ((100-this.progress)*diff).toFixed(2);
+          this.estimateTime = (100*diff).toFixed(2);
           this.timeString = '  Estimate: ' + this.estimateTime + 's  remaining: ' + this.remainingTime + 's';
           this.startTime = null;
           this.endTime = null;
         }
       }
-      if(this.progress < 100){
+      if(this.progress < 100 && this.progress > 0){
         this.progressText = this.progress + ' %';
       }
       else{ // finish task
