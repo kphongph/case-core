@@ -12,18 +12,43 @@ function js_distinct(ref, model, attribute, sortBy, callback){
   var url = baseUrl + model + '?filter[fields][' + attribute + ']=true';
   httpGetAsync(ref, url, function(ref, msg){
     var data = JSON.parse(msg);
-    var result = [];
-    for(var i = 0; i < data.length; i++){
-      if(result.indexOf(data[i][attribute]) == -1){
-        result.push(data[i][attribute]);
-      }
-    }
-    result.sort(function(a,b){return a.localeCompare(b);});
+    var result = unique(data, attribute);
+    
     if(sortBy === 'descendant'){
-      result.reverse();
+      result.sort(function(a,b){return sort(a, b, false);});
+    }
+    else{
+      result.sort(function(a,b){return sort(a, b, true);});
     }
     callback(ref, result);
   });
+}
+
+function unique(arr, attribute) {
+    var hash = {}, result = [];
+    for ( var i = 0, l = arr.length; i < l; ++i ) {
+        if ( !hash.hasOwnProperty(arr[i][attribute]) ) {
+            hash[ arr[i] ] = true;
+            result.push(arr[i][attribute]);
+        }
+    }
+    return result;
+}
+
+function sort(a, b, asc) {
+    var result;
+    /* Default ascending order */
+    if (typeof asc == "undefined") asc = true;
+    if (a === null) return 1;
+    if (b === null) return -1;
+    if (a === null && b === null) return 0;
+    result = a - b;
+    if (isNaN(result)) {
+        return (asc) ? a.toString().localeCompare(b) : b.toString().localeCompare(a);
+    }
+    else {
+        return (asc) ? result : -result;
+    }
 }
 
 function js_fullWork(ref, arrayModel, startIndex, endIndex, callback){
