@@ -172,7 +172,7 @@
       genResultIndex: Number,
       recordPerRequest: {
         type: Number,
-        value: 100
+        value: 10000
       },
       sortValue: Object,
       oldSortValue: Object,
@@ -460,9 +460,8 @@
         // do with result
         //console.log(ref.genResultIndex.start + result.length);
       }
-      
+      ref.genResultIndex.start += result.length;
       if(ref.genResultIndex.start < ref.genResultIndex.end){
-        ref.genResultIndex.start += result.length;
         ref.resultProgress = ((ref.genResultIndex.start*100)/ref.genResultIndex.end).toFixed(2);
         var endIndex = (ref.genResultIndex.start+ref.recordPerRequest)-1;
         if(endIndex > ref.genResultIndex.end) endIndex=ref.genResultIndex.end;
@@ -494,6 +493,7 @@
         
       }
       else{
+        ref.resultProgress = 100;
         ref.sortStartIndex  = ref.sortStartIndexTmp;
         ref.distinctValueIndex  = ref.distinctValueIndexTmp;
         // ending request time 
